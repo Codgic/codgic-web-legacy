@@ -6,7 +6,7 @@
 </div>
 <?php echo "<div class=\"navbar navbar-fixed-top {$nav_class}\" id=\"navbar_top\">";?>
 <center><div class="navbar navbar-inner" style="padding:0">
-      <div class="navbar navbar-inner visible-tablet" style="padding:0;width:100%;position:fixed;z-index:3;top:0px;left:0px;margin:auto;"></div>
+    <div class="navbar navbar-inner visible-tablet" style="padding:0;width:100%;position:fixed;z-index:3;top:0px;left:0px;margin:auto;"></div>
       <div class="container-fluid navbar-padding-fix hidden-phone" style="width:98%;position:fixed;z-index:3;top:0px;left:0px;margin:auto;">
       <a class="brand" href="index.php"><i class="icon-home"></i><span class="margin-left:10px;navbar-hide-text"> CWOJ</span></a>
         <ul class="nav">
@@ -83,6 +83,7 @@
           </div><!--/.nav-collapse -->
         </div>
       </div>
+	 </div>
 </div></center>
 <div class="modal hide" id="LoginModal">
   <form id="form_login" style="margin:0px" action="login.php" method="post">
@@ -112,7 +113,7 @@
       <input id="ret_url" name="url" type="hidden"><!--value=""-->
     </div>
     <div class="modal-footer">
-      <input id="signin" type="submit" value="Sign in" class="btn btn-primary">
+      <input id="signin" type="submit" value="登录" class="btn btn-primary">
       <a href="#" class="btn" data-dismiss="modal">取消</a>
     </div>
   </form>

@@ -1,4 +1,5 @@
 <head>
+  <?php header("Content-Type: text/html; charset=utf-8");?>
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"> 
   <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
   <link rel="stylesheet" href="/assets/css/normalize.min.css" type="text/css" />
