@@ -5,16 +5,16 @@
   <div class="navbar-inner" style="padding:0"></div>
 </div>
 <?php echo "<div class=\"navbar navbar-fixed-top {$nav_class}\" id=\"navbar_top\">";?>
-<div class="navbar navbar-inner" style="padding:0;width:100%;position:fixed;z-index:3;top:0px;left:0px;margin:0px;">
+<div class="navbar navbar-inner" style="padding:0;width:100%;position:fixed;z-index:3;top:0px;left:0px;margin:auto;">
       <center><div class="container-fluid navbar-padding-fix hidden-phone" style="width:95%">
-      <a class="brand" href="index.php"><i class="icon-home"></i><span class="navbar-hide-text"> <?php echo"$oj_name"?></span></a>
+      <a class="brand" href="index.php"><i class="icon-home"></i><span class="navbar-hide-text"> CWOJ</span></a>
         <ul class="nav">
           <li><a id="nav_bbs" class="shortcut-hint" title="Alt+B" href="board.php"><i class="icon-comment"></i><span class="navbar-hide-text"> 讨论</span></a></li>
           <li><a id="nav_set" href="problemset.php"><i class="icon-tasks"></i><span class="navbar-hide-text"> 题库</span></a></li>
           <li><a id="nav_prob" class="shortcut-hint" title="Alt+P" href="problempage.php"><i class="icon-edit"></i><span class="navbar-hide-text"> 题目</span></a></li>
           <li><a id="nav_record" class="shortcut-hint" title="Alt+R" href="record.php"><i class="icon-hdd"></i><span class="navbar-hide-text"> 记录</span></a></li>
           <li><a id="nav_rank" href="ranklist.php"><i class="icon-bookmark"></i><span class="navbar-hide-text"> 排名</span></a></li>
-          <li><a id="nav_about" href="about.php"><i class="icon-book"></i><span class="navbar-hide-text"> 关于</span></a></li>
+          <li><a id="nav_about" href="blog"><i class="icon-book"></i><span class="navbar-hide-text"> 博客</span></a></li>
         </ul>
         <form class="navbar-search pull-left shortcut-hint" id="search_form" title="Alt+I" action="search.php" method="get">
           <input type="text" name="q" id="search_input" class="search-query input-medium" style="margin-bottom:0px;width:95px;" autocomplete="off" placeholder="搜索...">
@@ -22,7 +22,7 @@
       <div class="btn-group pull-right">
 
 <?php if(isset($_SESSION['user'])){?>
-        <a class="btn dropdown-toggle" data-toggle="dropdown" style="white-space:nowrap" href="#">
+        <a class="btn btn-primary dropdown-toggle" data-toggle="dropdown" style="white-space:nowrap" href="#">
           <i class="icon-user"></i>
           <?php
           echo $_SESSION['user'],'<strong class="notifier"></strong>';
@@ -30,7 +30,7 @@
           <span class="caret"></span>
         </a>
         <ul class="dropdown-menu" style="text-align:left;">
-          <li><a href="mail.php" id="nav_mail"><i class="icon-envelope"></i> 私信</a></li>
+          <li><a href="mail.php" id="nav_mail"><i class="icon-envelope"></i> 私信<?php echo '<strong class="notifier"></strong>'; ?></a></li>
           <li><a href="marked.php"><i class="icon-star"></i> 收藏</a></li>
           <li><a href="profile.php"><i class="icon-github"></i> 资料</a></li>
           <li><a href="control.php"><i class="icon-cogs"></i> 设置</a></li>
@@ -52,19 +52,19 @@
             <i class="icon-chevron-left"></i></a>
           <div class="brand" style="float:none;display:inline-block;margin-left:auto;margin-right:auto"><?php echo"$inTitle";?></div>
           <?php echo"<a class=\"btn {$button_class} pull-right\" style=\"margin-right:10px\" data-toggle=\"collapse\" data-target=\".nav-collapse\">";?>
-            <i class="icon-th-list"></i></a>
+            <i class="icon-th-list"></i><?php echo '<strong class="notifier"></strong>'; ?></a>
           <div class="nav-collapse"><p></p>
             <ul class="nav" style="text-align:left">
-              <li><a style="color:#FFF" class="brand" href="index.php"><i class="icon-home"></i> <?php echo"$oj_name"?></a></li>
+              <li><a style="color:#FFF" class="brand" href="index.php"><i class="icon-home"></i> CWOJ</a></li>
               <li><a style="color:#FFF" id="nav_bbs" class="shortcut-hint" title="Alt+B" href="board.php"><i class="icon-comment"></i> 讨论</a></li>
               <li><a style="color:#FFF" id="nav_set" href="problemset.php"><i class="icon-tasks"></i> 题库</a></li>
               <li><a style="color:#FFF" id="nav_prob" class="shortcut-hint" title="Alt+P" href="problempage.php"><i class="icon-edit"></i> 题目</a></li>
               <li><a style="color:#FFF" id="nav_record" class="shortcut-hint" title="Alt+R" href="record.php"><i class="icon-hdd"></i> 记录</a></li>
               <li><a style="color:#FFF" id="nav_rank" href="ranklist.php"><i class="icon-bookmark"></i> 排名</a></li>
-              <li><a style="color:#FFF" id="nav_about" href="about.php"><i class="icon-book"></i> 关于</a></li>
+              <li><a style="color:#FFF" id="nav_about" href="blog"><i class="icon-book"></i> 博客</a></li>
 			  <?php if(isset($_SESSION['user'])) {
 		      echo "<div style=\"color:#FFF\">&nbsp;&nbsp;<div class=\"btn {$button_class}\" style=\"outline:none\"><i class=\"icon-user\"></i> {$_SESSION['user']} </div>
-              <a class=\"btn {$button_class}\" href=\"mail.php\" id=\"nav_mail\"><i class=\"icon-envelope\"></i></a>
+              <a class=\"btn {$button_class}\" href=\"mail.php\" id=\"nav_mail\"><i class=\"icon-envelope\"></i><strong class=\"notifier\"></strong></a>
               <a class=\"btn {$button_class}\" href=\"marked.php\"><i class=\"icon-star\"></i></a>
               <a class=\"btn {$button_class}\" href=\"profile.php\"><i class=\"icon-github\"></i></a>
               <a class=\"btn {$button_class}\" href=\"control.php\"><i class=\"icon-cogs\"></i></a>";?>
