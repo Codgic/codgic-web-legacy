@@ -1,6 +1,6 @@
 <head>
-  <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"> 
+  <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
   <link rel="stylesheet" href="/assets/css/normalize.min.css" type="text/css" />
   <title><?php echo $Title?></title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -45,13 +45,17 @@
   <!--[if lt IE 9]>
     <link rel="stylesheet" href="../assets/css/font-awesome-ie7.min.css">
     <script src="../assets/js/html5.js"></script>
+	<script src="../assets/js/respond.js"></script>
+	<script type="text/javascript" src="../assets/js/jquery.placeholder.js">
+      $(function() {
+      $('input, textarea').placeholder();
+      });
+    </script>
   <![endif]-->
   <!--[if lt IE 8]>
   <html lang="zh-CN">
   <head>
-  <meta charset="UTF-8" />
   <title>请升级你的浏览器</title>
-  <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
   <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1" >
   <meta name="renderer" content="webkit">
   <base target="_blank" />
@@ -114,5 +118,3 @@ document.execCommand("Stop");
 </script> 
 <![endif]-->
 </head>
-
-

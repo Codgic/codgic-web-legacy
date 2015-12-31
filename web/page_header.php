@@ -5,9 +5,10 @@
   <div class="navbar-inner" style="padding:0"></div>
 </div>
 <?php echo "<div class=\"navbar navbar-fixed-top {$nav_class}\" id=\"navbar_top\">";?>
-<div class="navbar navbar-inner" style="padding:0;width:100%;position:fixed;z-index:3;top:0px;left:0px;margin:auto;">
-      <center><div class="container-fluid navbar-padding-fix hidden-phone" style="width:95%">
-      <a class="brand" href="index.php"><i class="icon-home"></i><span class="navbar-hide-text"> CWOJ</span></a>
+<center><div class="navbar navbar-inner" style="padding:0">
+      <div class="navbar navbar-inner visible-tablet" style="padding:0;width:100%;position:fixed;z-index:3;top:0px;left:0px;margin:auto;"></div>
+      <div class="container-fluid navbar-padding-fix hidden-phone" style="width:98%;position:fixed;z-index:3;top:0px;left:0px;margin:auto;">
+      <a class="brand" href="index.php"><i class="icon-home"></i><span class="margin-left:10px;navbar-hide-text"> CWOJ</span></a>
         <ul class="nav">
           <li><a id="nav_bbs" class="shortcut-hint" title="Alt+B" href="board.php"><i class="icon-comment"></i><span class="navbar-hide-text"> 讨论</span></a></li>
           <li><a id="nav_set" href="problemset.php"><i class="icon-tasks"></i><span class="navbar-hide-text"> 题库</span></a></li>
@@ -21,9 +22,9 @@
         </form>
       <div class="btn-group pull-right">
 
-<?php if(isset($_SESSION['user'])){?>
-        <a class="btn btn-primary dropdown-toggle" data-toggle="dropdown" style="white-space:nowrap" href="#">
-          <i class="icon-user"></i>
+<?php if(isset($_SESSION['user'])){
+        echo "<a class=\"btn {$button_class} opdown-toggle\" data-toggle=\"dropdown\" style=\"margin-right:10px\" href=\"#\">"?>
+          <i class="icon-user"></i>&nbsp;
           <?php
           echo $_SESSION['user'],'<strong class="notifier"></strong>';
           ?>
@@ -45,14 +46,14 @@
         <a href="reg.php" class="btn">注册</a>
 <?php }?>
       </div>
-    </div></center>
+    </div>
 	<div class="navbar navbar-inner visible-phone" style="text-align:center;padding:0;width:100%;position:fixed;z-index:3;top:0px;margin:0px">
         <div class="container-fluid navbar-padding-fix">
 		<?php echo"<a class=\"btn {$button_class} visible-phone pull-left\" href=\"javascript:history.back(-1);\" style=\"margin-left:10px\">";?>
             <i class="icon-chevron-left"></i></a>
           <div class="brand" style="float:none;display:inline-block;margin-left:auto;margin-right:auto"><?php echo"$inTitle";?></div>
           <?php echo"<a class=\"btn {$button_class} pull-right\" style=\"margin-right:10px\" data-toggle=\"collapse\" data-target=\".nav-collapse\">";?>
-            <i class="icon-th-list"></i><?php echo '<strong class="notifier"></strong>'; ?></a>
+            <i class="icon-th-list"></i><?php echo '<strong class="notifier"></strong>';?></a>
           <div class="nav-collapse"><p></p>
             <ul class="nav" style="text-align:left">
               <li><a style="color:#FFF" class="brand" href="index.php"><i class="icon-home"></i> CWOJ</a></li>
@@ -77,14 +78,12 @@
               <li><form class="navbar-search pull-left shortcut-hint" id="search_form" title="Alt+I" action="search.php" method="get">
               <input type="text" name="q" id="search_input" class="search-query input-xlarge" style="margin-bottom:0px" autocomplete="off" placeholder="搜索...">
               </form></li>
-			  </ul>
+			 </div>
+			</ul>
           </div><!--/.nav-collapse -->
         </div>
       </div>
-</div>
-</div>
-<div><?php echo "$show_text";?></div>
-<div class="visible-phone visible-tablet" style="margin:65px"></div>
+</div></center>
 <div class="modal hide" id="LoginModal">
   <form id="form_login" style="margin:0px" action="login.php" method="post">
     <div class="modal-header">

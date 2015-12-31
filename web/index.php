@@ -12,13 +12,12 @@ require('inc/checklogin.php');
 require('inc/database.php');
 $res=mysql_query("select content from news where news_id=0");
 $index_text=($row=mysql_fetch_row($res)) ? $row[0] : '';
-
 $inTitle='主页';
 $Title=$inTitle .' - '. $oj_name;
 ?>
 <!DOCTYPE html>
 <html>
-  <?php require('head.php'); ?>
+<?php require('head.php');?>
   <body>
     <?php require('page_header.php');
     if($pref->night=='on') echo '<audio autoplay="autoplay"><source src="/images/christmas_bgm.mp3"></audio>';?>  
@@ -180,9 +179,8 @@ $Title=$inTitle .' - '. $oj_name;
         ctx.fill();
     }
     requestAnimationFrame(snow);
-};
-
-function reset(flake) {
+	};
+  function reset(flake) {
     flake.x = Math.floor(Math.random() * canvas.width);
     flake.y = 0;
     flake.size = (Math.random() * 3) + 2;
@@ -190,9 +188,8 @@ function reset(flake) {
     flake.velY = flake.speed;
     flake.velX = 0;
     flake.opacity = (Math.random() * 0.5) + 0.3;
-}
-
-function init() {
+	}
+  function init() {
     for (var i = 0; i < flakeCount; i++) {
         var x = Math.floor(Math.random() * canvas.width),
             y = Math.floor(Math.random() * canvas.height),
@@ -223,8 +220,6 @@ function init() {
 //});
 
 init();
-	</script>
-    <script type="text/javascript">
-    </script>
-  </body>
+</script>
+</body>
 </html>

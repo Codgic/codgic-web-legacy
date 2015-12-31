@@ -126,7 +126,7 @@ function hotkey_hint_dismiss (E) {
 function reg_hotkey (key, fun) {
 	shortcuts[key] = fun; }
 $(document).ready(function(){
-	var $nav=$('#navbar_top'),navFixed=false,$win=$(window),$container=$('body>.container-fluid'),$notifier=$('#notifier');
+	var $nav=$('#navbar_top'),navFixed=false,$win=$(window),$container=$('body>.container-fluid'),$notifier=$('.notifier');
 	function processScroll () {
 		var now = $win.scrollTop(),
 			navTop = $('header').height(),
@@ -202,7 +202,7 @@ $(document).ready(function(){
 			if(isNaN(data)||data=='0')
 				return;
 			$notifier.html('&nbsp;('+data+')');
-			var $alert=$('<div class="alert alert-success center alert-popup">You have unread mails.</div>').appendTo('body');
+			var $alert=$('<div class="alert alert-success center alert-popup"> 你有未读私信...</div>').appendTo('body');
 			setTimeout(function(){$alert.fadeOut(400);},1000);
 		});
 	}
