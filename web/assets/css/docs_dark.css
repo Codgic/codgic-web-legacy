@@ -136,6 +136,7 @@ textarea.problem-sample{
   margin-top: -2px;
 }
 .mail-container {
+  background-color: #404040;
   border: 1px solid #DDD;
   padding: 5px;
 }
