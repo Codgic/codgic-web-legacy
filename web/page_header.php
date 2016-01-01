@@ -6,8 +6,8 @@
 </div>
 <?php echo "<div class=\"navbar navbar-fixed-top {$nav_class}\" id=\"navbar_top\">";?>
 <div class="navbar navbar-inner" style="padding:0;text-align:center">
-    <div class="navbar navbar-inner visible-tablet" style="padding:0;width:100%;position:fixed;z-index:3;top:0px;left:0px;margin:auto;"></div>
-      <center><div class="container-fluid navbar-padding-fix hidden-phone" style="width:97%;position:fixed;z-index:3;margin-right:20px">
+    <div class="navbar navbar-inner visible-tablet" style="padding:0;width:100%;position:fixed;z-index:3;top:0px;left:0px;margin:0 auto;"></div>
+      <center><div class="container-fluid navbar-padding-fix hidden-phone" style="width:97%;position:fixed;z-index:3">
       <a class="brand" href="index.php"><i class="icon-home"></i><span class="navbar-hide-text"> CWOJ</span></a>
         <ul class="nav">
           <li><a id="nav_bbs" class="shortcut-hint" title="Alt+B" href="board.php"><i class="icon-comment"></i><span class="navbar-hide-text"> 讨论</span></a></li>
@@ -15,15 +15,15 @@
           <li><a id="nav_prob" class="shortcut-hint" title="Alt+P" href="problempage.php"><i class="icon-edit"></i><span class="navbar-hide-text"> 题目</span></a></li>
           <li><a id="nav_record" class="shortcut-hint" title="Alt+R" href="record.php"><i class="icon-hdd"></i><span class="navbar-hide-text"> 记录</span></a></li>
           <li><a id="nav_rank" href="ranklist.php"><i class="icon-bookmark"></i><span class="navbar-hide-text"> 排名</span></a></li>
-          <li><a id="nav_about" href="blog"><i class="icon-book"></i><span class="navbar-hide-text"> 博客</span></a></li>
+          <li><a id="nav_about" href="about.php"><i class="icon-book"></i><span class="navbar-hide-text"> 关于</span></a></li>
         </ul>
-        <form class="navbar-search pull-left shortcut-hint" id="search_form" title="Alt+I" action="search.php" method="get">
-          <input type="text" name="q" id="search_input" class="search-query input-medium" style="margin-bottom:0px;width:95px;" autocomplete="off" placeholder="搜索...">
+        <form class="navbar-search shortcut-hint" id="search_form" title="Alt+I" action="search.php" method="get">
+          <input type="text" name="q" id="search_input" class="search-query input-medium" style="margin-bottom:0px;width:95px;margin-left:10px" autocomplete="off" placeholder="搜索...">
         </form>
       <div class="btn-group pull-right">
 
 <?php if(isset($_SESSION['user'])){
-        echo "<a class=\"btn {$button_class} opdown-toggle\" data-toggle=\"dropdown\" href=\"#\">"?>
+        echo "<a class=\"btn {$button_class} opdown-toggle\" data-toggle=\"dropdown\" style=\"margin-right:5px\" href=\"#\">"?>
           <i class="icon-user"></i>&nbsp;
           <?php
           echo $_SESSION['user'],'<strong class="notifier"></strong>';
@@ -34,7 +34,7 @@
           <li><a href="mail.php" id="nav_mail"><i class="icon-envelope"></i> 私信<?php echo '<strong class="notifier"></strong>'; ?></a></li>
           <li><a href="marked.php"><i class="icon-star"></i> 收藏</a></li>
           <li><a href="profile.php"><i class="icon-github"></i> 资料</a></li>
-          <li><a href="control.php"><i class="icon-cogs"></i> 设置</a></li>
+          <li><a href="control.php"><i class="icon-cog"></i> 设置</a></li>
 <?php   if(isset($_SESSION['administrator']))
           echo '<li class="divider"></li><li><a href="admin.php"><i class="icon-bolt"></i> 管理</a></li>'; 
 ?>
@@ -68,7 +68,7 @@
               <a class=\"btn {$button_class}\" href=\"mail.php\" id=\"nav_mail\"><i class=\"icon-envelope\"></i><strong class=\"notifier\"></strong></a>
               <a class=\"btn {$button_class}\" href=\"marked.php\"><i class=\"icon-star\"></i></a>
               <a class=\"btn {$button_class}\" href=\"profile.php\"><i class=\"icon-github\"></i></a>
-              <a class=\"btn {$button_class}\" href=\"control.php\"><i class=\"icon-cogs\"></i></a>";?>
+              <a class=\"btn {$button_class}\" href=\"control.php\"><i class=\"icon-cog\"></i></a>";?>
 		      <?php if(isset($_SESSION['administrator']))
               echo "<a class=\"btn {$button_class}\" href=\"admin.php\"><i class=\"icon-bolt\"></i></a>&nbsp;";
 		      echo "<a class=\"btn {$button_class}\" id=\"logoff_btn1\" href=\"#\"><i class=\"icon-signout\"></i></a>";

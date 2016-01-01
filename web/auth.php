@@ -3,8 +3,16 @@ require('inc/database.php');
 require('inc/ojsettings.php');
 ?>
 <!DOCTYPE html>
+<meta name="viewport" content="width=device-width, initial-scale=1" /> 
 <html>
-  <?php $Title=$Title='欢迎来到'.$oj_name;require('head.php');require('inc/database.php'); ?>
+  <?php 
+  require('head.php');
+  require('inc/database.php');
+  if($_COOKIE["SID"]){
+	  echo"<script language=\"javascript\">
+      window.location= \"index.php\";
+      </script>";};
+  $Title='欢迎来到'.$oj_name;?>
   <body>
     <div class="container-fluid">
       <div class="row-fluid">
@@ -112,13 +120,13 @@ require('inc/ojsettings.php');
               <div class="control-group" id="fuserid_ctl">
                 <label class="control-label">用户名</label>
                 <div class="controls">
-                  <input class="input-large" type="text" name="userid" id="finput_userid" placeholder="Coming Not Soon...">
+                  <input class="input-large" type="text" name="userid" id="finput_userid" placeholder="请输入用户名...">
                 </div>
               </div>
 			   <div class="control-group" id="femail_ctl">
                 <label class="control-label">邮箱</label>
                 <div class="controls">
-                  <input class="input-large" type="text" name="email" id="finput_email" placeholder="Coming Not Soon...">
+                  <input class="input-large" type="text" name="email" id="finput_email" placeholder="请输入邮箱...">
                 </div>
               </div>
               <div class="center">
@@ -151,7 +159,7 @@ require('inc/ojsettings.php');
     <script src="../assets/js/common.js"></script>
     <script type="text/javascript">
 	if(screen.width <= 640){
-      var formWidth = window.innerWidth * .80;
+      var formWidth = document.body.clientWidth * .75;
       document.querySelector("#loginpage form").parentNode.style.margin = "0px";
       document.querySelector("#loginpage form").setAttribute("style","width:" + formWidth + "px!important;margin-right:" + (screen.width - formWidth)/4 + "px!important;margin-left:" + (screen.width - formWidth)/4 + "px!important;");
 	  document.querySelector("#regpage form").parentNode.style.margin = "0px";
@@ -184,10 +192,6 @@ require('inc/ojsettings.php');
         $('#loginpage').show();
         return false;
       }
-	  function get_rand(begin, end) {
-		  return Math.floor(Math.random()*(end-begin))+begin;
-	  }
-	  
       $(document).ready(function() {
 		$('#pwd_nxt').click(function(){
 			var a=false;
@@ -203,11 +207,10 @@ require('inc/ojsettings.php');
             }else{
             $('#femail_ctl').removeClass('error');
             };
-			//if() //Verify E-mail matches or not
 			if(!a){
-				var pwd="<?php echo $emailpwd;?>";
-				var fuckzk = get_rand(10000000,99999999);
-		    	window.alert('相较CCF, 随机数我还是写的来的: '+fuckzk+'\n由于我php尚属于菜鸟级别，该功能不会很快到来...\n\n什么? 你真把密码搞忘了? 自己想办法联系我吧。');
+				var user = $.trim($('#finput_userid').val());
+				var email= $.trim($('#finput_email').val());
+				window.location= "resetpwd.php?user="+user+"&&email="+email;
 			};
 		});
 		

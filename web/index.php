@@ -20,7 +20,7 @@ $Title=$inTitle .' - '. $oj_name;
 <?php require('head.php');?>
   <body>
     <?php require('page_header.php');
-    if($pref->night=='on') echo '<audio autoplay="autoplay"><source src="/images/christmas_bgm.mp3"></audio>';?>  
+    if($holiday=='christmas') echo '<audio autoplay="autoplay"><source src="/images/christmas_bgm.mp3"></audio>';?>  
     <div class="container-fluid">
       <div class="row-fluid">
         <div class="span10 offset1">

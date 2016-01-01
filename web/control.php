@@ -63,6 +63,11 @@ $Title=$inTitle .' - '. $oj_name;
             </ol>
           </p>
           <button class="btn" id="open_source">开源所有代码</button>
+		  
+		  <h2>版本信息</h2>
+          <p>
+            <strong>CWOJ版本: <?php echo"{$oj_ver}";?></strong>
+          </p>
         </div>
       <?php }?>
       </div>
