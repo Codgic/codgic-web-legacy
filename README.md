@@ -13,8 +13,9 @@ Plus, we would like to thank those open source projects that we've been using as
 Compared with the original Bashu Online Judge, we have also done some improvements:<br>
 1. Fully translated into Chinese.<br>
 2. Optimizations for Mobile devices (including a new navagation bar and css modifications).<br>
-3. Auto night mode (still unfinished).<br>
+3. Auto night mode (Basically finished).<br>
 4. Minor improvements to enchance the whole experience.<br>
+5. Forget Password (Working...)
 
 # Notes
 You will be able to find the installation notes in the Wiki page in a month. Thanks for your support!
