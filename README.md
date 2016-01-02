@@ -15,7 +15,7 @@ Compared with the original Bashu Online Judge, we have also done some improvemen
 2. Optimizations for Mobile devices (including a new navagation bar and css modifications).<br>
 3. Auto night mode (Basically finished).<br>
 4. Minor improvements to enchance the whole experience.<br>
-5. Forget Password (Working...)
+5. Forget Password (Still Working on it...)
 
 # Notes
 You will be able to find the installation notes in the Wiki page in a month. Thanks for your support!
