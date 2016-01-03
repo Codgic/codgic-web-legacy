@@ -1,6 +1,6 @@
 <?php
 //Use global authorization
-define('REQUIRE_AUTH',1);
+define('REQUIRE_AUTH',0);
 
 define('DISALLOW_GOOGLEBOT',0);
 

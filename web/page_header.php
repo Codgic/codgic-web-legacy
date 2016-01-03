@@ -20,32 +20,28 @@
         <form class="navbar-search shortcut-hint" id="search_form" title="Alt+I" action="search.php" method="get">
           <input type="text" name="q" id="search_input" class="search-query input-medium" style="margin-bottom:0px;width:95px;margin-left:10px" autocomplete="off" placeholder="搜索...">
         </form>
-      <div class="btn-group pull-right">
-
-<?php if(isset($_SESSION['user'])){
-        echo "<a class=\"btn {$button_class} opdown-toggle\" data-toggle=\"dropdown\" style=\"margin-right:5px\" href=\"#\">"?>
-          <i class="icon-user"></i>&nbsp;
-          <?php
-          echo $_SESSION['user'],'<strong class="notifier"></strong>';
-          ?>
-          <span class="caret"></span>
-        </a>
-        <ul class="dropdown-menu" style="text-align:left;">
-          <li><a href="mail.php" id="nav_mail"><i class="icon-envelope"></i> 私信<?php echo '<strong class="notifier"></strong>'; ?></a></li>
+		<ul class="nav pull-right">
+		<?php if(isset($_SESSION['user'])){?>
+		  <li class="dropdown">
+		    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="icon-user"></i>
+			<?php echo $_SESSION['user']?>&nbsp;<b class="caret"></b><strong class="notifier"></strong></a>
+          <ul class="dropdown-menu" style="text-align:left;">
+          <li><a href="mail.php" id="nav_mail"><i class="icon-envelope"></i> 私信<?php echo '<strong class="notifier"></strong>'?></a></li>
           <li><a href="marked.php"><i class="icon-star"></i> 收藏</a></li>
           <li><a href="profile.php"><i class="icon-github"></i> 资料</a></li>
           <li><a href="control.php"><i class="icon-cog"></i> 设置</a></li>
-<?php   if(isset($_SESSION['administrator']))
-          echo '<li class="divider"></li><li><a href="admin.php"><i class="icon-bolt"></i> 管理</a></li>'; 
-?>
+		  <?php if(isset($_SESSION['administrator'])){?>
+          <li class="divider"></li><li><a href="admin.php"><i class="icon-bolt"></i> 管理</a></li>
+		  <?php }?>
           <li class="divider"></li>
           <li><a id='logoff_btn' href="#"><i class="icon-signout"></i> 注销</a></li>
         </ul>
-<?php }else{?>
-        <a id="login_btn" title="Alt+L" data-toggle="modal" href="#LoginModal" class="btn shortcut-hint">登录</a>
-        <a href="reg.php" class="btn">注册</a>
-<?php }?>
-      </div>
+		</li>
+		<?php }else{ ?>
+		<li><a id="login_btn" title="Alt+L" data-toggle="modal" href="#LoginModal">登录</a></li>
+        <li><a href="reg.php">注册</a></li>
+		<?php }?>
+		</ul>
     </div></center>
 	<div class="navbar navbar-inner visible-phone" style="text-align:center;padding:0;width:100%;position:fixed;z-index:3;top:0px;margin:0px">
         <div class="container-fluid navbar-padding-fix">
@@ -64,16 +60,16 @@
               <li><a style="color:#FFF" id="nav_rank" href="ranklist.php"><i class="icon-bookmark"></i> 排名</a></li>
               <li><a style="color:#FFF" id="nav_about" href="blog"><i class="icon-book"></i> 博客</a></li>
 			  <?php if(isset($_SESSION['user'])) {
-		      echo "<div style=\"color:#FFF\">&nbsp;&nbsp;<div class=\"btn {$button_class}\" style=\"outline:none\"><i class=\"icon-user\"></i> {$_SESSION['user']} </div>
+		      echo "<div style=\"color:#FFF\">&nbsp;&nbsp;<div class=\"btn {$button_class}\"><i class=\"icon-user\"></i> {$_SESSION['user']} </div>
               <a class=\"btn {$button_class}\" href=\"mail.php\" id=\"nav_mail\"><i class=\"icon-envelope\"></i><strong class=\"notifier\"></strong></a>
               <a class=\"btn {$button_class}\" href=\"marked.php\"><i class=\"icon-star\"></i></a>
               <a class=\"btn {$button_class}\" href=\"profile.php\"><i class=\"icon-github\"></i></a>
               <a class=\"btn {$button_class}\" href=\"control.php\"><i class=\"icon-cog\"></i></a>";?>
 		      <?php if(isset($_SESSION['administrator']))
-              echo "<a class=\"btn {$button_class}\" href=\"admin.php\"><i class=\"icon-bolt\"></i></a>&nbsp;";
+              echo "<a class=\"btn {$button_class}\" href=\"admin.php\"><i class=\"icon-bolt\"></i> </a>&nbsp;";
 		      echo "<a class=\"btn {$button_class}\" id=\"logoff_btn1\" href=\"#\"><i class=\"icon-signout\"></i></a>";
 		      }else{
-		      echo "<a class=\"btn {$button_class}\" id=\"login_btn1\" title=\"Alt+L\" data-toggle=\"modal\" href=\"#LoginModal\">登录</a>
+		      echo "&nbsp;&nbsp;<a class=\"btn {$button_class}\" id=\"login_btn1\" title=\"Alt+L\" data-toggle=\"modal\" href=\"#LoginModal\">登录</a>
               <a class=\"btn {$button_class}\" href=\"reg.php#\">注册</a>";}?>
               <li><form class="navbar-search pull-left shortcut-hint" id="search_form" title="Alt+I" action="search.php" method="get">
               <input type="text" name="q" id="search_input" class="search-query input-xlarge" style="margin-bottom:0px" autocomplete="off" placeholder="搜索...">

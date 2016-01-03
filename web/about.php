@@ -21,8 +21,7 @@ $Title=$inTitle .' - '. $oj_name;
              没想好就是没想好，还是别往下看了吧。</p>
           <p>本OJ基于几个神犇写的开源项目：Bashu OnlineJudge。</p>
           <p>&nbsp;</p>
-          <p>搭建人员：<p/>
-		  <p>jimmy19990： 网页前端，数据库，环境搭建与维护。<br>Void： 题库的建设与维护。</p>
+		  <p>CWOJ由jimmy19990二次开发。</p>
         </div>
       </div>
       <div class="row-fluid">
