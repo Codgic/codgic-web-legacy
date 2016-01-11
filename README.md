@@ -15,7 +15,7 @@ Compared with the original Bashu Online Judge, we have also done some improvemen
 - [X] Optimizations for Mobile devices (including a new navagation bar and css modifications).<br>
 - [X] Auto night mode (Basically finished).<br>
 - [X] Minor improvements to enchance the whole experience.<br>
-- [] Forget Password (Basically Finished. Testing...)<br>
+- [ ] Forget Password (Basically Finished. Testing...)<br>
 
 <b>Huge changes will hit CWOJ soon. We're adding some final touches to its Framework.</b>
 
