@@ -7,12 +7,12 @@ if(!isset($_GET['problem_id']))
 
 require('inc/database.php');
 $id=intval($_GET['problem_id']);
-$result=mysql_query("select defunct from problem where problem_id=$id");
-if($row=mysql_fetch_row($result)){
+$result=mysqli_query($con,"select defunct from problem where problem_id=$id");
+if($row=mysqli_fetch_row($result)){
 	if($row[0]=='N')
-		mysql_query("update problem set defunct='Y' where problem_id=$id");
+		mysqli_query($con,"update problem set defunct='Y' where problem_id=$id");
 	else
-		mysql_query("update problem set defunct='N' where problem_id=$id");
+		mysqli_query($con,"update problem set defunct='N' where problem_id=$id");
 	echo('OK');
 }
 ?>

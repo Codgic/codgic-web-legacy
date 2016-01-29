@@ -1,5 +1,4 @@
 <?php
-header('Content-Type: text/html; charset=utf-8');
 header('Cache-Control: max-age=155520000');
 if(!isset($_GET['message_id']))
 	die('Wrong argument.');
@@ -9,9 +8,9 @@ if(!$msg)
 
 require('inc/database.php');
 
-$res=mysql_query('select content from message where message_id='.$msg);
+$res=mysqli_query($con,'select content from message where message_id='.$msg);
 if($res){
-	$row=mysql_fetch_row($res);
+	$row=mysqli_fetch_row($res);
 	if($row)
 		echo htmlspecialchars($row[0]);
 }

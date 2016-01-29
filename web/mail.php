@@ -18,7 +18,7 @@ if(!isset($_SESSION['user']))
 else{
 	require('inc/database.php');
 	$user_id=$_SESSION['user'];
-	$result=mysql_query("select mail_id,title,from_user,new_mail,in_date,flags from mail where to_user='$user_id' and UPPER(defunct)='N' $cond_starred order by mail_id desc limit $page,20");
+	$result=mysqli_query($con,"select mail_id,title,from_user,new_mail,in_date,flags from mail where to_user='$user_id' and UPPER(defunct)='N' $cond_starred order by mail_id desc limit $page,20");
 }
 $inTitle='私信';
 $Title=$inTitle .' - '. $oj_name;
@@ -46,7 +46,7 @@ $Title=$inTitle .' - '. $oj_name;
 				<div class="span8 offset2" id="maillist">
 						<ul class="unstyled">
 						<?php
-						while($row=mysql_fetch_row($result)){
+						while($row=mysqli_fetch_row($result)){
 							echo '<li class="mail-item" ',($row[3] ? 'style="background-color: #FCF8E3;"' : ''),' id="mail',$row[0],'">';
 						?>
 								<div class="mail-container">

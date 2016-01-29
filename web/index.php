@@ -10,17 +10,18 @@ function encode_user_id($user)
 }
 require('inc/checklogin.php');
 require('inc/database.php');
-$res=mysql_query("select content from news where news_id=0");
-$index_text=($row=mysql_fetch_row($res)) ? $row[0] : '';
+$res=mysqli_query($con,"select content from news where news_id=0");
+$index_text=($row=mysqli_fetch_row($res)) ? $row[0] : '';
+$res=mysqli_query($con,"select title from news where news_id>0 order by news_id");
 $inTitle='主页';
 $Title=$inTitle .' - '. $oj_name;
+$num=0;
 ?>
 <!DOCTYPE html>
 <html>
 <?php require('head.php');?>
   <body>
-    <?php require('page_header.php');
-    if($holiday=='christmas') echo '<audio autoplay="autoplay"><source src="/images/christmas_bgm.mp3"></audio>';?>  
+    <?php require('page_header.php');?>  
     <div class="container-fluid">
       <div class="row-fluid">
         <div class="span10 offset1">
@@ -37,8 +38,28 @@ $Title=$inTitle .' - '. $oj_name;
           </div>
         </div>
       </div>
-      <div class="center">
-        <h1>题目分类目录</h1><br />
+	  <div class="row-fluid">
+	  <div class="span5 offset1">
+	    <p><h1>新闻 Alpha</h1></p>
+		<table border="0">
+              <thead>
+			  <tr>
+			    <th></th>
+              </tr>
+			  </thead>
+              <tbody id="newslist">
+                <?php 
+                while($row=mysqli_fetch_row($res)){
+					$num++;
+					echo '<tr><td><font size=3><p><a href="javascript:void(0);" onclick="click_news(',$num,')">',htmlspecialchars($row[0]),'</a></p></font></td>';
+					echo "\n";
+                }
+                ?>
+              </tbody>
+            </table>
+	  </div>
+      <div class="span6">
+        <p><h1>分类</h1></p>
 		<p><font size=3 >按算法分类:&nbsp;
 		<a href="search.php?q=%E5%9F%BA%E7%A1%80%E8%AF%AD%E6%B3%95">基础语法</a>&nbsp;&nbsp;&nbsp;
 		<a href="search.php?q=%E5%AD%97%E7%AC%A6%E4%B8%B2">字符串</a>&nbsp;&nbsp;&nbsp;
@@ -70,6 +91,7 @@ $Title=$inTitle .' - '. $oj_name;
 		<a href="search.php?q=USACO">USACO</a>&nbsp;&nbsp;&nbsp;
 		<a href="search.php?q=%E5%8E%9F%E5%88%9B">原创</a></font></p>
 	  </div>
+	  </div>
 	  <div class="row-fluid">
         <p></p>
       </div>
@@ -77,6 +99,22 @@ $Title=$inTitle .' - '. $oj_name;
       <footer>
         <p>&copy; <?php echo"{$year} {$copyright}";?></p>
       </footer>
+    </div>
+	<div class="modal fade hide" id="NewsModal" style="margin-top:100px">
+      <div class="modal-header">
+        <a class="close" data-dismiss="modal">&times;</a>
+        <h4><span class="hide" id="ajax_newstitle"></span></h4>
+      </div>
+      <form class="margin-0" action="#" method="post" id="news_content">
+        <div class="modal-body">
+	        <span class="hide" id="ajax_newscontent"></span>
+        </div>
+        <div class="modal-footer form-inline">
+          <div class="pull-left">
+          </div>
+          <a href="#" class="btn" data-dismiss="modal">关闭</a>
+        </div>
+      </form>
     </div>
 	<?php if($pref->night=='on') echo "<canvas id=\"canvas\" style=\"position:fixed;top:0;z-index:-999\"></canvas>";?>
     <script type="text/javascript">
@@ -91,6 +129,24 @@ $Title=$inTitle .' - '. $oj_name;
     <script src="../assets/js/common.js"></script>
     <script src="../assets/js/chat.js"></script>
     <script type="text/javascript"> 
+	  function click_news(newsid){
+		  if(newsid){
+            $.ajax({
+              type:"POST",
+              url:"ajax_getnews.php",
+              data:{"newsid":newsid},
+              success:function(msg){
+				  var arr=msg.split("Z9EWKWRFE324@EWRFTFFWE443R854QSFDSUERWE4EFRDN");
+				  var title=arr[0];
+				  var content=arr[1];
+				  if(!content) content='本条新闻内容为空...';
+				  $('#ajax_newstitle').html(title).show();
+				  $('#ajax_newscontent').html(content).show();
+                  $('#NewsModal').modal('show');
+                }
+              });
+            };
+        };
       $(document).ready(function(){
         $('#ret_url').val("index.php");
         var originColor = '#E3E3E3';

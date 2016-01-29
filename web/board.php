@@ -15,17 +15,17 @@ if(isset($_GET['problem_id'])){
 }
 require('inc/database.php');
 $subquery="select thread_id from message where thread_id<$query_id $cond_prob order by thread_id desc limit 50";
-$res=mysql_query("select min(thread_id) from ($subquery) as tmptab");
+$res=mysqli_query($con,"select min(thread_id) from ($subquery) as tmptab");
 if(!$res)
   die('Wrong Argument.');
-$row=mysql_fetch_row($res);
+$row=mysqli_fetch_row($res);
 $range=$row[0];
 
 function get_pre_link($top)
 {
   global $cond_prob;
-  $res=mysql_query("select max(thread_id) from (select thread_id from message where thread_id>=$top $cond_prob order by thread_id limit 50) as tmptab");
-  $row=mysql_fetch_row($res);
+  $res=mysqli_query($con,"select max(thread_id) from (select thread_id from message where thread_id>=$top $cond_prob order by thread_id limit 50) as tmptab");
+  $row=mysqli_fetch_row($res);
   if($row[0])
     $pre=$row[0]+1;
   else
@@ -99,11 +99,11 @@ $Title=$inTitle .' - '. $oj_name;
 		    echo"<a href=\"#\" title=\"Alt+N\" class=\"btn {$button_class} shortcut-hint\" id=\"new_msg\"><i class=\"icon-file\"></i> 新建讨论...</a>";
             $top=$query_id;
             if($range){
-              $res=mysql_query("select title,depth,user_id,message_id,in_date,thread_id,problem_id,ASCII(content) from message where thread_id<$query_id and thread_id>=$range $cond_prob order by thread_id desc,orderNum");
+              $res=mysqli_query($con,"select title,depth,user_id,message_id,in_date,thread_id,problem_id,ASCII(content) from message where thread_id<$query_id and thread_id>=$range $cond_prob order by thread_id desc,orderNum");
               $deep=-1;
               $top=0;
               $cnt=0;
-              while($row=mysql_fetch_row($res)){
+              while($row=mysqli_fetch_row($res)){
                 if($row[1]>$deep){
                   if($deep>-1)
                     echo '<ul class="unstyled msg_group">';
@@ -219,7 +219,7 @@ $Title=$inTitle .' - '. $oj_name;
           var title = ((msg_id=='0')?'新建讨论':'对于'+msg_id+'的回复');
           $('#msgid_input').val(msg_id);
           $('#replypanel h4').html(title);
-          $('#replypanel').show();
+          $('#replypanel').fadeIn(300);
           $('#msg_input').focus();
           <?php }else{echo 'alert("请先登录！");';}?>
           return false;
@@ -244,21 +244,21 @@ $Title=$inTitle .' - '. $oj_name;
         reg_hotkey(83,function(){$('#replypanel form').submit()}); //Alt+S
 
         $('#cancel_input').click(function(){
-          $('#replypanel').hide();
+          $('#replypanel').fadeOut(300);
           return false;
         });
         $('#replypanel').keyup(function(E){
-          E.which==27 && $('#replypanel').hide();
+          E.which==27 && $('#replypanel').fadeOut(300);
         });
         $('#post_preview').click(function(){
           var data=$('#detail_input').val();
           data=$('<div/>').text(data).html();
           dealwithlinks( $('#preview_content').html(parseBBCode(data)));
-          $('#PreviewPopover').show();
+          $('#PreviewPopover').fadeIn(300);
           MathJax.Hub.Queue(["Typeset",MathJax.Hub,('preview_content')]);
         });
         $('#PreviewPopover a.close').click(function(){
-          $('#PreviewPopover').hide();
+          $('#PreviewPopover').fadeOut(300);
         });
         function move_handle(E){
           var w=origX-E.clientX+origW;

@@ -3,18 +3,18 @@ if(!isset($_GET['user_id']))
 	die('Wrong argument.');
 
 require('inc/database.php');
-$user=mysql_real_escape_string($_GET['user_id']);
+$user=mysqli_real_escape_string($con,$_GET['user_id']);
 
 $query="select email,ip,accesstime,school,reg_time,submit,solved from users where user_id='$user'";
-$row=mysql_fetch_row(mysql_query($query));
+$row=mysqli_fetch_row(mysqli_query($con,$query));
 
 if(isset($_GET['type'])&&$_GET['type']=='json'){
 	if(!$row)
 		echo '{"nobody":0}';
 	else{
 		$failed=$solved="{";
-		$res=mysql_query("select problem_id,min(result) from solution where user_id='$user' group by problem_id");
-		while($row=mysql_fetch_row($res)){
+		$res=mysqli_query($con,"select problem_id,min(result) from solution where user_id='$user' group by problem_id");
+		while($row=mysqli_fetch_row($res)){
 			$id=$row[0];
 			if($row[1]==0)
 				$solved.="\"$id\":0,";
@@ -47,10 +47,10 @@ if(isset($_GET['type'])&&$_GET['type']=='json'){
 	<tr><td colspan="2">AC/提交量:</td><td><?php echo $row[6],'/',$row[5];?></td></tr>
 	<?php
 		$i=0;
-		$failed=mysql_query("select problem_id from solution where user_id='$user' group by problem_id having min(result)>0");
-		$number=mysql_num_rows($failed);
+		$failed=mysqli_query($con,"select problem_id from solution where user_id='$user' group by problem_id having min(result)>0");
+		$number=mysqli_num_rows($failed);
 		echo "<tr><td>做错的题目:<br>($number)</td><td colspan=\"2\"><samp>";
-		while($row=mysql_fetch_row($failed)){
+		while($row=mysqli_fetch_row($failed)){
 			echo '<a href="problempage.php?problem_id=',$row[0],'">',$row[0],'</a>&nbsp;';
 			if((++$i)==11){
 				echo '<br>';
@@ -59,10 +59,10 @@ if(isset($_GET['type'])&&$_GET['type']=='json'){
 		}
 		echo '</samp></td></tr>';
 		$i=0;
-		$solved=mysql_query("select problem_id from solution where result=0 and user_id='$user' group by problem_id");
-		$number=mysql_num_rows($solved);
+		$solved=mysqli_query($con,"select problem_id from solution where result=0 and user_id='$user' group by problem_id");
+		$number=mysqli_num_rows($solved);
 		echo "<tr><td>解决的题目:<br>($number)</td><td colspan=\"2\"><samp>";
-		while($row=mysql_fetch_row($solved)){
+		while($row=mysqli_fetch_row($solved)){
 			echo '<a href="problempage.php?problem_id=',$row[0],'">',$row[0],'</a>&nbsp;';
 			if((++$i)==11){
 				echo '<br>';

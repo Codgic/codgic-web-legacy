@@ -8,13 +8,13 @@ if(isset($_GET['start_id']))
 else
   $page_id=0;
 
-require('inc/database.php');
-$row=mysql_fetch_row(mysql_query('select count(*) from users'));
+require_once 'inc/database.php';
+$row=mysqli_fetch_row(mysqli_query($con,'select count(*) from users'));
 $total=($row[0]);
 if($page_id<0 || $page_id>=$total)
   die('Argument out of range.');
 $rank=$page_id;
-$result=mysql_query("SELECT user_id,nick,solved,submit,score,experience_titles.title FROM (SELECT user_id,nick,solved,submit,score,MAX(experience_titles.experience) AS m FROM (SELECT user_id,nick,solved,submit,score,experience from users order by score desc,experience desc,solved desc,submit desc limit $page_id,50)t,experience_titles where t.experience>=experience_titles.experience GROUP BY user_id)t1 LEFT JOIN experience_titles ON t1.m=experience_titles.experience order by score desc,experience desc,solved desc,submit desc");
+$result=mysqli_query($con,"SELECT user_id,nick,solved,submit,score,experience_titles.title FROM (SELECT user_id,nick,solved,submit,score,MAX(experience_titles.experience) AS m FROM (SELECT user_id,nick,solved,submit,score,experience from users order by score desc,experience desc,solved desc,submit desc limit $page_id,50)t,experience_titles where t.experience>=experience_titles.experience GROUP BY user_id)t1 LEFT JOIN experience_titles ON t1.m=experience_titles.experience order by score desc,experience desc,solved desc,submit desc");
 $inTitle='排名';
 $Title=$inTitle .' - '. $oj_name;
 ?>
@@ -51,7 +51,7 @@ $Title=$inTitle .' - '. $oj_name;
       </div>
       <div class="row-fluid">
         <div class="span12">
-            <table class="table table-responsive table-hover table-bordered " style="margin-bottom:0 margin-right:10px">
+            <table class="table table-responsive table-hover table-condensed table-bordered " style="margin-bottom:0 margin-right:10px">
               <thead><tr>
                 <th style="width:4%">No.</th>
                 <th style="width:15%">用户名</th>
@@ -64,7 +64,7 @@ $Title=$inTitle .' - '. $oj_name;
               </tr></thead>
               <tbody id="userlist">
                 <?php 
-                  while($row=mysql_fetch_row($result)){
+                  while($row=mysqli_fetch_row($result)){
                 echo '<tr><td>',(++$rank),'</td>';
                 echo '<td><a href="#linkU">',$row[0],'</a></td>';
                 echo '<td>',htmlspecialchars($row[1]),'</td>';
@@ -90,7 +90,7 @@ $Title=$inTitle .' - '. $oj_name;
           </li>
         </ul>
       </div>  
-      <div class="modal hide" id="UserModal">
+      <div class="modal  fade hide" id="UserModal">
         <div class="modal-header">
           <a class="close" data-dismiss="modal">×</a>
           <h4>用户信息</h4>

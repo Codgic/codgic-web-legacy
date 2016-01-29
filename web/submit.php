@@ -58,8 +58,8 @@ if(strlen($code)>29990)
 
 require('inc/database.php');
 
-$res=mysql_query("select case_time_limit,memory_limit,case_score,compare_way,defunct,has_tex from problem where problem_id=$prob");
-if(!($row=mysql_fetch_row($res)))
+$res=mysqli_query($con,"select case_time_limit,memory_limit,case_score,compare_way,defunct,has_tex from problem where problem_id=$prob");
+if(!($row=mysqli_fetch_row($res)))
 	die('No such problem');
 
 require('inc/problem_flags.php');
@@ -72,8 +72,8 @@ if($forbidden)
 	die('You don\'t have permissions to access this problem');
 
 $_SESSION['lang']=$lang;
-mysql_query("update users set language=$lang where user_id='".$_SESSION['user']."'");
-mysql_query("update problem set in_date=NOW() where problem_id=$prob");
+mysqli_query($con,"update users set language=$lang where user_id='".$_SESSION['user']."'");
+mysqli_query($con,"update problem set in_date=NOW() where problem_id=$prob");
 
 $key=md5('key'.time().rand());
 $share_code=(isset($_POST['public']) ? 1 : 0);

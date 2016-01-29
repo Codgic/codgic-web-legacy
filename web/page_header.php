@@ -4,11 +4,11 @@
 <div class="navbar" id="navbar_pseude">
   <div class="navbar-inner" style="padding:0"></div>
 </div>
-<?php echo "<div class=\"navbar navbar-fixed-top {$nav_class}\" id=\"navbar_top\">";?>
+<center><?php echo "<div class=\"navbar navbar-fixed-top {$nav_class}\" id=\"navbar_top\" style=\"text-align:center\">";?>
 <div class="navbar navbar-inner" style="padding:0;text-align:center">
-    <div class="navbar navbar-inner visible-tablet" style="padding:0;width:100%;position:fixed;z-index:3;top:0px;left:0px;margin:0 auto;"></div>
-      <center><div class="container-fluid navbar-padding-fix hidden-phone" style="width:97%;position:fixed;z-index:3">
-      <a class="brand" href="index.php"><i class="icon-home"></i><span class="navbar-hide-text"> CWOJ</span></a>
+    <div class="navbar navbar-inner" style="padding:0;width:100%;position:fixed;z-index:3;top:0px;left:0px;margin:0 auto"></div>
+      <div class="container-fluid navbar-padding-fix hidden-phone" style="width:100%;position:fixed;z-index:3;top:0px;left:0px;margin:0 auto">
+      <a class="brand" href="index.php"><i class="icon-home"></i><span> CWOJ</span></a>
         <ul class="nav">
           <li><a id="nav_bbs" class="shortcut-hint" title="Alt+B" href="board.php"><i class="icon-comment"></i><span class="navbar-hide-text"> 讨论</span></a></li>
           <li><a id="nav_set" href="problemset.php"><i class="icon-tasks"></i><span class="navbar-hide-text"> 题库</span></a></li>
@@ -20,12 +20,12 @@
         <form class="navbar-search shortcut-hint" id="search_form" title="Alt+I" action="search.php" method="get">
           <input type="text" name="q" id="search_input" class="search-query input-medium" style="margin-bottom:0px;width:95px;margin-left:10px" autocomplete="off" placeholder="搜索...">
         </form>
-		<ul class="nav pull-right">
+		<ul class="nav pull-right" style="margin-right:30px">
 		<?php if(isset($_SESSION['user'])){?>
 		  <li class="dropdown">
 		    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="icon-user"></i>
 			<?php echo $_SESSION['user']?>&nbsp;<b class="caret"></b><strong class="notifier"></strong></a>
-          <ul class="dropdown-menu" style="text-align:left;">
+          <ul class="dropdown-menu" style="text-align:left">
           <li><a href="mail.php" id="nav_mail"><i class="icon-envelope"></i> 私信<?php echo '<strong class="notifier"></strong>'?></a></li>
           <li><a href="marked.php"><i class="icon-star"></i> 收藏</a></li>
           <li><a href="profile.php"><i class="icon-github"></i> 资料</a></li>
@@ -42,7 +42,7 @@
         <li><a href="reg.php">注册</a></li>
 		<?php }?>
 		</ul>
-    </div></center>
+    </div>
 	<div class="navbar navbar-inner visible-phone" style="text-align:center;padding:0;width:100%;position:fixed;z-index:3;top:0px;margin:0px">
         <div class="container-fluid navbar-padding-fix">
 		<?php echo"<a class=\"btn {$button_class} visible-phone pull-left\" href=\"javascript:history.back(-1);\" style=\"margin-left:10px\">";?>
@@ -58,30 +58,30 @@
               <li><a style="color:#FFF" id="nav_prob" class="shortcut-hint" title="Alt+P" href="problempage.php"><i class="icon-edit"></i> 题目</a></li>
               <li><a style="color:#FFF" id="nav_record" class="shortcut-hint" title="Alt+R" href="record.php"><i class="icon-hdd"></i> 记录</a></li>
               <li><a style="color:#FFF" id="nav_rank" href="ranklist.php"><i class="icon-bookmark"></i> 排名</a></li>
-              <li><a style="color:#FFF" id="nav_about" href="blog"><i class="icon-book"></i> 博客</a></li>
+              <li><a style="color:#FFF" id="nav_about" href="about.php"><i class="icon-book"></i> 关于</a></li>
 			  <?php if(isset($_SESSION['user'])) {
 		      echo "<div style=\"color:#FFF\">&nbsp;&nbsp;<div class=\"btn {$button_class}\"><i class=\"icon-user\"></i> {$_SESSION['user']} </div>
-              <a class=\"btn {$button_class}\" href=\"mail.php\" id=\"nav_mail\"><i class=\"icon-envelope\"></i><strong class=\"notifier\"></strong></a>
+			  <a class=\"btn {$button_class}\" href=\"mail.php\" id=\"nav_mail\"><i class=\"icon-envelope\"></i><strong class=\"notifier\"></strong></a>
               <a class=\"btn {$button_class}\" href=\"marked.php\"><i class=\"icon-star\"></i></a>
               <a class=\"btn {$button_class}\" href=\"profile.php\"><i class=\"icon-github\"></i></a>
               <a class=\"btn {$button_class}\" href=\"control.php\"><i class=\"icon-cog\"></i></a>";?>
 		      <?php if(isset($_SESSION['administrator']))
-              echo "<a class=\"btn {$button_class}\" href=\"admin.php\"><i class=\"icon-bolt\"></i> </a>&nbsp;";
-		      echo "<a class=\"btn {$button_class}\" id=\"logoff_btn1\" href=\"#\"><i class=\"icon-signout\"></i></a>";
-		      }else{
+              echo "<a class=\"btn {$button_class}\" href=\"admin.php\"><i class=\"icon-bolt\"></i> </a>&nbsp;
+			  <a class=\"btn {$button_class}\" id=\"logoff_btn1\" href=\"#\"><i class=\"icon-signout\"></i></a>";
+		      }else{  
 		      echo "&nbsp;&nbsp;<a class=\"btn {$button_class}\" id=\"login_btn1\" title=\"Alt+L\" data-toggle=\"modal\" href=\"#LoginModal\">登录</a>
-              <a class=\"btn {$button_class}\" href=\"reg.php#\">注册</a>";}?>
+              <a class=\"btn {$button_class}\" href=\"reg.php#\">注册</a>";}?></div>
               <li><form class="navbar-search pull-left shortcut-hint" id="search_form" title="Alt+I" action="search.php" method="get">
               <input type="text" name="q" id="search_input" class="search-query input-xlarge" style="margin-bottom:0px" autocomplete="off" placeholder="搜索...">
               </form></li>
-			 </div>
 			</ul>
-          </div><!--/.nav-collapse -->
+		  </div>
+          </div>
         </div>
       </div>
 	 </div>
-</div>
-<div class="modal hide" id="LoginModal">
+</center>
+<div class="modal fade hide" id="LoginModal">
   <form id="form_login" style="margin:0px" action="login.php" method="post">
     <div class="modal-header">
       <a class="close" data-dismiss="modal">×</a>

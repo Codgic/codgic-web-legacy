@@ -2,10 +2,11 @@
 require 'inc/ojsettings.php';
 function check_problemid(&$str)
 {
+  require_once 'inc/database.php';
   if(preg_match('/\D/',$str))
     return;
   $num=intval($str);
-  if(mysql_num_rows(mysql_query('select problem_id from problem where problem_id='.$num))){
+  if(mysqli_num_rows(mysqli_query($con,'select problem_id from problem where problem_id='.$num))){
     header('location: problempage.php?problem_id='.$num);
     exit();
   }
@@ -24,22 +25,22 @@ if(strlen($req)>600)
 require('inc/checklogin.php');
 require('inc/database.php');
 check_problemid($req);
-$keyword=mysql_real_escape_string(trim($req));
+$keyword=mysqli_real_escape_string($con,trim($req));
 if(isset($_SESSION['user'])){
   $user_id=$_SESSION['user'];
-  $result=mysql_query("SELECT problem_id,title,source,res,tags from
+  $result=mysqli_query($con,"SELECT problem_id,title,source,res,tags from
     (select problem.problem_id,title,source,tags from problem left join user_notes on (user_id='$user_id' and user_notes.problem_id=problem.problem_id)  )pt
     LEFT JOIN (select problem_id as pid,MIN(result) as res from solution where user_id='$user_id' and problem_id group by problem_id) as temp on(pid=problem_id)
     where title like '%$keyword%' or source like '%$keyword%' or tags like '%$keyword%'
     order by problem_id limit $page_id,100");
 }else{
-  $result=mysql_query("SELECT problem_id,title,source from
+  $result=mysqli_query($con,"SELECT problem_id,title,source from
     problem
     where title like '%$keyword%' or source like '%$keyword%'
     order by problem_id limit $page_id,100");
 }
-if(mysql_num_rows($result)==1){
-  $row=mysql_fetch_row($result);
+if(mysqli_num_rows($result)==1){
+  $row=mysqli_fetch_row($result);
   header('location: problempage.php?problem_id='.$row[0]);
   exit();
 }
@@ -75,7 +76,7 @@ $Title=$inTitle .' - '. $oj_name;
               </tr></thead>
               <tbody>
                 <?php 
-                  while($row=mysql_fetch_row($result)){
+                  while($row=mysqli_fetch_row($result)){
                 echo '<tr>';
                 echo '<td>',$row[0],'</td>';
                 if(isset($_SESSION['user'])){

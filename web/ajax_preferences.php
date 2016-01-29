@@ -16,7 +16,7 @@ function processOption($name)
 		$tmp='off';
 	}
 	$pref->$name=$tmp;
-	mysql_query("insert into preferences(user_id,property,value) values ('$user','$name','$tmp') ON DUPLICATE KEY UPDATE value='$tmp'");
+	mysqli_query($con,"insert into preferences(user_id,property,value) values ('$user','$name','$tmp') ON DUPLICATE KEY UPDATE value='$tmp'");
 
 }
 

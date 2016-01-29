@@ -11,8 +11,8 @@ if(strlen($req)>600)
   die('Keyword is too long');
 require('inc/checklogin.php');
 require('inc/database.php');
-$keyword=mysql_real_escape_string(trim($req));
-$result=mysql_query("select user_id,nick,solved,submit from users where user_id like '%$keyword%' or nick like '%$keyword%' order by solved desc limit $page_id,100");
+$keyword=mysqli_real_escape_string(trim($con,$req));
+$result=mysqli_query($con,"select user_id,nick,solved,submit from users where user_id like '%$keyword%' or nick like '%$keyword%' order by solved desc limit $page_id,100");
 $inTitle='搜索结果';
 $Title=$inTitle .' - '. $oj_name;
 ?>
@@ -41,7 +41,7 @@ $Title=$inTitle .' - '. $oj_name;
 
               <tbody id="userlist">
                 <?php 
-                  while($row=mysql_fetch_row($result)){
+                  while($row=mysqli_fetch_row($result)){
                 echo '<tr>';
                 echo '<td><a href="#linkU">',$row[0],'</a></td>';
                 echo '<td>',htmlspecialchars($row[1]),'</td>';

@@ -14,8 +14,8 @@ else
 require('inc/database.php');
 
 $query="select title,description,input,output,sample_input,sample_output,hint,source,case_time_limit,memory_limit,case_score,defunct,has_tex,compare_way from problem where problem_id=$prob_id";
-$result=mysql_query($query);
-$row=mysql_fetch_row($result);
+$result=mysqli_query($con,$query);
+$row=mysqli_fetch_row($result);
 if(!$row)
   die('Wrong Problem ID.');
 switch ($row[13] >> 16) {
@@ -43,11 +43,11 @@ else{
 
   if(isset($_SESSION['user'])){
     $query='select min(result) from solution where user_id=\''.$_SESSION['user']."' and problem_id=$prob_id group by problem_id";
-    $user_status=mysql_query($query);
-    if(mysql_num_rows($user_status)==0)
+    $user_status=mysqli_query($con,$query);
+    if(mysqli_num_rows($user_status)==0)
       $info = '<tr><td colspan="2" class="center muted" >你还没提交过哦</td></tr>';
     else{
-      $statis=mysql_fetch_row($user_status);
+      $statis=mysqli_fetch_row($user_status);
       if($statis[0]==0){
         $info = '<tr><td colspan="2" class="gradient-green center"><i class="icon-ok icon-white"></i> 恭喜AC !</td></tr>';
       }else{
@@ -55,8 +55,8 @@ else{
       }
     }
     $current_user=$_SESSION['user'];
-    $result=mysql_query("SELECT problem_id FROM saved_problem where user_id='$current_user' and problem_id=$prob_id");
-    $mark_flag=mysql_fetch_row($result);
+    $result=mysqli_query($con,"SELECT problem_id FROM saved_problem where user_id='$current_user' and problem_id=$prob_id");
+    $mark_flag=mysqli_fetch_row($result);
     if(!($mark_flag)){
         $mark_icon_class='icon-star-empty';
         $mark_btn_class='btn btn-default btn-block';
@@ -66,8 +66,8 @@ else{
         $mark_btn_class='btn btn-danger btn-block';
         $mark_btn_html='取消收藏';
     }
-    $result=mysql_query("SELECT content,tags FROM user_notes where user_id='$current_user' and problem_id=$prob_id");
-    $note_row=mysql_fetch_row($result);
+    $result=mysqli_query($con,"SELECT content,tags FROM user_notes where user_id='$current_user' and problem_id=$prob_id");
+    $note_row=mysqli_fetch_row($result);
     if(!$note_row){
       $note_content = '';
       $tags = '';
@@ -81,16 +81,16 @@ else{
   }else{
     $info = '<tr><td colspan="2" class="center muted" >然而你并没有登录。</td></tr>';
   } 
-  $result=mysql_query("select submit_user,solved,submit from problem where problem_id=$prob_id");
-  $statis=mysql_fetch_row($result);
+  $result=mysqli_query($con,"select submit_user,solved,submit from problem where problem_id=$prob_id");
+  $statis=mysqli_fetch_row($result);
   $submit_user=$statis[0];
   $solved_user=$statis[1];
   $total_submit=$statis[2];
   $prob_level=($row[12]&PROB_LEVEL_MASK)>>PROB_LEVEL_SHIFT;
 
-  $result=mysql_query("select result,count(*) as sum from solution where problem_id=$prob_id group by result");
+  $result=mysqli_query($con,"select result,count(*) as sum from solution where problem_id=$prob_id group by result");
   $arr=array();
-  while($statis=mysql_fetch_row($result))
+  while($statis=mysqli_fetch_row($result))
     $arr[$statis[0]]=$statis[1];
   ksort($arr);  
 }
@@ -268,15 +268,15 @@ $Title=$inTitle .' - '. $oj_name;
 
     </div>
 
-    <div class="modal hide" id="SubmitModal">
+    <div class="modal fade hide" id="SubmitModal" content="width:device-width">
       <div class="modal-header">
         <a class="close" data-dismiss="modal">&times;</a>
         <h4>代码提交</h4>
       </div>
       <form class="margin-0" action="submit.php" method="post" id="form_submit">
+	    <p></p>
         <div class="modal-body" style="padding-top:5px">
-          <h5 class="center">请在这里粘贴你的代码:</h5>
-          <textarea style="width: 750px;" id="detail_input" rows="16" name="source"></textarea>
+		  <textarea style="box-sizing: border-box;width:100%;resize:none" id="detail_input" rows="16" name="source" placeholder="在这里敲出你的代码..."></textarea>
           <div class="alert alert-error hide margin-0" id="submit_result"></div>
         </div>
         <div class="modal-footer form-inline">
@@ -284,8 +284,8 @@ $Title=$inTitle .' - '. $oj_name;
               <label class="control-label" for="prob_input">题目</label>
               <input type="text" class="input-mini" style="font-weight: bold;margin-bottom: 0;" id="prob_input" name="problem">
           </div>
-          <label class="checkbox">
-            <input type="checkbox" <?php if($pref->sharecode=='on')echo 'checked';?> name="public">公开源码
+          <label class="checkbox" style="margin-right:3px">
+            <input type="checkbox" <?php if($pref->sharecode=='on')echo 'checked';?> name="public"> 公开源码  
           </label>
           <select name="language" id="slt_lang">
             <?php foreach ($LANG_NAME as $langid => $lang) {
@@ -298,16 +298,17 @@ $Title=$inTitle .' - '. $oj_name;
           <button class="btn btn-primary shortcut-hint" title="Alt+S" type="submit">提交</button>
           <a href="#" class="btn" data-dismiss="modal">关闭</a>
         </div>
+		<div class="hidden-phone" style="width:750px"></div>
       </form>
     </div>
-    <div class="modal hide" id="NoteModal">
+    <div class="modal fade hide" id="NoteModal">
       <div class="modal-header">
         <a class="close" data-dismiss="modal">&times;</a>
         <h4>笔记 - <?php echo $prob_id?></h4>
       </div>
       <form class="margin-0" action="#" method="post" id="form_note">
         <div class="modal-body">
-          <textarea style="box-sizing: border-box;width: 100%;" rows="14" placeholder="在这里写点什么吧..." name="content"></textarea>
+          <textarea style="box-sizing: border-box;width: 100%;resize:none" rows="14" placeholder="在这里写点什么吧..." name="content"></textarea>
           <span class="help-block">这份笔记只能被你看见。</span>
           <input type="hidden" name="problem_id" value="<?php echo $prob_id?>">
         </div>
@@ -416,7 +417,7 @@ $Title=$inTitle .' - '. $oj_name;
         });
         function click_submit(){
           <?php if(!isset($_SESSION['user'])){?>
-            alert("You haven't logged in.");
+            alert("请先登录CWOJ...");
           <?php }else{?>
             $('#prob_input').val(''+prob);
             $('#SubmitModal').modal('show');
@@ -428,14 +429,14 @@ $Title=$inTitle .' - '. $oj_name;
         $('#btn_submit2').click(click_submit);
         function toggle_info(){
           if(hide_info) {
-            $('#leftside').addClass('span9').removeClass('span12');
-            $('#rightside').show();
-            $('#show_tool').hide();
+			$('#leftside').addClass('span9').removeClass('span12');
+            $('#rightside').fadeIn(300);
+            $('#show_tool').fadeOut(300);
             hide_info=0;
           }else {
-            $('#rightside').hide();
-            $('#leftside').addClass('span12').removeClass('span9');
-            $('#show_tool').show();
+            $('#rightside').fadeOut(300);
+            $('#show_tool').fadeIn(300);
+			setTimeout("$('#leftside').addClass('span12').removeClass('span9')", 300);
             hide_info=1;
           }
         }

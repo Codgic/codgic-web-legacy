@@ -7,7 +7,7 @@ if(!isset($_SESSION['user']))
 else{
 	require('inc/database.php');
 	$user_id=$_SESSION['user'];
-	$result=mysql_query("SELECT saved_problem.problem_id,title,savetime,problem_flag_to_level(has_tex) from saved_problem inner join problem using (problem_id) where user_id='$user_id' order by savetime desc");
+	$result=mysqli_query($con,"SELECT saved_problem.problem_id,title,savetime,problem_flag_to_level(has_tex) from saved_problem inner join problem using (problem_id) where user_id='$user_id' order by savetime desc");
 }
 $inTitle='收藏';
 $Title=$inTitle .' - '. $oj_name;
@@ -36,7 +36,7 @@ $Title=$inTitle .' - '. $oj_name;
 						</tr></thead>
 						<tbody id="marked_list">
 						<?php
-						while($row=mysql_fetch_row($result)){
+						while($row=mysqli_fetch_row($result)){
 						?>
 							<tr>
 								<td><?php echo $row[0] ?></td>

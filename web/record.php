@@ -32,7 +32,7 @@ if($problem_id)
 if(isset($_GET['user_id'])){
   $user_id=trim($_GET['user_id']);
   if(strlen($user_id))
-    $cond.=' and user_id=\''.mysql_real_escape_string($user_id).'\'';
+    $cond.=' and user_id=\''.mysqli_real_escape_string($con,$user_id).'\'';
 }
 if($result==-1 && isset($_GET['result'])){
   $result=intval($_GET['result']);
@@ -65,7 +65,7 @@ else
   $sql.=" order by solution_id desc";
 
 if(!$rank_mode){
-  $res=mysql_query("select solution_id,problem_id,user_id,result,score,time,memory,code_length,language,in_date,public_code from solution $sql limit 20");
+  $res=mysqli_query($con,"select solution_id,problem_id,user_id,result,score,time,memory,code_length,language,in_date,public_code from solution $sql limit 20");
 }else{
   if(isset($_GET['start_id'])){
     $start_id=intval($_GET['start_id']);
@@ -73,14 +73,14 @@ if(!$rank_mode){
       $start_id=0;
   }else
     $start_id=0;
-  $res=mysql_query("select solution_id,problem_id,user_id,result,score,time,memory,code_length,language,in_date,public_code from solution $sql limit $start_id,20");
+  $res=mysqli_query($con,"select solution_id,problem_id,user_id,result,score,time,memory,code_length,language,in_date,public_code from solution $sql limit $start_id,20");
 }
 if($problem_id==0)
   $problem_id="";
 
 $max_solution=0;
 $min_solution=2100000000;
-$num=mysql_num_rows($res);
+$num=mysqli_num_rows($res);
 
 function get_next_link()
 {
@@ -105,14 +105,14 @@ function get_pre_link()
   }else{
     global $filter;
     $sql="select solution_id from solution where solution_id>$max_solution $filter order by solution_id limit 20";
-    $res=mysql_query($sql);
-    $num=mysql_num_rows($res);
+    $res=mysqli_query($con,$sql);
+    $num=mysqli_num_rows($res);
     if($num==0)
       $arr['solution_id']=$max_solution;
     else{
       while(--$num)
-        mysql_fetch_row($res);
-      $row=mysql_fetch_row($res);
+        mysqli_fetch_row($res);
+      $row=mysqli_fetch_row($res);
       $arr['solution_id']=$row[0];
     }
   }
@@ -167,7 +167,7 @@ $Title=$inTitle .' - '. $oj_name;
       <div class="row-fluid">
         <div class="span12">
 
-            <table class=" table table-responsive table-hover table-bordered">
+            <table class=" table table-responsive table-hover table-condensed table-bordered">
               <thead><tr>
                 <th style="width:6%">ID</th>
                 <th style="width:7%">题目</th>
@@ -182,7 +182,7 @@ $Title=$inTitle .' - '. $oj_name;
               </tr></thead>
               <tbody id="tab_record">
               <?php
-                while($row=mysql_fetch_row($res)){
+                while($row=mysqli_fetch_row($res)){
                   if($row[0]<$min_solution)
                     $min_solution=$row[0];
                   if($row[0]>$max_solution)
@@ -220,7 +220,7 @@ $Title=$inTitle .' - '. $oj_name;
         </ul>
       </div>
        
-      <div class="modal hide" id="UserModal">
+      <div class="modal fade hide" id="UserModal">
         <div class="modal-header">
           <a class="close" data-dismiss="modal">×</a>
           <h4>用户信息</h4>

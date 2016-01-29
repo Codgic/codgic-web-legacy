@@ -14,8 +14,8 @@ if(!isset($_SESSION['user'],$_SESSION['administrator'])) {
   require('inc/database.php');
 
   $query="select title,description,input,output,sample_input,sample_output,hint,source,case_time_limit,memory_limit,case_score,compare_way,has_tex from problem where problem_id=$prob_id";
-  $result=mysql_query($query);
-  $row=mysql_fetch_row($result);
+  $result=mysqli_query($con,$query);
+  $row=mysqli_fetch_row($result);
   if(!$row)
     $info = '该问题不存在！';
   else { 

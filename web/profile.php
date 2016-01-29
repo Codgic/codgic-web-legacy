@@ -5,10 +5,10 @@ require('inc/checklogin.php');
 if(!isset($_SESSION['user'])){
   $info='<div style="text-align: center">然而你并没有登录。</div>';
 }else{
-  require('inc/database.php');
+  require_once 'inc/database.php';
   $user_id=$_SESSION['user'];
-  $result=mysql_query('select email,nick,school from users where user_id=\''.$user_id."'");
-  $row=mysql_fetch_row($result);
+  $result=mysqli_query($con,'select email,nick,school from users where user_id=\''.$user_id."'");
+  $row=mysqli_fetch_row($result);
 }
 $inTitle='资料';
 $Title=$inTitle .' - '. $oj_name;

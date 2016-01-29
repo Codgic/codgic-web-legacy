@@ -1,5 +1,4 @@
 <?php
-header("Content-type:text/html;charset=utf-8");  
 if(!isset($_POST['type'],$_POST['nick'],$_POST['email'],$_POST['school']))
 	die('Invalid argument.');
 if(strlen($_POST['nick'])>190)
@@ -20,21 +19,21 @@ if($_POST['type']=='profile'){
     if(!password_right($user, $_POST['oldpwd']))
 		die('旧密码不正确');
 	
-	$query='update users set email=\''.mysql_real_escape_string($_POST['email']).'\',school=\''.mysql_real_escape_string($_POST['school']).'\',nick=\''.mysql_real_escape_string($_POST['nick']).'\'';
+	$query='update users set email=\''.mysqli_real_escape_string($con,$_POST['email']).'\',school=\''.mysqli_real_escape_string($con,$_POST['school']).'\',nick=\''.mysqli_real_escape_string($con,$_POST['nick']).'\'';
 	if(isset($_POST['newpwd']) && $_POST['newpwd']!=''){
 		$len=strlen($_POST['newpwd']);
 		if($len<6||$len>50)
 			die('密码不符合要求(至少6位)');
-		$query.=',password=\''.mysql_real_escape_string(my_rsa($_POST['newpwd'])).'\'';
+		$query.=',password=\''.mysqli_real_escape_string($con,my_rsa($_POST['newpwd'])).'\'';
 	}
 	$query.=" where user_id='$user'";
-	mysql_query($query);
+	mysqli_query($con,$query);
 	echo "用户信息更新成功";
 }else if($_POST['type']=='reg'){
 	if(!isset($_POST['userid'],$_POST['newpwd']))
 		die('Invalid argument.');
 	require('inc/database.php');
-	$user=mysql_real_escape_string(trim($_POST['userid']));
+	$user=mysqli_real_escape_string($con,trim($_POST['userid']));
 	$len=strlen($user);
 	if($len==0)
 		die('用户名不可为空');
@@ -46,10 +45,10 @@ if($_POST['type']=='profile'){
 	$len=strlen($_POST['newpwd']);
 	if($len<6||$len>50)
 		die('密码不符合要求(至少6位)');
-	$pwd=mysql_real_escape_string($_POST['newpwd']);
+	$pwd=mysqli_real_escape_string($con,$_POST['newpwd']);
 
-	mysql_query("insert into users (user_id,email,password,reg_time,nick,school,defunct) values ('$user','".mysql_real_escape_string($_POST['email'])."','$pwd',NOW(),'".mysql_real_escape_string($_POST['nick'])."','".mysql_real_escape_string($_POST['school'])."','Y')");
-	$code=mysql_errno();
+	mysqli_query($con,"insert into users (user_id,email,password,reg_time,nick,school,defunct) values ('$user','".mysqli_real_escape_string($con,$_POST['email'])."','$pwd',NOW(),'".mysqli_real_escape_string($con,$_POST['nick'])."','".mysqli_real_escape_string($con,$_POST['school'])."','Y')");
+	$code=mysqli_errno();
 	if($code==0)
 		echo '成功创建用户';
 	else if($code==1062)

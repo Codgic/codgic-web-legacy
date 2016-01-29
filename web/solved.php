@@ -6,9 +6,9 @@ header('Content-Type: text/html; charset=utf-8');
 require('inc/database.php');
 $cond='';
 if(isset($_GET['q']) && strlen($search=trim($_GET['q'])))
-  $cond='and user_id=\''.mysql_real_escape_string($search).'\'';
+  $cond='and user_id=\''.mysqli_real_escape_string($con,$search).'\'';
 
-$result=mysql_query("select solution_id,user_id,solution.problem_id,score,solution.in_date,title from solution LEFT JOIN problem USING(problem_id) where valid=1 $cond order by solution_id desc limit 100");
+$result=mysqli_query($con,"select solution_id,user_id,solution.problem_id,score,solution.in_date,title from solution LEFT JOIN problem USING(problem_id) where valid=1 $cond order by solution_id desc limit 100");
 $inTitle='AC记录';
 $Title=$inTitle .' - '. $oj_name;
 ?>
@@ -41,7 +41,7 @@ $Title=$inTitle .' - '. $oj_name;
               </tr></thead>
               <tbody id="userlist">
                 <?php 
-                  while($row=mysql_fetch_row($result)){
+                  while($row=mysqli_fetch_row($result)){
                     echo '<tr><td><a href="record.php?solution_id=',$row[0],'">',$row[0],'</a></td>';
                     echo '<td><a href="#linkU">',$row[1],'</a></td>';
                     echo '<td style="text-align:left"><a href="problempage.php?problem_id=',$row[2],'">',$row[2],' -- ',$row[5],'</a></td>';
@@ -54,7 +54,7 @@ $Title=$inTitle .' - '. $oj_name;
             </table>
         </div>  
       </div>
-      <div class="modal hide" id="UserModal">
+      <div class="modal fade hide" id="UserModal">
         <div class="modal-header">
           <a class="close" data-dismiss="modal">×</a>
           <h4>用户信息</h4>

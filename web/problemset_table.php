@@ -1,4 +1,4 @@
-<table class="table table-striped table-bordered table-condensed" id="problemset_table">
+<table class="table table-responsive table-striped table-bordered table-condensed" id="problemset_table">
   <thead><tr>
     <th style="width:6%">ID</th>
     <?php 
@@ -13,7 +13,7 @@
   </tr></thead>
   <tbody>
     <?php 
-      while($row=mysql_fetch_row($result)){
+      while($row=mysqli_fetch_row($result)){
         echo '<tr>';
         echo '<td>',$row[0],'</td>';
         if(isset($_SESSION['user'])){

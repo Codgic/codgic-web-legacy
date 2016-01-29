@@ -16,8 +16,8 @@ if(!isset($_SESSION['admin_tfa']) || !$_SESSION['admin_tfa']){
 
 require('inc/database.php');
 
-$result=mysql_query("select title from problem where problem_id=$prob_id");
-$row=mysql_fetch_row($result);
+$result=mysqli_query($con,"select title from problem where problem_id=$prob_id");
+$row=mysqli_fetch_row($result);
 if(!$row)
   die('No such problem.');
 

@@ -11,8 +11,8 @@ if(!isset($_SESSION['user'],$_SESSION['administrator'])){
 }else{
   require('inc/database.php');
 
-  $res=mysql_query('select content from news where news_id=0');
-  $index_text=($res && ($row=mysql_fetch_row($res))) ? str_replace('<br>', "\n", $row[0]) : '';
+  $res=mysqli_query($con,'select content from news where news_id=0');
+  $index_text=($res && ($row=mysqli_fetch_row($res))) ? str_replace('<br>', "\n", $row[0]) : '';
 }
 $inTitle='管理';
 $Title=$inTitle .' - '. $oj_name;
@@ -71,7 +71,7 @@ $Title=$inTitle .' - '. $oj_name;
                   </div>
                   <form action="admin.php" method="post" class="form-inline" id="form_news">
                     <label for="input_news" style="display:block">添加新闻</label>
-                    <input type="text" id="input_news" name="news" class="input-xlarge" placeholder="在这里写些什么吧...">
+                    <input type="text" id="input_news" name="news" class="input-xlarge" placeholder="新闻标题"><br>
                     <input type="submit" class="btn" value="添加">
                     <input type="hidden" name="op" value="add_news">
                   </form>

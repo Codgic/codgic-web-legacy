@@ -50,8 +50,8 @@ $prob=intval($_GET['problem_id']);
 
 require('inc/database.php');
 
-$res=mysql_query("select case_time_limit,memory_limit,case_score,compare_way from problem where problem_id=$prob");
-if(!($row=mysql_fetch_row($res)))
+$res=mysqli_query($con,"select case_time_limit,memory_limit,case_score,compare_way from problem where problem_id=$prob");
+if(!($row=mysqli_fetch_row($res)))
 	die('No such problem');
 
 $data=array(

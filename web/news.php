@@ -1,62 +1,26 @@
 <?php
 require 'inc/ojsettings.php';
 require('inc/checklogin.php');
-
-if(isset($_GET['page_id']))
-  $page_id=intval($_GET['page_id']);
-else if(isset($_SESSION['view']))
-  $page_id=intval($_SESSION['view']/100);
-else
-  $page_id=10;
-
-require('inc/database.php');
-$row=mysqli_fetch_row(mysqli_query($con,'select max(problem_id) from problem'));
-$maxpage=intval($row[0]/100);
-if($page_id<10 || $page_id>$maxpage)
-  die('Argument out of range.');
-
-if(isset($_SESSION['administrator']))
-  $addt_cond='';
-else
-  $addt_cond=" defunct='N' and ";
-$range="between $page_id"."00 and $page_id".'99';
-if(isset($_SESSION['user'])){
-  $user_id=$_SESSION['user'];
-  $result=mysqli_query($con,"SELECT problem_id,title,accepted,submit,source,defunct,res,saved.pid from problem LEFT JOIN (select problem_id as pid,MIN(result) as res from solution where user_id='$user_id' and problem_id $range group by problem_id) as solved on(solved.pid=problem_id) left join (select problem_id as pid from saved_problem where user_id='$user_id') as saved on(saved.pid=problem_id) where $addt_cond problem_id $range order by problem_id");
-}else{
-  $result=mysqli_query($con,"select problem_id,title,accepted,submit,source,defunct from problem where $addt_cond problem_id $range  order by problem_id");
-}
-$inTitle='题库';
+$inTitle='新闻';
 $Title=$inTitle .' - '. $oj_name;
-//$Title="Problemset $page_id";
 ?>
 <!DOCTYPE html>
 <html>
   <?php require('head.php'); ?>
 
-  <body>
+  <!--<body>
     <?php require('page_header.php') ?>
     <div class="container-fluid">
       <div class="row-fluid">
       <div class="pagination pagination-centered">
       <ul>
-      <?php
-      if($maxpage>10){
-
-        for($i=10;$i<=$maxpage;++$i)
-          if($i!=$page_id)
-            echo '<li><a href="problemset.php?page_id=',$i,'">',$i,'</a></li>';
-          else
-            echo '<li class="active"><a href="problemset.php?page_id=',$i,'">',$i,'</a></li>';
-      }
-      ?>
         <li><a href="level.php?level=1">按等级分类 &raquo;</a></li>
       </ul>
       </div>
       </div>
       <div class="row-fluid">
         <div class="span10 offset1">
-            <?php require 'problemset_table.php';?>
+            <?php //require 'problemset_table.php';?>
         </div>  
       </div>
       <div class="row-fluid">
@@ -80,7 +44,7 @@ $Title=$inTitle .' - '. $oj_name;
 
     <script type="text/javascript"> 
       $(document).ready(function(){
-        var cur_page=<?php echo $page_id ?>;
+        var cur_page=<?php //echo $page_id ?>;
         $('#nav_set').parent().addClass('active');
         $('#ret_url').val("problemset.php?page_id="+cur_page);
 
@@ -117,5 +81,5 @@ $Title=$inTitle .' - '. $oj_name;
         });
       });
     </script>
-  </body>
+  </body>-->
 </html>
