@@ -11,7 +11,7 @@ CWOJ is based on Bashu Onlinejudge, which could also be found on github. We appr
 Plus, we would like to thank those open source projects that we've been using as the framework. Their great work has made the developing such projects so much easier.
 # Features
 Compared with the original Bashu Online Judge, we have also done some improvements:<br>
-- [X] PHP7 READY!
+- [X] <b>php7 Ready!</b><br>
 - [X] Fully translated into Chinese.<br>
 - [X] Optimizations for Mobile devices (including a new navagation bar and css modifications).<br>
 - [X] Auto night mode (Basically finished).<br>
