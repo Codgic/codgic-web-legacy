@@ -1,6 +1,6 @@
 <?php
 //Use global authorization
-define('REQUIRE_AUTH',0);
+define('REQUIRE_AUTH',1);
 
 define('DISALLOW_GOOGLEBOT',0);
 
@@ -18,6 +18,6 @@ if(!isset($_SESSION['user']) && (DISALLOW_GOOGLEBOT || !isset($_SERVER['HTTP_USE
 		require_once 'inc/userlogin.php';
 		if(TRUE===login($_SESSION['user'], TRUE))
 			write_cookie();
-		mysql_close();
+		mysqli_close($con);
 	}
 }

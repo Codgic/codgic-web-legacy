@@ -14,16 +14,17 @@ function my_rsa($value)
 }
 
 function password_right($usr, $pwd_in){
-    $result=mysql_query("select password from users where user_id='$usr'");
-    if(!($row=mysql_fetch_row($result)) || !$row[0])
+	require 'inc/database.php';
+    $result=mysqli_query($con,"select password from users where user_id='$usr'");
+    if(!($row=mysqli_fetch_row($result)) || !$row[0])
     	return false;
 
 	$pwd_enc=my_rsa($pwd_in);
 	$pwd_real=$row[0];
 	if(ord($pwd_real)!=0){ //password in database is not encrypted password
 		$pwd_real=my_rsa($pwd_real);
-		$pwd_escaped=mysql_escape_string($pwd_real);
-		mysql_query("update users set password='$pwd_escaped' where user_id='$usr'");
+		$pwd_escaped=mysqli_escape_string($con,$pwd_real);
+		mysqli_query($con,"update users set password='$pwd_escaped' where user_id='$usr'");
 	}
 	if(strcmp($pwd_enc, $pwd_real)!=0)
 		return false;

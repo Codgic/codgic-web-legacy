@@ -1,5 +1,6 @@
 <?php
 require('inc/mutex.php');
+require_once 'inc/ojsettings.php';
 require_once 'inc/database.php';
 function getNextMsgID(){
 	require 'inc/database.php';
@@ -35,7 +36,8 @@ if($title_len>500)
 
 $content=mysqli_real_escape_string($con,$_POST['detail']);
 
-$mutex=new php_mutex("/tmp/bsoj_postmessage.lock");
+if($islinux==1) $mutex=new php_mutex("/tmp/cwoj_postmessage.lock");
+else $mutex=new php_mutex("%windir%/temp/cwoj_postmessage.lock");
 $new_msg_id=getNextMsgID();
 
 if(isset($_POST['message_id'])
