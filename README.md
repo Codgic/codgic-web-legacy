@@ -17,7 +17,7 @@ Compared with the original Bashu Online Judge, we have also done some improvemen
 - [X] Auto night mode (Basically finished).<br>
 - [X] Minor improvements to enchance the whole experience.<br>
 - [X] Forget Password.<br>
-- [ ] News & News Center (Coming this February!)
+- 
 # Notes
 A bug was found specifically on Micrsoft Internet Explorer and Microsoft Edge:<br>
 wait.php may not respond if the judging time exceeds 5 seconds.<br>
