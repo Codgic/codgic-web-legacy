@@ -9,6 +9,10 @@ Password: guest123<br>
 #
 CWOJ is based on Bashu Onlinejudge, which could also be found on github. We appreciate Bashu Onlinejudge's authors for sharing their codes to push the development of the internet world.
 Plus, we would like to thank those open source projects that we've been using as the framework. Their great work has made the developing such projects so much easier.
+# Notes
+A bug was found specifically on Micrsoft Internet Explorer and Microsoft Edge:<br>
+wait.php may not respond if the judging time exceeds 5 seconds.<br>
+I'm not sure when this problem could be fixed.
 # Features
 Compared with the original Bashu Online Judge, we have also done some improvements:<br>
 - [X] <b>PHP7 Ready!</b><br>
@@ -18,10 +22,5 @@ Compared with the original Bashu Online Judge, we have also done some improvemen
 - [X] Minor improvements to enchance the whole experience.<br>
 - [X] Forget Password.<br>
 - [ ] News & News Center (To be included in February Update Release).
-#
-# Notes
-A bug was found specifically on Micrsoft Internet Explorer and Microsoft Edge:<br>
-wait.php may not respond if the judging time exceeds 5 seconds.<br>
-I'm not sure when this problem could be fixed.
 #
 You will be able to find the installation notes in the Wiki page in a month. Thanks for your support!
