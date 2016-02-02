@@ -12,7 +12,7 @@ require('inc/checklogin.php');
 require('inc/database.php');
 $res=mysqli_query($con,"select content from news where news_id=0");
 $index_text=($row=mysqli_fetch_row($res)) ? $row[0] : '';
-$res=mysqli_query($con,"select title from news where news_id>0 order by news_id");
+$res=mysqli_query($con,"select news_id,title from news where news_id>0 order by news_id desc");
 $inTitle='主页';
 $Title=$inTitle .' - '. $oj_name;
 $num=0;
@@ -40,27 +40,20 @@ $num=0;
       </div>
 	  <div class="row-fluid">
 	  <div class="span5 offset1">
-	    <p><h1>新闻 Alpha</h1></p>
-		<table border="0">
-              <thead>
-			  <tr>
-			    <th></th>
-              </tr>
-			  </thead>
-              <tbody id="newslist">
+	    <h1>新闻 Alpha <a href="news.php" class="pull-right"><font size=2>更多历史新闻...</font></a></h1><br>
+		  <ul class="nav">
                 <?php 
                 while($row=mysqli_fetch_row($res)){
 					$num++;
-					echo '<tr><td><font size=3><p><a href="javascript:void(0);" onclick="click_news(',$num,')">',htmlspecialchars($row[0]),'</a></p></font></td>';
-					echo "\n";
+					echo '<li><p><font size=3><a href="javascript:void(0);" onclick="click_news(',$row[0],')">',htmlspecialchars($row[1]),'</a></font></p></li>';
+					if($num==$news_num) break;
                 }
                 ?>
-              </tbody>
-            </table>
+		  </ul>
 	  </div>
       <div class="span6">
-        <p><h1>分类</h1></p>
-		<p><font size=3 >按算法分类:&nbsp;
+        <h1>分类</h1><br>
+		<p><font size=3>按算法分类:&nbsp;
 		<a href="search.php?q=%E5%9F%BA%E7%A1%80%E8%AF%AD%E6%B3%95">基础语法</a>&nbsp;&nbsp;&nbsp;
 		<a href="search.php?q=%E5%AD%97%E7%AC%A6%E4%B8%B2">字符串</a>&nbsp;&nbsp;&nbsp;
 		<a href="search.php?q=%E6%A8%A1%E6%8B%9F">模拟</a>&nbsp;&nbsp;&nbsp;

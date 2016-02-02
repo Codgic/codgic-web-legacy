@@ -21,8 +21,8 @@ $Title=$inTitle .' - '. $oj_name;
           <p class="muted tiny-font">评测结束后，该页面会自动刷新。</p>
           <div class="row">
             <div class="span4 offset2">
-              <div id="ele_queue" class="alert alert-info center"><strong><i class="icon-spinner icon-large icon-spin"></i> 正在等待...</strong></div>
-              <div id="ele_judge" class="hide alert alert-info center"><strong><i class="icon-spinner icon-spin"></i> 正在评测，请稍后...</strong></div>
+              <div id="ele_queue" class="alert alert-info center"><strong><i class="icon-spinner icon-large icon-spin"></i> 正在等待，请坐和放宽...</strong></div>
+              <div id="ele_judge" class="hide alert alert-info center"><strong><i class="icon-spinner icon-spin"></i> 正在评测，请坐和放宽...</strong></div>
             </div>
           </div>
           <div class="hide well well-small margin-0" id="ele_table">
@@ -80,6 +80,7 @@ $Title=$inTitle .' - '. $oj_name;
         var url='<?php echo "proxy.php?url=query_$key";?>';
         // alert(url);
         $.getJSON(url,function(obj){
+			window.alert(obj.state);
           if(obj.state=="invalid"){
             $("#ele_judge").hide();
             $('#ele_queue').hide();
@@ -119,13 +120,14 @@ $Title=$inTitle .' - '. $oj_name;
               else if(i-1-last_i>1)
                 timeout=1000;
               last_i=i;
-              for(--i;i>=0;--i)
+              for(i;i>=0;--i)
                 $('#line'+i).tooltip({});
               $('#ele_queue').hide();
               $('#ele_judge').show();
               $('#ele_table').show();
             }
             if(obj.state=='finish'){
+			window.alert('fuckms');
               $('#ele_queue').hide();
               $("#ele_judge").hide();
               $("#ele_finish").show();
@@ -136,7 +138,7 @@ $Title=$inTitle .' - '. $oj_name;
         });
       }
       $(document).ready(function(){
-        window.setTimeout(load_progress,2000);
+		window.setTimeout(load_progress,5000);
         $('#btn_back').click(function(){
           history.go(-1);
           return false;

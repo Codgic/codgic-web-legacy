@@ -39,13 +39,13 @@ $Title=$inTitle .' - '. $oj_name;
               <div class="tab-pane active" id="tab_A">
                 <div class="row-fluid">
                   <div class="span3 operations">
-                    <h3 class="center">操作</h3>
+                    <h3 class="center">题目</h3>
                     <a href="newproblem.php" class="btn btn-primary">添加题目...</a>
+					<a href="#" id="btn_category" class="btn btn-primary disabled">题目分类...</a>
                     <a href="#" id="btn_rejudge" class="btn btn-info">重新评测...</a>
-                    <div class="alert hide" id="rejudge_res" style="margin-top:20px"></div>
                   </div>
                   <div class="span5">
-                    <h3 class="center">主页</h3>
+                    <h3 class="center">主页</h3><br>
                     <form action="#" method="post" id="form_index">
                       <input type="hidden" name="op" value="update_index">
                       <textarea name="text" rows="10" class="border-box" style="width:100%"><?php echo htmlspecialchars($index_text)?></textarea>
@@ -70,11 +70,12 @@ $Title=$inTitle .' - '. $oj_name;
                     </div>
                   </div>
                   <form action="admin.php" method="post" class="form-inline" id="form_news">
-                    <label for="input_news" style="display:block">添加新闻</label>
-                    <input type="text" id="input_news" name="news" class="input-xlarge" placeholder="新闻标题"><br>
+                    <label for="input_news" style="display:block">添加新闻 (Legacy)</label>
+                    <input type="text" id="input_news" name="news" class="input-xlarge" placeholder="新闻标题">
                     <input type="submit" class="btn" value="添加">
                     <input type="hidden" name="op" value="add_news">
                   </form>
+				  <button class="btn btn-primary" id="new_news">添加新闻...</button>
                 </div>
               </div>
               <div class="tab-pane" id="tab_C">
@@ -136,6 +137,44 @@ $Title=$inTitle .' - '. $oj_name;
           </div>
         </div>
       </div>
+	  <div class="modal fade hide" id="RejudgeModal">
+      <div class="modal-header">
+        <a class="close" data-dismiss="modal">&times;</a>
+        <h4>重新评测</h4>
+      </div>
+      <form class="margin-0" action="#" method="post" id="rejudge_num">
+        <div class="modal-body">
+		    <label class="control-label">请输入需要重新评测的题号:</label>
+	        <input class="input-xlarge" id="input_rejudge" type="number" placeholder="1000~9999">
+			<div class="alert hide" id="rejudge_res" style="margin-top:20px"></div>
+        </div>
+        <div class="modal-footer form-inline">
+          <div class="pull-left">
+          </div>
+		  <button class="btn btn-primary" id="rejudge_submit">重新评测</button>
+          <a href="#" class="btn" data-dismiss="modal">关闭</a>
+        </div>
+      </form>
+    </div>
+	<div class="modal fade hide" id="NewsModal">
+      <div class="modal-header">
+        <a class="close" data-dismiss="modal">&times;</a>
+        <h4>添加新闻（目前没卵用）</h4>
+      </div>
+      <form class="margin-0" action="submit.php" method="post" id="form_submit">
+	    <p></p>
+        <div class="modal-body" style="padding-top:5px">
+		  <input type="text" id="input_news" name="news" class="input-xlarge" placeholder="请输入新闻标题...">
+		  <textarea style="box-sizing: border-box;width:100%;resize:none" id="detail_input" rows="16" name="source" placeholder="请输入新闻内容..."></textarea>
+          <div class="alert alert-error hide margin-0" id="submit_result"></div>
+        </div>
+        <div class="modal-footer form-inline">
+          <button class="btn btn-primary shortcut-hint" title="Alt+S" type="submit">提交</button>
+          <a href="#" class="btn" data-dismiss="modal">关闭</a>
+        </div>
+		<div class="hidden-phone" style="width:750px"></div>
+      </form>
+    </div>
       <hr>
       <footer>
         <p>&copy; <?php echo"{$year} {$copyright}";?></p>
@@ -151,20 +190,32 @@ $Title=$inTitle .' - '. $oj_name;
 
     <script type="text/javascript">
       $(document).ready(function(){
+		$('#new_news').click(function(){
+			$('#NewsModal').modal('show');
+		});
         $('#ret_url').val("admin.php");
-        $('#btn_rejudge').click(function(){
+		$('#btn_rejudge').click(function(){
+			$('#RejudgeModal').modal('show');
+		});
+        $('#rejudge_submit').click(function(){
+		  var exit = false;
           var obj=$('#rejudge_res').hide();
-          var id=prompt("请输入要重新评测的题号: ","");
+          var id=$.trim($('#input_rejudge').val());
           if(id!=null){
             id=$.trim(id);
             if(id){
               $.get("rejudge.php?problem_id="+id,function(msg){
-                if(/start/.test(msg))obj.addClass('alert-success');
-                else obj.addClass('alert-error');
-                obj.html(msg).slideDown();
+				  if(msg=='success'){
+					  $('#RejudgeModal').modal('hide');
+				  }else{
+					  exit = false;
+					  obj.addClass('alert-error');
+					  obj.html(msg).slideDown();
+				  }
               });
             }
           }
+		  return false;
         });
         var getlevellist=function(){$('#table_level_experience').load('ajax_admin.php',{op:'list_level_experience'});};
         var gettitlelist=function(){$('#table_experience_title').load('ajax_admin.php',{op:'list_experience_title'});};

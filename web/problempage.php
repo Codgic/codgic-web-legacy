@@ -268,7 +268,7 @@ $Title=$inTitle .' - '. $oj_name;
 
     </div>
 
-    <div class="modal fade hide" id="SubmitModal" content="width:device-width">
+    <div class="modal fade hide" id="SubmitModal">
       <div class="modal-header">
         <a class="close" data-dismiss="modal">&times;</a>
         <h4>代码提交</h4>
@@ -316,7 +316,7 @@ $Title=$inTitle .' - '. $oj_name;
           <div class="pull-left">
             <div class="input-prepend">
               <span class="add-on"><b>标签</b></span>
-              <input class="span2" id="tags_edit" name="tags" type="text">
+              <input class="span2" id="tags_edit" type="text">
             </div>
           </div>
           <button class="btn btn-primary" type="submit">保存</button>

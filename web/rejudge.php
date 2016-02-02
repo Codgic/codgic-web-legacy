@@ -41,7 +41,7 @@ session_start();
 header('Content-Type: text/plain; charset=utf-8');
 
 if(!isset($_SESSION['user']) || !isset($_SESSION['administrator']))
-	die('Not Logged in.');
+	die('您尚未登录...');
 
 if(!isset($_GET['problem_id']))
 	die('No argument.');
@@ -52,7 +52,7 @@ require('inc/database.php');
 
 $res=mysqli_query($con,"select case_time_limit,memory_limit,case_score,compare_way from problem where problem_id=$prob");
 if(!($row=mysqli_fetch_row($res)))
-	die('No such problem');
+	die('问题不存在...');
 
 $data=array(
 	'a'=>$prob,
@@ -67,7 +67,7 @@ ignore_user_abort(TRUE);
 $result = posttodaemon($data);
 
 if(strstr($result,"OK"))
-	echo "开始重新评测 #$prob ...";
+	echo "success";
 else if(strstr($result,"another"))
 	echo "目前正在执行另一评测任务，请稍后再试。";
 else
