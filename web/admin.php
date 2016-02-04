@@ -69,12 +69,6 @@ $Title=$inTitle .' - '. $oj_name;
                       <div class="alert span4">正在加载新闻...</div>
                     </div>
                   </div>
-                  <form action="admin.php" method="post" class="form-inline" id="form_news">
-                    <label for="input_news" style="display:block">添加新闻 (Legacy)</label>
-                    <input type="text" id="input_news" name="news" class="input-xlarge" placeholder="新闻标题">
-                    <input type="submit" class="btn" value="添加">
-                    <input type="hidden" name="op" value="add_news">
-                  </form>
 				  <button class="btn btn-primary" id="new_news">添加新闻...</button>
                 </div>
               </div>
@@ -137,6 +131,26 @@ $Title=$inTitle .' - '. $oj_name;
           </div>
         </div>
       </div>
+	  
+	  <div class="modal fade hide" id="CategoryModal">
+      <div class="modal-header">
+        <a class="close" data-dismiss="modal">&times;</a>
+        <h4>题目分类编辑</h4>
+      </div>
+      <form class="margin-0" method="post" id="category_submit">
+	    <p></p>
+        <div class="modal-body" style="padding-top:5px">
+		  <textarea style="box-sizing: border-box;width:100%;resize:none" id="detail_input" rows="16" name="source" placeholder="UNFINISHED"></textarea>
+          <div class="alert alert-error hide margin-0" id="submit_result"></div>
+        </div>
+        <div class="modal-footer form-inline">
+          <button class="btn btn-primary disabled" id="btn_catesubmit">提交</button>
+          <a href="#" class="btn" data-dismiss="modal">关闭</a>
+        </div>
+		<div class="hidden-phone" style="width:750px"></div>
+      </form>
+    </div>
+	  
 	  <div class="modal fade hide" id="RejudgeModal">
       <div class="modal-header">
         <a class="close" data-dismiss="modal">&times;</a>
@@ -156,20 +170,21 @@ $Title=$inTitle .' - '. $oj_name;
         </div>
       </form>
     </div>
+	
 	<div class="modal fade hide" id="NewsModal">
       <div class="modal-header">
         <a class="close" data-dismiss="modal">&times;</a>
         <h4>添加新闻（目前没卵用）</h4>
       </div>
-      <form class="margin-0" action="submit.php" method="post" id="form_submit">
+      <form class="margin-0" method="post" id="news_submit">
 	    <p></p>
         <div class="modal-body" style="padding-top:5px">
-		  <input type="text" id="input_news" name="news" class="input-xlarge" placeholder="请输入新闻标题...">
-		  <textarea style="box-sizing: border-box;width:100%;resize:none" id="detail_input" rows="16" name="source" placeholder="请输入新闻内容..."></textarea>
-          <div class="alert alert-error hide margin-0" id="submit_result"></div>
+		  <input type="text" id="input_newstitle" name="news" class="input-xlarge" placeholder="请输入新闻标题...">
+		  <textarea style="box-sizing: border-box;width:100%;resize:none" id="input_newscontent" rows="16" name="source" placeholder="请输入新闻内容..."></textarea>
+          <div class="alert alert-error hide margin-0" id="addnews_res">发生错误</div>
         </div>
         <div class="modal-footer form-inline">
-          <button class="btn btn-primary shortcut-hint" title="Alt+S" type="submit">提交</button>
+          <button class="btn btn-primary shortcut-hint" id="btn_addnews">提交</button>
           <a href="#" class="btn" data-dismiss="modal">关闭</a>
         </div>
 		<div class="hidden-phone" style="width:750px"></div>
@@ -197,8 +212,42 @@ $Title=$inTitle .' - '. $oj_name;
 		$('#btn_rejudge').click(function(){
 			$('#RejudgeModal').modal('show');
 		});
+		$('#btn_category').click(function(){
+			$('#CategoryModal').modal('show');
+		});
+		$('#btn_addnews').click(function(E){
+			var title,content;
+			$('#addnews_res').hide();
+			var a=false;
+			if(!$.trim($('#input_newstitle').val())) {
+            $('#input_newstitle').addClass('error');
+            a=true;
+            }else{
+            $('#input_newstitle').removeClass('error');
+            }
+			if(!$.trim($('#input_newscontent').val())) {
+            $('#input_newscontent').addClass('error');
+            a=true;
+            }else{
+            $('#input_newscontent').removeClass('error');
+            }
+			if(!a){
+				title = $.trim($('#input_newstitle').val());
+				content = $.trim($('#input_newscontent').val());
+				$.ajax({
+					type:"POST",
+					url:"ajax_admin.php",
+					data:{"op":'add_news',"title":title,"content":content},
+					success:function(msg){
+						if(msg=='success') $('#NewsModal').modal('hide');
+						else $('#addnews_res').show();
+					}
+					});
+			}
+			getnewslist();
+			return false;
+		});
         $('#rejudge_submit').click(function(){
-		  var exit = false;
           var obj=$('#rejudge_res').hide();
           var id=$.trim($('#input_rejudge').val());
           if(id!=null){
@@ -208,7 +257,6 @@ $Title=$inTitle .' - '. $oj_name;
 				  if(msg=='success'){
 					  $('#RejudgeModal').modal('hide');
 				  }else{
-					  exit = false;
 					  obj.addClass('alert-error');
 					  obj.html(msg).slideDown();
 				  }
@@ -340,16 +388,6 @@ $Title=$inTitle .' - '. $oj_name;
             url:"ajax_admin.php",
             data:$('#form_priv').serialize(),
             success:getprivlist
-          });
-          return false;
-        });
-        $('#form_news').submit(function(E){
-          E.preventDefault();
-          $.ajax({
-            type:"POST",
-            url:"ajax_admin.php",
-            data:$('#form_news').serialize(),
-            success:getnewslist
           });
           return false;
         });

@@ -163,15 +163,17 @@ EOF;
 		mysqli_query($con,"INSERT INTO level_experience VALUES ($key,$value) ON DUPLICATE KEY UPDATE experience=$value");
 	}
 }else if($op=="add_news"){
-	if(!isset($_POST['news']))
-		die('');
-	$title=mysqli_real_escape_string($con,trim($_POST['news']));
+	if(!isset($_POST['title'])||!isset($_POST['content']))
+		die('error');
+	$title=mysqli_real_escape_string($con,trim($_POST['title']));
+	$content=mysqli_real_escape_string($con,trim($_POST['content']));
 	$res=mysqli_query($con,"select max(news_id) from news");
 	$row=mysqli_fetch_row($res);
 	$id=1;
 	if($row[0])
 		$id=$row[0]+1;
-	mysqli_query($con,"insert into news(news_id,time,title) values ($id,NOW(),'$title')");
+	mysqli_query($con,"insert into news(news_id,time,title,content) values ($id,NOW(),'$title','$content')");
+	echo 'success';
 }else if($op=="add_priv"){
 	isset($_POST['user_id']) ? $uid=mysqli_real_escape_string($con,trim($_POST['user_id'])) : die('');
 	if($uid=='')
