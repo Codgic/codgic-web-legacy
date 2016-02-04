@@ -164,7 +164,7 @@ EOF;
 	}
 }else if($op=="add_news"){
 	if(!isset($_POST['title'])||!isset($_POST['content']))
-		die('error');
+		die('输入/输出错误');
 	$title=mysqli_real_escape_string($con,trim($_POST['title']));
 	$content=mysqli_real_escape_string($con,trim($_POST['content']));
 	$res=mysqli_query($con,"select max(news_id) from news");
