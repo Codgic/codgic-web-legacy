@@ -166,7 +166,7 @@ EOF;
 	if(!isset($_POST['title'])||!isset($_POST['content']))
 		die('输入/输出错误');
 	$title=mysqli_real_escape_string($con,trim($_POST['title']));
-	$content=mysqli_real_escape_string($con,trim($_POST['content']));
+	$content=isset($_POST['content']) ? mysqli_real_escape_string($con,str_replace("\n", "<br>", $_POST['content'])) : '';
 	$res=mysqli_query($con,"select max(news_id) from news");
 	$row=mysqli_fetch_row($res);
 	$id=1;
@@ -204,6 +204,12 @@ EOF;
 		echo "success";
 	else
 		echo "fail";
+}else if($op=="update_category"){
+	$category=isset($_POST['content']) ? mysqli_real_escape_string($con,trim($_POST['content'])) : '';
+	if(mysqli_query($con,"update user_notes set content='$category' where id=0"))
+		echo 'success';
+	else
+		echo 'fail';
 }else if($op=="reset_usr"){
 	isset($_POST['user_id']) ? $uid=mysqli_real_escape_string($con,trim($_POST['user_id'])) : die('');
 	mysqli_query($con,"update users set password='$defaultpwd' where user_id='$uid'");

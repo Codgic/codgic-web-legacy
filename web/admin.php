@@ -13,6 +13,8 @@ if(!isset($_SESSION['user'],$_SESSION['administrator'])){
 
   $res=mysqli_query($con,'select content from news where news_id=0');
   $index_text=($res && ($row=mysqli_fetch_row($res))) ? str_replace('<br>', "\n", $row[0]) : '';
+  $res=mysqli_query($con,"select content from user_notes where id=0");
+  $category=($res && ($row=mysqli_fetch_row($res))) ? str_replace('<br>', "\n", $row[0]) : '';
 }
 $inTitle='管理';
 $Title=$inTitle .' - '. $oj_name;
@@ -41,7 +43,7 @@ $Title=$inTitle .' - '. $oj_name;
                   <div class="span3 operations">
                     <h3 class="center">题目</h3>
                     <a href="newproblem.php" class="btn btn-primary">添加题目...</a>
-					<a href="#" id="btn_category" class="btn btn-primary disabled">题目分类...</a>
+					<a href="#" id="btn_category" class="btn btn-primary">题目分类...</a>
                     <a href="#" id="btn_rejudge" class="btn btn-info">重新评测...</a>
                   </div>
                   <div class="span5">
@@ -140,11 +142,11 @@ $Title=$inTitle .' - '. $oj_name;
       <form class="margin-0" method="post" id="category_submit">
 	    <p></p>
         <div class="modal-body" style="padding-top:5px">
-		  <textarea style="box-sizing: border-box;width:100%;resize:none" id="detail_input" rows="16" name="source" placeholder="请输入显示在首页的题目分类列表代码..."><?php echo $category?></textarea>
-          <div class="alert alert-error hide margin-0" id="submit_result"></div>
+		  <textarea style="box-sizing: border-box;width:100%;resize:none" id="input_category" rows="16" name="source" placeholder="请输入显示在首页的题目分类列表代码..."><?php echo $category?></textarea>
+          <div class="alert alert-error hide margin-0" id="addcategory_res">发生错误</div>
         </div>
         <div class="modal-footer form-inline">
-          <button class="btn btn-primary disabled" id="category_submit">提交</button>
+          <button class="btn btn-primary" id="addcategory_submit">提交</button>
           <a href="#" class="btn" data-dismiss="modal">关闭</a>
         </div>
 		<div class="hidden-phone" style="width:750px"></div>
@@ -213,8 +215,19 @@ $Title=$inTitle .' - '. $oj_name;
 		$('#btn_category').click(function(){
 			$('#CategoryModal').modal('show');
 		});
-		$('#category_submit').click(function(){
-			window.alert('You dumbass!');
+		$('#addcategory_submit').click(function(){
+			var content = $.trim($('#input_category').val());
+			$('#addcategory_res').hide();
+			$.ajax({
+					type:"POST",
+					url:"ajax_admin.php",
+					data:{"op":'update_category',"content":content},
+					success:function(msg){
+						if(msg=='success') $('#CategoryModal').modal('hide');
+						else $('#addcategory_res').show();
+					}
+				});
+			return false;
 		});
 		$('#addnews_submit').click(function(E){
 			var title,content;

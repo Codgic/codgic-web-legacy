@@ -13,6 +13,11 @@ require('inc/database.php');
 $res=mysqli_query($con,"select content from news where news_id=0");
 $index_text=($row=mysqli_fetch_row($res)) ? $row[0] : '';
 $res=mysqli_query($con,"select news_id,title from news where news_id>0 order by news_id desc");
+$hasnews=0;
+$newsrow=mysqli_fetch_row(mysqli_query($con,"select max(news_id) from news"));
+if($newsrow[0]>0) $hasnews=1;
+$categoryrow=mysqli_fetch_row(mysqli_query($con,"select content from user_notes where id=0"));
+$category=$categoryrow[0];
 $inTitle='主页';
 $Title=$inTitle .' - '. $oj_name;
 $num=0;
@@ -39,8 +44,8 @@ $num=0;
         </div>
       </div>
 	  <div class="row-fluid">
-	  <div class="span5 offset1">
-	    <h1>新闻<a href="news.php" class="pull-right"><font size=2>更多历史新闻...</font></a></h1><br>
+		<div class="span5 offset1">
+	    <h1>新闻<?php if($hasnews==1){?><a href="news.php" class="pull-right"><font size=2>更多历史新闻...</font></a></h1><br>
 		  <ul class="nav">
                 <?php 
                 while($row=mysqli_fetch_row($res)){
@@ -49,40 +54,14 @@ $num=0;
 					if($num==$news_num) break;
                 }
                 ?>
-		  </ul>
+		  </ul><?php }else{?></h1>
+		  <br><br><p><font color='grey' size=10>:( 暂时没有发布过新闻~</font></p>
+		  <?php }?>
 	  </div>
       <div class="span6">
         <h1>分类</h1><br>
-		<p><font size=3>按算法分类:&nbsp;
-		<a href="search.php?q=%E5%9F%BA%E7%A1%80%E8%AF%AD%E6%B3%95">基础语法</a>&nbsp;&nbsp;&nbsp;
-		<a href="search.php?q=%E5%AD%97%E7%AC%A6%E4%B8%B2">字符串</a>&nbsp;&nbsp;&nbsp;
-		<a href="search.php?q=%E6%A8%A1%E6%8B%9F">模拟</a>&nbsp;&nbsp;&nbsp;
-		<a href="search.php?q=%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92">动态规划</a>&nbsp;&nbsp;&nbsp;
-		<a href="search.php?q=%E8%B4%AA%E5%BF%83">贪心</a>&nbsp;&nbsp;&nbsp;
-		<a href="search.php?q=%E6%90%9C%E7%B4%A2">搜索</a>&nbsp;&nbsp;&nbsp;
-		<a href="search.php?q=%E6%95%B0%E8%AE%BA">数论</a>&nbsp;&nbsp;&nbsp;
-		<a href="search.php?q=%E4%BA%8C%E5%88%86%E6%9F%A5%E6%89%BE">二分查找</a></font><br /></p>
-		
-		<p><font size=3 ><a href="search.php?q=%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84">数据结构</a>&nbsp;&nbsp;&nbsp;
-		<a href="search.php?q=%E6%A0%91%E7%BB%93%E6%9E%84">树结构</a>&nbsp;&nbsp;&nbsp;
-		<a href="search.php?q=%E5%9B%BE%E7%BB%93%E6%9E%84">图结构</a></font></p>
-        <p><font size=3 >按难度分类:&nbsp;
-		<a href="level.php?level=1">普及</a>&nbsp;&nbsp;&nbsp;
-		<a href="level.php?level=2">普及+</a>&nbsp;&nbsp;&nbsp;
-		<a href="level.php?level=3">提高</a>&nbsp;&nbsp;&nbsp;
-		<a href="level.php?level=4">提高+</a>&nbsp;&nbsp;&nbsp;
-		<a href="level.php?level=5">省选-</a>&nbsp;&nbsp;&nbsp;
-		<a href="level.php?level=6">省选</a>&nbsp;&nbsp;&nbsp;
-		<a href="level.php?level=7">省选+</a></font></p>
-        <p><font size=3 >按来源分类:&nbsp;
-		<a href="search.php?q=%E6%99%AE%E5%8F%8A%E7%BB%84">NOIP普及组</a>&nbsp;&nbsp;&nbsp;
-		<a href="search.php?q=%E6%8F%90%E9%AB%98%E7%BB%84">NOIP提高组</a>&nbsp;&nbsp;&nbsp;
-		<a href="search.php?q=%E7%9C%81%E9%80%89">省选</a>&nbsp;&nbsp;&nbsp;
-		<a href="search.php?q=NOI2">NOI</a>&nbsp;&nbsp;&nbsp;
-		<a href="search.php?q=IOI">IOI</a>&nbsp;&nbsp;&nbsp;
-		<a href="search.php?q=UESTC">UESTC</a>&nbsp;&nbsp;&nbsp;
-		<a href="search.php?q=USACO">USACO</a>&nbsp;&nbsp;&nbsp;
-		<a href="search.php?q=%E5%8E%9F%E5%88%9B">原创</a></font></p>
+		<?php if($category!='') echo "$category";
+		      else echo'<br><br><p><font color=\'grey\' size=10>:( 暂时没有发布题目分类目录~</font></p>';?>
 	  </div>
 	  </div>
 	  <div class="row-fluid">
