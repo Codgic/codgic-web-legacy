@@ -48,6 +48,7 @@ $res=mysqli_query($con,"select news_id,title,time from news where news_id>0 orde
         <div class="modal-footer form-inline">
           <div class="pull-left">
           </div>
+		  <span class="pull-left hide" id="ajax_newstime"></span>
           <a href="#" class="btn" data-dismiss="modal">关闭</a>
         </div>
       </form>
@@ -67,12 +68,16 @@ $res=mysqli_query($con,"select news_id,title,time from news where news_id>0 orde
               url:"ajax_getnews.php",
               data:{"newsid":newsid},
               success:function(msg){
-				  var arr=msg.split("Z9EWKWRFE324@EWRFTFFWE443R854QSFDSUERWE4EFRDN");
+				  var arr=msg.split("FuckZK1");
 				  var title=arr[0];
 				  var content=arr[1];
+				  var arr=content.split("fUCKzk2");
+				  var content=arr[0];
+				  var time=arr[1];
 				  if(!content) content='本条新闻内容为空...';
 				  $('#ajax_newstitle').html(title).show();
 				  $('#ajax_newscontent').html(content).show();
+				  $('#ajax_newstime').html('发布时间：'+time).show();
                   $('#NewsModal').modal('show');
                 }
               });

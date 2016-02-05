@@ -132,7 +132,7 @@ $Title=$inTitle .' - '. $oj_name;
         </div>
       </div>
 	  
-	  <div class="modal fade hide" id="CategoryModal">
+	<div class="modal fade hide" id="CategoryModal">
       <div class="modal-header">
         <a class="close" data-dismiss="modal">&times;</a>
         <h4>题目分类编辑</h4>
@@ -140,17 +140,17 @@ $Title=$inTitle .' - '. $oj_name;
       <form class="margin-0" method="post" id="category_submit">
 	    <p></p>
         <div class="modal-body" style="padding-top:5px">
-		  <textarea style="box-sizing: border-box;width:100%;resize:none" id="detail_input" rows="16" name="source" placeholder="UNFINISHED"></textarea>
+		  <textarea style="box-sizing: border-box;width:100%;resize:none" id="detail_input" rows="16" name="source" placeholder="请输入显示在首页的题目分类列表代码..."><?php echo $category?></textarea>
           <div class="alert alert-error hide margin-0" id="submit_result"></div>
         </div>
         <div class="modal-footer form-inline">
-          <button class="btn btn-primary disabled" id="btn_catesubmit">提交</button>
+          <button class="btn btn-primary disabled" id="category_submit">提交</button>
           <a href="#" class="btn" data-dismiss="modal">关闭</a>
         </div>
 		<div class="hidden-phone" style="width:750px"></div>
       </form>
     </div>
-	  
+	 
 	  <div class="modal fade hide" id="RejudgeModal">
       <div class="modal-header">
         <a class="close" data-dismiss="modal">&times;</a>
@@ -174,7 +174,7 @@ $Title=$inTitle .' - '. $oj_name;
 	<div class="modal fade hide" id="NewsModal">
       <div class="modal-header">
         <a class="close" data-dismiss="modal">&times;</a>
-        <h4>添加新闻（目前没卵用）</h4>
+        <h4>添加新闻</h4>
       </div>
       <form class="margin-0" method="post" id="news_submit">
 	    <p></p>
@@ -184,7 +184,7 @@ $Title=$inTitle .' - '. $oj_name;
           <div class="alert alert-error hide margin-0" id="addnews_res">发生错误</div>
         </div>
         <div class="modal-footer form-inline">
-          <button class="btn btn-primary shortcut-hint" id="btn_addnews">提交</button>
+          <button class="btn btn-primary shortcut-hint" id="addnews_submit">提交</button>
           <a href="#" class="btn" data-dismiss="modal">关闭</a>
         </div>
 		<div class="hidden-phone" style="width:750px"></div>
@@ -194,9 +194,7 @@ $Title=$inTitle .' - '. $oj_name;
       <footer>
         <p>&copy; <?php echo"{$year} {$copyright}";?></p>
       </footer>
-
     </div>
-
     <script src="../assets/js/jquery.js"></script>
     <script src="../assets/js/bootstrap.min.js"></script>
     <script src="../assets/js/common.js"></script>
@@ -215,7 +213,10 @@ $Title=$inTitle .' - '. $oj_name;
 		$('#btn_category').click(function(){
 			$('#CategoryModal').modal('show');
 		});
-		$('#btn_addnews').click(function(E){
+		$('#category_submit').click(function(){
+			window.alert('You dumbass!');
+		});
+		$('#addnews_submit').click(function(E){
 			var title,content;
 			$('#addnews_res').hide();
 			var a=false;

@@ -40,7 +40,7 @@ $num=0;
       </div>
 	  <div class="row-fluid">
 	  <div class="span5 offset1">
-	    <h1>新闻 Alpha <a href="news.php" class="pull-right"><font size=2>更多历史新闻...</font></a></h1><br>
+	    <h1>新闻<a href="news.php" class="pull-right"><font size=2>更多历史新闻...</font></a></h1><br>
 		  <ul class="nav">
                 <?php 
                 while($row=mysqli_fetch_row($res)){
@@ -93,6 +93,7 @@ $num=0;
         <p>&copy; <?php echo"{$year} {$copyright}";?></p>
       </footer>
     </div>
+	
 	<div class="modal fade hide" id="NewsModal" style="margin-top:100px">
       <div class="modal-header">
         <a class="close" data-dismiss="modal">&times;</a>
@@ -105,6 +106,7 @@ $num=0;
         <div class="modal-footer form-inline">
           <div class="pull-left">
           </div>
+		  <span class="pull-left hide" id="ajax_newstime"></span>
           <a href="#" class="btn" data-dismiss="modal">关闭</a>
         </div>
       </form>
@@ -129,12 +131,16 @@ $num=0;
               url:"ajax_getnews.php",
               data:{"newsid":newsid},
               success:function(msg){
-				  var arr=msg.split("Z9EWKWRFE324@EWRFTFFWE443R854QSFDSUERWE4EFRDN");
+				  var arr=msg.split("FuckZK1");
 				  var title=arr[0];
 				  var content=arr[1];
+				  var arr=content.split("fUCKzk2");
+				  var content=arr[0];
+				  var time=arr[1];
 				  if(!content) content='本条新闻内容为空...';
 				  $('#ajax_newstitle').html(title).show();
 				  $('#ajax_newscontent').html(content).show();
+				  $('#ajax_newstime').html('发布时间：'+time).show();
                   $('#NewsModal').modal('show');
                 }
               });
