@@ -65,9 +65,9 @@ $Title=$inTitle .' - '. $oj_name;
           <button class="btn" id="open_source">开源所有代码</button>
 		  
 		  <h2>版本信息</h2>
-          <p>
-            <strong>CWOJ版本: <?php echo"{$oj_ver}";?></strong>
-          </p>
+            <br>
+			<strong><font size=4><p>网页端: <?php echo"{$web_ver}"?></p>
+			<p>评测端: <?php echo"{$daemon_ver}"?></p></font></strong>
         </div>
       <?php }?>
       </div>

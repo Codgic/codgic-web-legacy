@@ -49,6 +49,7 @@ $res=mysqli_query($con,"select news_id,title,time from news where news_id>0 orde
           <div class="pull-left">
           </div>
 		  <span class="pull-left hide" id="ajax_newstime"></span>
+		  <?php if($_SESSION['administrator']) echo '<a class="pull-left" href="admin.php?page=news">编辑</a>'?>
           <a href="#" class="btn" data-dismiss="modal">关闭</a>
         </div>
       </form>
@@ -77,7 +78,7 @@ $res=mysqli_query($con,"select news_id,title,time from news where news_id>0 orde
 				  if(!content) content='本条新闻内容为空...';
 				  $('#ajax_newstitle').html(title).show();
 				  $('#ajax_newscontent').html(content).show();
-				  $('#ajax_newstime').html('发布时间：'+time).show();
+				  $('#ajax_newstime').html('发布时间：'+time+'&nbsp;&nbsp;').show();
                   $('#NewsModal').modal('show');
                 }
               });

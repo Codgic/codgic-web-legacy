@@ -77,13 +77,13 @@ if($op=="list_usr"){
 				<th style="width:6%">ID</th>
 				<th style="width:20%">日期</th>
 				<th style="width:68%">标题</th>
-				<th style="width:6%">删除</th>
+				<th style="width:6%">编辑</th>
 			</tr>
 		</thead>
 		<tbody>
 			<?php
 				while($row=mysqli_fetch_row($res)){
-					echo '<tr><td>',$row[0],'</td><td>',$row[1],'</td><td style="text-align:left">',$row[2],'</td><td><a href="#"><i class="icon icon-remove"></i></a></td></tr>';
+					echo '<tr><td>',$row[0],'</td><td>',$row[1],'</td><td style="text-align:left">',$row[2],'</td><td><a href="#"><i class="icon icon-pencil"></i></a></td></tr>';
 				}
 			?>
 		</tbody>
@@ -164,16 +164,35 @@ EOF;
 	}
 }else if($op=="add_news"){
 	if(!isset($_POST['title'])||!isset($_POST['content']))
-		die('输入/输出错误');
+		die('error');
 	$title=mysqli_real_escape_string($con,trim($_POST['title']));
 	$content=isset($_POST['content']) ? mysqli_real_escape_string($con,str_replace("\n", "<br>", $_POST['content'])) : '';
-	$res=mysqli_query($con,"select max(news_id) from news");
-	$row=mysqli_fetch_row($res);
+	$row=mysqli_fetch_row(mysqli_query($con,"select max(news_id) from news"));
 	$id=1;
 	if($row[0])
 		$id=$row[0]+1;
-	mysqli_query($con,"insert into news(news_id,time,title,content) values ($id,NOW(),'$title','$content')");
-	echo 'success';
+	if(mysqli_query($con,"insert into news(news_id,time,title,content) values ($id,NOW(),'$title','$content')"))
+		echo 'success';
+	else
+		echo 'error';
+}else if($op=="get_news_info"){
+	if(!isset($_POST['news_id']))
+		die('error');
+	$news_id=$_POST['news_id'];
+	$row=mysqli_fetch_row(mysqli_query($con,"select title,content from news where news_id='$news_id'"));
+	echo $row[0].'FuckZK1'.$row[1];
+}else if($op=="edit_news"){
+	if(!isset($_POST['news_id']))
+		die('error');
+	if(!isset($_POST['title']))
+		die('error');
+	$news_id=$_POST['news_id'];
+	$title=mysqli_real_escape_string($con,trim($_POST['title']));
+	$content=isset($_POST['content']) ? mysqli_real_escape_string($con,str_replace("\n", "<br>", $_POST['content'])) : '';
+	if(mysqli_query($con,"update news set title='$title',content='$content' where news_id=$news_id"))
+		echo 'success';
+	else
+		echo 'error';
 }else if($op=="add_priv"){
 	isset($_POST['user_id']) ? $uid=mysqli_real_escape_string($con,trim($_POST['user_id'])) : die('');
 	if($uid=='')
@@ -191,7 +210,10 @@ EOF;
 	mysqli_query($con,"delete from privilege where user_id='$uid' and rightstr='$right'");
 }else if($op=="del_news"){
 	isset($_POST['news_id']) ? $news_id=intval($_POST['news_id']) : die('');
-	mysqli_query($con,"delete from news where $news_id>0 and news_id=$news_id");
+	if(mysqli_query($con,"delete from news where $news_id>0 and news_id=$news_id"))
+		echo 'success';
+	else
+		echo 'error';
 }else if($op=="en_usr"){
 	isset($_POST['user_id']) ? $uid=mysqli_real_escape_string($con,trim($_POST['user_id'])) : die('');
 	mysqli_query($con,"update users set defunct='N' where user_id='$uid'");

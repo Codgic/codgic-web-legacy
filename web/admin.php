@@ -1,6 +1,10 @@
 <?php
 require 'inc/ojsettings.php';
 require('inc/checklogin.php');
+$page='home';
+if(isset($_GET['page'])){
+	$page=$_GET['page'];
+}
 
 if(!isset($_SESSION['user'],$_SESSION['administrator'])){
   die('You are not an administrator.');
@@ -31,14 +35,14 @@ $Title=$inTitle .' - '. $oj_name;
         <div class="span12">
           <div class="tabbable tabs-left">
             <ul class="nav nav-tabs" id="nav_tab">
-              <li class="active"><a href="#tab_A" data-toggle="tab">主页</a></li>
-              <li class=""><a href="#tab_B" data-toggle="tab">新闻</a></li>
-              <li class=""><a href="#tab_C" data-toggle="tab">经验</a></li>
-              <li class=""><a href="#tab_D" data-toggle="tab">权限</a></li>
-              <li class=""><a href="#tab_E" data-toggle="tab">用户</a></li>
+              <li class="active"><a href="#home" data-toggle="tab">主页</a></li>
+              <li class=""><a href="#news" data-toggle="tab">新闻</a></li>
+              <li class=""><a href="#experience" data-toggle="tab">经验</a></li>
+              <li class=""><a href="#permission" data-toggle="tab">权限</a></li>
+              <li class=""><a href="#user" data-toggle="tab">用户</a></li>
             </ul>
             <div class="tab-content">
-              <div class="tab-pane active" id="tab_A">
+              <div class="tab-pane active" id="home">
                 <div class="row-fluid">
                   <div class="span3 operations">
                     <h3 class="center">题目</h3>
@@ -64,7 +68,7 @@ $Title=$inTitle .' - '. $oj_name;
                   </div>
                 </div>
               </div>
-              <div class="tab-pane" id="tab_B">
+              <div class="tab-pane" id="news">
                 <div style="margin-left:50px;margin-right:50px">
                   <div id="table_news">
                     <div class="row-fluid">
@@ -74,7 +78,7 @@ $Title=$inTitle .' - '. $oj_name;
 				  <button class="btn btn-primary" id="new_news">添加新闻...</button>
                 </div>
               </div>
-              <div class="tab-pane" id="tab_C">
+              <div class="tab-pane" id="experience">
                 <div style="margin-left:50px;margin-right:50px">
                   <div id="table_experience_title"> 
                     
@@ -94,7 +98,7 @@ $Title=$inTitle .' - '. $oj_name;
                   </form>
                 </div>
               </div>
-              <div class="tab-pane" id="tab_D">
+              <div class="tab-pane" id="permission">
                 <div style="margin-left:50px">
                   <div id="table_priv"></div>
                   <form action="admin.php" method="post" class="form-inline" id="form_priv">
@@ -110,7 +114,7 @@ $Title=$inTitle .' - '. $oj_name;
                   </form>
                 </div>
               </div>
-              <div class="tab-pane" id="tab_E">
+              <div class="tab-pane" id="user">
                 <div style="margin-left:50px">
                   <div id="table_usr"></div>
                   <form action="admin.php" method="post" class="form-inline" id="form_usr">
@@ -158,7 +162,7 @@ $Title=$inTitle .' - '. $oj_name;
         <a class="close" data-dismiss="modal">&times;</a>
         <h4>重新评测</h4>
       </div>
-      <form class="margin-0" action="#" method="post" id="rejudge_num">
+      <form class="margin-0" method="post" id="rejudge_num">
         <div class="modal-body">
 		    <label class="control-label">请输入需要重新评测的题号:</label>
 	        <input class="input-xlarge" id="input_rejudge" type="number" placeholder="1000~9999">
@@ -176,17 +180,19 @@ $Title=$inTitle .' - '. $oj_name;
 	<div class="modal fade hide" id="NewsModal">
       <div class="modal-header">
         <a class="close" data-dismiss="modal">&times;</a>
-        <h4>添加新闻</h4>
+        <h4><span class="hide" id="NewsModalTitle"></span></h4>
       </div>
       <form class="margin-0" method="post" id="news_submit">
 	    <p></p>
         <div class="modal-body" style="padding-top:5px">
 		  <input type="text" id="input_newstitle" name="news" class="input-xlarge" placeholder="请输入新闻标题...">
-		  <textarea style="box-sizing: border-box;width:100%;resize:none" id="input_newscontent" rows="16" name="source" placeholder="请输入新闻内容..."></textarea>
+		  <textarea style="box-sizing: border-box;width:100%;resize:none" id="input_newscontent" rows="16" name="source" placeholder="请输入新闻内容 (可选)..."></textarea>
           <div class="alert alert-error hide margin-0" id="addnews_res">发生错误</div>
         </div>
         <div class="modal-footer form-inline">
-          <button class="btn btn-primary shortcut-hint" id="addnews_submit">提交</button>
+          <button class="btn btn-primary" id="addnews_submit">提交</button>
+		  <button class="btn btn-primary hide" id="editnews_submit">提交</button>
+		  <button class="pull-left btn btn-danger hide" id="btn_delnews">删除</button>
           <a href="#" class="btn" data-dismiss="modal">关闭</a>
         </div>
 		<div class="hidden-phone" style="width:750px"></div>
@@ -204,8 +210,36 @@ $Title=$inTitle .' - '. $oj_name;
     <script src="../assets/js/highcharts-more.js"></script>
 
     <script type="text/javascript">
+	var getlevellist=function(){$('#table_level_experience').load('ajax_admin.php',{op:'list_level_experience'});};
+    var gettitlelist=function(){$('#table_experience_title').load('ajax_admin.php',{op:'list_experience_title'});};
+    var getprivlist=function(){$('#table_priv').load('ajax_admin.php',{op:'list_priv'});};
+    var getnewslist=function(){$('#table_news').load('ajax_admin.php',{op:'list_news'});};
+    var getusrlist=function(){$('#table_usr').load('ajax_admin.php',{op:'list_usr'});};
+	var cnt=-1;
       $(document).ready(function(){
+		var page='<?php echo $page?>';
+		if(page=='news'){
+			$('#nav_tab a[href="#news"]').tab('show');
+			getnewslist();
+		}
+		else if(page=='experience'){
+			$('#nav_tab a[href="#experience"]').tab('show');
+			getlevellist();
+			gettitlelist();
+		} 
+		else if(page=='permission'){
+			$('#nav_tab a[href="#permission"]').tab('show');
+			getprivlist();
+		}
+		else if(page=='user') $('#nav_tab a[href="#user"]').tab('show');
+		else $('#nav_tab a[href="#home"]').tab('show');
 		$('#new_news').click(function(){
+			$('#NewsModalTitle').html('添加新闻').show();
+			$('#input_newstitle').val("");
+		    $('#input_newscontent').val("");
+			$('#addnews_submit').show();
+		    $('#editnews_submit').hide();
+			$('#btn_delnews').hide();
 			$('#NewsModal').modal('show');
 		});
         $('#ret_url').val("admin.php");
@@ -229,7 +263,7 @@ $Title=$inTitle .' - '. $oj_name;
 				});
 			return false;
 		});
-		$('#addnews_submit').click(function(E){
+		$('#addnews_submit').click(function(){
 			var title,content;
 			$('#addnews_res').hide();
 			var a=false;
@@ -238,12 +272,6 @@ $Title=$inTitle .' - '. $oj_name;
             a=true;
             }else{
             $('#input_newstitle').removeClass('error');
-            }
-			if(!$.trim($('#input_newscontent').val())) {
-            $('#input_newscontent').addClass('error');
-            a=true;
-            }else{
-            $('#input_newscontent').removeClass('error');
             }
 			if(!a){
 				title = $.trim($('#input_newstitle').val());
@@ -279,11 +307,6 @@ $Title=$inTitle .' - '. $oj_name;
           }
 		  return false;
         });
-        var getlevellist=function(){$('#table_level_experience').load('ajax_admin.php',{op:'list_level_experience'});};
-        var gettitlelist=function(){$('#table_experience_title').load('ajax_admin.php',{op:'list_experience_title'});};
-        var getprivlist=function(){$('#table_priv').load('ajax_admin.php',{op:'list_priv'});};
-        var getnewslist=function(){$('#table_news').load('ajax_admin.php',{op:'list_news'});};
-        var getusrlist=function(){$('#table_usr').load('ajax_admin.php',{op:'list_usr'});};
         $('#nav_tab').click(function(E){
           var jq=$(E.target);
           if(jq.is('a')){
@@ -405,23 +428,78 @@ $Title=$inTitle .' - '. $oj_name;
           });
           return false;
         });
-        $('#table_news').click(function(E){
-          E.preventDefault();
-          var jq=$(E.target);
+		$('#table_news').click(function(E){
+		 var news_title,news_content;
+		 E.preventDefault();
+		 var jq=$(E.target);
           if(jq.is('i')){
             var jq_id=jq.parent().parent().prev().prev().prev();
-            $.ajax({
+			cnt = jq_id.html();
+			$.ajax({
               type:"POST",
               url:"ajax_admin.php",
               data:{
-                op:'del_news',
+                op:'get_news_info',
                 news_id:jq_id.html()
               },
-              success:function(){jq_id.parent().remove();}
+              success:function(msg){
+				  var arr=msg.split("FuckZK1");
+				  news_title=arr[0];
+				  news_content=arr[1];
+				  $('#NewsModalTitle').html('编辑新闻').show();
+		          $('#NewsModal').modal('show');
+				  $('#addnews_submit').hide();
+				  $('#editnews_submit').show();
+				  $('#btn_delnews').show();
+		          $('#input_newstitle').val(news_title);
+				  $('#input_newscontent').val(news_content);
+				  }
             });
-          }
-          return false;
+		  }
+         return false;
         });
+        $('#editnews_submit').click(function(){
+		  var title,content;
+			$('#addnews_res').hide();
+			var a=false;
+			if(!$.trim($('#input_newstitle').val())) {
+            $('#input_newstitle').addClass('error');
+            a=true;
+            }else{
+            $('#input_newstitle').removeClass('error');
+            }
+			if(!a){
+				title = $.trim($('#input_newstitle').val());
+				content = $.trim($('#input_newscontent').val());
+				$.ajax({
+					type:"POST",
+					url:"ajax_admin.php",
+					data:{"op":'edit_news',"news_id":cnt,"title":title,"content":content},
+					success:function(msg){
+						if(msg=='success') $('#NewsModal').modal('hide');
+						else $('#addnews_res').show();
+					}
+					});
+			}
+			getnewslist();
+			return false;
+        });
+		$('#btn_delnews').click(function(){
+			$.ajax({
+              type:"POST",
+              url:"ajax_admin.php",
+              data:{
+                "op":'del_news',
+                "news_id":cnt
+              },
+              success:function(msg){
+				  if(msg=='success') $('#NewsModal').modal('hide');
+				  else $('#addnews_res').show();
+			  }
+            });
+			getnewslist();
+			return false;
+		});
         $('#form_index').submit(function(E){
           E.preventDefault();
           $('#alert_result').hide();
