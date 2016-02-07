@@ -10,7 +10,7 @@ if(!isset($_SESSION['user'],$_SESSION['administrator'])){
   die('You are not an administrator.');
 }else if(!isset($_SESSION['admin_tfa']) || !$_SESSION['admin_tfa']){
   $_SESSION['admin_retpage'] = 'admin.php';
-  header("Location: admin_auth.php");
+  header("Location: admin_auth.php?redirect=".$page);
   exit;
 }else{
   require('inc/database.php');

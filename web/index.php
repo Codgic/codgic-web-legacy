@@ -156,8 +156,8 @@ window.requestAnimFrame = ( function() {
 var canvas = document.getElementById( 'canvas' ),
 		ctx = canvas.getContext( '2d' ),
 		// full screen dimensions
-		cw = window.innerWidth,
-		ch = window.innerHeight,
+		cw = screen.width,
+		ch = screen.height,
 		// firework collection
 		fireworks = [],
 		// particle collection
@@ -177,8 +177,13 @@ var canvas = document.getElementById( 'canvas' ),
 		my;
 		
 // set canvas dimensions
-canvas.width = cw;
-canvas.height = ch;
+if(cw >= ch){
+	canvas.width = cw;
+	canvas.height = cw*1.5;
+}else{
+	canvas.width = ch;
+	canvas.height = ch*1.5;
+}
 
 // now we are going to setup our function placeholders for the entire demo
 
