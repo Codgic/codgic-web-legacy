@@ -16,7 +16,7 @@ if($op=="list_usr"){
 	if(mysqli_num_rows($res)==0)
 		die ('<div class="row-fluid"><div class="alert alert-info span4">暂没有被关小黑屋的用户...</div></div>');
 ?>
-	<table class="table table-condensed table-striped" style="width:550px">
+	<table class="table table-condensed table-striped">
 		<caption>被关小黑屋的用户</caption>
 		<thead>
 			<tr>
@@ -46,7 +46,7 @@ if($op=="list_usr"){
 	</table>
 <?php
 }else if($op=="list_priv"){ ?>
-	<table class="table table-condensed table-striped" style="width:480px">
+	<table class="table table-condensed table-striped">
 		<caption>用户权限</caption>
 		<thead>
 			<tr>
@@ -92,7 +92,7 @@ if($op=="list_usr"){
 }else if($op=='list_experience_title'){
 	$res=mysqli_query($con,"select title,experience from experience_titles order by experience");
 ?>
-	<table class="table table-condensed table-striped" style="width:480px">
+	<table class="table table-condensed table-striped">
       <caption>头衔</caption>
       <thead>
         <tr>
@@ -125,7 +125,7 @@ EOF;
 	}
 ?>
 
-	<table class="table table-condensed table-striped" style="width:240px">
+	<table class="table table-condensed table-striped">
 	<caption>题目经验</caption>
 	<thead>
 	  <th>等级</th>

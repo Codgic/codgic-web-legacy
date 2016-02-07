@@ -46,8 +46,8 @@ $Title=$inTitle .' - '. $oj_name;
                 <div class="row-fluid">
                   <div class="span3 operations">
                     <h3 class="center">题目</h3>
-                    <a href="newproblem.php" class="btn btn-primary">添加题目...</a>
-					<a href="#" id="btn_category" class="btn btn-primary">题目分类...</a>
+                    <?php echo"<a href=\"newproblem.php\" class=\"btn {$button_class}\">添加题目...</a>
+					<a href=\"#\" id=\"btn_category\" class=\"btn {$button_class}\">题目分类...</a>"?>
                     <a href="#" id="btn_rejudge" class="btn btn-info">重新评测...</a>
                   </div>
                   <div class="span5">
@@ -57,7 +57,7 @@ $Title=$inTitle .' - '. $oj_name;
                       <textarea name="text" rows="10" class="border-box" style="width:100%"><?php echo htmlspecialchars($index_text)?></textarea>
                       <div class="alert hide" id="alert_result">主页更新成功！</div>
                       <div class="pull-right">
-                        <input type="submit" class="btn btn-medium btn-primary" value="更新">
+                        <?php echo "<input type=\"submit\" class=\"btn {$button_class}\" value=\"更新\">"?>
                       </div>
                     </form>
                   </div>
@@ -75,40 +75,45 @@ $Title=$inTitle .' - '. $oj_name;
                       <div class="alert span4">正在加载新闻...</div>
                     </div>
                   </div>
-				  <button class="btn btn-primary" id="new_news">添加新闻...</button>
+				  <?php echo"<button class=\"btn {$button_class}\" id=\"new_news\">添加新闻...</button>"?>
                 </div>
               </div>
               <div class="tab-pane" id="experience">
                 <div style="margin-left:50px;margin-right:50px">
+				<div class="row-fluid">
+				<div class="span6">
                   <div id="table_experience_title"> 
-                    
                   </div>
                   <form action="admin.php" method="post" class="form-inline" id="form_experience_title">
-                    <input type="text" id="input_experience" name="experience" class="input-small" placeholder="经验值&nbsp;&ge;">
-                    <input type="text" id="input_experience_title" name="title" class="input-small" placeholder="头衔">
+                    <input type="text" id="input_experience" name="experience" class="input-medium" placeholder="经验值&nbsp;&ge;">&nbsp;&nbsp;
+                    <input type="text" id="input_experience_title" name="title" class="input-medium" placeholder="头衔">&nbsp;&nbsp;
                     <input type="submit" class="btn" value="添加">
                     <input type="hidden" name="op" value="add_experience_title">
                   </form>
-                  <hr>
+                 </div>
+				 <div class="span5 offset1">
                   <form action="admin.php" method="post" id="form_level_experience">
                     <div id="table_level_experience"> 
                     </div>
+					<br><br>
                     <input type="submit" class="btn" value="更新">
                     <input type="hidden" name="op" value="update_level_experience">
                   </form>
                 </div>
+			  </div>
+			  </div>
               </div>
               <div class="tab-pane" id="permission">
                 <div style="margin-left:50px">
                   <div id="table_priv"></div>
                   <form action="admin.php" method="post" class="form-inline" id="form_priv">
                     <label for="input_user_id" style="display:block">添加权限</label>
-                    <input type="text" id="input_user_id" name="user_id" class="input-small" placeholder="用户名...">
+                    <input type="text" id="input_user_id" name="user_id" class="input-medium" placeholder="用户名...">&nbsp;&nbsp;
                     <select name="right" id="slt_right">
                       <option value="administrator">管理人员</option>
                       <option value="source_browser">代码审核</option>
                       <option value="insider">题目添加</option>
-                    </select>
+                    </select>&nbsp;&nbsp;
                     <input type="submit" class="btn" value="添加">
                     <input type="hidden" name="op" value="add_priv">
                   </form>
@@ -119,7 +124,7 @@ $Title=$inTitle .' - '. $oj_name;
                   <div id="table_usr"></div>
                   <form action="admin.php" method="post" class="form-inline" id="form_usr">
                     <label for="input_dis_usr" style="display:block">禁用某个用户</label>
-                    <input type="text" id="input_dis_usr" name="user_id" class="input-small" placeholder="用户名...">
+                    <input type="text" id="input_dis_usr" name="user_id" class="input-medium" placeholder="用户名...">&nbsp;&nbsp;
                     <input type="submit" class="btn" value="禁用">
                     <input type="hidden" name="op" value="disable_usr">
                   </form>
@@ -127,7 +132,7 @@ $Title=$inTitle .' - '. $oj_name;
 
                   <form action="admin.php" method="post" class="form-inline" id="form_resetpwd">
                     <label for="input_reset_usr" style="display:block">重置用户密码</label>
-                    <input type="text" id="input_reset_usr" name="user_id" class="input-small" placeholder="用户名...">
+                    <input type="text" id="input_reset_usr" name="user_id" class="input-medium" placeholder="用户名...">&nbsp;&nbsp;
                     <input type="submit" class="btn" value="重置">
                     <input type="hidden" name="op" value="reset_usr">
                   </form>
