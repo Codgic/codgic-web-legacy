@@ -3,6 +3,8 @@ require ('inc/ojsettings.php');
 require ('inc/ojencrypt.php');
 $code = rand(10000000,99999999);
 $code = $rsa -> encrypt($code);
+session_start(); 
+$_SESSION['resetpwd_flag']=0;
 ?>
 <!DOCTYPE html>
 <html>
@@ -121,7 +123,6 @@ echo "<body style=\"background-image: url({$loginimg})\">";
 	<script src="../assets/js/jquery.min.js"></script>
     <script src="../assets/js/common.js"></script>
     <script type="text/javascript">
-	var tipshow = false;
 	function get_rand(begin, end) {
 		return Math.floor(Math.random()*(end-begin))+begin;
 		}
@@ -152,14 +153,7 @@ echo "<body style=\"background-image: url({$loginimg})\">";
         return false;
 		}
 	function show_tip() {
-        if(tipshow == false) {
-			$('#emailtip').slideDown();
-			tipshow = true;
-		}
-		else {
-			$('#emailtip').slideUp();
-			tipshow = false;
-		}
+		$('#emailtip').slideToggle();
         return false;
 	}
 	  $(document).ready(function() {
@@ -189,7 +183,7 @@ echo "<body style=\"background-image: url({$loginimg})\">";
 				email= $.trim($('#input_email').val());
 			$.ajax({
               type:"POST",
-              url:"ajax_resetpwd.php",
+              url:'ajax_resetpwd.php',
               data:{"type":'verify',"user":user,"email":email,"code":code},
               success:function(msg){
 				  email_nxt.removeAttribute("disabled");
@@ -209,7 +203,7 @@ echo "<body style=\"background-image: url({$loginimg})\">";
 			resend_btn.value = "请稍后...";
 			$.ajax({
               type:"POST",
-              url:"ajax_resetpwd.php",
+              url:'ajax_resetpwd.php',
               data:{"type":'resend',"user":user,"email":email,"code":code},
               success:function(msg){
                   if(msg == 'success') {
@@ -226,7 +220,7 @@ echo "<body style=\"background-image: url({$loginimg})\">";
 		});
 		$('#verify_nxt').click(function(){
 			$('#ajax_verifyresult').hide();
-			var a=false;
+			var a=false,setflag=false;
 			if(!$.trim($('#input_verifyid').val())) {
             $('#input_verifyid').addClass('error');
             a=true;
@@ -239,12 +233,15 @@ echo "<body style=\"background-image: url({$loginimg})\">";
 				var usercode = $.trim($('#input_verifyid').val());
 				$.ajax({
                   type:"POST",
-                  url:"ajax_resetpwd.php",
+                  url:'ajax_resetpwd.php',
                   data:{"type":'encode',"usercode":usercode},
                   success:function(msg){
 					  usercode = msg;
-					  if (usercode == code) switch_pwd();
+					  if (usercode == code){
+						  $.post('ajax_resetpwd.php',{"type":'setflag'},function(){switch_pwd();});
+					  } 
 					  else{
+						  setflag = false;
 						  error++;
 						  if(error < 3) {
 							  $('#ajax_verifyresult').html('验证码错误').show();
@@ -264,11 +261,17 @@ echo "<body style=\"background-image: url({$loginimg})\">";
 		$('#pwd_save').click(function(){
 		  $('#ajax_pwdresult').hide();
           var b=false,pwd;
-          if(!$.trim($('#input_userid').val())) {
-            $('#userid_ctl').addClass('error');
+          if(!$.trim($('#input_newpwd').val())) {
+            $('#input_newpwd').addClass('error');
             b=true;
           }else{
-            $('#userid_ctl').removeClass('error');
+            $('#input_newpwd').removeClass('error');
+          }
+		  if(!$.trim($('#input_reppwd').val())) {
+            $('#input_reppwd').addClass('error');
+            b=true;
+          }else{
+            $('#input_reppwd').removeClass('error');
           }
           pwd=$('#input_newpwd').val();
           if(pwd!='' && $('#input_reppwd').val()!=pwd){
@@ -283,14 +286,14 @@ echo "<body style=\"background-image: url({$loginimg})\">";
 			  var newpwd = $.trim($('#input_newpwd').val());
             $.ajax({
               type:"POST",
-              url:"ajax_resetpwd.php",
+              url:'ajax_resetpwd.php',
               data:{"type":'update',"user":user,"newpwd":newpwd},
               success:function(msg){
-                  if(msg == 1){
+                  if(msg == 'success'){
 	              $('#ajax_pwdresult').html('密码重置成功，即将跳转至首页...').show();
 	              window.setTimeout("window.location='index.php'",2000); 
                 }else
-                    $('#ajax_pwdresult').html('未知错误').show();
+                    $('#ajax_pwdresult').html(msg).show();
               }
             });
           }

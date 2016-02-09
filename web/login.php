@@ -9,7 +9,7 @@ try{
 	require 'inc/cookie.php';
 	$user=trim($_POST['uid']);
 	if(preg_match('/\W/',$user) || strlen($user)==0)
-		throw new Exception('Invalid user ID');
+		throw new Exception('无效的用户名');
 
 	session_start();
 	$ret=login($user, FALSE, $_POST['pwd']);

@@ -3,6 +3,8 @@ require('inc/database.php');
 require('inc/mailsettings.php');
 require('inc/ojsettings.php');
 require ('inc/ojencrypt.php');
+session_start(); 
+
 if(!isset($_POST['type']))
 	die('Invalid argument.');
 $nowtime = date("Y/m/d H:i:s");
@@ -17,6 +19,8 @@ else if($_POST['type'] == 'verify'){
 	if(!isset($_POST['user'],$_POST['email'],$_POST['code']))
 		die('Invalid argument.');
 	$user = $_POST['user'];
+	if(preg_match('/\W/',$user))
+		die('无效的用户名');
 	$email = $_POST['email'];
 	$code = $_POST['code'];
 	$code = $rsa -> decrypt($code);
@@ -34,6 +38,8 @@ else if($_POST['type'] == 'resend'){
 	if(!isset($_POST['user'],$_POST['email'],$_POST['code']))
 	  die('Invalid argument.');
     $user = $_POST['user'];
+	if(preg_match('/\W/',$user))
+		die('无效的用户名');
 	$email = $_POST['email'];
 	$code = $_POST['code'];
 	$code = $rsa -> decrypt($code);
@@ -42,14 +48,30 @@ else if($_POST['type'] == 'resend'){
     postmail($email,$subject,$content);
 }
 
+else if($_POST['type'] == 'setflag'){
+	$_SESSION['resetpwd_flag']=1;
+	echo 'flagged';
+}
+
 else if($_POST['type'] == 'update'){
 	if(!isset($_POST['user'],$_POST['newpwd']))
 	    die('Invalid argument.');
+	if(!isset($_SESSION['resetpwd_flag']) || $_SESSION['resetpwd_flag']==0)
+		die('身份验证失败，请刷新页面重新开始...');
 	require_once('inc/checkpwd.php');
 	$user = $_POST['user'];
+	if(preg_match('/\W/',$user))
+		die('无效的用户名');
+	$len=strlen($_POST['newpwd']);
+	if($len<6||$len>50)
+		die('密码不符合要求(至少6位)');
 	$query='update users set password=\''.mysqli_real_escape_string($con,my_rsa($_POST['newpwd'])).'\'';
 	$query.=" where user_id='$user'";
-	echo mysqli_query($query);
+	$_SESSION['resetpwd_flag']=0;
+	if(mysqli_query($con,$query))
+		echo 'success';
+	else
+		echo '未知错误 =.=';
 }
 
 else die('Invalid argument.');

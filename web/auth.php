@@ -118,7 +118,6 @@ require('inc/ojsettings.php');
     <script src="../assets/js/jquery.js"></script>
     <script src="../assets/js/common.js"></script>
     <script type="text/javascript">
-      var contactshow = false;
       function switch_page() {
         $('#loginpage').hide();
         $('#regpage').fadeIn();
@@ -130,14 +129,7 @@ require('inc/ojsettings.php');
         return false;
       }
 	  function switch_contact() {
-		if(contactshow == false) {
-			$('#contact').slideDown();
-			contactshow = true;
-		}
-		else {
-			$('#contact').slideUp();
-			contactshow=false;
-		}
+		$('#contact').slideToggle();
         return false;
       }
       $(document).ready(function() {
