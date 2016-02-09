@@ -220,7 +220,7 @@ echo "<body style=\"background-image: url({$loginimg})\">";
 		});
 		$('#verify_nxt').click(function(){
 			$('#ajax_verifyresult').hide();
-			var a=false,setflag=false;
+			var a=false;
 			if(!$.trim($('#input_verifyid').val())) {
             $('#input_verifyid').addClass('error');
             a=true;
@@ -241,7 +241,6 @@ echo "<body style=\"background-image: url({$loginimg})\">";
 						  $.post('ajax_resetpwd.php',{"type":'setflag'},function(){switch_pwd();});
 					  } 
 					  else{
-						  setflag = false;
 						  error++;
 						  if(error < 3) {
 							  $('#ajax_verifyresult').html('验证码错误').show();

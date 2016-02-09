@@ -66,7 +66,7 @@ if($op=="list_usr"){
 	</table>
 <?php
 }else if($op=="list_news"){
-	$res=mysqli_query($con,"select news_id,time,title from news where news_id>0 order by news_id");
+	$res=mysqli_query($con,"select news_id,time,title from news where news_id>0 order by news_id desc");
 	if(mysqli_num_rows($res)==0)
 		die ('<div class="row-fluid"><div class="alert alert-info span4">目前还没有发布过新闻...</div></div>');
 ?>
@@ -179,8 +179,10 @@ EOF;
 	if(!isset($_POST['news_id']))
 		die('error');
 	$news_id=$_POST['news_id'];
-	$row=mysqli_fetch_row(mysqli_query($con,"select title,content from news where news_id='$news_id'"));
-	echo $row[0].'FuckZK1'.$row[1];
+	$res=mysqli_query($con,"select title,content from news where news_id='$news_id'");
+	$row=mysqli_fetch_row($res);
+	$content=($res && ($row)) ? str_replace('<br>', "\n", $row[1]) : '';
+	echo $row[0].'FuckZK1'.$content;
 }else if($op=="edit_news"){
 	if(!isset($_POST['news_id']))
 		die('error');
