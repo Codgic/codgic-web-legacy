@@ -1,10 +1,20 @@
 <?php
 require 'inc/ojsettings.php';
 require('inc/checklogin.php');
+require('inc/database.php');
+$page_id=0;
+if(isset($_GET['start_id']))
+  $page_id=intval($_GET['start_id']);
+$row=mysqli_fetch_row(mysqli_query($con,'select count(*) from news'));
+$total=($row[0]);
+$total-=1;
+if($page_id<0 || $page_id>=$total)
+  die('Argument out of range.');
+
 $inTitle='新闻';
 $Title=$inTitle .' - '. $oj_name;
 require('inc/database.php');
-$res=mysqli_query($con,"select news_id,title,time from news where news_id>0 order by news_id desc");
+$res=mysqli_query($con,"select news_id,title,time from news where news_id>0 order by news_id desc limit $page_id,50");
 ?>
 <!DOCTYPE html>
 <html>
@@ -12,7 +22,6 @@ $res=mysqli_query($con,"select news_id,title,time from news where news_id>0 orde
   <body>
     <?php require('page_header.php') ?>
 	<div class="container-fluid">
-	<center><h1>还未开发完成！</h1></center><br>
 	  <div class="row-fluid">
         <div class="span10 offset1">
             <table class="table table-responsive table-striped table-bordered">
@@ -34,7 +43,16 @@ $res=mysqli_query($con,"select news_id,title,time from news where news_id>0 orde
             </table>
         </div>  
       </div>
-	 
+	<div class="row-fluid">
+        <ul class="pager">
+          <li>
+            <a class="pager-pre-link shortcut-hint" title="Alt+A" href="news.php?start_id=<?php echo $page_id-50 ?>" id="btn-pre">&larr; 上一页</a>
+          </li>
+          <li>
+            <a class="pager-next-link shortcut-hint" title="Alt+D" href="news.php?start_id=<?php echo $page_id+50 ?>" id="btn-next">下一页 &rarr;</a>
+          </li>
+        </ul>
+      </div> 
 	</div>
 	<div class="modal fade hide" id="NewsModal" style="margin-top:100px">
       <div class="modal-header">
@@ -84,6 +102,19 @@ $res=mysqli_query($con,"select news_id,title,time from news where news_id>0 orde
               });
             };
         };
+	$(document).ready(function(){
+		var cur=<?php echo $page_id?>;
+		$('#btn-next').click(function(){
+          if(cur+1+50<=<?php echo $total?>)
+            return true;
+          return false;
+        });
+        $('#btn-pre').click(function(){
+          if(cur+1-50>=1)
+            return true;
+          return false;
+        });
+	});
     </script>
   </body>
 </html>

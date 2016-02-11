@@ -1,7 +1,6 @@
 <?php
 require 'inc/ojsettings.php';
 require('inc/checklogin.php');
-header('Content-Type: text/html; charset=utf-8');
 
 if(isset($_GET['start_id']))
   $page_id=intval($_GET['start_id']);

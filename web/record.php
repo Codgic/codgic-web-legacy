@@ -97,6 +97,7 @@ function get_next_link()
 }
 function get_pre_link()
 {
+  require('inc/database.php');
   global $rank_mode,$max_solution;
   parse_str($_SERVER["QUERY_STRING"],$arr); 
   if($rank_mode){

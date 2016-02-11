@@ -63,7 +63,7 @@ $Title=$inTitle .' - '. $oj_name;
       <div class="row-fluid">
         <div class="span10 offset1">
 
-            <table class="table table-hover table-bordered table-left-aligned table-first-center-aligned" style="margin-bottom:0">
+            <table class="table table-hover table-bordered table-left-aligned table-first-center-aligned table-condensed" style="margin-bottom:0">
               <thead><tr>
                 <th style="width:7%">ID</th>
                 <?php

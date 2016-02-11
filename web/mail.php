@@ -91,7 +91,7 @@ $Title=$inTitle .' - '. $oj_name;
 				</ul>
 			</div>  
 
-			<div class="modal hide" id="MailModal">
+			<div class="modal fade hide" id="MailModal">
 				<div class="modal-header">
 					<a class="close" data-dismiss="modal">×</a>
 					<h4>新建私信</h4>

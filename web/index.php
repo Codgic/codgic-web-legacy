@@ -179,10 +179,10 @@ var canvas = document.getElementById( 'canvas' ),
 // set canvas dimensions
 if(cw >= ch){
 	canvas.width = cw;
-	canvas.height = cw*1.5;
+	canvas.height = cw;
 }else{
 	canvas.width = ch;
-	canvas.height = ch*1.5;
+	canvas.height = ch;
 }
 
 // now we are going to setup our function placeholders for the entire demo

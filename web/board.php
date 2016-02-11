@@ -23,6 +23,7 @@ $range=$row[0];
 
 function get_pre_link($top)
 {
+  require ('inc/database.php');
   global $cond_prob;
   $res=mysqli_query($con,"select max(thread_id) from (select thread_id from message where thread_id>=$top $cond_prob order by thread_id limit 50) as tmptab");
   $row=mysqli_fetch_row($res);
