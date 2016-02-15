@@ -1,7 +1,6 @@
 <?php
 //Use global authorization
 define('REQUIRE_AUTH',1);
-
 define('DISALLOW_GOOGLEBOT',0);
 
 session_start();
