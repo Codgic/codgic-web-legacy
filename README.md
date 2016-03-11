@@ -18,7 +18,7 @@ Compared with the original Bashu Online Judge, we have also done some improvemen
 - [X] Auto night mode (Basically finished).
 - [X] Minor improvements to enchance the whole experience.
 - [X] Forget Password.
-- [ ] News & News Center (Coming this February!)
+- [X] News & News Center.
 
 # Notes
 <b> A bug was found specifically on Micrsoft Internet Explorer and Microsoft Edge:
