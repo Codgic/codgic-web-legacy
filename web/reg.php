@@ -73,7 +73,7 @@ $Title=$inTitle .' - '. $oj_name;
       </div>
       <hr>
       <footer>
-       <p>&copy; <?php echo"{$year} {$copyright}";?></p>
+       <p>&copy; <?php echo"{$year} {$oj_copy}";?></p>
       </footer>
     </div>
 
@@ -106,10 +106,15 @@ $Title=$inTitle .' - '. $oj_name;
               url:"ajax_profile.php",
               data:$('#form_profile').serialize(),
               success:function(msg){
-                $('#ajax_result').html(msg).show();
-                if(/created/.test(msg)){
-                  $('#ajax_result').addClass('alert-success');
-                  setTimeout(function(){location.href="index.php";},700);
+                if(msg=='success'){
+			$('#ajax_result').addClass('alert-success');
+			var c = <?php echo $require_confirm?>;
+		       	if(c == 1) $('#ajax_result').html('你的注册申将被审核～').show();
+			else $('#ajax_result').html('你的账户已经成功注册...').show();
+			window.setTimeout("window.location='index.php'",2000); 
+               }else{
+                  $('#ajax_result').html(msg).show();
+                  setTimeout(function(){location.href="index.php";},2000);
                 }
               }
             });

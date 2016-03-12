@@ -24,17 +24,17 @@ require('inc/ojsettings.php');
       </div>
 	</div>
       <div id="loginpage" class="hide row-fluid">
-        <div style="display:table;margin:auto;white-space:nowrap;">
+        <div style="display:table;margin:auto;">
           <form class="form-vertical well" id="form_login" action="login.php" method="post">
             <h1 class="center">欢迎回家</h1>
             <hr style="border-bottom-color: #E5E5E5;">
             <div id="uid_ctl" class="control-group">
-              <div class="controls">
+              <div class="controls" style="white-space:nowrap">
                 <input class="input-xlarge" autofocus="autofocus" type="text" id="uid" name="uid" placeholder="用户名">
 				<span class="icon-user" style="margin-left:-20px;margin-top:7px;position:absolute"></span>
               </div>
             </div>
-            <div id="pwd_ctl" class="control-group">
+            <div id="pwd_ctl" class="control-group" style="white-space:nowrap">
                 <div class="controls">
                   <input class="input-xlarge" id="pwd" name="pwd" type="password" placeholder="密码">
 				  <span class="icon-key" style="margin-left:-20px;margin-top:7px;position:absolute"></span>
@@ -62,53 +62,53 @@ require('inc/ojsettings.php');
       </div>
 
       <div id="regpage" class="hide row-fluid">
-        <div style="display:table;margin:auto;white-space:nowrap">
+        <div style="display:table;margin:auto;">
           <form class="form-vertical well" id="form_profile" action="#" method="post">
 		    <h1 class="center">申请账号</h1>
             <hr style="border-bottom-color: #E5E5E5;">
             <input type="hidden" value="reg" name="type">
             <fieldset>
-              <div class="control-group" id="userid_ctl">
+              <div class="control-group" id="userid_ctl" style="white-space:nowrap">
                 <div class="controls">
                   <input class="input-xlarge" type="text" autofocus="autofocus" name="userid" id="input_userid" placeholder="用户名">
 				  <span class="icon-user" style="margin-left:-20px;margin-top:7px;position:absolute"></span>
                 </div>
               </div>
-              <div class="control-group">
+              <div class="control-group" style="white-space:nowrap">
                 <div class="controls">
                   <input class="input-xlarge" type="text" autofocus="autofocus" name="nick" id="input_nick" placeholder="昵称">
 				  <span class="icon-pencil" style="margin-left:-20px;margin-top:7px;position:absolute"></span>
                 </div>
               </div>
-              <div class="control-group" id="newpwd_ctl">
+              <div class="control-group" id="newpwd_ctl" style="white-space:nowrap">
                 <div class="controls">
                   <input class="input-xlarge" type="password" autofocus="autofocus" id="input_newpwd" name="newpwd" placeholder="密码">
 				  <span class="icon-key" style="margin-left:-20px;margin-top:7px;position:absolute"></span>
                 </div>
               </div>
-              <div class="control-group" id="reppwd_ctl">
+              <div class="control-group" id="reppwd_ctl" style="white-space:nowrap">
                 <div class="controls">
                   <input class="input-xlarge" type="password" autofocus="autofocus" id="input_reppwd" placeholder="重复密码">
 				  <span class="icon-refresh" style="margin-left:-20px;margin-top:7px;position:absolute"></span>
                 </div>
               </div>
-              <div class="control-group">
+              <div class="control-group" style="white-space:nowrap">
                 <div class="controls">
                   <input class="input-xlarge" type="text" autofocus="autofocus" name="email" id="input_email" placeholder="邮箱">
 				  <span class="icon-envelope" style="margin-left:-20px;margin-top:7px;position:absolute"></span>
                 </div>
               </div>
-              <div class="control-group">
+              <div class="control-group" style="white-space:nowrap">
                 <div class="controls">
                   <input class="input-xlarge" type="text" autofocus="autofocus" name="school" id="input_school" placeholder="学校">
 				  <span class="icon-home" style="margin-left:-20px;margin-top:7px;position:absolute"></span>
                 </div>
               </div>
-              <div class="center">
+              <div class="center" style="white-space:normal">
                 <span id="save_btn" class="btn btn-primary" style="margin-left:60px">提交</span>&nbsp;&nbsp;&nbsp;
 				<a href="#" onclick="return go_back();" style="line-height:40px;margin-right:60px">返回登录页</a>
               </div>
-              <div class="center" style="margin-top:20px">
+              <div class="center" style="margin-top:20px" style="white-space:normal">
                 <p><span id="ajax_result" class="hide alert alert-error center"></span></p>
               </div>
             </fieldset>
@@ -158,9 +158,11 @@ require('inc/ojsettings.php');
               url:"ajax_profile.php",
               data:$('#form_profile').serialize(),
               success:function(msg){
-                if(/created/.test(msg)){
-	              $('#ajax_result').html('你的注册申请已被发送给管理员\n请耐心等待审核通过～').show();
-				  window.setTimeout("window.location='index.php'",2000); 
+                if(msg=='success'){
+			var c = <?php echo $require_confirm?>;
+		       	if(c == 1) $('#ajax_result').html('你的注册申将被审核～').show();
+			else $('#ajax_result').html('你的账户已经成功注册...').show();
+			window.setTimeout("window.location='index.php'",2000); 
                 }else{
                   $('#ajax_result').html(msg).show();
                 }

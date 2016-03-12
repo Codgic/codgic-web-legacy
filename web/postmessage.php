@@ -36,8 +36,7 @@ if($title_len>500)
 
 $content=mysqli_real_escape_string($con,$_POST['detail']);
 
-if($islinux==1) $mutex=new php_mutex("/tmp/cwoj_postmessage.lock");
-else $mutex=new php_mutex("%windir%/temp/cwoj_postmessage.lock");
+$mutex=new php_mutex("$temp_dir");
 $new_msg_id=getNextMsgID();
 
 if(isset($_POST['message_id'])

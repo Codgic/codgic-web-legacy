@@ -48,7 +48,7 @@ $Title=$inTitle .' - '. $oj_name;
       </div>
       <hr>
       <footer>
-        <p>&copy; <?php echo"{$year} {$copyright}";?></p>
+        <p>&copy; <?php echo"{$year} {$oj_copy}";?></p>
       </footer>
 
     </div>

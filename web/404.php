@@ -23,7 +23,7 @@ $img_id=rand(1,2);
       </div>
 	  <hr>
       <footer>
-        <p>&copy; <?php echo"{$year} {$copyright}";?></p>
+        <p>&copy; <?php echo"{$year} {$oj_copy}";?></p>
       </footer>
       </div>
     <script src="../assets/js/jquery.js"></script>

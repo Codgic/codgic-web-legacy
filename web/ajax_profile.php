@@ -1,4 +1,5 @@
 <?php
+require 'inc/ojsettings.php';
 if(!isset($_POST['type'],$_POST['nick'],$_POST['email'],$_POST['school']))
 	die('Invalid argument.');
 if(strlen($_POST['nick'])>190)
@@ -47,10 +48,11 @@ if($_POST['type']=='profile'){
 		die('密码不符合要求(至少6位)');
 	$pwd=mysqli_real_escape_string($con,$_POST['newpwd']);
 
-	mysqli_query($con,"insert into users (user_id,email,password,reg_time,nick,school,defunct) values ('$user','".mysqli_real_escape_string($con,$_POST['email'])."','$pwd',NOW(),'".mysqli_real_escape_string($con,$_POST['nick'])."','".mysqli_real_escape_string($con,$_POST['school'])."','Y')");
+	if($require_confirm) mysqli_query($con,"insert into users (user_id,email,password,reg_time,nick,school,defunct) values ('$user','".mysqli_real_escape_string($con,$_POST['email'])."','$pwd',NOW(),'".mysqli_real_escape_string($con,$_POST['nick'])."','".mysqli_real_escape_string($con,$_POST['school'])."','Y')");
+	else mysqli_query($con,"insert into users (user_id,email,password,reg_time,nick,school,defunct) values ('$user','".mysqli_real_escape_string($con,$_POST['email'])."','$pwd',NOW(),'".mysqli_real_escape_string($con,$_POST['nick'])."','".mysqli_real_escape_string($con,$_POST['school'])."','N')");
 	$code=mysqli_errno();
 	if($code==0)
-		echo '成功创建用户';
+		echo 'success';
 	else if($code==1062)
 		echo "用户'$user' 已经存在";
 	else 

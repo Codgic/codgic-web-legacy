@@ -55,13 +55,13 @@ $num=0;
                 }
                 ?>
 		  </ul><?php }else{?></h1>
-		  <br><br><p><font color='grey' size=10>:( 暂时没有发布过新闻~</font></p>
+		  <br><p><font color='grey' size=5>:( 暂时没有发布过新闻~</font></p>
 		  <?php }?>
 	  </div>
       <div class="span6">
         <h1>分类</h1><br>
 		<?php if($category!='') echo "$category";
-		      else echo'<br><br><p><font color="grey" size=10>:( 暂时没有发布题目分类目录~</font></p>';?>
+		      else echo'<p><font color="grey" size=5>:( 暂时没有发布题目分类目录~</font></p>';?>
 	  </div>
 	  </div>
 	  <div class="row-fluid">
@@ -69,7 +69,7 @@ $num=0;
       </div>
       <hr>
       <footer>
-        <p>&copy; <?php echo"{$year} {$copyright}";?></p>
+        <p>&copy; <?php echo"{$year} {$oj_copy}";?></p>
       </footer>
     </div>
 	

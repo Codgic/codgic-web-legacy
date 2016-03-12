@@ -3,8 +3,9 @@ class mycrypt {
     public $pubkey;
     public $privkey;
     function __construct() {
-                $this->pubkey = file_get_contents('/var/www/openssl/public.key'); //Your ssl key location
-                $this->privkey = file_get_contents('/var/www/openssl/private.key');
+				require 'inc/ojsettings.php';
+                $this->pubkey = file_get_contents($pub_dir); 
+                $this->privkey = file_get_contents($pri_dir);
     }
     public function encrypt($data) {
         if (openssl_private_encrypt($data, $encrypted, $this->privkey))

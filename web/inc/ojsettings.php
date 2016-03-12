@@ -1,11 +1,68 @@
 <?php
-$is_linux=1; //0=False, 1=True
+//CWOJ Configuration File
+//=======================
+
+//0. Notes
+//Please configure database in inc/database.php.
+//Please configure email in inc/mailsettings.php.
+
+//1. Environment Variables
+//1.1 Temporary Location
+//----------------
+//"os_type" defines the operating system that CWOJ is currently deployed on.
+//You'll need to define a temporary directory for CWOJ to store a temporary file named "cwoj_postmessage.lock"
+//This ensures the functionality of Messaging functions.
+$temp_dir="/tmp/cwoj_postmessage.lock"; 
+
+//1.2 OS Name
+//"os_name" is shown in about.php which tells the users what platform CWOJ is currently deployed on.
+$os_name="Ubuntu 14.04 LTS";
+
+//2. OJ Variables
+//-----------------
+//2.1 Basic Settings
+//"oj_name" defines the very yours name of your OJ.
+//"oj_copy" defines the copyright text on the footer of each page.
+//"web_ver" defines the version number of the web part, which is shown in preference.php.
+//"daemon_ver" defines the version number of the judging service, which is shown in preference.php.
+$oj_name = 'CWOJ'; 
+$oj_copy = 'CWOJ Team'; 
+$web_ver = '0.85.160312-1601';
+$daemon_ver = '1.01.160227-1736';
+
+//2.2 User policy settings
+//"require_auth" determines whether log in is needed to access CWOJ.
+//If "require_auth" is set to 0, then guests can access CWOJ without the need to log in.
+//If "require_auth" is set to 1, then guests must login to access CWOJ.
+$require_auth=1;
+
+//"require_confirm" determines whether registers must be confirmed by administrators.
+//If "require_confirm" is set to 0, then new users can log in instantly after registering.
+//If "require_confirm" is set to 1, then new users must wait until their account is confirmed by administrators.
+$require_confirm=0;
+
+//2.3 Encryption Settings
+//Before setting up these values, first generate a copy of openssl certificate (public/pirvate).
+//The certificates are used to ensure the secuity of Forget Password function by preventing confirmation code from leaking. 
+//"pub_dir" defines the location of public certificate.
+//"pri_dir" defines the location of pirvate certificate.
+$pub_dir="/var/www/openssl/public.key";
+$pri_dir="/var/www/openssl/private.key";
+
+//2.4 Night Mode Setings
+//The first statment defines the timezone that the server uses.
 date_default_timezone_set("PRC"); //Time zone settings
-$daystart = 7;  //Start hour of Day Mode
-$nightstart = 21;  //Start hour of Night Mode
-$oj_name = 'CWOJ';  //OJ Name
-$web_ver = '0.81rc1.160214-2245';
-$daemon_ver = '1.0.bsoj_original';
-$copyright = 'CWOJ Team';  //Copyright info
-$errorimg_num = 2;  //404 page img num
-$news_num=8; //Number of news shown in homepage
+
+//"day_start" defines the start hour of day mode (24 hour format)
+$daystart = 7;
+
+//"night_start" defines the start hour of night mode (24 hour format)
+$nightstart = 21; 
+
+//2.5 404 Page Settings
+//"errorimg_num" defines the number of uploaded pictures to be shown in 404 page.
+$errorimg_num = 2;  
+
+//2.6 News Settings
+//"news_num" defines the maxium number of news shown in index.php
+$news_num=8; 

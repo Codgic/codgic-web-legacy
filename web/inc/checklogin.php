@@ -1,6 +1,5 @@
 <?php
-//Use global authorization
-define('REQUIRE_AUTH',1);
+require 'inc/ojsettings.php';
 define('DISALLOW_GOOGLEBOT',0);
 
 session_start();
@@ -8,7 +7,7 @@ session_start();
 if(!isset($_SESSION['user']) && (DISALLOW_GOOGLEBOT || !isset($_SERVER['HTTP_USER_AGENT']) || FALSE===strstr($_SERVER['HTTP_USER_AGENT'],'Googlebot'))){
 	require 'inc/cookie.php';
 	if(!check_cookie()) {
-		if(REQUIRE_AUTH) {
+		if($require_auth) {
 		  header("location: auth.php");
 		  exit;
 		}

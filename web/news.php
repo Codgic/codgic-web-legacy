@@ -74,7 +74,7 @@ $res=mysqli_query($con,"select news_id,title,time from news where news_id>0 orde
     </div>
 	<hr>
 	<footer>
-       <p>&copy; <?php echo"{$year} {$copyright}";?></p>
+       <p>&copy; <?php echo"{$year} {$oj_copy}";?></p>
     </footer>
     <script src="../assets/js/jquery.js"></script>
     <script src="../assets/js/bootstrap.min.js"></script>
