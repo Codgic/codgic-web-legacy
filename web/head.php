@@ -3,9 +3,10 @@
   <meta name="renderer" content="webkit">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <?php header("Content-Type: text/html; charset=utf-8");?>
-  <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon" />
+  <link rel="shortcut icon" href="assets/res/favicon.ico" type="image/x-icon" />
   <link rel="stylesheet" href="/assets/css/normalize.min.css" type="text/css" />
   <title><?php echo $Title?></title>
+  <script src="/assets/js/twemoji.min.js"></script>
   <script src="/assets/js/jquery.js"></script> 
   <?php 
   $year=date('Y');
@@ -25,7 +26,7 @@
 		$pref->night='on';
 	};
 	if($pref->night=='on') {
-		$loginimg='/images/loginbg_dark.png';
+		$loginimg='/assets/res/loginbg_dark.png';
 		$css1='/assets/css/cerulean_dark.min.css';
 		$css2='/assets/css/docs_dark.css?v=12';
 		$well_class='#212121';
@@ -33,7 +34,7 @@
 		$nav_class='navbar-inverse';
      	$button_class='btn-inverse';}
 	else {
-		$loginimg='/images/loginbg.png';
+		$loginimg='/assets/res/loginbg.png';
 		$css1='/assets/css/cerulean.min.css';
 		$css2='/assets/css/docs.css?v=12';
 		$well_class='#fff';

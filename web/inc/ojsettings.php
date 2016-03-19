@@ -27,7 +27,7 @@ $os_name="Ubuntu 14.04 LTS";
 //"daemon_ver" defines the version number of the judging service, which is shown in preference.php.
 $oj_name = 'CWOJ'; 
 $oj_copy = 'CWOJ Team'; 
-$web_ver = '0.85.160312-1601';
+$web_ver = '0.86.160319-1126';
 $daemon_ver = '1.01.160227-1736';
 
 //2.2 User policy settings
@@ -41,15 +41,7 @@ $require_auth=1;
 //If "require_confirm" is set to 1, then new users must wait until their account is confirmed by administrators.
 $require_confirm=0;
 
-//2.3 Encryption Settings
-//Before setting up these values, first generate a copy of openssl certificate (public/pirvate).
-//The certificates are used to ensure the secuity of Forget Password function by preventing confirmation code from leaking. 
-//"pub_dir" defines the location of public certificate.
-//"pri_dir" defines the location of pirvate certificate.
-$pub_dir="/var/www/openssl/public.key";
-$pri_dir="/var/www/openssl/private.key";
-
-//2.4 Night Mode Setings
+//2.3 Night Mode Setings
 //The first statment defines the timezone that the server uses.
 date_default_timezone_set("PRC"); //Time zone settings
 
@@ -59,10 +51,14 @@ $daystart = 7;
 //"night_start" defines the start hour of night mode (24 hour format)
 $nightstart = 21; 
 
-//2.5 404 Page Settings
+//2.4 404 Page Settings
 //"errorimg_num" defines the number of uploaded pictures to be shown in 404 page.
 $errorimg_num = 2;  
 
-//2.6 News Settings
+//2.5 News Settings
 //"news_num" defines the maxium number of news shown in index.php
 $news_num=8; 
+
+//2.6 Testcase upload filesize
+//Don't forget to change the settings in php.ini at the same time!
+$tc_size='50mb';

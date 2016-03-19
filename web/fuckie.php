@@ -29,10 +29,10 @@
   <h2>更先进的浏览器</h2>
   <p>推荐使用以下浏览器的最新版本。如果你的电脑已有以下浏览器的最新版本则直接使用该浏览器访问<b id="referrer"></b>即可。</p>
   <ul class="browser">
-    <li><a href="https://www.microsoft.com/en-us/windows/microsoft-edge"><img src="https://www.cwoj.tk/images/edge.jpg" alt="Edge浏览器" /> Edge浏览器<span>Microsoft Edge</span></a></li>
-	<li><a href="https://www.google.com/intl/zh-CN/chrome/browser/index.html"><img src="http://www.goody.com.cn/2014/updatebrowser/images/chrome.jpg" alt="谷歌浏览器" /> 谷歌浏览器<span>Google Chrome</span></a></li>
-	<li><a href="http://www.firefox.com.cn/download"><img src="http://www.goody.com.cn/2014/updatebrowser/images/firefox.jpg" alt="火狐浏览器" /> 火狐浏览器<span>Mozilla Firefox</span></a></li>
-	<li><a href="http://www.opera.com/download/get"><img src="http://www.goody.com.cn/2014/updatebrowser/images/opera.jpg" alt="Opera浏览器" /> Opera浏览器<span>Opera Explorer</span></a></li>
+    <li><a href="https://www.microsoft.com/en-us/windows/microsoft-edge"><img src="assets/res/edge.png" alt="Edge浏览器" /> Edge浏览器<span>Microsoft Edge</span></a></li>
+	<li><a href="https://www.google.com/intl/zh-CN/chrome/browser/index.html"><img src="assets/res/chrome.png" alt="谷歌浏览器" /> 谷歌浏览器<span>Google Chrome</span></a></li>
+	<li><a href="http://www.firefox.com.cn/download"><img src="assets/res/firefox.png" alt="火狐浏览器" /> 火狐浏览器<span>Mozilla Firefox</span></a></li>
+	<li><a href="http://www.opera.com/download/get"><img src="assets/res/opera.png" alt="Opera浏览器" /> Opera浏览器<span>Opera Explorer</span></a></li>
 	<div class="clean"></div>
 	</ul>
    <div class="line"></div>

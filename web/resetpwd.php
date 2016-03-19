@@ -1,10 +1,8 @@
 <?php 
 require ('inc/ojsettings.php');
-require ('inc/ojencrypt.php');
-$code = rand(10000000,99999999);
-$code = $rsa -> encrypt($code);
 session_start(); 
 $_SESSION['resetpwd_flag']=0;
+$_SESSION['resetpwd_code']=rand(10000000,99999999);
 ?>
 <!DOCTYPE html>
 <html>
@@ -160,7 +158,6 @@ echo "<body style=\"background-image: url({$loginimg})\">";
 		  $('#emailpage').fadeIn('slow');
 		  var user, email;
 		  var error = 0;
-		  var code = '<?php echo $code?>';
 		  $('#email_nxt').click(function(){
 			$('#ajax_emailresult').hide();
 			var a=false;
@@ -184,7 +181,7 @@ echo "<body style=\"background-image: url({$loginimg})\">";
 			$.ajax({
               type:"POST",
               url:'ajax_resetpwd.php',
-              data:{"type":'verify',"user":user,"email":email,"code":code},
+              data:{"type":'verify',"user":user,"email":email},
               success:function(msg){
 				  email_nxt.removeAttribute("disabled");
 			      email_nxt.value = "下一步";
@@ -204,12 +201,16 @@ echo "<body style=\"background-image: url({$loginimg})\">";
 			$.ajax({
               type:"POST",
               url:'ajax_resetpwd.php',
-              data:{"type":'resend',"user":user,"email":email,"code":code},
+              data:{"type":'resend',"user":user,"email":email},
               success:function(msg){
                   if(msg == 'success') {
 					  $('#ajax_verifyresult').html('邮件重新发送成功!').show();
 					  settime(resend_btn);
 				  }
+				  else if(msg == 'timeout'){
+						  $('#ajax_verifyresult').html('身份验证过期，请重新开始...').show();
+						  window.setTimeout("window.location='resetpwd.php'",2000); 
+					  }
 				  else {
 					  $('#ajax_verifyresult').html(msg).show();
 					  resend_btn.removeAttribute("disabled");
@@ -234,13 +235,16 @@ echo "<body style=\"background-image: url({$loginimg})\">";
 				$.ajax({
                   type:"POST",
                   url:'ajax_resetpwd.php',
-                  data:{"type":'encode',"usercode":usercode},
+                  data:{"type":'match',"usercode":usercode},
                   success:function(msg){
-					  usercode = msg;
-					  if (usercode == code){
+					  if (msg=='success'){
 						  $.post('ajax_resetpwd.php',{"type":'setflag'},function(){switch_pwd();});
 					  } 
-					  else{
+					  else if(msg=='timeout'){
+						  $('#ajax_verifyresult').html('身份验证过期，请重新开始...').show();
+						  window.setTimeout("window.location='resetpwd.php'",2000); 
+					  }
+					  else {
 						  error++;
 						  if(error < 3) {
 							  $('#ajax_verifyresult').html('验证码错误').show();
@@ -291,13 +295,14 @@ echo "<body style=\"background-image: url({$loginimg})\">";
                   if(msg == 'success'){
 	              $('#ajax_pwdresult').html('密码重置成功，即将跳转至首页...').show();
 	              window.setTimeout("window.location='index.php'",2000); 
-                }else
+                }else{
                     $('#ajax_pwdresult').html(msg).show();
               }
-            });
-          }
+            }
         });
-	  });
-	</script>
-  </body>
+	  }
+	});
+});
+</script>
+</body>
 </html>

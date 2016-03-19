@@ -17,9 +17,9 @@ $Title=$inTitle .' - '. $oj_name;
             <h2>关于</h2>
           </div>
 		  <div>
-          <p>还没想好写什么……
-             没想好就是没想好，还是别往下看了吧。</p>
-          <p>本OJ基于几个神犇写的开源项目：Bashu OnlineJudge。</p>
+          <p>这是一个充斥着辣鸡代码的BugOJ，同时是成外第一个内部OJ。</p>
+          <p>本OJ基于GitHub上的开源项目Bashu OnlineJudge二次开发，原本优秀的代码风格被改得面目全非。&#x1F602;</p>
+		  <p>然而，对于成(shui)外(wang)并没有什么卵办法，还是得用这套OJ...</p>
 		  <br>
           <p><b>CWOJ Team：</b></p>
 		  jimmy19990： 网页前端，数据库维护。<br>Void： 题库维护。<br>dreamfly： 题库维护。<br>
@@ -33,7 +33,7 @@ $Title=$inTitle .' - '. $oj_name;
           <div>
             <h3>问：本OJ采用什么编译器进行编译？编译语句是什么？</h3>
             <p>答：管那么多干嘛！</p>
-            <p>我们使用GNU GCC/G++来编译C/C++程序，用Free Pascal来编译Pascal程序，环境为<?php echo $env_name?>。</p>
+            <p>我们使用GNU GCC/G++来编译C/C++程序，用Free Pascal来编译Pascal程序，环境为<?php echo $os_name?>。</p>
             <p>其中，编译语句为：</p>
             <table class="table table-striped table-bordered table-condensed table-last-left-aligned" id="tab_options">
               <tbody>
