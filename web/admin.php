@@ -31,18 +31,18 @@ $Title=$inTitle .' - '. $oj_name;
           
     <div class="container-fluid admin-page">
       <div class="row-fluid">
-
         <div class="span12">
-          <div class="tabbable tabs-left">
-            <ul class="nav nav-tabs" id="nav_tab">
+          <div class="tabbable">
+            <ul class="nav nav-pills" id="nav_tab" style="padding-right:20px;padding-left:20px;margin-right:30px;lineheight:30px;font-size:20px">
               <li class="active"><a href="#home" data-toggle="tab">主页</a></li>
               <li class=""><a href="#news" data-toggle="tab">新闻</a></li>
               <li class=""><a href="#experience" data-toggle="tab">经验</a></li>
               <li class=""><a href="#permission" data-toggle="tab">权限</a></li>
               <li class=""><a href="#user" data-toggle="tab">用户</a></li>
             </ul>
+		  </div>
             <div class="tab-content">
-              <div class="tab-pane active" id="home">
+              <div class="tab-pane fade in active" id="home">
                 <div class="row-fluid">
                   <div class="span3 operations">
                     <h3 class="center">题目</h3>
@@ -68,17 +68,17 @@ $Title=$inTitle .' - '. $oj_name;
                   </div>
                 </div>
               </div>
-              <div class="tab-pane" id="news">
+              <div class="tab-pane fade" id="news">
                 <div style="margin-left:50px;margin-right:50px">
+				<?php echo"<button class=\"btn {$button_class} pull-right\" id=\"new_news\">添加新闻...</button>"?>
                   <div id="table_news">
                     <div class="row-fluid">
                       <div class="alert span4">正在加载新闻...</div>
                     </div>
                   </div>
-				  <?php echo"<button class=\"btn {$button_class}\" id=\"new_news\">添加新闻...</button>"?>
                 </div>
               </div>
-              <div class="tab-pane" id="experience">
+              <div class="tab-pane fade" id="experience">
                 <div style="margin-left:50px;margin-right:50px">
 				<div class="row-fluid">
 				<div class="span6">
@@ -91,11 +91,10 @@ $Title=$inTitle .' - '. $oj_name;
                     <input type="hidden" name="op" value="add_experience_title">
                   </form>
                  </div>
-				 <div class="span5 offset1">
+				 <div class="span6">
                   <form action="admin.php" method="post" id="form_level_experience">
                     <div id="table_level_experience"> 
                     </div>
-					<br><br>
                     <input type="submit" class="btn" value="更新">
                     <input type="hidden" name="op" value="update_level_experience">
                   </form>
@@ -103,7 +102,7 @@ $Title=$inTitle .' - '. $oj_name;
 			  </div>
 			  </div>
               </div>
-              <div class="tab-pane" id="permission">
+              <div class="tab-pane fade" id="permission">
                 <div style="margin-left:50px">
                   <div id="table_priv"></div>
                   <form action="admin.php" method="post" class="form-inline" id="form_priv">
@@ -119,7 +118,7 @@ $Title=$inTitle .' - '. $oj_name;
                   </form>
                 </div>
               </div>
-              <div class="tab-pane" id="user">
+              <div class="tab-pane fade" id="user">
                 <div style="margin-left:50px">
                   <div id="table_usr"></div>
                   <form action="admin.php" method="post" class="form-inline" id="form_usr">
@@ -195,9 +194,12 @@ $Title=$inTitle .' - '. $oj_name;
           <div class="alert alert-error hide margin-0" id="addnews_res">发生错误</div>
         </div>
         <div class="modal-footer form-inline">
+		  <button class="pull-left btn btn-danger hide" id="btn_delnews">删除</button>
+		  <label class="checkbox hide" style="margin-right:3px">
+            <input type="checkbox" name="update_time"> 更新时间 (尚未完成)
+          </label>
           <button class="btn btn-primary" id="addnews_submit">提交</button>
 		  <button class="btn btn-primary hide" id="editnews_submit">提交</button>
-		  <button class="pull-left btn btn-danger hide" id="btn_delnews">删除</button>
           <a href="#" class="btn" data-dismiss="modal">关闭</a>
         </div>
 		<div class="hidden-phone" style="width:750px"></div>
@@ -208,7 +210,7 @@ $Title=$inTitle .' - '. $oj_name;
         <p>&copy; <?php echo"{$year} {$oj_copy}";?></p>
       </footer>
     </div>
-    <script src="../assets/js/jquery.js"></script>
+    <script src="../assets/js/jquery.min.js"></script>
     <script src="../assets/js/bootstrap.min.js"></script>
     <script src="../assets/js/common.js"></script>
     <script src="../assets/js/highcharts.js"></script>

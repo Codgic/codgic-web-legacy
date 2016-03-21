@@ -14,17 +14,32 @@ $Title=$inTitle .' - '. $oj_name;
       <div class="row-fluid">
         <div class="offset2 span8" style="font-size:16px">
           <div class="page-header">
-            <h2>关于</h2>
+            <h2>简介</h2>
           </div>
 		  <div>
           <p>这是一个充斥着辣鸡代码的BugOJ，同时是成外第一个内部OJ。</p>
           <p>本OJ基于GitHub上的开源项目Bashu OnlineJudge二次开发，原本优秀的代码风格被改得面目全非。&#x1F602;</p>
 		  <p>然而，对于成(shui)外(wang)并没有什么卵办法，还是得用这套OJ...</p>
-		  <br>
-          <p><b>CWOJ Team：</b></p>
-		  jimmy19990： 网页前端，数据库维护。<br>Void： 题库维护。<br>dreamfly： 题库维护。<br>
+		  </div>
         </div>
-      </div>
+	  </div>
+	  <div class="row-fluid">
+        <div class="offset2 span8" style="font-size:16px">
+          <div class="page-header">
+            <h2>关于</h2>
+          </div>
+		  <div>
+		    <p><b>版本信息:</b><p>
+		    <p>网页端: <?php echo"{$web_ver}"?></p>
+		    <p>评测端: <?php echo"{$daemon_ver}"?></p>
+			<hr>
+            <p><b>CWOJ Team：</b></p>
+		    <p>jimmy19990： 前端和后端。</p>
+		    <p>Void： 题库管理。</p>
+		    <p>dreamfly： 题库管理。</p>
+          </div>
+		</div>
+	  </div>
       <div class="row-fluid">
         <div class="offset2 span8" style="font-size:16px">
           <div class="page-header">
@@ -98,9 +113,9 @@ $Title=$inTitle .' - '. $oj_name;
                 </tr>
               </tbody>
             </table>
-          </div>
-          <hr>
+			<hr>
           <p><h4>如果您还有其他任何问题，建议或是错误报告，请发布到： <a href="board.php">讨论中心</a>。</h4></p>
+          </div>
         </div>
       </div>
       <hr>
@@ -108,7 +123,8 @@ $Title=$inTitle .' - '. $oj_name;
         <p>&copy; <?php echo"{$year} {$oj_copy}";?></p>
       </footer>
     </div>
-    <script src="../assets/js/jquery.js"></script>
+    </div>
+    <script src="../assets/js/jquery.min.js"></script>
     <script src="../assets/js/bootstrap.min.js"></script>
     <script src="../assets/js/common.js"></script>
     <script type="text/javascript"> 

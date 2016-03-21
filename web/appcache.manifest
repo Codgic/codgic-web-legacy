@@ -1,0 +1,23 @@
+CACHE MANIFEST
+# VERSION 0.2
+
+CACHE:
+/assets/css/bootstrap.min.css
+/assets/css/bootstrap-responsive.min.css
+/assets/css/cerulean.min.css
+/assets/css/cerulean_dark.min.css
+/assets/css/docs.css
+/assets/css/docs_dark.css
+/assets/css/jquery-ui.min.css
+/assets/css/normalize.min.css
+/assets/css/style.css
+/assets/js/jquery.min.js
+/assets/js/jquery-ui.min.js
+/assets/js/common.js
+/assets/js/chat.js
+/assets/js/highcharts.js
+
+NETWORK:
+
+FALLBACK:
+/ 

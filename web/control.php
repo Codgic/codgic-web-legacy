@@ -63,11 +63,6 @@ $Title=$inTitle .' - '. $oj_name;
             </ol>
           </p>
           <button class="btn" id="open_source">开源所有代码</button>
-		  
-		  <h2>版本信息</h2>
-            <br>
-			<strong><font size=4><p>网页端: <?php echo"{$web_ver}"?></p>
-			<p>评测端: <?php echo"{$daemon_ver}"?></p></font></strong>
         </div>
       <?php }?>
       </div>
@@ -77,7 +72,7 @@ $Title=$inTitle .' - '. $oj_name;
       </footer>
     </div>
 
-    <script src="../assets/js/jquery.js"></script>
+    <script src="../assets/js/jquery.min.js"></script>
     <script src="../assets/js/bootstrap.min.js"></script>
     <script src="../assets/js/common.js"></script>
 

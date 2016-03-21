@@ -51,7 +51,7 @@ samp.samp-sourcecode {
   background-color: white;
 }
 .btn {
-  font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+  font-family: "Arial", "Microsoft YaHei","微软雅黑", Helvetica Neue;
 }
 #LoginModal{
   margin-left: -130px;

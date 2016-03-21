@@ -330,7 +330,7 @@ $Title=$inTitle .' - '. $oj_name;
 	  <span id=\"btn_show\" title=\"Alt+H\" class=\"btn btn {$button_class} shortcut-hint\">&laquo; 显示详情</span>";?>
     </div>
 
-    <script src="../assets/js/jquery.js"></script>
+    <script src="../assets/js/jquery.min.js"></script>
     <script src="../assets/js/bootstrap.min.js"></script>
     <script src="../assets/js/common.js"></script>
 

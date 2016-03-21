@@ -7,7 +7,7 @@
   <link rel="stylesheet" href="/assets/css/normalize.min.css" type="text/css" />
   <title><?php echo $Title?></title>
   <script src="/assets/js/twemoji.min.js"></script>
-  <script src="/assets/js/jquery.js"></script> 
+  <script src="/assets/js/jquery.min.js"></script> 
   <?php 
   $year=date('Y');
   require 'inc/ojsettings.php';

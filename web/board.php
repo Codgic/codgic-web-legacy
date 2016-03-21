@@ -132,7 +132,7 @@ $Title=$inTitle .' - '. $oj_name;
                   echo '&nbsp;<span class="label label-warning">最新消息</span>';
                 if($deep==0 && $row[6])
                     echo '&nbsp;&nbsp;<a class="prob_link" href="problempage.php?problem_id=',$row[6],'">Problem ',$row[6],'</a>';
-                echo ' <button id="reply_msg',$row[3],'" class="btn btn-mini">回复</button>';
+                echo ' <button id="reply_msg',$row[3],'" class="btn btn-small">回复</button>';
                 if($row[7])
                   echo '<p class="msg_content msg_detailed">';
                 else
@@ -170,7 +170,7 @@ $Title=$inTitle .' - '. $oj_name;
 
     </div>
     <script src="../assets/js/bbcode.js"></script>
-    <script src="../assets/js/jquery.js"></script>
+    <script src="../assets/js/jquery.min.js"></script>
     <script src="../assets/js/bootstrap.min.js"></script>
     <script src="../assets/js/common.js"></script>
 
