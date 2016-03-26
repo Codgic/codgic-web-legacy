@@ -17,7 +17,7 @@ $img_id=mt_rand(1,intval($num_403));
             <h2>ERROR 403: 我拒绝!</h2>
           </div>
 		  <div>
-		  <p><a href="index.php"><img src="/assets/res/403_<?php echo $img_id?>.jpg"></a></p>
+		  <center><p><a href="/index.php"><img src="/assets/res/403_<?php echo $img_id?>.jpg"></a></p></center>
         </div>
       </div>
       </div>
@@ -29,5 +29,8 @@ $img_id=mt_rand(1,intval($num_403));
     <script src="../assets/js/jquery.min.js"></script>
     <script src="../assets/js/bootstrap.min.js"></script>
     <script src="../assets/js/common.js"></script>
+	<script type="text/javascript">
+	window.setTimeout("window.location='/index.php'",2000); 
+	</script>
   </body>
 </html>
