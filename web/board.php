@@ -50,7 +50,7 @@ $Title=$inTitle .' - '. $oj_name;
 
     <?php require('page_header.php'); ?>
     <div class="replypanel hide" id="replypanel">
-      <?php echo "<div class=\"well well-small margin-0\" style=\"background-color:{$well_class}\">";?>
+      <div class="well well-small margin-0" style="background-color:<?php echo $well_class?>">
         <h4 style="text-align:center;margin-bottom:10px;">新建讨论</h4>
         <form class="form-horizontal" method="post" action="postmessage.php">
           <fieldset>
@@ -96,8 +96,8 @@ $Title=$inTitle .' - '. $oj_name;
     <div class="container-fluid">
       <div class="row-fluid">
         <div class="span12" id="board">
-          <?php 
-		    echo"<a href=\"#\" title=\"Alt+N\" class=\"btn {$button_class} shortcut-hint\" id=\"new_msg\"><i class=\"icon-file\"></i> 新建讨论...</a>";
+		    <a href="#" title="Alt+N" class="btn <?php echo $button_class?> shortcut-hint" id="new_msg"><i class="icon-file"></i> 新建讨论...</a>
+		  <?php
             $top=$query_id;
             if($range){
               $res=mysqli_query($con,"select title,depth,user_id,message_id,in_date,thread_id,problem_id,ASCII(content) from message where thread_id<$query_id and thread_id>=$range $cond_prob order by thread_id desc,orderNum");

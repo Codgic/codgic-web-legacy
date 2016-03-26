@@ -42,8 +42,9 @@
 		$nav_class='';
 	    $button_class='btn-primary';
 		};
-  echo "<link href=\"{$css1}\" rel=\"stylesheet\" type=\"text/css\" />";
-  echo "<link href=\"{$css2}\" rel=\"stylesheet\">";?>
+  ?>
+  <link href="<?php echo $css1?>" rel="stylesheet" type="text/css">
+  <link href="<?php echo $css2?>" rel="stylesheet" type="text/css">
   <link href="../assets/css/bootstrap-responsive.min.css" rel="stylesheet">
   <link href="../assets/css/font-awesome.min.css" rel="stylesheet">
   <link href="../assets/js/google-code-prettify/prettify.css" rel="stylesheet">

@@ -37,8 +37,8 @@ $Title=$inTitle .' - '. $oj_name;
               <li class="active"><a href="#home" data-toggle="tab">主页</a></li>
               <li class=""><a href="#news" data-toggle="tab">新闻</a></li>
               <li class=""><a href="#experience" data-toggle="tab">经验</a></li>
-              <li class=""><a href="#permission" data-toggle="tab">权限</a></li>
               <li class=""><a href="#user" data-toggle="tab">用户</a></li>
+              <li class=""><a href="#others" data-toggle="tab">其它</a></li>
             </ul>
 		  </div>
             <div class="tab-content">
@@ -46,8 +46,8 @@ $Title=$inTitle .' - '. $oj_name;
                 <div class="row-fluid">
                   <div class="span3 operations">
                     <h3 class="center">题目</h3>
-                    <?php echo"<a href=\"newproblem.php\" class=\"btn {$button_class}\">添加题目...</a>
-					<a href=\"#\" id=\"btn_category\" class=\"btn {$button_class}\">题目分类...</a>"?>
+                    <a href="newproblem.php" class="btn <?php echo $button_class?>">添加题目...</a>
+					<a href="#" id="btn_category" class="btn <?php echo $button_class?>">题目分类...</a>
                     <a href="#" id="btn_rejudge" class="btn btn-info">重新评测...</a>
                   </div>
                   <div class="span5">
@@ -57,7 +57,7 @@ $Title=$inTitle .' - '. $oj_name;
                       <textarea name="text" rows="10" class="border-box" style="width:100%"><?php echo htmlspecialchars($index_text)?></textarea>
                       <div class="alert hide" id="alert_result">主页更新成功！</div>
                       <div class="pull-right">
-                        <?php echo "<input type=\"submit\" class=\"btn {$button_class}\" value=\"更新\">"?>
+                        <input type="submit" class="btn <?php echo $button_class?>" value="更新">
                       </div>
                     </form>
                   </div>
@@ -70,7 +70,7 @@ $Title=$inTitle .' - '. $oj_name;
               </div>
               <div class="tab-pane fade" id="news">
                 <div style="margin-left:50px;margin-right:50px">
-				<?php echo"<button class=\"btn {$button_class} pull-right\" id=\"new_news\">添加新闻...</button>"?>
+				<button class="btn <?php echo $button_class?> pull-right" id="new_news">添加新闻...</button>
                   <div id="table_news">
                     <div class="row-fluid">
                       <div class="alert span4">正在加载新闻...</div>
@@ -91,6 +91,7 @@ $Title=$inTitle .' - '. $oj_name;
                     <input type="hidden" name="op" value="add_experience_title">
                   </form>
                  </div>
+				 <hr class="visible-phone">
 				 <div class="span6">
                   <form action="admin.php" method="post" id="form_level_experience">
                     <div id="table_level_experience"> 
@@ -102,13 +103,15 @@ $Title=$inTitle .' - '. $oj_name;
 			  </div>
 			  </div>
               </div>
-              <div class="tab-pane fade" id="permission">
+              <div class="tab-pane fade" id="user">
                 <div style="margin-left:50px">
+				<div class="row-fluid">
+				<div class="span6">
                   <div id="table_priv"></div>
                   <form action="admin.php" method="post" class="form-inline" id="form_priv">
                     <label for="input_user_id" style="display:block">添加权限</label>
                     <input type="text" id="input_user_id" name="user_id" class="input-medium" placeholder="用户名...">&nbsp;&nbsp;
-                    <select name="right" id="slt_right">
+                    <select class="input-medium" name="right" id="slt_right">
                       <option value="administrator">管理人员</option>
                       <option value="source_browser">代码审核</option>
                       <option value="insider">题目添加</option>
@@ -116,25 +119,24 @@ $Title=$inTitle .' - '. $oj_name;
                     <input type="submit" class="btn" value="添加">
                     <input type="hidden" name="op" value="add_priv">
                   </form>
-                </div>
-              </div>
-              <div class="tab-pane fade" id="user">
-                <div style="margin-left:50px">
-                  <div id="table_usr"></div>
+				</div>
+				<hr class="visible-phone">
+				<div class="span6">
+				<div id="table_usr"></div>
                   <form action="admin.php" method="post" class="form-inline" id="form_usr">
                     <label for="input_dis_usr" style="display:block">禁用某个用户</label>
                     <input type="text" id="input_dis_usr" name="user_id" class="input-medium" placeholder="用户名...">&nbsp;&nbsp;
                     <input type="submit" class="btn" value="禁用">
                     <input type="hidden" name="op" value="disable_usr">
                   </form>
-                  <hr>
-
-                  <form action="admin.php" method="post" class="form-inline" id="form_resetpwd">
-                    <label for="input_reset_usr" style="display:block">重置用户密码</label>
-                    <input type="text" id="input_reset_usr" name="user_id" class="input-medium" placeholder="用户名...">&nbsp;&nbsp;
-                    <input type="submit" class="btn" value="重置">
-                    <input type="hidden" name="op" value="reset_usr">
-                  </form>
+				</div>
+				</div>  
+                </div>
+              </div>
+              <div class="tab-pane fade" id="others">
+                <div style="margin-left:50px">
+				<h1>:) Something's Comming ...</h1>
+				<br>
                 </div>
               </div>
             </div>
@@ -195,9 +197,6 @@ $Title=$inTitle .' - '. $oj_name;
         </div>
         <div class="modal-footer form-inline">
 		  <button class="pull-left btn btn-danger hide" id="btn_delnews">删除</button>
-		  <label class="checkbox hide" style="margin-right:3px">
-            <input type="checkbox" name="update_time"> 更新时间 (尚未完成)
-          </label>
           <button class="btn btn-primary" id="addnews_submit">提交</button>
 		  <button class="btn btn-primary hide" id="editnews_submit">提交</button>
           <a href="#" class="btn" data-dismiss="modal">关闭</a>
@@ -234,11 +233,12 @@ $Title=$inTitle .' - '. $oj_name;
 			getlevellist();
 			gettitlelist();
 		} 
-		else if(page=='permission'){
-			$('#nav_tab a[href="#permission"]').tab('show');
+		else if(page=='user'){
+			$('#nav_tab a[href="#user"]').tab('show');
 			getprivlist();
+			getusrlist();
 		}
-		else if(page=='user') $('#nav_tab a[href="#user"]').tab('show');
+		else if(page=='others') $('#nav_tab a[href="#others"]').tab('show');
 		else $('#nav_tab a[href="#home"]').tab('show');
 		$('#new_news').click(function(){
 			$('#NewsModalTitle').html('添加新闻').show();
@@ -317,12 +317,12 @@ $Title=$inTitle .' - '. $oj_name;
         $('#nav_tab').click(function(E){
           var jq=$(E.target);
           if(jq.is('a')){
-            if(E.target.innerHTML.search(/权限/i)!=-1)
-              getprivlist();
-            else if(E.target.innerHTML.search(/新闻/i)!=-1)
+            if(E.target.innerHTML.search(/新闻/i)!=-1)
               getnewslist();
-            else if(E.target.innerHTML.search(/用户/i)!=-1)
+            else if(E.target.innerHTML.search(/用户/i)!=-1){
               getusrlist();
+		      getprivlist();
+			}
             else if(E.target.innerHTML.search(/经验/i)!=-1){
               getlevellist();
               gettitlelist();
@@ -410,18 +410,6 @@ $Title=$inTitle .' - '. $oj_name;
             url:"ajax_admin.php",
             data:$('#form_usr').serialize(),
             success:getusrlist
-          });
-          return false;
-        });
-        $('#form_resetpwd').submit(function(E){
-          E.preventDefault();
-          if(!window.confirm("确认要重置所输入用户的密码?"))
-            return false;
-          $.ajax({
-            type:"POST",
-            url:"ajax_admin.php",
-            data:$('#form_resetpwd').serialize(),
-            success:function(info){alert(info)}
           });
           return false;
         });

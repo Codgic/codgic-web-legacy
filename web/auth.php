@@ -13,9 +13,8 @@ require('inc/ojsettings.php');
 	  echo"<script language=\"javascript\">
       window.location= \"index.php\";
       </script>";};
-  echo "<body style=\"background-image: url({$loginimg})\">";
   ?>
-
+    <body style="background-image: url(<?php echo $loginimg?>)">
     <div class="container-fluid">
       <div class="row-fluid">
         <div class="span center" style="padding:20px">

@@ -27,7 +27,7 @@ $os_name="Ubuntu 14.04 LTS";
 //"daemon_ver" defines the version number of the judging service, which is shown in preference.php.
 $oj_name = 'CWOJ'; 
 $oj_copy = 'CWOJ Team'; 
-$web_ver = '0.87.160321-2246';
+$web_ver = '0.88.160326-2022';
 $daemon_ver = '1.01.160227-1736';
 
 //2.2 User policy settings
@@ -53,7 +53,8 @@ $nightstart = 21;
 
 //2.4 404 Page Settings
 //"errorimg_num" defines the number of uploaded pictures to be shown in 404 page.
-$errorimg_num = 2;  
+$num_404 = 2;
+$num_403 = 1;  
 
 //2.5 News Settings
 //"news_num" defines the maxium number of news shown in index.php

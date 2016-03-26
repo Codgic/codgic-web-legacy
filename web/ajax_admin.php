@@ -1,5 +1,4 @@
 <?php
-$defaultpwd='CWOJUser125';
 session_start();
 if(!isset($_SESSION['administrator']))
 	die('Not administrator');
@@ -14,10 +13,10 @@ $level_max=(PROB_LEVEL_MASK>>PROB_LEVEL_SHIFT);
 if($op=="list_usr"){ 
 	$res=mysqli_query($con,"select user_id,accesstime,solved,submit,(accesstime IS NULL) from users where defunct='Y'");
 	if(mysqli_num_rows($res)==0)
-		die ('<div class="row-fluid"><div class="alert alert-info span4">暂没有被关小黑屋的用户...</div></div>');
+		die ('<table class="table table-condensed table-striped"><caption>禁用用户</caption></table><div class="row-fluid"><div class="alert alert-danger center">暂没有被禁用的用户...</div></div>');
 ?>
 	<table class="table table-condensed table-striped">
-		<caption>被关小黑屋的用户</caption>
+		<caption>被禁用的用户</caption>
 		<thead>
 			<tr>
 				<th>用户</th>
@@ -191,7 +190,7 @@ EOF;
 	$news_id=$_POST['news_id'];
 	$title=mysqli_real_escape_string($con,trim($_POST['title']));
 	$content=isset($_POST['content']) ? mysqli_real_escape_string($con,str_replace("\n", "<br>", $_POST['content'])) : '';
-	if(mysqli_query($con,"update news set title='$title',content='$content' where news_id=$news_id"))
+	if(mysqli_query($con,"update news set title='$title',content='$content',time=NOW() where news_id=$news_id"))
 		echo 'success';
 	else
 		echo 'error';
@@ -234,12 +233,5 @@ EOF;
 		echo 'success';
 	else
 		echo 'fail';
-}else if($op=="reset_usr"){
-	isset($_POST['user_id']) ? $uid=mysqli_real_escape_string($con,trim($_POST['user_id'])) : die('');
-	mysqli_query($con,"update users set password='$defaultpwd' where user_id='$uid'");
-	if(mysqli_affected_rows($con)==1)
-		echo '密码成功已重置为 CWOJUser125';
-	else
-		echo '不具备该用户';
 }
 ?>
