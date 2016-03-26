@@ -24,7 +24,7 @@ $inTitle='管理';
 $Title=$inTitle .' - '. $oj_name;
 ?>
 <!DOCTYPE html>
-<html>
+<html manifest="appcache.manifest">
   <?php require('head.php'); ?>
   <body>
     <?php require('page_header.php'); ?>  
@@ -209,11 +209,11 @@ $Title=$inTitle .' - '. $oj_name;
         <p>&copy; <?php echo"{$year} {$oj_copy}";?></p>
       </footer>
     </div>
-    <script src="../assets/js/jquery.min.js"></script>
-    <script src="../assets/js/bootstrap.min.js"></script>
-    <script src="../assets/js/common.js"></script>
-    <script src="../assets/js/highcharts.js"></script>
-    <script src="../assets/js/highcharts-more.js"></script>
+    <script src="/assets/js/jquery.min.js"></script>
+    <script src="/assets/js/bootstrap.min.js"></script>
+    <script src="/assets/js/common.js"></script>
+    <script src="/assets/js/highcharts.js"></script>
+    <script src="/assets/js/highcharts-more.js"></script>
 
     <script type="text/javascript">
 	var getlevellist=function(){$('#table_level_experience').load('ajax_admin.php',{op:'list_level_experience'});};

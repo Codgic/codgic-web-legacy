@@ -17,7 +17,7 @@ require('inc/database.php');
 $res=mysqli_query($con,"select news_id,title,time from news where news_id>0 order by news_id desc limit $page_id,50");
 ?>
 <!DOCTYPE html>
-<html>
+<html manifest="appcache.manifest">
   <?php require('head.php'); ?>
   <body>
     <?php require('page_header.php') ?>
@@ -76,9 +76,9 @@ $res=mysqli_query($con,"select news_id,title,time from news where news_id>0 orde
 	<footer>
        <p>&copy; <?php echo"{$year} {$oj_copy}";?></p>
     </footer>
-    <script src="../assets/js/jquery.min.js"></script>
-    <script src="../assets/js/bootstrap.min.js"></script>
-    <script src="../assets/js/common.js"></script>
+    <script src="/assets/js/jquery.min.js"></script>
+    <script src="/assets/js/bootstrap.min.js"></script>
+    <script src="/assets/js/common.js"></script>
     <script type="text/javascript"> 
 	function click_news(newsid){
 		  if(newsid){

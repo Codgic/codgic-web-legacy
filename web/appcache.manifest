@@ -1,7 +1,8 @@
 CACHE MANIFEST
-# VERSION 0.2
+# VERSION 0.5
 
 CACHE:
+/offline.html
 /assets/css/bootstrap.min.css
 /assets/css/bootstrap-responsive.min.css
 /assets/css/cerulean.min.css
@@ -16,8 +17,13 @@ CACHE:
 /assets/js/common.js
 /assets/js/chat.js
 /assets/js/highcharts.js
-
+/assets/res/403_1.jpg
+/assets/res/404_1.jpg
+/assets/res/404_2.jpg
+/assets/res/loginbg.png
+/assets/res/loginbg_dark.png
 NETWORK:
+*
 
 FALLBACK:
-/ 
+/ /offline.html

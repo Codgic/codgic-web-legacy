@@ -3,7 +3,7 @@ require('inc/database.php');
 require('inc/ojsettings.php');
 ?>
 <!DOCTYPE html>
-<html>
+<html manifest="appcache.manifest">
   <?php 
   $Title='欢迎来到'.$oj_name;
   require('head.php');
@@ -114,8 +114,8 @@ require('inc/ojsettings.php');
           </form>
         </div>
       </div>
-    <script src="../assets/js/jquery.min.js"></script>
-    <script src="../assets/js/common.js"></script>
+    <script src="/assets/js/jquery.min.js"></script>
+    <script src="/assets/js/common.js"></script>
     <script type="text/javascript">
       function switch_page() {
         $('#loginpage').hide();

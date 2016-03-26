@@ -6,7 +6,7 @@ $Title=$inTitle .' - '. $oj_name;
 $img_id=mt_rand(1,intval($num_403));
 ?>
 <!DOCTYPE html>
-<html>
+<html manifest="appcache.manifest">
   <?php require('head.php');?>
   <body>
     <?php require('page_header.php') ?>  
@@ -26,11 +26,8 @@ $img_id=mt_rand(1,intval($num_403));
         <p>&copy; <?php echo"{$year} {$oj_copy}";?></p>
       </footer>
       </div>
-    <script src="../assets/js/jquery.min.js"></script>
-    <script src="../assets/js/bootstrap.min.js"></script>
-    <script src="../assets/js/common.js"></script>
-	<script type="text/javascript">
-	window.setTimeout("window.location='/index.php'",2000); 
-	</script>
+    <script src="/assets/js/jquery.min.js"></script>
+    <script src="/assets/js/bootstrap.min.js"></script>
+    <script src="/assets/js/common.js"></script>
   </body>
 </html>

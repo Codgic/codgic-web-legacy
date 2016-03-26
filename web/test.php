@@ -1,7 +1,7 @@
 <?php
 ?>
 <!DOCTYPE html>
-<html>
+<html manifest="appcache.manifest">
   <body>
   <?php require 'head.php';?>
     <table class="table table-bordered result_table" style="margin-bottom:0">

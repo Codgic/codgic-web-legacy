@@ -74,7 +74,7 @@ $inTitle="源代码#$sol_id";
 $Title=$inTitle .' - '. $oj_name;
 ?>
 <!DOCTYPE html>
-<html>
+<html manifest="appcache.manifest">
   <?php require('head.php'); ?>
 
   <body onload="prettyPrint()">
@@ -121,10 +121,10 @@ $Title=$inTitle .' - '. $oj_name;
 
     </div>
 
-    <script src="../assets/js/google-code-prettify/prettify.js"></script>
-    <script src="../assets/js/jquery.min.js"></script>
-    <script src="../assets/js/bootstrap.min.js"></script>
-    <script src="../assets/js/common.js"></script>
+    <script src="/assets/js/google-code-prettify/prettify.js"></script>
+    <script src="/assets/js/jquery.min.js"></script>
+    <script src="/assets/js/bootstrap.min.js"></script>
+    <script src="/assets/js/common.js"></script>
     <script type="text/javascript"> 
       var solution_id=<?php echo $sol_id?>;
       $(document).ready(function(){

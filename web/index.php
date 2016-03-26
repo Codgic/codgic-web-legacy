@@ -23,7 +23,7 @@ $Title=$inTitle .' - '. $oj_name;
 $num=0;
 ?>
 <!DOCTYPE html>
-<html>
+<html manifest="appcache.manifest">
 <?php require('head.php');?>
   <body>
     <?php require('page_header.php');?>  
@@ -99,10 +99,10 @@ $num=0;
           echo 'var userid="',encode_user_id('id-'.$_SESSION['user']),'";';
       ?>
     </script>
-    <script src="../assets/js/jquery.min.js"></script>
-    <script src="../assets/js/bootstrap.min.js"></script>
-    <script src="../assets/js/common.js"></script>
-    <script src="../assets/js/chat.js"></script>
+    <script src="/assets/js/jquery.min.js"></script>
+    <script src="/assets/js/bootstrap.min.js"></script>
+    <script src="/assets/js/common.js"></script>
+    <script src="/assets/js/chat.js"></script>
     <script type="text/javascript"> 
 	  function click_news(newsid){
 		  if(newsid){

@@ -9,7 +9,7 @@ $inTitle='评测窗口';
 $Title=$inTitle .' - '. $oj_name;
 ?>
 <!DOCTYPE html>
-<html>
+<html manifest="appcache.manifest">
   <?php require('head.php'); ?>
 
   <body>
@@ -48,8 +48,8 @@ $Title=$inTitle .' - '. $oj_name;
 
     </div>
 
-    <script src="../assets/js/jquery.min.js"></script>
-    <script src="../assets/js/bootstrap.min.js"></script>
+    <script src="/assets/js/jquery.min.js"></script>
+    <script src="/assets/js/bootstrap.min.js"></script>
     <script type="text/javascript"> 
 	  $.ajaxSetup({cache:false});
       res_tyep={"0":"Correct","2":"Time Out","3":"MLE","4":"Wrong Answer","5":"Runtime Error","99":"Validator Error"};

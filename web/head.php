@@ -45,19 +45,19 @@
   ?>
   <link href="<?php echo $css1?>" rel="stylesheet" type="text/css">
   <link href="<?php echo $css2?>" rel="stylesheet" type="text/css">
-  <link href="../assets/css/bootstrap-responsive.min.css" rel="stylesheet">
-  <link href="../assets/css/font-awesome.min.css" rel="stylesheet">
-  <link href="../assets/js/google-code-prettify/prettify.css" rel="stylesheet">
+  <link href="/assets/css/bootstrap-responsive.min.css" rel="stylesheet">
+  <link href="/assets/css/font-awesome.min.css" rel="stylesheet">
+  <link href="/assets/js/google-code-prettify/prettify.css" rel="stylesheet">
   <!--[if lt IE 8]>
   <script type="text/javascript">
   window.location = "fuckie.php"; 
   </script>
   <![endif]-->
   <!--[if lt IE 9]>
-    <link rel="stylesheet" href="../assets/css/font-awesome-ie7.min.css">
-    <script src="../assets/js/html5.js"></script>
-	<script src="../assets/js/respond.js"></script>
-	<script type="text/javascript" src="../assets/js/jquery.placeholder.js">
+    <link rel="stylesheet" href="/assets/css/font-awesome-ie7.min.css">
+    <script src="/assets/js/html5.js"></script>
+	<script src="/assets/js/respond.js"></script>
+	<script type="text/javascript" src="/assets/js/jquery.placeholder.js">
       $(function() {
       $('input, textarea').placeholder();
       });

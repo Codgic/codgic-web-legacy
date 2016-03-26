@@ -39,7 +39,7 @@ $inTitle='上传图片';
 $Title=$inTitle .' - '. $oj_name;
 ?>
 <!DOCTYPE html>
-<html>
+<html manifest="appcache.manifest">
 	<meta charset="utf-8">
 	<style type="text/css">
 		body{

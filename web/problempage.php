@@ -98,7 +98,7 @@ $inTitle="题目#$prob_id";
 $Title=$inTitle .' - '. $oj_name;
 ?>
 <!DOCTYPE html>
-<html>
+<html manifest="appcache.manifest">
   <?php require('head.php'); ?>
 
   <body>
@@ -330,9 +330,9 @@ $Title=$inTitle .' - '. $oj_name;
 	  <span id=\"btn_show\" title=\"Alt+H\" class=\"btn btn {$button_class} shortcut-hint\">&laquo; 显示详情</span>";?>
     </div>
 
-    <script src="../assets/js/jquery.min.js"></script>
-    <script src="../assets/js/bootstrap.min.js"></script>
-    <script src="../assets/js/common.js"></script>
+    <script src="/assets/js/jquery.min.js"></script>
+    <script src="/assets/js/bootstrap.min.js"></script>
+    <script src="/assets/js/common.js"></script>
 
     <script type="text/javascript">
       var hide_info = 0;

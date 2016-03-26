@@ -30,7 +30,7 @@ $inTitle='管理员验证';
 $Title=$inTitle .' - '. $oj_name;
 ?>
 <!DOCTYPE html>
-<html>
+<html manifest="appcache.manifest">
   <?php require('head.php'); ?>
   <body>
     <?php require('page_header.php'); ?>  
@@ -53,9 +53,9 @@ $Title=$inTitle .' - '. $oj_name;
 
     </div>
 
-    <script src="../assets/js/jquery.min.js"></script>
-    <script src="../assets/js/bootstrap.min.js"></script>
-    <script src="../assets/js/common.js"></script>
+    <script src="/assets/js/jquery.min.js"></script>
+    <script src="/assets/js/bootstrap.min.js"></script>
+    <script src="/assets/js/common.js"></script>
 
     <script type="text/javascript">
 	  var redirect="<?php echo $redirect?>";

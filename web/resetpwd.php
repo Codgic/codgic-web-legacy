@@ -5,7 +5,7 @@ $_SESSION['resetpwd_flag']=0;
 $_SESSION['resetpwd_code']=rand(10000000,99999999);
 ?>
 <!DOCTYPE html>
-<html>
+<html manifest="appcache.manifest">
 <?php 
 $inTitle='忘记密码';
 $Title=$inTitle .' - '. $oj_name;
@@ -118,8 +118,8 @@ echo "<body style=\"background-image: url({$loginimg})\">";
          </form> 
          </div>
       </div>
-	<script src="../assets/js/jquery.min.js"></script>
-    <script src="../assets/js/common.js"></script>
+	<script src="/assets/js/jquery.min.js"></script>
+    <script src="/assets/js/common.js"></script>
     <script type="text/javascript">
 	function get_rand(begin, end) {
 		return Math.floor(Math.random()*(end-begin))+begin;

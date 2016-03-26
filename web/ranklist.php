@@ -18,7 +18,7 @@ $inTitle='排名';
 $Title=$inTitle .' - '. $oj_name;
 ?>
 <!DOCTYPE html>
-<html>
+<html manifest="appcache.manifest">
   <?php require('head.php'); ?>
 
   <body>
@@ -108,9 +108,9 @@ $Title=$inTitle .' - '. $oj_name;
       </footer>
 
     </div><!--/.container-->
-    <script src="../assets/js/jquery.min.js"></script>
-    <script src="../assets/js/bootstrap.min.js"></script>
-    <script src="../assets/js/common.js"></script>
+    <script src="/assets/js/jquery.min.js"></script>
+    <script src="/assets/js/bootstrap.min.js"></script>
+    <script src="/assets/js/common.js"></script>
 
     <script type="text/javascript">
       function intersection(obj1,obj2,arr1,arr2,ist){

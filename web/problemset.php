@@ -31,7 +31,7 @@ $Title=$inTitle .' - '. $oj_name;
 //$Title="Problemset $page_id";
 ?>
 <!DOCTYPE html>
-<html>
+<html manifest="appcache.manifest">
   <?php require('head.php'); ?>
 
   <body>
@@ -74,9 +74,9 @@ $Title=$inTitle .' - '. $oj_name;
       <p>&copy; <?php echo"{$year} {$oj_copy}";?></p>
       </footer>
     </div>
-    <script src="../assets/js/jquery.min.js"></script>
-    <script src="../assets/js/bootstrap.min.js"></script>
-    <script src="../assets/js/common.js"></script>
+    <script src="/assets/js/jquery.min.js"></script>
+    <script src="/assets/js/bootstrap.min.js"></script>
+    <script src="/assets/js/common.js"></script>
 
     <script type="text/javascript"> 
       $(document).ready(function(){
