@@ -5,7 +5,7 @@ $_SESSION['resetpwd_flag']=0;
 $_SESSION['resetpwd_code']=rand(10000000,99999999);
 ?>
 <!DOCTYPE html>
-<html manifest="appcache.manifest">
+<html>
 <?php 
 $inTitle='忘记密码';
 $Title=$inTitle .' - '. $oj_name;

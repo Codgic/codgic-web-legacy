@@ -14,7 +14,7 @@ $inTitle='资料';
 $Title=$inTitle .' - '. $oj_name;
 ?>
 <!DOCTYPE html>
-<html manifest="appcache.manifest">
+<html>
   <?php require('head.php'); ?>
 
   <body>

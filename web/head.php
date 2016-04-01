@@ -63,4 +63,19 @@
       });
     </script>
   <![endif]-->
+  <script type="text/javascript">
+  function checkUpdate() {
+    window.addEventListener('load', function(e) {
+        window.applicationCache.addEventListener('updateready', function(e) {
+            if (window.applicationCache.status === window.applicationCache.UPDATEREADY) {
+                   window.applicationCache.swapCache();
+                    window.location.reload();
+            } else {
+                // Manifest didn't changed. do Nothing.
+            }
+        }, false);
+    }, false);
+}
+  checkUpdate();
+  </script>
 </head>

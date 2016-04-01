@@ -38,7 +38,7 @@ $inTitle='讨论';
 $Title=$inTitle .' - '. $oj_name;
 ?>
 <!DOCTYPE html>
-<html manifest="appcache.manifest">
+<html>
   <?php require('head.php'); ?>
   <body>
     <script type="text/x-mathjax-config">

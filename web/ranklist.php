@@ -18,13 +18,14 @@ $inTitle='排名';
 $Title=$inTitle .' - '. $oj_name;
 ?>
 <!DOCTYPE html>
-<html manifest="appcache.manifest">
+<html>
   <?php require('head.php'); ?>
 
   <body>
     <?php require('page_header.php'); ?>       
     <div class="container-fluid">
-      <div class="form-inline" style="margin-bottom:10px">
+	<div class="row-fluid">
+      <div class="span10 offset1 form-inline" style="margin-bottom:10px">
         <label for="user_page">页数: </label>
         <select class="input-small" id="user_page"></select>
         <div class="pull-right">
@@ -48,9 +49,11 @@ $Title=$inTitle .' - '. $oj_name;
         </div>
         <div class="clearfix"></div>
       </div>
+	  </div>
       <div class="row-fluid">
-        <div class="span12">
-            <table class="table table-responsive table-hover table-condensed table-bordered " style="margin-bottom:0 margin-right:10px">
+        <div class="span10 offset1">
+		
+            <table class="table table-responsive table-hover table-bordered " style="margin-bottom:0 margin-right:10px">
               <thead><tr>
                 <th style="width:4%">No.</th>
                 <th style="width:15%">用户名</th>

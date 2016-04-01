@@ -31,7 +31,7 @@ $Title=$inTitle .' - '. $oj_name;
 //$Title="Problemset $page_id";
 ?>
 <!DOCTYPE html>
-<html manifest="appcache.manifest">
+<html>
   <?php require('head.php'); ?>
 
   <body>

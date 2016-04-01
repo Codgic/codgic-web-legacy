@@ -7,7 +7,7 @@ if(isset($_GET['page'])){
 }
 
 if(!isset($_SESSION['user'],$_SESSION['administrator'])){
-  die('You are not an administrator.');
+  include '403.php';
 }else if(!isset($_SESSION['admin_tfa']) || !$_SESSION['admin_tfa']){
   $_SESSION['admin_retpage'] = 'admin.php';
   header("Location: admin_auth.php?redirect=".$page);
@@ -19,12 +19,12 @@ if(!isset($_SESSION['user'],$_SESSION['administrator'])){
   $index_text=($res && ($row=mysqli_fetch_row($res))) ? str_replace('<br>', "\n", $row[0]) : '';
   $res=mysqli_query($con,"select content from user_notes where id=0");
   $category=($res && ($row=mysqli_fetch_row($res))) ? str_replace('<br>', "\n", $row[0]) : '';
-}
+
 $inTitle='管理';
 $Title=$inTitle .' - '. $oj_name;
 ?>
 <!DOCTYPE html>
-<html manifest="appcache.manifest">
+<html>
   <?php require('head.php'); ?>
   <body>
     <?php require('page_header.php'); ?>  
@@ -50,6 +50,7 @@ $Title=$inTitle .' - '. $oj_name;
 					<a href="#" id="btn_category" class="btn <?php echo $button_class?>">题目分类...</a>
                     <a href="#" id="btn_rejudge" class="btn btn-info">重新评测...</a>
                   </div>
+				  <hr class="visible-phone">
                   <div class="span5">
                     <h3 class="center">主页</h3><br>
                     <form action="#" method="post" id="form_index">
@@ -61,8 +62,10 @@ $Title=$inTitle .' - '. $oj_name;
                       </div>
                     </form>
                   </div>
+				  <hr class="visible-phone">
                   <div class="span4">
                     <h3 class="center" id="meter_title">系统信息</h3>
+					<br>
                     <div id="cpumeter" class="meter"></div>
                     <div id="memmeter" class="meter"></div>
                   </div>
@@ -134,11 +137,19 @@ $Title=$inTitle .' - '. $oj_name;
                 </div>
               </div>
               <div class="tab-pane fade" id="others">
-                <div style="margin-left:50px">
-				<h1>:) Something's Comming ...</h1>
-				<br>
-                </div>
+			  <div style="margin-left:50px;margin-right:50px">
+			    <div class="row-fluid">
+                  <div class="span12">
+				  <h3>更新CWOJ （早期开发阶段）</h3>
+				  <br>
+				  <div style="font-size:16px">
+				    <p>当前版本: <?php echo"{$web_ver}"?></p>
+					<p><a href="#" id="btn_chkupd" class="btn <?php echo $button_class?>">检查更新...</a></p>
+				  </div>
+                  </div>
+				</div>
               </div>
+			  </div>
             </div>
           </div>
         </div>
@@ -639,3 +650,4 @@ $Title=$inTitle .' - '. $oj_name;
     </script>
   </body>
 </html>
+<?php }?>

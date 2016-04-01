@@ -50,7 +50,7 @@ if($_POST['type']=='profile'){
 
 	if($require_confirm) mysqli_query($con,"insert into users (user_id,email,password,reg_time,nick,school,defunct) values ('$user','".mysqli_real_escape_string($con,$_POST['email'])."','$pwd',NOW(),'".mysqli_real_escape_string($con,$_POST['nick'])."','".mysqli_real_escape_string($con,$_POST['school'])."','Y')");
 	else mysqli_query($con,"insert into users (user_id,email,password,reg_time,nick,school,defunct) values ('$user','".mysqli_real_escape_string($con,$_POST['email'])."','$pwd',NOW(),'".mysqli_real_escape_string($con,$_POST['nick'])."','".mysqli_real_escape_string($con,$_POST['school'])."','N')");
-	$code=mysqli_errno();
+	$code=mysqli_errno($con);
 	if($code==0)
 		echo 'success';
 	else if($code==1062)

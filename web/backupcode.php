@@ -1,7 +1,7 @@
 <?php
 function show_alert($str)
 {
-	echo '<html manifest="appcache.manifest"><body><script>alert("';
+	echo '<html><body><script>alert("';
 	echo htmlspecialchars($str);
 	echo '");</script></body></html>';
 }

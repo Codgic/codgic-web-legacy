@@ -3,7 +3,7 @@ require('inc/database.php');
 require('inc/ojsettings.php');
 ?>
 <!DOCTYPE html>
-<html manifest="appcache.manifest">
+<html>
   <?php 
   $Title='欢迎来到'.$oj_name;
   require('head.php');

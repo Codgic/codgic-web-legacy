@@ -2,14 +2,15 @@
 require 'inc/ojsettings.php';
 require('inc/checklogin.php');
 if(!isset($_SESSION['user'],$_SESSION['administrator']))
-  $info = 'You are not administrator';
+  include '403.php';
+else{
 require 'inc/problem_flags.php';
 $level_max=(PROB_LEVEL_MASK>>PROB_LEVEL_SHIFT);
 $inTitle='新建题目';
 $Title=$inTitle .' - '. $oj_name;
 ?>
 <!DOCTYPE html>
-<html manifest="appcache.manifest">
+<html>
   <?php require('head.php'); ?>
 
   <body>
@@ -307,3 +308,4 @@ $Title=$inTitle .' - '. $oj_name;
     </script>
   </body>
 </html>
+<?php }?>

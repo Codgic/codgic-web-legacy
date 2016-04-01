@@ -49,7 +49,7 @@ $Title=$inTitle .' - '. $oj_name;
 //$Title="搜索结果 $page_id";
 ?>
 <!DOCTYPE html>
-<html manifest="appcache.manifest">
+<html>
   <?php require('head.php'); ?>
 
   <body>

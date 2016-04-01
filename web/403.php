@@ -6,7 +6,7 @@ $Title=$inTitle .' - '. $oj_name;
 $img_id=mt_rand(1,intval($num_403));
 ?>
 <!DOCTYPE html>
-<html manifest="appcache.manifest">
+<html>
   <?php require('head.php');?>
   <body>
     <?php require('page_header.php') ?>  

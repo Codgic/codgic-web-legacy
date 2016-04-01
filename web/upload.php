@@ -15,7 +15,8 @@ if(isset($_FILES['file'])){
 		if(!strlen($filename) || preg_match('/[^-)(\w]/',$filename))
 			throw new Exception("无效的文件名");
 			
-		$filename.='.'.end(explode('.',$_FILES['file']['name']));
+		$tmp = explode('.', $filename);
+        $file_extension = end($tmp);
 
 		if(file_exists("../images/$filename"))
 			throw new Exception("文件 '$filename' 已经存在,<br>换一个文件名再试试。");
@@ -39,7 +40,7 @@ $inTitle='上传图片';
 $Title=$inTitle .' - '. $oj_name;
 ?>
 <!DOCTYPE html>
-<html manifest="appcache.manifest">
+<html>
 	<meta charset="utf-8">
 	<style type="text/css">
 		body{

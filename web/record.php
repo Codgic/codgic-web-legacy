@@ -123,14 +123,14 @@ $inTitle='记录';
 $Title=$inTitle .' - '. $oj_name;
 ?>
 <!DOCTYPE html>
-<html manifest="appcache.manifest">
+<html>
   <?php require('head.php'); ?>
 
   <body style="margin-left:0; margin-right:0">
     <?php require('page_header.php'); ?>
     <div class="container-fluid">
       <div class="row-fluid">
-        <div class="span12">
+        <div class="span10 offset1">
           <form action="record.php" method="get" class="form-inline" id="form_filter">
             <label>题目:</label>
             <input type="text" class="input-mini" name="problem_id" id="ipt_problem_id" value="<?php echo $problem_id?>">
@@ -166,9 +166,9 @@ $Title=$inTitle .' - '. $oj_name;
         </div>
       </div>
       <div class="row-fluid">
-        <div class="span12">
+        <div class="span10 offset1">
 
-            <table class=" table table-responsive table-hover table-condensed table-bordered">
+            <table class=" table table-responsive table-hover table-bordered">
               <thead><tr>
                 <th style="width:6%">ID</th>
                 <th style="width:7%">题目</th>

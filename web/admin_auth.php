@@ -3,7 +3,8 @@ require 'inc/ojsettings.php';
 require('inc/checklogin.php');
 
 if(!isset($_SESSION['user'],$_SESSION['administrator']))
-  die('<div class="center">You are not administrator.</div>');
+  include '403.php';
+else{
 $redirect="home";
 if(isset($_GET['redirect'])){
 	$redirect=$_GET['redirect'];
@@ -30,7 +31,7 @@ $inTitle='管理员验证';
 $Title=$inTitle .' - '. $oj_name;
 ?>
 <!DOCTYPE html>
-<html manifest="appcache.manifest">
+<html>
   <?php require('head.php'); ?>
   <body>
     <?php require('page_header.php'); ?>  
@@ -67,3 +68,4 @@ $Title=$inTitle .' - '. $oj_name;
     </script>
   </body>
 </html>
+<?php }?>

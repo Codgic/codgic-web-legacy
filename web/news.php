@@ -17,7 +17,7 @@ require('inc/database.php');
 $res=mysqli_query($con,"select news_id,title,time from news where news_id>0 order by news_id desc limit $page_id,50");
 ?>
 <!DOCTYPE html>
-<html manifest="appcache.manifest">
+<html>
   <?php require('head.php'); ?>
   <body>
     <?php require('page_header.php') ?>

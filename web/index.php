@@ -23,7 +23,7 @@ $Title=$inTitle .' - '. $oj_name;
 $num=0;
 ?>
 <!DOCTYPE html>
-<html manifest="appcache.manifest">
+<html>
 <?php require('head.php');?>
   <body>
     <?php require('page_header.php');?>  
@@ -91,7 +91,7 @@ $num=0;
         </div>
       </form>
     </div>
-	<canvas id="canvas" style="position:fixed;top:0;z-index:-999"></canvas>
+	<!--<canvas id="canvas" style="position:fixed;top:0;z-index:-999"></canvas>-->
     <script type="text/javascript">
       <?php
         echo 'var ws_url="ws://',$_SERVER["SERVER_ADDR"],':6844/";';

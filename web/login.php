@@ -22,7 +22,7 @@ try{
 	//echo("Login succeeded.");
 	header("location: ".$_POST['url']);
 }catch(Exception $E){?>
-<html manifest="appcache.manifest"><head><script language="javascript">
+<html><head><script language="javascript">
 	alert('<?php echo $E->getMessage();?>');
 	history.go(-1);
 </script></head></html>
