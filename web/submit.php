@@ -37,7 +37,7 @@ function posttodaemon($data){
 
 	return $results;
 }
-require('inc/checklogin.php');
+require ('inc/checklogin.php');
 
 if(!isset($_SESSION['user']) || strlen($_SESSION['user'])==0)
 	die('Not Logged in.');

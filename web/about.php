@@ -1,6 +1,6 @@
 <?php
 require 'inc/ojsettings.php';
-require('inc/checklogin.php');
+require ('inc/checklogin.php');
 $inTitle='关于';
 $Title=$inTitle .' - '. $oj_name;
 ?>

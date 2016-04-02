@@ -2,7 +2,7 @@
 require 'inc/ojsettings.php';
 require('inc/result_type.php');
 require('inc/lang_conf.php');
-require('inc/checklogin.php');
+require ('inc/checklogin.php');
 require('inc/database.php');
 
 $cond="";

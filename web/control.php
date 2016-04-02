@@ -1,6 +1,6 @@
 <?php
 require 'inc/ojsettings.php';
-require('inc/checklogin.php');
+require ('inc/checklogin.php');
  
 if(!isset($_SESSION['user'])){
   $info='<div class="center">然而你尚未登录...</div>';

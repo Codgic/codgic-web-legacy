@@ -1,6 +1,6 @@
 <?php
 require 'inc/ojsettings.php';
-require('inc/checklogin.php');
+require ('inc/checklogin.php');
 $inTitle='ERROR 403';
 $Title=$inTitle .' - '. $oj_name;
 $img_id=mt_rand(1,intval($num_403));

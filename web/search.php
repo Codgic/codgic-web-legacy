@@ -22,7 +22,7 @@ else
   $page_id=0;
 if(strlen($req)>600)
   die('Keyword is too long');
-require('inc/checklogin.php');
+require ('inc/checklogin.php');
 require('inc/database.php');
 check_problemid($req);
 $keyword=mysqli_real_escape_string($con,trim($req));

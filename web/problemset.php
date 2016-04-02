@@ -1,6 +1,6 @@
 <?php
 require 'inc/ojsettings.php';
-require('inc/checklogin.php');
+require ('inc/checklogin.php');
 
 if(isset($_GET['page_id']))
   $page_id=intval($_GET['page_id']);

@@ -16,7 +16,7 @@ if(isset($_GET['page_id']))
 else
   $page_id=0;
 
-require('inc/checklogin.php');
+require ('inc/checklogin.php');
 require('inc/database.php');
 
 $cond=" (has_tex&".PROB_LEVEL_MASK.")=".($level<<PROB_LEVEL_SHIFT);

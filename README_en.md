@@ -17,6 +17,7 @@ Compared with the original Bashu Online Judge, we have also done some improvemen
 - [X] Forget Password.
 - [X] News & News Center.
 - [X] Easier deployment and configuration process.
+- [ ] Online update service (A little bit difficult though)
 
 # Notes
 You will be able to find the installation notes in the Wiki page in the non-distant future. Thanks for your support!

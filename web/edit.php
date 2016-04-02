@@ -4,12 +4,12 @@ if(!isset($_GET['problem_id']))
    die('Wrong argument.');
 $prob_id=intval($_GET['problem_id']);
 
-require('inc/checklogin.php');
+require ('inc/checklogin.php');
 require 'inc/problem_flags.php';
 $way='tra';
 $prec=-1;
 if(!isset($_SESSION['user'],$_SESSION['administrator'])) {
-  $info = 'You are not administrator';
+  $info = '你没有权限添加题目...';
 }else {
   require('inc/database.php');
 

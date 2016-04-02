@@ -1,6 +1,6 @@
 <?php
 require 'inc/ojsettings.php';
-require('inc/checklogin.php');
+require ('inc/checklogin.php');
 
 if(isset($_GET['start_id']))
   $query_id=intval($_GET['start_id']);

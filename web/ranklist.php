@@ -1,6 +1,6 @@
 <?php
 require 'inc/ojsettings.php';
-require('inc/checklogin.php');
+require ('inc/checklogin.php');
 
 if(isset($_GET['start_id']))
   $page_id=intval($_GET['start_id']);
@@ -55,14 +55,14 @@ $Title=$inTitle .' - '. $oj_name;
 		
             <table class="table table-responsive table-hover table-bordered " style="margin-bottom:0 margin-right:10px">
               <thead><tr>
-                <th style="width:4%">No.</th>
+                <th style="width:5%">No.</th>
                 <th style="width:15%">用户名</th>
-                <th style="width:55%">昵称</th>
-                <th style="width:5%">头衔</th>
-                <th style="width:6%">分数</th>
-                <th style="width:5%">AC</th>
-                <th style="width:5%">提交数</th>
-                <th style="width:5%">通过率</th>
+                <th style="width:40%">昵称</th>
+                <th style="width:8%">头衔</th>
+                <th style="width:8%">分数</th>
+                <th style="width:8%">AC</th>
+                <th style="width:8%">提交数</th>
+                <th style="width:8%">通过率</th>
               </tr></thead>
               <tbody id="userlist">
                 <?php 

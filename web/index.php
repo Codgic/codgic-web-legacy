@@ -8,7 +8,7 @@ function encode_user_id($user)
   $key=hash('sha256','my)(password_xx0',true);
   return openssl_encrypt($user,'aes-256-cbc',$key,false,$iv);
 }
-require('inc/checklogin.php');
+require ('inc/checklogin.php');
 require('inc/database.php');
 $res=mysqli_query($con,"select content from news where news_id=0");
 $index_text=($row=mysqli_fetch_row($res)) ? $row[0] : '';
@@ -86,7 +86,7 @@ $num=0;
           <div class="pull-left">
           </div>
 		  <span class="pull-left hide" id="ajax_newstime"></span>
-		  <?php if($_SESSION['administrator']) echo '<a class="pull-left" href="admin.php?page=news">编辑</a>'?>
+		  <?php if(isset($_SESSION['administrator'])) echo '<a class="pull-left" href="admin.php?page=news">编辑</a>'?>
           <a href="#" class="btn" data-dismiss="modal">关闭</a>
         </div>
       </form>

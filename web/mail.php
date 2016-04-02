@@ -1,6 +1,6 @@
 <?php
 require 'inc/ojsettings.php';
-require('inc/checklogin.php');
+require ('inc/checklogin.php');
 require('inc/mail_flags.php');
 
 if(isset($_GET['start_id']))

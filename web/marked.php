@@ -1,6 +1,6 @@
 <?php
 require 'inc/ojsettings.php';
-require('inc/checklogin.php');
+require ('inc/checklogin.php');
 
 if(!isset($_SESSION['user']))
 	$info = 'Not logged in.';

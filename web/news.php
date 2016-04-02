@@ -1,6 +1,6 @@
 <?php
 require 'inc/ojsettings.php';
-require('inc/checklogin.php');
+require ('inc/checklogin.php');
 require('inc/database.php');
 $page_id=0;
 if(isset($_GET['start_id']))

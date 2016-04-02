@@ -1,6 +1,6 @@
 <?php
 require 'inc/ojsettings.php';
-require('inc/checklogin.php');
+require ('inc/checklogin.php');
 $page='home';
 if(isset($_GET['page'])){
 	$page=$_GET['page'];
@@ -33,7 +33,7 @@ $Title=$inTitle .' - '. $oj_name;
       <div class="row-fluid">
         <div class="span12">
           <div class="tabbable">
-            <ul class="nav nav-pills" id="nav_tab" style="padding-right:20px;padding-left:20px;margin-right:30px;lineheight:30px;font-size:20px">
+            <ul class="nav nav-pills" id="nav_tab" style="padding-right:10px;padding-left:10px;margin-right:15px;margin-left:-15px;lineheight:30px;font-size:20px">
               <li class="active"><a href="#home" data-toggle="tab">主页</a></li>
               <li class=""><a href="#news" data-toggle="tab">新闻</a></li>
               <li class=""><a href="#experience" data-toggle="tab">经验</a></li>
@@ -140,11 +140,15 @@ $Title=$inTitle .' - '. $oj_name;
 			  <div style="margin-left:50px;margin-right:50px">
 			    <div class="row-fluid">
                   <div class="span12">
-				  <h3>更新CWOJ （早期开发阶段）</h3>
+				  <h3>更新<?php echo $oj_name?>（拒绝!）</h3>
 				  <br>
 				  <div style="font-size:16px">
 				    <p>当前版本: <?php echo"{$web_ver}"?></p>
-					<p><a href="#" id="btn_chkupd" class="btn <?php echo $button_class?>">检查更新...</a></p>
+				    <p><span id="updstatus">正在查找更新...</span></p>
+				    <div id="div_updfound" class="hide">
+					    <p><a href="#" id="btn_updnow" class="btn <?php echo $button_class?>">安装更新...</a>&nbsp;&nbsp;&nbsp;
+                        <a href="https://github.com/CDFLS/CWOJ/commit" id="btn_updlog">更新日志</a></p>
+                    </div>
 				  </div>
                   </div>
 				</div>
@@ -233,6 +237,24 @@ $Title=$inTitle .' - '. $oj_name;
     var getnewslist=function(){$('#table_news').load('ajax_admin.php',{op:'list_news'});};
     var getusrlist=function(){$('#table_usr').load('ajax_admin.php',{op:'list_usr'});};
 	var cnt=-1;
+	var newver=0;
+	function chkupd(){
+		$.ajax({
+			type:"POST",
+			url:"ajax_update.php",
+			data:{"type":'check'},
+			success:function(msg){
+				if(msg=='false') $('#updstatus').html('没有找到更新~');
+				else if(msg=='error') $('#updstatus').html('<font color="red"><b>连接超时，请刷新页面重试...</b></font>');
+				else {
+					newver = msg;
+					$('#updstatus').html('<b>发现更新的版本: '+msg+'</b>')
+					$('#div_updfound').show();
+					};
+				}
+				});
+		}
+		chkupd();
       $(document).ready(function(){
 		var page='<?php echo $page?>';
 		if(page=='news'){
@@ -251,6 +273,28 @@ $Title=$inTitle .' - '. $oj_name;
 		}
 		else if(page=='others') $('#nav_tab a[href="#others"]').tab('show');
 		else $('#nav_tab a[href="#home"]').tab('show');
+		$('#btn_updnow').click(function(){
+			$.ajax({
+			async: false,
+			type:"POST",
+			url:"ajax_update.php",
+			data:{"type":'getfile', "newver": newver},
+			success:function(msg){
+				if (msg == 'success') {
+					$.ajax({
+						async: false,
+						type:"POST",
+						url:"ajax_update.php",
+						data:{"type":'install', "newver": newver},
+						success:function(msg){
+							if(msg == 'success') alert("test!");
+						}
+					});
+					}	
+				else alert(msg);
+				}
+			});
+		});
 		$('#new_news').click(function(){
 			$('#NewsModalTitle').html('添加新闻').show();
 			$('#input_newstitle').val("");
@@ -553,7 +597,7 @@ $Title=$inTitle .' - '. $oj_name;
                 },        
                 yAxis: [{
                   title: {
-                    text: 'Memory'
+                    text: 'RAM'
                   }
                 }],
                 series: [{

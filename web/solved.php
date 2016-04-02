@@ -1,6 +1,6 @@
 <?php
 require 'inc/ojsettings.php';
-require('inc/checklogin.php');
+require ('inc/checklogin.php');
 header('Content-Type: text/html; charset=utf-8');
 
 require('inc/database.php');

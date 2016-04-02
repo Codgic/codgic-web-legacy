@@ -59,18 +59,21 @@
               <li><a style="color:#FFF" id="nav_record" class="shortcut-hint" title="Alt+R" href="/record.php"><i class="icon-hdd"></i> 记录</a></li>
               <li><a style="color:#FFF" id="nav_rank" href="/ranklist.php"><i class="icon-bookmark"></i> 排名</a></li>
               <li><a style="color:#FFF" id="nav_about" href="/about.php"><i class="icon-book"></i> 关于</a></li>
-			  <?php if(isset($_SESSION['user'])) {
-		      echo "<div style=\"color:#FFF\">&nbsp;&nbsp;<div class=\"btn {$button_class}\"><i class=\"icon-user\"></i> {$_SESSION['user']} </div>
-			  <a class=\"btn {$button_class}\" href=\"mail.php\" id=\"nav_mail\"><i class=\"icon-envelope\"></i><strong class=\"notifier\"></strong></a>
-              <a class=\"btn {$button_class}\" href=\"marked.php\"><i class=\"icon-star\"></i></a>
-              <a class=\"btn {$button_class}\" href=\"profile.php\"><i class=\"icon-github\"></i></a>
-              <a class=\"btn {$button_class}\" href=\"control.php\"><i class=\"icon-cog\"></i></a>";?>
-		      <?php if(isset($_SESSION['administrator']))
-              echo "<a class=\"btn {$button_class}\" href=\"admin.php\"><i class=\"icon-bolt\"></i> </a>&nbsp;
-			  <a class=\"btn {$button_class}\" id=\"logoff_btn1\" href=\"#\"><i class=\"icon-signout\"></i></a>";
-		      }else{  
-		      echo "&nbsp;&nbsp;<a class=\"btn {$button_class}\" id=\"login_btn1\" title=\"Alt+L\" data-toggle=\"modal\" href=\"#LoginModal\">登录</a>
-              <a class=\"btn {$button_class}\" href=\"reg.php#\">注册</a>";}?></div>
+			<?php  if(isset($_SESSION['user'])) { ?>
+		      <div style="color:#FFF">&nbsp;&nbsp;<div class="btn <?php echo $button_class?>"><i class="icon-user"></i> <?php echo $_SESSION['user']?> </div>
+			  <a class="btn <?php echo $button_class?>" href="mail.php" id="nav_mail"><i class="icon-envelope"></i><strong class="notifier"></strong></a>
+              <a class="btn <?php echo $button_class?>" href="marked.php"><i class="icon-star"></i></a>
+              <a class="btn <?php echo $button_class?>" href="profile.php"><i class="icon-github"></i></a>
+              <a class="btn <?php echo $button_class?>" href="control.php"><i class="icon-cog"></i></a>
+			<?php if(isset($_SESSION['administrator'])) { ?>
+              &nbsp;<a class="btn <?php echo $button_class?>" href="admin.php"><i class="icon-bolt"></i> </a>
+			<?php }?>
+			  &nbsp;<a class="btn <?php echo $button_class?>" id="logoff_btn1" href="#"><i class="icon-signout"></i></a>
+		    <?php }else{ ?>
+		      &nbsp;&nbsp;<a class="btn <?php echo $button_class?>" id="login_btn1" title="Alt+L" data-toggle="modal" href="#LoginModal">登录</a>
+              <a class="btn <?php echo $button_class?>" href="reg.php#">注册</a>
+			<?php } ?>
+			  </div>
               <li><form class="navbar-search pull-left shortcut-hint" id="search_form" title="Alt+I" action="/search.php" method="get">
               <input type="text" name="q" id="search_input" class="search-query input-xlarge" style="margin-bottom:0px" autocomplete="off" placeholder="搜索...">
               </form></li>
