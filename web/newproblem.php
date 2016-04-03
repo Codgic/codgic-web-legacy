@@ -252,7 +252,7 @@ $Title=$inTitle .' - '. $oj_name;
 		  $('#showtools').hide();
         });
         $('#btn_upload').click(function(){
-          window.open("upload.php",'upload_win2','left='+loffset+',top='+toffset+',width=400,height=180,channelmode=yes,directories=no,toolbar=no,resizable=no,menubar=no,location=no');
+          window.open("upload.php",'upload_win2','left='+loffset+',top='+toffset+',width=400,height=300,toolbar=no,resizable=no,menubar=no,location=no,status=no');
         });
         $('#edit_form textarea').focus(function(e){cur=e.target;});
         $('#edit_form input').blur(function(e){

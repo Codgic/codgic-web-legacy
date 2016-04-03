@@ -27,7 +27,7 @@ $os_name="Ubuntu 14.04 LTS";
 //"daemon_ver" defines the version number of the judging service, which is shown in preference.php.
 $oj_name = 'CWOJ'; 
 $oj_copy = 'CWOJ Team'; 
-$web_ver = '0.89.160402-2101';
+$web_ver = '0.89.160403-2156';
 $daemon_ver = '1.01.160227-1736';
 
 //2.2 User policy settings
@@ -58,7 +58,7 @@ $num_403 = 1;
 
 //2.5 News Settings
 //"news_num" defines the maxium number of news shown in index.php
-$news_num=8; 
+$news_num=6; 
 
 //2.6 Testcase upload filesize
 //Don't forget to change the settings in php.ini at the same time!

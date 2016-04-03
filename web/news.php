@@ -87,10 +87,10 @@ $res=mysqli_query($con,"select news_id,title,time from news where news_id>0 orde
               url:"ajax_getnews.php",
               data:{"newsid":newsid},
               success:function(msg){
-				  var arr=msg.split("FuckZK1");
+				  var arr=msg.split("^1a@#FuckZK1#@^a1");
 				  var title=arr[0];
 				  var content=arr[1];
-				  var arr=content.split("fUCKzk2");
+				  var arr=content.split("2b@#^FuckZK2^#@b2");
 				  var content=arr[0];
 				  var time=arr[1];
 				  if(!content) content='本条新闻内容为空...';

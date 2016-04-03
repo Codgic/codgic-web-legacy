@@ -9,6 +9,6 @@ $row=mysqli_fetch_row($res);
 $title = $row[0];
 $content=$row[1];
 $time = $row[2];
-$result = $title.'FuckZK1'.$content.'fUCKzk2'.$time;
+$result = $title.'^1a@#FuckZK1#@^a1'.$content.'2b@#^FuckZK2^#@b2'.$time;
 echo $result;
 ?>

@@ -60,10 +60,8 @@ if($allowed){
 }
 if(isset($_GET['raw'])){
   if(isset($info)){
-	echo "<a href=\"javascript:history.back(-1);\">返回上一页...</a>";
     echo $info;
   }else{
-	echo "<p><a href=\"javascript:history.back(-1);\">< 返回...</a></p>";
     header("Content-Type: text/html; charset=utf-8");
     echo "<plaintext>",$source;
   }
@@ -104,8 +102,7 @@ $Title=$inTitle .' - '. $oj_name;
         <div class="row-fluid">
           <div class="span10 offset1">
 			<p><a href="javascript:history.back(-1);" class="btn btn"><< 返回上一页</a>
-            <a class="btn btn" href="sourcecode.php?raw=1&amp;solution_id=<?php echo $sol_id?>" onclick="return show_raw();">RAW</a></p>
-            <!--[if IE]>&nbsp;&nbsp;<a href="#" onclick="return copy_ie();">复制</a> <![endif]-->
+            <a class="btn btn" target="_blank" href="sourcecode.php?raw=1&amp;solution_id=<?php echo $sol_id?>" onclick="return show_raw();">RAW</a></p>
           </div>
         </div>
         <div class="row-fluid">
@@ -124,6 +121,7 @@ $Title=$inTitle .' - '. $oj_name;
     <script src="/assets/js/google-code-prettify/prettify.js"></script>
     <script src="/assets/js/jquery.min.js"></script>
     <script src="/assets/js/bootstrap.min.js"></script>
+	<script src="/assets/js/jquery.zclip.js"></script>
     <script src="/assets/js/common.js"></script>
     <script type="text/javascript"> 
       var solution_id=<?php echo $sol_id?>;
@@ -132,15 +130,6 @@ $Title=$inTitle .' - '. $oj_name;
       });
       function doajax(fun){
         $.ajax({type:"GET",url:("sourcecode.php?raw=1&solution_id="+solution_id),success:fun});
-      }
-      function copy_ie(){
-        doajax(function(msg){
-            if(window.clipboardData){
-              window.clipboardData.clearData();
-              window.clipboardData.setData("text", msg);
-            }
-        });
-        return false;
       }
       function show_raw(){
         return true; /*****************************/

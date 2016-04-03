@@ -2,8 +2,8 @@
 require 'inc/ojsettings.php';
 session_start();
 if(!isset($_SESSION['administrator']))
-	die('You are not administrator');
-
+	include '403.php';
+else{
 if(isset($_FILES['file'])){
 	try{
 		if(!isset($_FILES['file']['name']) || !preg_match('/\.(jpg|jpeg|png|gif|bmp|tif|tiff|ico|wmf)$/i',$_FILES['file']['name']))
@@ -22,10 +22,10 @@ if(isset($_FILES['file'])){
 			throw new Exception("文件 '$filename' 已经存在,<br>换一个文件名再试试。");
 		if(!is_dir("../images"))
 			if(!mkdir("../images",0770))
-				throw new Exception("无法创建images目录! 请联系管理员!");
+				throw new Exception("images目录无法访问, 请联系管理员!");
 				
 		if(move_uploaded_file($_FILES["file"]["tmp_name"],"../images/$filename")){
-			$imgtag="&lt;img src=\"../images/$filename\"&gt;";
+			$imgtag="img src=\"../images/$filename\"";
 		}else
 			throw new Exception("上传失败");
 	}catch(Exception $e){
@@ -41,47 +41,61 @@ $Title=$inTitle .' - '. $oj_name;
 ?>
 <!DOCTYPE html>
 <html>
-	<meta charset="utf-8">
-	<style type="text/css">
-		body{
-			background: #FFFFFF;
-			font-size: 16px;
-			overflow: hidden;
-		}
-		h3,h4{
-			text-align: center;
-		}
-		a{
-			color: #08C;
-		}
-	</style>
+	<?php require('head.php'); ?>
+	<body>
+	<div class="container-fluid">
+	  <div class="row-fluid">
+		<?php if(isset($imgtag)){ ?>
+			<h2 style="margin:10px auto">上传成功</h2>
+			<hr>
+			<div style="white-space:nowrap">
+				<div>HTML引用标签:</div> 
+				<div style="margin-top:15px;margin-buttom:15px;height:30px"><span class="alert alert-info" id="html_tag">&lt;<?php echo $imgtag ?>&gt;</span></div>
+			</div>
+			<p style="margin-top:15px;margin-buttom:15px">
+				<a href="#" class="btn btn-primary copy" id="btn_copy">复制文本</a>
+				<a href="#" class="btn btn-danger" onclick="return window.close(),false;">关闭</a>
+			</p>
+		<?php }else if(isset($info)){ ?>
+			<h2 style="margin:10px auto">错误</h2>
+			<hr>
+			<div class="alert alert-danger"><?php echo $info ?></div>
+			<a href="#" class="btn btn-primary" onclick="return history.back(),false;">&laquo;返回</a>
+		<?php }else{ ?>
+			<h2 style="margin:10px auto">上传图片</h2>
+			<hr>
+			<form class="form-horizontal" action="upload.php" method="post" enctype="multipart/form-data" onsubmit="return check_upload();">
+				<div><p><span>选择图片:<br></span><input type="file" name="file" id="file"></p></div>
+				<div><p><span>文件名(不含后缀):<br></span><input type="text" name="savename" value="<?php echo htmlspecialchars($filename);?>" style="width:233px;"></p></div>
+				<div>
+					<div class="alert alert-danger hide" id="info"> </div>
+					<input class="btn btn-primary" type="submit" value="上传"> 
+				</div>
+			</form>
+		<?php } ?>
+	  </div>
+	</div>
+	</body>
+		<script src="/assets/js/jquery.zclip.js"></script>
 	<script type="text/javascript">
 		function check_upload(){
 			if(/\.(jpg|jpeg|png|gif|bmp|tif|tiff|ico|wmf)$/i.test(document.getElementById('file').value)){
 				return true;
 			}else{
-				document.getElementById('info').innerHTML="Invalid image format";
+				$('#info').show();
+				document.getElementById('info').innerHTML="不受支持的图片格式";
 			}
 			return false;
 		}
+		$(function(){
+			$("#btn_copy").zclip({
+				path:'/assets/res/ZeroClipboard.swf',
+				copy:function(){
+					var a = '<<?php echo $imgtag?>>';
+					return a;
+				}
+			});
+		});
 	</script>
-	<body>
-		<?php if(isset($imgtag)){ ?>
-			<h3 style="margin:10px auto">上传成功！</h3>
-			<div style="overflow:auto;white-space:nowrap">HTML引用标签: <br /><span style="color:red"><?php echo $imgtag ?></span></div>
-			<p style="text-align:center"><a href="#" onclick="return window.close(),false;">关闭</a></p>
-		<?php }else if(isset($info)){ ?>
-			<h4 style="margin:10px auto"><?php echo $info ?></h4>
-			<a href="#" onclick="return history.back(),false;">&laquo;返回</a>
-		<?php }else{ ?>
-			<form action="upload.php" method="post" enctype="multipart/form-data" onsubmit="return check_upload();">
-				<div><p><span>选择图片:<br></span><input type="file" name="file" id="file"></p></div>
-				<div><p><span>文件名:<br></span><input type="text" name="savename" value="<?php echo htmlspecialchars($filename);?>" style="width:233px;"></p></div>
-				<div style="text-align:center">
-					<div id="info"> </div>
-					<input type="submit" value="上传"> 
-				</div>
-			</form>
-		<?php } ?>
-	</body>
 </html>
+<?php }?>

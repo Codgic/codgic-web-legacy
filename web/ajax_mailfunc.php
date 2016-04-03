@@ -2,6 +2,7 @@
 function UserExist($uid){
 	if(preg_match('/\W/',$uid))
 		return false;
+	require('inc/database.php');
 	$res=mysqli_query($con,"select user_id from users where user_id='$uid'");
 	if($res && mysqli_num_rows($res))
 		return true;

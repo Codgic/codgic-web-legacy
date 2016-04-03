@@ -45,13 +45,13 @@ else{
     $query='select min(result) from solution where user_id=\''.$_SESSION['user']."' and problem_id=$prob_id group by problem_id";
     $user_status=mysqli_query($con,$query);
     if(mysqli_num_rows($user_status)==0)
-      $info = '<tr><td colspan="2" class="center muted" >你还没提交过哦</td></tr>';
+      $info = '<tr><td colspan="2" class="center muted" >你还没提交过哦...</td></tr>';
     else{
       $statis=mysqli_fetch_row($user_status);
       if($statis[0]==0){
-        $info = '<tr><td colspan="2" class="gradient-green center"><i class="icon-ok icon-white"></i> 恭喜AC !</td></tr>';
+        $info = '<tr><td colspan="2" class="gradient-green center"><i class="icon-ok icon-white"></i> 恭喜AC!</td></tr>';
       }else{
-        $info = '<tr><td colspan="2" class="gradient-red center"><i class="icon-remove icon-white"></i> 再试一次吧 !</td></tr>';
+        $info = '<tr><td colspan="2" class="gradient-red center"><i class="icon-remove icon-white"></i> 再试一次吧!</td></tr>';
       }
     }
     $current_user=$_SESSION['user'];
@@ -79,7 +79,7 @@ else{
     }
 
   }else{
-    $info = '<tr><td colspan="2" class="center muted" >然而你并没有登录。</td></tr>';
+    $info = '<tr><td colspan="2" class="center muted" >然而你并没有登录...</td></tr>';
   } 
   $result=mysqli_query($con,"select submit_user,solved,submit from problem where problem_id=$prob_id");
   $statis=mysqli_fetch_row($result);

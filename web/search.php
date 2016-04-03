@@ -2,7 +2,7 @@
 require 'inc/ojsettings.php';
 function check_problemid(&$str)
 {
-  require_once 'inc/database.php';
+  require 'inc/database.php';
   if(preg_match('/\D/',$str))
     return;
   $num=intval($str);

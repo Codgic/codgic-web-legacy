@@ -45,12 +45,12 @@ $num=0;
       </div>
 	  <div class="row-fluid">
 		<div class="span5 offset1">
-	    <h1>新闻<?php if($hasnews==1){?><a href="news.php" class="pull-right"><font size=2>更多历史新闻...</font></a></h1><br>
-		  <ul class="nav">
+	    <h1>新闻<?php if($hasnews==1){?><a href="news.php" class="pull-right"><font size=2>更多历史新闻...</font></a></h1>
+		  <ul class="nav" style="margin-top:10px;font-size:16px">
                 <?php 
                 while($row=mysqli_fetch_row($res)){
 					$num++;
-					echo '<li><p><font size=3><a href="javascript:void(0);" onclick="click_news(',$row[0],')">',htmlspecialchars($row[1]),'</a></font></p></li>';
+					echo '<li style="line-height:32px"><a href="javascript:void(0);" onclick="click_news(',$row[0],')">',htmlspecialchars($row[1]),'</a></li>';
 					if($num==$news_num) break;
                 }
                 ?>
@@ -58,21 +58,19 @@ $num=0;
 		  <br><p><font color='grey' size=5>:( 暂时没有发布过新闻~</font></p>
 		  <?php }?>
 	  </div>
-      <div class="span6">
-        <h1>分类</h1><br>
-		<?php if($category!='') echo "$category";
+      <div class="span5">
+        <h1>分类</h1>
+		<div class="accordion" id="accordion2" style="margin-top:12px;font-size:16px">
+		<?php if(trim($category)!='') echo "$category";
 		      else echo'<p><font color="grey" size=5>:( 暂时没有发布题目分类目录~</font></p>';?>
+		</div>
 	  </div>
 	  </div>
-	  <div class="row-fluid">
-        <p></p>
-      </div>
       <hr>
       <footer>
         <p>&copy; <?php echo"{$year} {$oj_copy}";?></p>
       </footer>
     </div>
-	
 	<div class="modal fade hide" id="NewsModal" style="margin-top:100px">
       <div class="modal-header">
         <a class="close" data-dismiss="modal">&times;</a>
@@ -111,10 +109,10 @@ $num=0;
               url:"ajax_getnews.php",
               data:{"newsid":newsid},
               success:function(msg){
-				  var arr=msg.split("FuckZK1");
+				  var arr=msg.split("^1a@#FuckZK1#@^a1");
 				  var title=arr[0];
 				  var content=arr[1];
-				  var arr=content.split("fUCKzk2");
+				  var arr=content.split("2b@#^FuckZK2^#@b2");
 				  var content=arr[0];
 				  var time=arr[1];
 				  if(!content) content='本条新闻内容为空...';
@@ -127,6 +125,7 @@ $num=0;
             };
         };
       $(document).ready(function(){
+		document.getElementById('clickOne').click()
         $('#ret_url').val("index.php");
         var originColor = '#E3E3E3';
         $('#newspad #title').click(function(){

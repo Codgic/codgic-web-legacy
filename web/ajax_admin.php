@@ -181,7 +181,7 @@ EOF;
 	$res=mysqli_query($con,"select title,content from news where news_id='$news_id'");
 	$row=mysqli_fetch_row($res);
 	$content=($res && ($row)) ? str_replace('<br>', "\n", $row[1]) : '';
-	echo $row[0].'FuckZK1'.$content;
+	echo $row[0].'^1a@#FuckZK1#@^a1'.$content;
 }else if($op=="edit_news"){
 	if(!isset($_POST['news_id']))
 		die('error');
@@ -220,6 +220,7 @@ EOF;
 	mysqli_query($con,"update users set defunct='N' where user_id='$uid'");
 }else if($op=="disable_usr"){
 	isset($_POST['user_id']) ? $uid=mysqli_real_escape_string($con,trim($_POST['user_id'])) : die('');
+	if($_POST['user_id']==$_SESSION['user']) die('');
 	mysqli_query($con,"update users set defunct='Y' where user_id='$uid'");
 }else if($op=='update_index'){
 	$index_text=isset($_POST['text']) ? mysqli_real_escape_string($con,str_replace("\n", "<br>", $_POST['text'])) : '';

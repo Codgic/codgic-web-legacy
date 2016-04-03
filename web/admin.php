@@ -117,7 +117,7 @@ $Title=$inTitle .' - '. $oj_name;
                     <select class="input-medium" name="right" id="slt_right">
                       <option value="administrator">管理人员</option>
                       <option value="source_browser">代码审核</option>
-                      <option value="insider">题目添加</option>
+                      <option value="insider">隐藏可见</option>
                     </select>&nbsp;&nbsp;
                     <input type="submit" class="btn" value="添加">
                     <input type="hidden" name="op" value="add_priv">
@@ -140,14 +140,16 @@ $Title=$inTitle .' - '. $oj_name;
 			  <div style="margin-left:50px;margin-right:50px">
 			    <div class="row-fluid">
                   <div class="span12">
-				  <h3>更新<?php echo $oj_name?>（拒绝!）</h3>
+				  <h3>更新<?php echo $oj_name?>（开发进度: 40%: 可以检查和下载，还不能装~）</h3>
 				  <br>
 				  <div style="font-size:16px">
-				    <p>当前版本: <?php echo"{$web_ver}"?></p>
-				    <p><span id="updstatus">正在查找更新...</span></p>
-				    <div id="div_updfound" class="hide">
-					    <p><a href="#" id="btn_updnow" class="btn <?php echo $button_class?>">安装更新...</a>&nbsp;&nbsp;&nbsp;
-                        <a href="https://github.com/CDFLS/CWOJ/commit" id="btn_updlog">更新日志</a></p>
+				    当前版本: <?php echo"{$web_ver}"?>
+					<div style="margin-top:20px;height:30px">
+						<span class="alert alert-info" id="updstatus">正在查找更新...</span>
+					</div>
+				    <div id="div_updfound" class="hide" style="margin-top:10px;margin-buttom:10px">
+						<input type="button" id="btn_updnow" class="btn <?php echo $button_class?>" value="安装更新..."/>&nbsp;&nbsp;&nbsp;
+                        <a href="https://github.com/CDFLS/CWOJ/commit" id="btn_updlog">更新日志</a>
                     </div>
 				  </div>
                   </div>
@@ -157,7 +159,6 @@ $Title=$inTitle .' - '. $oj_name;
             </div>
           </div>
         </div>
-      </div>
 	  
 	<div class="modal fade hide" id="CategoryModal">
       <div class="modal-header">
@@ -212,6 +213,7 @@ $Title=$inTitle .' - '. $oj_name;
         </div>
         <div class="modal-footer form-inline">
 		  <button class="pull-left btn btn-danger hide" id="btn_delnews">删除</button>
+		  <button class="pull-left btn btn-info" id="btn_upload">上传图片...</button>
           <button class="btn btn-primary" id="addnews_submit">提交</button>
 		  <button class="btn btn-primary hide" id="editnews_submit">提交</button>
           <a href="#" class="btn" data-dismiss="modal">关闭</a>
@@ -231,6 +233,8 @@ $Title=$inTitle .' - '. $oj_name;
     <script src="/assets/js/highcharts-more.js"></script>
 
     <script type="text/javascript">
+	var loffset=window.screenLeft+200;
+    var toffset=window.screenTop+200;
 	var getlevellist=function(){$('#table_level_experience').load('ajax_admin.php',{op:'list_level_experience'});};
     var gettitlelist=function(){$('#table_experience_title').load('ajax_admin.php',{op:'list_experience_title'});};
     var getprivlist=function(){$('#table_priv').load('ajax_admin.php',{op:'list_priv'});};
@@ -244,11 +248,17 @@ $Title=$inTitle .' - '. $oj_name;
 			url:"ajax_update.php",
 			data:{"type":'check'},
 			success:function(msg){
-				if(msg=='false') $('#updstatus').html('没有找到更新~');
-				else if(msg=='error') $('#updstatus').html('<font color="red"><b>连接超时，请刷新页面重试...</b></font>');
+				if(msg=='false') {
+					$('#updstatus').html('=.= 并没有找到更新...');
+				}
+				else if(msg=='error'){
+					$('#updstatus').removeClass('alert-info').addClass('alert-danger');
+					$('#updstatus').html('连接超时，请刷新页面重试...');
+				}
 				else {
 					newver = msg;
-					$('#updstatus').html('<b>发现更新的版本: '+msg+'</b>')
+					$('#updstatus').removeClass('alert-info').addClass('alert-success');
+					$('#updstatus').html('发现更新的版本: '+msg);
 					$('#div_updfound').show();
 					};
 				}
@@ -274,23 +284,30 @@ $Title=$inTitle .' - '. $oj_name;
 		else if(page=='others') $('#nav_tab a[href="#others"]').tab('show');
 		else $('#nav_tab a[href="#home"]').tab('show');
 		$('#btn_updnow').click(function(){
+			btn_updnow.setAttribute("disabled", true); 
+			btn_updnow.value = "正在下载...";
 			$.ajax({
-			async: false,
+			async: true,
 			type:"POST",
 			url:"ajax_update.php",
 			data:{"type":'getfile', "newver": newver},
 			success:function(msg){
 				if (msg == 'success') {
+					btn_updnow.value = "正在安装...";
 					$.ajax({
-						async: false,
+						async: true,
 						type:"POST",
 						url:"ajax_update.php",
 						data:{"type":'install', "newver": newver},
 						success:function(msg){
-							if(msg == 'success') alert("test!");
+							if(msg == 'success'){
+								$('#div_updfound').hide();
+								$('#updstatus').html('成功安装更新，页面即将刷新...');
+								window.setTimeout("window.location='admin.php?page=others'",3000); 
+							}
 						}
 					});
-					}	
+				}	
 				else alert(msg);
 				}
 			});
@@ -312,12 +329,11 @@ $Title=$inTitle .' - '. $oj_name;
 			$('#CategoryModal').modal('show');
 		});
 		$('#addcategory_submit').click(function(){
-			var content = $.trim($('#input_category').val());
 			$('#addcategory_res').hide();
 			$.ajax({
 					type:"POST",
 					url:"ajax_admin.php",
-					data:{"op":'update_category',"content":content},
+					data:{"op":'update_category',"content":$.trim($('#input_category').val())},
 					success:function(msg){
 						if(msg=='success') $('#CategoryModal').modal('hide');
 						else $('#addcategory_res').show();
@@ -421,8 +437,6 @@ $Title=$inTitle .' - '. $oj_name;
               .filter(function(){return this.nodeType == 3;})
               .text();
             if(jq.hasClass('icon-remove')){
-              if(!window.confirm("确认要删除?"+str_id))
-                return false;
               oper='del_usr';
             }else{
               oper='en_usr';
@@ -493,7 +507,7 @@ $Title=$inTitle .' - '. $oj_name;
                 news_id:jq_id.html()
               },
               success:function(msg){
-				  var arr=msg.split("FuckZK1");
+				  var arr=msg.split("^1a@#FuckZK1#@^a1");
 				  news_title=arr[0];
 				  news_content=arr[1];
 				  $('#NewsModalTitle').html('编辑新闻').show();
@@ -548,6 +562,10 @@ $Title=$inTitle .' - '. $oj_name;
 			  }
             });
 			getnewslist();
+			return false;
+		});
+		$('#btn_upload').click(function(){
+			window.open("upload.php",'upload_win2','left='+loffset+',top='+toffset+',width=400,height=300,toolbar=no,resizable=no,menubar=no,location=no,status=no');
 			return false;
 		});
         $('#form_index').submit(function(E){
