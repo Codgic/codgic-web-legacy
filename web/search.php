@@ -9,14 +9,9 @@ function check_problemid(&$str)
   $result=mysqli_query($con,'select problem_id,defunct,has_tex from problem where problem_id='.$num);
   if(mysqli_num_rows($result)){
 	$row=mysqli_fetch_row($result);
-	if(!isset($_SESSION['administrator'])){
-		if($row[1]!='Y'&&$row[2]!=64){
-			header('location: problempage.php?problem_id='.$num);
-			exit();
-		}
-	}else{
-	  header('location: problempage.php?problem_id='.$num);
-	  exit();
+	if((isset($_SESSION['administrator']))||(!isset($_SESSION['administrator'])&&$row[1]!='Y'&&$row[2]!=64)){
+		header('location: problempage.php?problem_id='.$num);
+		exit();
 	}
   }
 }
@@ -50,18 +45,9 @@ if(isset($_SESSION['user'])){
 }
 if(mysqli_num_rows($result)==1){
   $row=mysqli_fetch_row($result);
-  if(!isset($_SESSION['administrator'])){
-	  if(isset($user_id)&&$row[5]!='Y'&&$row[6]!=64){
-		  header('location: problempage.php?problem_id='.$row[0]);
-		  exit();
-	  }
-	  else if(!isset($user_id)&&$row[3]!='Y'&&$row[4]!=64){
-		  header('location: problempage.php?problem_id='.$row[0]);
-		  exit();
-	  }
-  }else{
-  header('location: problempage.php?problem_id='.$row[0]);
-  exit();
+  if((isset($_SESSION['administrator']))||(!isset($_SESSION['administrator']))&&(isset($user_id)&&$row[5]!='Y'&&$row[6]!=64)||(!isset($user_id)&&$row[3]!='Y'&&$row[4]!=64)){
+	header('location: problempage.php?problem_id='.$row[0]);
+	exit();
   }
 }
 $inTitle='搜索结果';
@@ -96,21 +82,23 @@ $Title=$inTitle .' - '. $oj_name;
               </tr></thead>
               <tbody>
                 <?php 
-                  while($row=mysqli_fetch_row($result)){
-                echo '<tr>';
-                echo '<td>',$row[0],'</td>';
-                if(isset($_SESSION['user'])){
-                  echo '<td style="width:36px;text-align:center;"><i class=', is_null($row[3]) ? '"icon-remove icon-2x" style="visibility:hidden"' : ($row[3]? '"icon-remove icon-2x" style="color:red"' : '"icon-2x icon-ok" style="color:green"'), '></i>', '</td>';
-                  echo '<td style="border-left:0;">';
-                }else{
-                  echo '<td>';
-                }
-                echo '<a href="problempage.php?problem_id=',$row[0],'">',$row[1],'</a></td>';
-                if(isset($_SESSION['user']))
-                  echo '<td>',htmlspecialchars($row[4]),'</td>';
-                echo '<td>',$row[2],'</td>';
-                echo "</tr>\n";
+                while($row=mysqli_fetch_row($result)){
+				  if((isset($_SESSION['administrator']))||(!isset($_SESSION['administrator']))&&(isset($user_id)&&$row[5]!='Y'&&$row[6]!=64)||(!isset($user_id)&&$row[3]!='Y'&&$row[4]!=64)){
+					echo '<tr>';
+					echo '<td>',$row[0],'</td>';
+					if(isset($_SESSION['user'])){
+					echo '<td style="width:36px;text-align:center;"><i class=', is_null($row[3]) ? '"icon-remove icon-2x" style="visibility:hidden"' : ($row[3]? '"icon-remove icon-2x" style="color:red"' : '"icon-2x icon-ok" style="color:green"'), '></i>', '</td>';
+					echo '<td style="border-left:0;">';
+                  }else{
+					echo '<td>';
                   }
+                  echo '<a href="problempage.php?problem_id=',$row[0],'">',$row[1],'</a></td>';
+                  if(isset($_SESSION['user']))
+					echo '<td>',htmlspecialchars($row[4]),'</td>';
+					echo '<td>',$row[2],'</td>';
+					echo "</tr>\n";
+				  }
+				}
                 ?>
               </tbody>
             </table>
