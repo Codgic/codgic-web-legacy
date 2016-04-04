@@ -110,7 +110,7 @@ $Title=$inTitle .' - '. $oj_name;
     <div id="probdisp" class="container-fluid">
       <?php 
       if($forbidden){
-        echo '<div class="span12 center">Problem is not available!</div>';
+        echo '<div class="span12 center">本题目已被隐藏或删除...</div>';
       }else{ 
       ?>
       <div class="row-fluid">

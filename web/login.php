@@ -1,8 +1,11 @@
 <?php
 require 'inc/ojsettings.php';
 header("Content-type:text/html;charset=utf-8"); 
-if(!isset($_POST['uid']) || !isset($_POST['pwd']) || !isset($_POST['url']))
-	die('Invalid argument.');
+$Title='正在登录...';
+if(!isset($_POST['uid']) || !isset($_POST['pwd']) || !isset($_POST['url'])){
+	header("Location: index.php");
+	exit();
+}
 try{
 	require 'inc/database.php';
 	require 'inc/userlogin.php';
@@ -22,10 +25,20 @@ try{
 	//echo("Login succeeded.");
 	header("location: ".$_POST['url']);
 }catch(Exception $E){?>
-<html><head><script language="javascript">
-	alert('<?php echo $E->getMessage();?>');
-	history.go(-1);
-</script></head></html>
+<html>
+  <head>
+  <?php require('head.php');?>
+	<body>
+	  <div class="center" style="margin-top:50px">
+		<h2>错误: <?php echo $E->getMessage();?></h2>
+		<hr>
+		<p><font size=3>页面即将跳转...</font></p>
+	  </div>
+	<script language="javascript">
+	window.setTimeout("history.go(-1);",2000);
+	</script>
+  </head>
+</html>
 <?php
 }
 ?>

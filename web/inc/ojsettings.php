@@ -27,7 +27,7 @@ $os_name="Ubuntu 14.04 LTS";
 //"daemon_ver" defines the version number of the judging service, which is shown in preference.php.
 $oj_name = 'CWOJ'; 
 $oj_copy = 'CWOJ Team'; 
-$web_ver = '0.89.160403-2156';
+$web_ver = '0.89.160404-1505';
 $daemon_ver = '1.01.160227-1736';
 
 //2.2 User policy settings

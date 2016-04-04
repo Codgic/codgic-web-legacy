@@ -6,14 +6,23 @@ function check_problemid(&$str)
   if(preg_match('/\D/',$str))
     return;
   $num=intval($str);
-  if(mysqli_num_rows(mysqli_query($con,'select problem_id from problem where problem_id='.$num))){
-    header('location: problempage.php?problem_id='.$num);
-    exit();
+  $result=mysqli_query($con,'select problem_id,defunct,has_tex from problem where problem_id='.$num);
+  if(mysqli_num_rows($result)){
+	$row=mysqli_fetch_row($result);
+	if(!isset($_SESSION['administrator'])){
+		if($row[1]!='Y'&&$row[2]!=64){
+			header('location: problempage.php?problem_id='.$num);
+			exit();
+		}
+	}else{
+	  header('location: problempage.php?problem_id='.$num);
+	  exit();
+	}
   }
 }
 
 if(!isset($_GET['q']))
-  die('Nothing to search.');
+  die('没有键入关键字...');
 else
   $req=($_GET['q']);
 if(isset($_GET['page_id']))
@@ -21,28 +30,39 @@ if(isset($_GET['page_id']))
 else
   $page_id=0;
 if(strlen($req)>600)
-  die('Keyword is too long');
+  die('关键字太长...');
 require ('inc/checklogin.php');
 require('inc/database.php');
 check_problemid($req);
 $keyword=mysqli_real_escape_string($con,trim($req));
 if(isset($_SESSION['user'])){
   $user_id=$_SESSION['user'];
-  $result=mysqli_query($con,"SELECT problem_id,title,source,res,tags from
-    (select problem.problem_id,title,source,tags from problem left join user_notes on (user_id='$user_id' and user_notes.problem_id=problem.problem_id)  )pt
+  $result=mysqli_query($con,"SELECT problem_id,title,source,res,tags,defunct,has_tex from
+    (select problem.problem_id,title,source,tags,defunct,has_tex from problem left join user_notes on (user_id='$user_id' and user_notes.problem_id=problem.problem_id)  )pt
     LEFT JOIN (select problem_id as pid,MIN(result) as res from solution where user_id='$user_id' and problem_id group by problem_id) as temp on(pid=problem_id)
     where title like '%$keyword%' or source like '%$keyword%' or tags like '%$keyword%'
     order by problem_id limit $page_id,100");
 }else{
-  $result=mysqli_query($con,"SELECT problem_id,title,source from
+  $result=mysqli_query($con,"SELECT problem_id,title,source,defunct,has_tex from
     problem
     where title like '%$keyword%' or source like '%$keyword%'
     order by problem_id limit $page_id,100");
 }
 if(mysqli_num_rows($result)==1){
   $row=mysqli_fetch_row($result);
+  if(!isset($_SESSION['administrator'])){
+	  if(isset($user_id)&&$row[5]!='Y'&&$row[6]!=64){
+		  header('location: problempage.php?problem_id='.$row[0]);
+		  exit();
+	  }
+	  else if(!isset($user_id)&&$row[3]!='Y'&&$row[4]!=64){
+		  header('location: problempage.php?problem_id='.$row[0]);
+		  exit();
+	  }
+  }else{
   header('location: problempage.php?problem_id='.$row[0]);
   exit();
+  }
 }
 $inTitle='搜索结果';
 $Title=$inTitle .' - '. $oj_name;
