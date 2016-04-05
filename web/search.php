@@ -6,18 +6,18 @@ function check_problemid(&$str)
   if(preg_match('/\D/',$str))
     return;
   $num=intval($str);
-  $result=mysqli_query($con,'select problem_id,defunct,has_tex from problem where problem_id='.$num);
-  if(mysqli_num_rows($result)){
-	$row=mysqli_fetch_row($result);
-	if((isset($_SESSION['administrator']))||(!isset($_SESSION['administrator'])&&$row[1]!='Y'&&$row[2]!=64)){
-		header('location: problempage.php?problem_id='.$num);
-		exit();
-	}
+  if(isset($_SESSION['administrator']))
+	  $addt_cond='';
+  else
+      $addt_cond="defunct='N' and ";
+  if(mysqli_num_rows(mysqli_query($con,'select problem_id from problem where '.$addt_cond.'problem_id='.$num))){
+      header('location: problempage.php?problem_id='.$num);
+      exit();
   }
 }
 
 if(!isset($_GET['q']))
-  die('没有键入关键字...');
+  die('没有输入关键字...');
 else
   $req=($_GET['q']);
 if(isset($_GET['page_id']))
@@ -30,25 +30,27 @@ require ('inc/checklogin.php');
 require('inc/database.php');
 check_problemid($req);
 $keyword=mysqli_real_escape_string($con,trim($req));
+if(isset($_SESSION['administrator']))
+	$addt_cond='';
+else
+    $addt_cond="defunct='N' and ";
 if(isset($_SESSION['user'])){
   $user_id=$_SESSION['user'];
-  $result=mysqli_query($con,"SELECT problem_id,title,source,res,tags,defunct,has_tex from
-    (select problem.problem_id,title,source,tags,defunct,has_tex from problem left join user_notes on (user_id='$user_id' and user_notes.problem_id=problem.problem_id)  )pt
+  $result=mysqli_query($con,"SELECT problem_id,title,source,res,tags from
+    (select problem.problem_id,title,source,tags,defunct from problem left join user_notes on (user_id='$user_id' and user_notes.problem_id=problem.problem_id)  )pt
     LEFT JOIN (select problem_id as pid,MIN(result) as res from solution where user_id='$user_id' and problem_id group by problem_id) as temp on(pid=problem_id)
-    where title like '%$keyword%' or source like '%$keyword%' or tags like '%$keyword%'
+    where ".$addt_cond."(title like '%$keyword%' or source like '%$keyword%' or tags like '%$keyword%')
     order by problem_id limit $page_id,100");
 }else{
-  $result=mysqli_query($con,"SELECT problem_id,title,source,defunct,has_tex from
+  $result=mysqli_query($con,"SELECT problem_id,title,source,defunct from
     problem
-    where title like '%$keyword%' or source like '%$keyword%'
+    where defunct='N' and (title like '%$keyword%' or source like '%$keyword%')
     order by problem_id limit $page_id,100");
 }
 if(mysqli_num_rows($result)==1){
   $row=mysqli_fetch_row($result);
-  if((isset($_SESSION['administrator']))||(!isset($_SESSION['administrator']))&&(isset($user_id)&&$row[5]!='Y'&&$row[6]!=64)||(!isset($user_id)&&$row[3]!='Y'&&$row[4]!=64)){
-	header('location: problempage.php?problem_id='.$row[0]);
-	exit();
-  }
+  header('location: problempage.php?problem_id='.$row[0]);
+  exit();
 }
 $inTitle='搜索结果';
 $Title=$inTitle .' - '. $oj_name;
@@ -82,23 +84,21 @@ $Title=$inTitle .' - '. $oj_name;
               </tr></thead>
               <tbody>
                 <?php 
-                while($row=mysqli_fetch_row($result)){
-				  if((isset($_SESSION['administrator']))||(!isset($_SESSION['administrator']))&&(isset($user_id)&&$row[5]!='Y'&&$row[6]!=64)||(!isset($user_id)&&$row[3]!='Y'&&$row[4]!=64)){
-					echo '<tr>';
-					echo '<td>',$row[0],'</td>';
-					if(isset($_SESSION['user'])){
-					echo '<td style="width:36px;text-align:center;"><i class=', is_null($row[3]) ? '"icon-remove icon-2x" style="visibility:hidden"' : ($row[3]? '"icon-remove icon-2x" style="color:red"' : '"icon-2x icon-ok" style="color:green"'), '></i>', '</td>';
-					echo '<td style="border-left:0;">';
-                  }else{
-					echo '<td>';
+                  while($row=mysqli_fetch_row($result)){
+                echo '<tr>';
+                echo '<td>',$row[0],'</td>';
+                if(isset($_SESSION['user'])){
+                  echo '<td style="width:36px;text-align:center;"><i class=', is_null($row[3]) ? '"icon-remove icon-2x" style="visibility:hidden"' : ($row[3]? '"icon-remove icon-2x" style="color:red"' : '"icon-2x icon-ok" style="color:green"'), '></i>', '</td>';
+                  echo '<td style="border-left:0;">';
+                }else{
+                  echo '<td>';
+                }
+                echo '<a href="problempage.php?problem_id=',$row[0],'">',$row[1],'</a></td>';
+                if(isset($_SESSION['user']))
+                  echo '<td>',htmlspecialchars($row[4]),'</td>';
+                echo '<td>',$row[2],'</td>';
+                echo "</tr>\n";
                   }
-                  echo '<a href="problempage.php?problem_id=',$row[0],'">',$row[1],'</a></td>';
-                  if(isset($_SESSION['user']))
-					echo '<td>',htmlspecialchars($row[4]),'</td>';
-					echo '<td>',$row[2],'</td>';
-					echo "</tr>\n";
-				  }
-				}
                 ?>
               </tbody>
             </table>

@@ -211,8 +211,15 @@ EOF;
 	mysqli_query($con,"delete from privilege where user_id='$uid' and rightstr='$right'");
 }else if($op=="del_news"){
 	isset($_POST['news_id']) ? $news_id=intval($_POST['news_id']) : die('');
-	if(mysqli_query($con,"delete from news where $news_id>0 and news_id=$news_id"))
+	if(mysqli_query($con,"delete from news where $news_id>0 and news_id=$news_id")){
+		$row=mysqli_fetch_row(mysqli_query($con,"select max(news_id) from news"));
+		$news_id++;
+		for($news_id;$news_id<=$row[0];$news_id++){
+			$res=mysqli_query($con,"update news set news_id='".($news_id-1)."'where news_id='".$news_id."'");
+			if(!$res) die($news_id);
+		}
 		echo 'success';
+    }
 	else
 		echo 'error';
 }else if($op=="en_usr"){

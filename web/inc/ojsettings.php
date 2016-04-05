@@ -27,7 +27,7 @@ $os_name="Ubuntu 14.04 LTS";
 //"daemon_ver" defines the version number of the judging service, which is shown in preference.php.
 $oj_name = 'CWOJ'; 
 $oj_copy = 'CWOJ Team'; 
-$web_ver = '0.89.160404-2251';
+$web_ver = '0.89.160405-1401';
 $daemon_ver = '1.01.160227-1736';
 
 //2.2 User policy settings
@@ -62,7 +62,7 @@ $news_num=6;
 
 //2.6 Testcase upload filesize
 //Don't forget to change the settings in php.ini at the same time!
-$tc_size='50mb';
+$tc_size='200mb';
 
 //2.7 Update Settings
 //$updbranch defines the current branch that you are in.

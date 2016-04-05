@@ -85,7 +85,7 @@ $Title=$inTitle .' - '. $oj_name;
               </li>
               <li>
                 <label class="checkbox" style="font-size: 16px;">
-                  <input type="checkbox" name="hide_prob">隐藏题目 (隐藏题目不可设置难度~)
+                  <input type="checkbox" name="hide_prob">隐藏题目
                 </label>
               </li>
             </ul>
