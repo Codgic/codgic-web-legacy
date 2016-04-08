@@ -115,7 +115,7 @@ $Title=$inTitle .' - '. $oj_name;
         runtimes : 'html5',
         url : 'ajax_testcase.php',
         chunk_size : '<?php echo $tc_size?>',
-        multipart : true,
+        multipart : false,
         multipart_params: {
           "problem_id": problem_id
         },
