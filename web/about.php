@@ -48,7 +48,7 @@ $Title=$inTitle .' - '. $oj_name;
           <div>
             <h3>问：本OJ采用什么编译器进行编译？编译语句是什么？</h3>
             <p>答：管那么多干嘛！</p>
-            <p>我们使用GNU GCC/G++来编译C/C++程序，用Free Pascal来编译Pascal程序，环境为<?php echo $os_name?>。</p>
+            <p>我们使用GNU GCC/G++来编译C/C++程序，用Free Pascal来编译Pascal程序，服务器系统环境为<?php echo PHP_OS?>。</p>
             <p>其中，编译语句为：</p>
             <table class="table table-striped table-bordered table-condensed table-last-left-aligned" id="tab_options">
               <tbody>

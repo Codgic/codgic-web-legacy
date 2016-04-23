@@ -102,7 +102,8 @@ $Title=$inTitle .' - '. $oj_name;
         <div class="row-fluid">
           <div class="span10 offset1">
 			<p><a href="javascript:history.back(-1);" class="btn btn"><< 返回上一页</a>
-            <a class="btn btn" target="_blank" href="sourcecode.php?raw=1&amp;solution_id=<?php echo $sol_id?>" onclick="return show_raw();">RAW</a></p>
+            <a class="btn btn" target="_blank" href="sourcecode.php?raw=1&amp;solution_id=<?php echo $sol_id?>" onclick="return show_raw();">RAW</a>
+            <button class="btn btn" data-clipboard-action="copy" data-clipboard-target="#div_code" id="btn_copy">复制代码</button></p>
           </div>
         </div>
         <div class="row-fluid">
@@ -121,9 +122,16 @@ $Title=$inTitle .' - '. $oj_name;
     <script src="/assets/js/google-code-prettify/prettify.js"></script>
     <script src="/assets/js/jquery.min.js"></script>
     <script src="/assets/js/bootstrap.min.js"></script>
-	<script src="/assets/js/jquery.zclip.js"></script>
+	<script src="/assets/js/clipboard.min.js"></script>
     <script src="/assets/js/common.js"></script>
     <script type="text/javascript"> 
+    var clipboard = new Clipboard('#btn_copy');
+    clipboard.on('success', function(e) {
+        copiedtext();
+    });
+    clipboard.on('error', function(e) {
+        console.log(e);
+    });
       var solution_id=<?php echo $sol_id?>;
       $(document).ready(function(){
         $('#ret_url').val("sourcecode.php?solution_id="+solution_id);

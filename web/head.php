@@ -2,8 +2,11 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
   <meta name="renderer" content="webkit">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <?php header("Content-Type: text/html; charset=utf-8");?>
-  <link rel="shortcut icon" href="assets/res/favicon.ico" type="image/x-icon" />
+  <meta name="description" content="<?php echo $oj_name?> - Coding your future.">
+  <?php header("Content-Type: text/html; charset=utf-8");
+  //if($_SESSION['user']!='jimmy19990') header("Location:temp.html");
+  ?>
+  <link rel="shortcut icon" href="/assets/res/favicon.ico" type="image/x-icon" />
   <link rel="stylesheet" href="/assets/css/normalize.min.css" type="text/css" />
   <title><?php echo $Title?></title>
   <script src="/assets/js/twemoji.min.js"></script>

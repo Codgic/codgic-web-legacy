@@ -1,3 +1,15 @@
+function menu_expand(){
+    $("#nav_user").hide();
+    $(".main_menu").addClass("visible-desktop");
+    $(".user_menu").show();
+    return;
+}   
+function menu_back(){
+    $("#nav_user").show();
+    $(".main_menu").removeClass("visible-desktop");
+    $(".user_menu").hide();
+    return;
+}
 function htmlEncode(str) {
 	var s = "";
 	if (str.length == 0) return "";
@@ -98,7 +110,6 @@ shortcuts={
 	"80": function(){location.href=$('#nav_prob').attr('href');} , //alt+P
 	"82": function(){location.href=$('#nav_record').attr('href');} , //alt+R
 	"73": function(){$("#search_input").focus();} , //alt+I
-	"76": function(){$("#login_btn1").click();} , //alt+L
 	"76": function(){$("#login_btn").click();} , //alt+L
 	"77": function(){
 			var obj=$('#nav_mail');
@@ -152,7 +163,6 @@ $(document).ready(function(){
 		$('#uid').focus();
 	});
 	$('#logoff_btn').click(function(){$.ajax({url:"logoff.php",dataType:"html",success:function(){location.reload();}});});
-	$('#logoff_btn1').click(function(){$.ajax({url:"logoff.php",dataType:"html",success:function(){location.reload();}});});
 	var $search_input=$('#search_input');
 	if($search_input.length)
 	{
@@ -201,7 +211,7 @@ $(document).ready(function(){
 		$.get("ajax_mailfunc.php?op=check",function(data){
 			if(isNaN(data)||data=='0')
 				return;
-			$notifier.html('&nbsp;('+data+')');
+			$notifier.html(data);
 			var $alert=$('<div class="alert alert-success center alert-popup"> 你有未读私信...</div>').appendTo('body');
 			setTimeout(function(){$alert.fadeOut(400);},1000);
 		});
@@ -225,4 +235,37 @@ $(document).ready(function(){
 		return false;
 	}
 }).keyup(hotkey_hint_dismiss);
+$('#search_input').focus(function(){
+    if($("#nav_user").is(":visible")) {
+        $("#nav_user").addClass("recover");
+        $("#nav_user").hide();
+    }
+    if($(".user_menu").is(":visible")) {
+        $(".user_menu").addClass("recover");
+        $(".user_menu").hide();
+    }
+    else if($(".login_menu").is(":visible")) {
+        $(".login_menu").addClass("recover");
+        $(".login_menu").hide();
+    }
+    $(".main_menu").addClass("visible-desktop");
+	$("#search_input").css("width","");
+}); 
+$('#search_input').focusout(function(){
+    if($("#nav_user").hasClass("recover")) {
+        $("#nav_user").removeClass("recover");
+        $(".main_menu").removeClass("visible-desktop");
+        $("#nav_user").show();
+    }
+   if($(".user_menu").hasClass("recover")) {
+        $(".user_menu").removeClass("recover");
+        $(".user_menu").show();
+    }
+    else if($(".login_menu").hasClass("recover")) {
+        $(".login_menu").removeClass("recover");
+        $(".main_menu").removeClass("visible-desktop");
+        $(".login_menu").show();
+    }
+    $("#search_input").css("width","135px");
+}); 
 $('#search_input').keyup(hotkey_hint_dismiss);

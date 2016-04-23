@@ -76,7 +76,7 @@ $Title=$inTitle .' - '. $oj_name;
 	  </div>
 	</div>
 	</body>
-		<script src="/assets/js/jquery.zclip.js"></script>
+	<script src="/assets/js/clipboard.min.js"></script>
 	<script type="text/javascript">
 		function check_upload(){
 			if(/\.(jpg|jpeg|png|gif|bmp|tif|tiff|ico|wmf)$/i.test(document.getElementById('file').value)){
@@ -87,15 +87,14 @@ $Title=$inTitle .' - '. $oj_name;
 			}
 			return false;
 		}
-		$(function(){
-			$("#btn_copy").zclip({
-				path:'/assets/res/ZeroClipboard.swf',
-				copy:function(){
-					var a = '<<?php echo $imgtag?>>';
-					return a;
-				}
-			});
-		});
+		var clipboard = new Clipboard('#btn_copy', {
+        text: function() {
+            return '<<?php echo $imgtag?>>';
+        }
+    });
+    clipboard.on('error', function(e) {
+        console.log(e);
+    });
 	</script>
 </html>
 <?php }?>
