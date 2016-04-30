@@ -3,7 +3,7 @@ require('inc/database.php');
 require('inc/ojsettings.php');
 if(!isset($_POST['newsid']))
 	die('Invalid argument.');
-$newsid = $_POST['newsid'];
+$newsid = intval($_POST['newsid']);
 $res=mysqli_query($con,"select title, content,time from news where news_id=$newsid");
 $row=mysqli_fetch_row($res);
 $title = $row[0];

@@ -140,7 +140,7 @@ $Title=$inTitle .' - '. $oj_name;
 			  <div style="margin-left:50px;margin-right:50px">
 			    <div class="row-fluid">
                   <div class="span12">
-				  <h3>更新<?php echo $oj_name?>（开发进度: 40%: 可以检查和下载，还不能装~）</h3>
+				  <h3>更新<?php echo $oj_name?>（临时废弃）</h3>
 				  <br>
 				  <div style="font-size:16px">
 				    当前版本: <?php echo"{$web_ver}"?>
@@ -208,7 +208,7 @@ $Title=$inTitle .' - '. $oj_name;
 	    <p></p>
         <div class="modal-body" style="padding-top:5px">
 		  <input type="text" id="input_newstitle" name="news" class="input-xlarge" placeholder="请输入新闻标题...">
-		  <textarea style="box-sizing: border-box;width:100%;resize:none" id="input_newscontent" rows="16" name="source" placeholder="请输入新闻内容 (可选)..."></textarea>
+		  <textarea style="box-sizing: border-box;width:100%;resize:none" id="input_newscontent" rows="14" name="source" placeholder="请输入新闻内容 (可选)..."></textarea>
           <div class="alert alert-error hide margin-0" id="addnews_res">发生错误</div>
         </div>
         <div class="modal-footer form-inline">

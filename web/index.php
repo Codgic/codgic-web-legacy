@@ -71,7 +71,7 @@ $num=0;
         <p>&copy; <?php echo"{$year} {$oj_copy}";?></p>
       </footer>
     </div>
-	<div class="modal fade hide" id="NewsModal" style="margin-top:100px">
+	<div class="modal fade hide" id="NewsModal">
       <div class="modal-header">
         <a class="close" data-dismiss="modal">&times;</a>
         <h4><span class="hide" id="ajax_newstitle"></span></h4>

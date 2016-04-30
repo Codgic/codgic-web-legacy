@@ -276,7 +276,7 @@ $Title=$inTitle .' - '. $oj_name;
       <form class="margin-0" action="submit.php" method="post" id="form_submit">
 	    <p></p>
         <div class="modal-body" style="padding-top:5px">
-		  <textarea style="box-sizing: border-box;width:100%;resize:none" id="detail_input" rows="16" name="source" placeholder="在这里敲出你的代码..."></textarea>
+		  <textarea style="box-sizing: border-box;width:100%;resize:none" id="detail_input" rows="14" name="source" placeholder="在这里敲出你的代码..."></textarea>
           <div class="alert alert-error hide margin-0" id="submit_result"></div>
         </div>
         <div class="modal-footer form-inline">
