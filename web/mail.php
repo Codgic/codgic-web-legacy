@@ -1,6 +1,6 @@
 <?php
 require 'inc/ojsettings.php';
-require('inc/checklogin.php');
+require ('inc/checklogin.php');
 require('inc/mail_flags.php');
 
 if(isset($_GET['start_id']))
@@ -133,9 +133,9 @@ $Title=$inTitle .' - '. $oj_name;
 			</footer>
 
 		</div><!--/.container-->
-		<script src="../assets/js/jquery.js"></script>
-	    <script src="../assets/js/bootstrap.min.js"></script>
-		<script src="../assets/js/common.js"></script>
+		<script src="/assets/js/jquery.min.js"></script>
+	    <script src="/assets/js/bootstrap.min.js"></script>
+		<script src="/assets/js/common.js"></script>
 
 		<script type="text/javascript"> 
 			$(document).ready(function(){

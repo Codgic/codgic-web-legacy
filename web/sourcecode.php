@@ -35,7 +35,7 @@ if(!isset($_GET['solution_id']))
     die('Wrong argument.');
 $sol_id=intval($_GET['solution_id']);
 
-require('inc/checklogin.php');
+require ('inc/checklogin.php');
 require('inc/database.php');
 $result=mysqli_query($con,"select user_id,time,memory,result,language,code_length,problem_id,public_code from solution where solution_id=$sol_id");
 $row=mysqli_fetch_row($result);
@@ -60,10 +60,8 @@ if($allowed){
 }
 if(isset($_GET['raw'])){
   if(isset($info)){
-	echo "<a href=\"javascript:history.back(-1);\">返回上一页...</a>";
     echo $info;
   }else{
-	echo "<p><a href=\"javascript:history.back(-1);\">< 返回...</a></p>";
     header("Content-Type: text/html; charset=utf-8");
     echo "<plaintext>",$source;
   }
@@ -104,8 +102,8 @@ $Title=$inTitle .' - '. $oj_name;
         <div class="row-fluid">
           <div class="span10 offset1">
 			<p><a href="javascript:history.back(-1);" class="btn btn"><< 返回上一页</a>
-            <a class="btn btn" href="sourcecode.php?raw=1&amp;solution_id=<?php echo $sol_id?>" onclick="return show_raw();">RAW</a></p>
-            <!--[if IE]>&nbsp;&nbsp;<a href="#" onclick="return copy_ie();">复制</a> <![endif]-->
+            <a class="btn btn" target="_blank" href="sourcecode.php?raw=1&amp;solution_id=<?php echo $sol_id?>" onclick="return show_raw();">RAW</a>
+            <button class="btn btn" data-clipboard-action="copy" data-clipboard-target="#div_code" id="btn_copy">复制代码</button></p>
           </div>
         </div>
         <div class="row-fluid">
@@ -121,26 +119,25 @@ $Title=$inTitle .' - '. $oj_name;
 
     </div>
 
-    <script src="../assets/js/google-code-prettify/prettify.js"></script>
-    <script src="../assets/js/jquery.js"></script>
-    <script src="../assets/js/bootstrap.min.js"></script>
-    <script src="../assets/js/common.js"></script>
+    <script src="/assets/js/google-code-prettify/prettify.js"></script>
+    <script src="/assets/js/jquery.min.js"></script>
+    <script src="/assets/js/bootstrap.min.js"></script>
+	<script src="/assets/js/clipboard.min.js"></script>
+    <script src="/assets/js/common.js"></script>
     <script type="text/javascript"> 
+    var clipboard = new Clipboard('#btn_copy');
+    clipboard.on('success', function(e) {
+        copiedtext();
+    });
+    clipboard.on('error', function(e) {
+        console.log(e);
+    });
       var solution_id=<?php echo $sol_id?>;
       $(document).ready(function(){
         $('#ret_url').val("sourcecode.php?solution_id="+solution_id);
       });
       function doajax(fun){
         $.ajax({type:"GET",url:("sourcecode.php?raw=1&solution_id="+solution_id),success:fun});
-      }
-      function copy_ie(){
-        doajax(function(msg){
-            if(window.clipboardData){
-              window.clipboardData.clearData();
-              window.clipboardData.setData("text", msg);
-            }
-        });
-        return false;
       }
       function show_raw(){
         return true; /*****************************/

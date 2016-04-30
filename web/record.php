@@ -2,7 +2,7 @@
 require 'inc/ojsettings.php';
 require('inc/result_type.php');
 require('inc/lang_conf.php');
-require('inc/checklogin.php');
+require ('inc/checklogin.php');
 require('inc/database.php');
 
 $cond="";
@@ -130,7 +130,7 @@ $Title=$inTitle .' - '. $oj_name;
     <?php require('page_header.php'); ?>
     <div class="container-fluid">
       <div class="row-fluid">
-        <div class="span12">
+        <div class="span10 offset1">
           <form action="record.php" method="get" class="form-inline" id="form_filter">
             <label>题目:</label>
             <input type="text" class="input-mini" name="problem_id" id="ipt_problem_id" value="<?php echo $problem_id?>">
@@ -166,9 +166,9 @@ $Title=$inTitle .' - '. $oj_name;
         </div>
       </div>
       <div class="row-fluid">
-        <div class="span12">
+        <div class="span10 offset1">
 
-            <table class=" table table-responsive table-hover table-condensed table-bordered">
+            <table class=" table table-responsive table-hover table-bordered">
               <thead><tr>
                 <th style="width:6%">ID</th>
                 <th style="width:7%">题目</th>
@@ -239,9 +239,9 @@ $Title=$inTitle .' - '. $oj_name;
       </footer>
 
     </div><!--/.container-->
-    <script src="../assets/js/jquery.js"></script>
-    <script src="../assets/js/bootstrap.min.js"></script>
-    <script src="../assets/js/common.js"></script>
+    <script src="/assets/js/jquery.min.js"></script>
+    <script src="/assets/js/bootstrap.min.js"></script>
+    <script src="/assets/js/common.js"></script>
 
     <script type="text/javascript"> 
       $(document).ready(function(){

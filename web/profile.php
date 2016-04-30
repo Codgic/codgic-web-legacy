@@ -1,6 +1,6 @@
 <?php
 require 'inc/ojsettings.php';
-require('inc/checklogin.php');
+require ('inc/checklogin.php');
  
 if(!isset($_SESSION['user'])){
   $info='<div style="text-align: center">然而你并没有登录。</div>';
@@ -93,9 +93,9 @@ $Title=$inTitle .' - '. $oj_name;
       </footer>
     </div>
 
-    <script src="../assets/js/jquery.js"></script>
-    <script src="../assets/js/bootstrap.min.js"></script>
-    <script src="../assets/js/common.js"></script>
+    <script src="/assets/js/jquery.min.js"></script>
+    <script src="/assets/js/bootstrap.min.js"></script>
+    <script src="/assets/js/common.js"></script>
 
     <script type="text/javascript"> 
       $(document).ready(function(){

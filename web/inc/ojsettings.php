@@ -14,10 +14,6 @@
 //This ensures the functionality of Messaging functions.
 $temp_dir="/tmp/cwoj_postmessage.lock"; 
 
-//1.2 OS Name
-//"os_name" is shown in about.php which tells the users what platform CWOJ is currently deployed on.
-$os_name="Ubuntu 14.04 LTS";
-
 //2. OJ Variables
 //-----------------
 //2.1 Basic Settings
@@ -27,7 +23,7 @@ $os_name="Ubuntu 14.04 LTS";
 //"daemon_ver" defines the version number of the judging service, which is shown in preference.php.
 $oj_name = 'CWOJ'; 
 $oj_copy = 'CWOJ Team'; 
-$web_ver = '0.86.160319-1126';
+$web_ver = '0.90.160422-2156';
 $daemon_ver = '1.01.160227-1736';
 
 //2.2 User policy settings
@@ -46,19 +42,26 @@ $require_confirm=0;
 date_default_timezone_set("PRC"); //Time zone settings
 
 //"day_start" defines the start hour of day mode (24 hour format)
-$daystart = 7;
+$daystart = 6;
 
 //"night_start" defines the start hour of night mode (24 hour format)
 $nightstart = 21; 
 
 //2.4 404 Page Settings
 //"errorimg_num" defines the number of uploaded pictures to be shown in 404 page.
-$errorimg_num = 2;  
+$num_404 = 2;
+$num_403 = 1;  
 
 //2.5 News Settings
 //"news_num" defines the maxium number of news shown in index.php
-$news_num=8; 
+$news_num=6; 
 
 //2.6 Testcase upload filesize
-//Don't forget to change the settings in php.ini at the same time!
-$tc_size='50mb';
+//Don't forget to change the max file size setting in php.ini at the same time!
+$tc_size='200mb';
+
+//2.7 Update Settings
+//$updbranch defines the current branch that you are in.
+//$updloc defines the address of update source (as a remote directory).
+$updbranch='master';
+$updloc='https://raw.githubusercontent.com/CDFLS/CWOJ/'.$updbranch.'/update/';

@@ -1,6 +1,6 @@
 <?php
 require 'inc/ojsettings.php';
-require('inc/checklogin.php');
+require ('inc/checklogin.php');
 header('Content-Type: text/html; charset=utf-8');
 
 require('inc/database.php');
@@ -73,9 +73,9 @@ $Title=$inTitle .' - '. $oj_name;
       </footer>
 
     </div>
-    <script src="../assets/js/jquery.js"></script>
-    <script src="../assets/js/bootstrap.min.js"></script>
-    <script src="../assets/js/common.js"></script>
+    <script src="/assets/js/jquery.min.js"></script>
+    <script src="/assets/js/bootstrap.min.js"></script>
+    <script src="/assets/js/common.js"></script>
 
     <script type="text/javascript">
       $(document).ready(function(){

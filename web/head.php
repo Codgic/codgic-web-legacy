@@ -2,12 +2,15 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
   <meta name="renderer" content="webkit">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <?php header("Content-Type: text/html; charset=utf-8");?>
-  <link rel="shortcut icon" href="assets/res/favicon.ico" type="image/x-icon" />
+  <meta name="description" content="<?php echo $oj_name?> - Coding your future.">
+  <?php header("Content-Type: text/html; charset=utf-8");
+  //if($_SESSION['user']!='jimmy19990') header("Location:temp.html");
+  ?>
+  <link rel="shortcut icon" href="/assets/res/favicon.ico" type="image/x-icon" />
   <link rel="stylesheet" href="/assets/css/normalize.min.css" type="text/css" />
   <title><?php echo $Title?></title>
   <script src="/assets/js/twemoji.min.js"></script>
-  <script src="/assets/js/jquery.js"></script> 
+  <script src="/assets/js/jquery.min.js"></script> 
   <?php 
   $year=date('Y');
   require 'inc/ojsettings.php';
@@ -42,24 +45,40 @@
 		$nav_class='';
 	    $button_class='btn-primary';
 		};
-  echo "<link href=\"{$css1}\" rel=\"stylesheet\" type=\"text/css\" />";
-  echo "<link href=\"{$css2}\" rel=\"stylesheet\">";?>
-  <link href="../assets/css/bootstrap-responsive.min.css" rel="stylesheet">
-  <link href="../assets/css/font-awesome.min.css" rel="stylesheet">
-  <link href="../assets/js/google-code-prettify/prettify.css" rel="stylesheet">
+  ?>
+  <link href="<?php echo $css1?>" rel="stylesheet" type="text/css">
+  <link href="<?php echo $css2?>" rel="stylesheet" type="text/css">
+  <link href="/assets/css/bootstrap-responsive.min.css" rel="stylesheet">
+  <link href="/assets/css/font-awesome.min.css" rel="stylesheet">
+  <link href="/assets/js/google-code-prettify/prettify.css" rel="stylesheet">
   <!--[if lt IE 8]>
   <script type="text/javascript">
   window.location = "fuckie.php"; 
   </script>
   <![endif]-->
   <!--[if lt IE 9]>
-    <link rel="stylesheet" href="../assets/css/font-awesome-ie7.min.css">
-    <script src="../assets/js/html5.js"></script>
-	<script src="../assets/js/respond.js"></script>
-	<script type="text/javascript" src="../assets/js/jquery.placeholder.js">
+    <link rel="stylesheet" href="/assets/css/font-awesome-ie7.min.css">
+    <script src="/assets/js/html5.js"></script>
+	<script src="/assets/js/respond.js"></script>
+	<script type="text/javascript" src="/assets/js/jquery.placeholder.js">
       $(function() {
       $('input, textarea').placeholder();
       });
     </script>
   <![endif]-->
+  <script type="text/javascript">
+  function checkUpdate() {
+    window.addEventListener('load', function(e) {
+        window.applicationCache.addEventListener('updateready', function(e) {
+            if (window.applicationCache.status === window.applicationCache.UPDATEREADY) {
+                   window.applicationCache.swapCache();
+                    window.location.reload();
+            } else {
+                // Manifest didn't changed. do Nothing.
+            }
+        }, false);
+    }, false);
+}
+  checkUpdate();
+  </script>
 </head>

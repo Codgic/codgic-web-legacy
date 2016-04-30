@@ -4,7 +4,7 @@ if(!isset($_GET['problem_id']))
     die('Wrong argument.');
 $prob_id=intval($_GET['problem_id']);
 
-require('inc/checklogin.php');
+require ('inc/checklogin.php');
 
 if(!isset($_SESSION['user'],$_SESSION['administrator']))
   die("Permission denied");
@@ -62,13 +62,13 @@ $Title=$inTitle .' - '. $oj_name;
 
     </div>
 
-    <script src="../assets/js/jquery.js"></script>
-    <script src="../assets/js/bootstrap.min.js"></script>
-    <script src="../assets/js/jquery-ui.min.js"></script>
-    <script src="../assets/js/plupload.full.min.js"></script>
-    <script src="../assets/js/jquery.ui.plupload.min.js"></script>
+    <script src="/assets/js/jquery.min.js"></script>
+    <script src="/assets/js/bootstrap.min.js"></script>
+    <script src="/assets/js/jquery-ui.min.js"></script>
+    <script src="/assets/js/plupload.full.min.js"></script>
+    <script src="/assets/js/jquery.ui.plupload.min.js"></script>
 
-    <script src="../assets/js/common.js"></script>
+    <script src="/assets/js/common.js"></script>
     <script type="text/javascript"> 
       var problem_id = <?php echo $prob_id?>;
       var uploader;

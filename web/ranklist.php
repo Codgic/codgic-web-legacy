@@ -1,6 +1,6 @@
 <?php
 require 'inc/ojsettings.php';
-require('inc/checklogin.php');
+require ('inc/checklogin.php');
 
 if(isset($_GET['start_id']))
   $page_id=intval($_GET['start_id']);
@@ -24,7 +24,8 @@ $Title=$inTitle .' - '. $oj_name;
   <body>
     <?php require('page_header.php'); ?>       
     <div class="container-fluid">
-      <div class="form-inline" style="margin-bottom:10px">
+	<div class="row-fluid">
+      <div class="span10 offset1 form-inline" style="margin-bottom:10px">
         <label for="user_page">页数: </label>
         <select class="input-small" id="user_page"></select>
         <div class="pull-right">
@@ -48,18 +49,20 @@ $Title=$inTitle .' - '. $oj_name;
         </div>
         <div class="clearfix"></div>
       </div>
+	  </div>
       <div class="row-fluid">
-        <div class="span12">
-            <table class="table table-responsive table-hover table-condensed table-bordered " style="margin-bottom:0 margin-right:10px">
+        <div class="span10 offset1">
+		
+            <table class="table table-responsive table-hover table-bordered " style="margin-bottom:0 margin-right:10px">
               <thead><tr>
-                <th style="width:4%">No.</th>
+                <th style="width:5%">No.</th>
                 <th style="width:15%">用户名</th>
-                <th style="width:55%">昵称</th>
-                <th style="width:5%">头衔</th>
-                <th style="width:6%">分数</th>
-                <th style="width:5%">AC</th>
-                <th style="width:5%">提交数</th>
-                <th style="width:5%">通过率</th>
+                <th style="width:40%">昵称</th>
+                <th style="width:8%">头衔</th>
+                <th style="width:8%">分数</th>
+                <th style="width:8%">AC</th>
+                <th style="width:8%">提交数</th>
+                <th style="width:8%">通过率</th>
               </tr></thead>
               <tbody id="userlist">
                 <?php 
@@ -108,9 +111,9 @@ $Title=$inTitle .' - '. $oj_name;
       </footer>
 
     </div><!--/.container-->
-    <script src="../assets/js/jquery.js"></script>
-    <script src="../assets/js/bootstrap.min.js"></script>
-    <script src="../assets/js/common.js"></script>
+    <script src="/assets/js/jquery.min.js"></script>
+    <script src="/assets/js/bootstrap.min.js"></script>
+    <script src="/assets/js/common.js"></script>
 
     <script type="text/javascript">
       function intersection(obj1,obj2,arr1,arr2,ist){

@@ -13,9 +13,8 @@ require('inc/ojsettings.php');
 	  echo"<script language=\"javascript\">
       window.location= \"index.php\";
       </script>";};
-  echo "<body style=\"background-image: url({$loginimg})\">";
   ?>
-
+    <body style="background-image: url(<?php echo $loginimg?>)">
     <div class="container-fluid">
       <div class="row-fluid">
         <div class="span center" style="padding:20px">
@@ -115,8 +114,8 @@ require('inc/ojsettings.php');
           </form>
         </div>
       </div>
-    <script src="../assets/js/jquery.js"></script>
-    <script src="../assets/js/common.js"></script>
+    <script src="/assets/js/jquery.min.js"></script>
+    <script src="/assets/js/common.js"></script>
     <script type="text/javascript">
       function switch_page() {
         $('#loginpage').hide();
@@ -159,10 +158,10 @@ require('inc/ojsettings.php');
               data:$('#form_profile').serialize(),
               success:function(msg){
                 if(msg=='success'){
-			var c = <?php echo $require_confirm?>;
-		       	if(c == 1) $('#ajax_result').html('你的注册申将被审核～').show();
-			else $('#ajax_result').html('你的账户已经成功注册...').show();
-			window.setTimeout("window.location='index.php'",2000); 
+					var c = <?php echo $require_confirm?>;
+					if(c == 1) $('#ajax_result').html('你的注册申请将被审核...').show();
+					else $('#ajax_result').html('你的账户已经成功注册...').show();
+					window.setTimeout("window.location='index.php'",2000); 
                 }else{
                   $('#ajax_result').html(msg).show();
                 }

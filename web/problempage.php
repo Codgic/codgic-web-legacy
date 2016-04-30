@@ -3,7 +3,7 @@ require 'inc/ojsettings.php';
 require('inc/result_type.php');
 require('inc/lang_conf.php');
 require('inc/problem_flags.php');
-require('inc/checklogin.php');
+require ('inc/checklogin.php');
 
 if(isset($_GET['problem_id']))
   $prob_id=intval($_GET['problem_id']);
@@ -45,13 +45,13 @@ else{
     $query='select min(result) from solution where user_id=\''.$_SESSION['user']."' and problem_id=$prob_id group by problem_id";
     $user_status=mysqli_query($con,$query);
     if(mysqli_num_rows($user_status)==0)
-      $info = '<tr><td colspan="2" class="center muted" >你还没提交过哦</td></tr>';
+      $info = '<tr><td colspan="2" class="center muted" >你还没提交过哦...</td></tr>';
     else{
       $statis=mysqli_fetch_row($user_status);
       if($statis[0]==0){
-        $info = '<tr><td colspan="2" class="gradient-green center"><i class="icon-ok icon-white"></i> 恭喜AC !</td></tr>';
+        $info = '<tr><td colspan="2" class="gradient-green center"><i class="icon-ok icon-white"></i> 恭喜AC!</td></tr>';
       }else{
-        $info = '<tr><td colspan="2" class="gradient-red center"><i class="icon-remove icon-white"></i> 再试一次吧 !</td></tr>';
+        $info = '<tr><td colspan="2" class="gradient-red center"><i class="icon-remove icon-white"></i> 再试一次吧!</td></tr>';
       }
     }
     $current_user=$_SESSION['user'];
@@ -79,7 +79,7 @@ else{
     }
 
   }else{
-    $info = '<tr><td colspan="2" class="center muted" >然而你并没有登录。</td></tr>';
+    $info = '<tr><td colspan="2" class="center muted" >然而你并没有登录...</td></tr>';
   } 
   $result=mysqli_query($con,"select submit_user,solved,submit from problem where problem_id=$prob_id");
   $statis=mysqli_fetch_row($result);
@@ -110,7 +110,7 @@ $Title=$inTitle .' - '. $oj_name;
     <div id="probdisp" class="container-fluid">
       <?php 
       if($forbidden){
-        echo '<div class="span12 center">Problem is not available!</div>';
+        echo '<div class="span12 center">本题目已被隐藏或删除...</div>';
       }else{ 
       ?>
       <div class="row-fluid">
@@ -276,7 +276,7 @@ $Title=$inTitle .' - '. $oj_name;
       <form class="margin-0" action="submit.php" method="post" id="form_submit">
 	    <p></p>
         <div class="modal-body" style="padding-top:5px">
-		  <textarea style="box-sizing: border-box;width:100%;resize:none" id="detail_input" rows="16" name="source" placeholder="在这里敲出你的代码..."></textarea>
+		  <textarea style="box-sizing: border-box;width:100%;resize:none" id="detail_input" rows="14" name="source" placeholder="在这里敲出你的代码..."></textarea>
           <div class="alert alert-error hide margin-0" id="submit_result"></div>
         </div>
         <div class="modal-footer form-inline">
@@ -330,9 +330,9 @@ $Title=$inTitle .' - '. $oj_name;
 	  <span id=\"btn_show\" title=\"Alt+H\" class=\"btn btn {$button_class} shortcut-hint\">&laquo; 显示详情</span>";?>
     </div>
 
-    <script src="../assets/js/jquery.js"></script>
-    <script src="../assets/js/bootstrap.min.js"></script>
-    <script src="../assets/js/common.js"></script>
+    <script src="/assets/js/jquery.min.js"></script>
+    <script src="/assets/js/bootstrap.min.js"></script>
+    <script src="/assets/js/common.js"></script>
 
     <script type="text/javascript">
       var hide_info = 0;

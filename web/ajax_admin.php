@@ -1,5 +1,4 @@
 <?php
-$defaultpwd='CWOJUser125';
 session_start();
 if(!isset($_SESSION['administrator']))
 	die('Not administrator');
@@ -14,10 +13,10 @@ $level_max=(PROB_LEVEL_MASK>>PROB_LEVEL_SHIFT);
 if($op=="list_usr"){ 
 	$res=mysqli_query($con,"select user_id,accesstime,solved,submit,(accesstime IS NULL) from users where defunct='Y'");
 	if(mysqli_num_rows($res)==0)
-		die ('<div class="row-fluid"><div class="alert alert-info span4">暂没有被关小黑屋的用户...</div></div>');
+		die ('<table class="table table-condensed table-striped"><caption>禁用用户</caption></table><div class="row-fluid"><div class="alert alert-danger center">暂没有被禁用的用户...</div></div>');
 ?>
 	<table class="table table-condensed table-striped">
-		<caption>被关小黑屋的用户</caption>
+		<caption>被禁用的用户</caption>
 		<thead>
 			<tr>
 				<th>用户</th>
@@ -182,7 +181,7 @@ EOF;
 	$res=mysqli_query($con,"select title,content from news where news_id='$news_id'");
 	$row=mysqli_fetch_row($res);
 	$content=($res && ($row)) ? str_replace('<br>', "\n", $row[1]) : '';
-	echo $row[0].'FuckZK1'.$content;
+	echo $row[0].'^1a@#FuckZK1#@^a1'.$content;
 }else if($op=="edit_news"){
 	if(!isset($_POST['news_id']))
 		die('error');
@@ -191,7 +190,7 @@ EOF;
 	$news_id=$_POST['news_id'];
 	$title=mysqli_real_escape_string($con,trim($_POST['title']));
 	$content=isset($_POST['content']) ? mysqli_real_escape_string($con,str_replace("\n", "<br>", $_POST['content'])) : '';
-	if(mysqli_query($con,"update news set title='$title',content='$content' where news_id=$news_id"))
+	if(mysqli_query($con,"update news set title='$title',content='$content',time=NOW() where news_id=$news_id"))
 		echo 'success';
 	else
 		echo 'error';
@@ -212,8 +211,15 @@ EOF;
 	mysqli_query($con,"delete from privilege where user_id='$uid' and rightstr='$right'");
 }else if($op=="del_news"){
 	isset($_POST['news_id']) ? $news_id=intval($_POST['news_id']) : die('');
-	if(mysqli_query($con,"delete from news where $news_id>0 and news_id=$news_id"))
+	if(mysqli_query($con,"delete from news where $news_id>0 and news_id=$news_id")){
+		$row=mysqli_fetch_row(mysqli_query($con,"select max(news_id) from news"));
+		$news_id++;
+		for($news_id;$news_id<=$row[0];$news_id++){
+			$res=mysqli_query($con,"update news set news_id='".($news_id-1)."'where news_id='".$news_id."'");
+			if(!$res) die($news_id);
+		}
 		echo 'success';
+    }
 	else
 		echo 'error';
 }else if($op=="en_usr"){
@@ -221,6 +227,7 @@ EOF;
 	mysqli_query($con,"update users set defunct='N' where user_id='$uid'");
 }else if($op=="disable_usr"){
 	isset($_POST['user_id']) ? $uid=mysqli_real_escape_string($con,trim($_POST['user_id'])) : die('');
+	if($_POST['user_id']==$_SESSION['user']) die('');
 	mysqli_query($con,"update users set defunct='Y' where user_id='$uid'");
 }else if($op=='update_index'){
 	$index_text=isset($_POST['text']) ? mysqli_real_escape_string($con,str_replace("\n", "<br>", $_POST['text'])) : '';
@@ -234,12 +241,5 @@ EOF;
 		echo 'success';
 	else
 		echo 'fail';
-}else if($op=="reset_usr"){
-	isset($_POST['user_id']) ? $uid=mysqli_real_escape_string($con,trim($_POST['user_id'])) : die('');
-	mysqli_query($con,"update users set password='$defaultpwd' where user_id='$uid'");
-	if(mysqli_affected_rows($con)==1)
-		echo '密码成功已重置为 CWOJUser125';
-	else
-		echo '不具备该用户';
 }
 ?>

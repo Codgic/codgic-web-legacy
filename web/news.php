@@ -1,6 +1,6 @@
 <?php
 require 'inc/ojsettings.php';
-require('inc/checklogin.php');
+require ('inc/checklogin.php');
 require('inc/database.php');
 $page_id=0;
 if(isset($_GET['start_id']))
@@ -54,7 +54,7 @@ $res=mysqli_query($con,"select news_id,title,time from news where news_id>0 orde
         </ul>
       </div> 
 	</div>
-	<div class="modal fade hide" id="NewsModal" style="margin-top:100px">
+	<div class="modal fade hide" id="NewsModal">
       <div class="modal-header">
         <a class="close" data-dismiss="modal">&times;</a>
         <h4><span class="hide" id="ajax_newstitle"></span></h4>
@@ -76,9 +76,9 @@ $res=mysqli_query($con,"select news_id,title,time from news where news_id>0 orde
 	<footer>
        <p>&copy; <?php echo"{$year} {$oj_copy}";?></p>
     </footer>
-    <script src="../assets/js/jquery.js"></script>
-    <script src="../assets/js/bootstrap.min.js"></script>
-    <script src="../assets/js/common.js"></script>
+    <script src="/assets/js/jquery.min.js"></script>
+    <script src="/assets/js/bootstrap.min.js"></script>
+    <script src="/assets/js/common.js"></script>
     <script type="text/javascript"> 
 	function click_news(newsid){
 		  if(newsid){
@@ -87,10 +87,10 @@ $res=mysqli_query($con,"select news_id,title,time from news where news_id>0 orde
               url:"ajax_getnews.php",
               data:{"newsid":newsid},
               success:function(msg){
-				  var arr=msg.split("FuckZK1");
+				  var arr=msg.split("^1a@#FuckZK1#@^a1");
 				  var title=arr[0];
 				  var content=arr[1];
-				  var arr=content.split("fUCKzk2");
+				  var arr=content.split("2b@#^FuckZK2^#@b2");
 				  var content=arr[0];
 				  var time=arr[1];
 				  if(!content) content='本条新闻内容为空...';

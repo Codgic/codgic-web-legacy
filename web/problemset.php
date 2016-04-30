@@ -1,6 +1,6 @@
 <?php
 require 'inc/ojsettings.php';
-require('inc/checklogin.php');
+require ('inc/checklogin.php');
 
 if(isset($_GET['page_id']))
   $page_id=intval($_GET['page_id']);
@@ -74,9 +74,9 @@ $Title=$inTitle .' - '. $oj_name;
       <p>&copy; <?php echo"{$year} {$oj_copy}";?></p>
       </footer>
     </div>
-    <script src="../assets/js/jquery.js"></script>
-    <script src="../assets/js/bootstrap.min.js"></script>
-    <script src="../assets/js/common.js"></script>
+    <script src="/assets/js/jquery.min.js"></script>
+    <script src="/assets/js/bootstrap.min.js"></script>
+    <script src="/assets/js/common.js"></script>
 
     <script type="text/javascript"> 
       $(document).ready(function(){

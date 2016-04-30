@@ -1,9 +1,10 @@
 <?php
 require 'inc/ojsettings.php';
-require('inc/checklogin.php');
+require ('inc/checklogin.php');
 
 if(!isset($_SESSION['user'],$_SESSION['administrator']))
-  die('<div class="center">You are not administrator.</div>');
+  include '403.php';
+else{
 $redirect="home";
 if(isset($_GET['redirect'])){
 	$redirect=$_GET['redirect'];
@@ -53,9 +54,9 @@ $Title=$inTitle .' - '. $oj_name;
 
     </div>
 
-    <script src="../assets/js/jquery.js"></script>
-    <script src="../assets/js/bootstrap.min.js"></script>
-    <script src="../assets/js/common.js"></script>
+    <script src="/assets/js/jquery.min.js"></script>
+    <script src="/assets/js/bootstrap.min.js"></script>
+    <script src="/assets/js/common.js"></script>
 
     <script type="text/javascript">
 	  var redirect="<?php echo $redirect?>";
@@ -67,3 +68,4 @@ $Title=$inTitle .' - '. $oj_name;
     </script>
   </body>
 </html>
+<?php }?>

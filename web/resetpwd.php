@@ -118,8 +118,8 @@ echo "<body style=\"background-image: url({$loginimg})\">";
          </form> 
          </div>
       </div>
-	<script src="../assets/js/jquery.min.js"></script>
-    <script src="../assets/js/common.js"></script>
+	<script src="/assets/js/jquery.min.js"></script>
+    <script src="/assets/js/common.js"></script>
     <script type="text/javascript">
 	function get_rand(begin, end) {
 		return Math.floor(Math.random()*(end-begin))+begin;

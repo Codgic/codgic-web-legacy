@@ -1,6 +1,6 @@
 <?php
 require 'inc/ojsettings.php';
-require('inc/checklogin.php');
+require ('inc/checklogin.php');
 
 if(!isset($_SESSION['user']))
 	$info = 'Not logged in.';
@@ -57,9 +57,9 @@ $Title=$inTitle .' - '. $oj_name;
 			</footer>
 
 		</div><!--/.container-->
-		<script src="../assets/js/jquery.js"></script>
-	    <script src="../assets/js/bootstrap.min.js"></script>
-		<script src="../assets/js/common.js"></script>
+		<script src="/assets/js/jquery.min.js"></script>
+	    <script src="/assets/js/bootstrap.min.js"></script>
+		<script src="/assets/js/common.js"></script>
 
 		<script type="text/javascript"> 
 			$(document).ready(function(){

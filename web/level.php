@@ -16,7 +16,7 @@ if(isset($_GET['page_id']))
 else
   $page_id=0;
 
-require('inc/checklogin.php');
+require ('inc/checklogin.php');
 require('inc/database.php');
 
 $cond=" (has_tex&".PROB_LEVEL_MASK.")=".($level<<PROB_LEVEL_SHIFT);
@@ -82,9 +82,9 @@ $Title=$inTitle .' - '. $oj_name;
       </footer>
 
     </div>
-    <script src="../assets/js/jquery.js"></script>
-    <script src="../assets/js/bootstrap.min.js"></script>
-    <script src="../assets/js/common.js"></script>
+    <script src="/assets/js/jquery.min.js"></script>
+    <script src="/assets/js/bootstrap.min.js"></script>
+    <script src="/assets/js/common.js"></script>
 
     <script type="text/javascript"> 
       $(document).ready(function(){

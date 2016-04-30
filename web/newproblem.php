@@ -1,8 +1,9 @@
 <?php 
 require 'inc/ojsettings.php';
-require('inc/checklogin.php');
+require ('inc/checklogin.php');
 if(!isset($_SESSION['user'],$_SESSION['administrator']))
-  $info = 'You are not administrator';
+  include '403.php';
+else{
 require 'inc/problem_flags.php';
 $level_max=(PROB_LEVEL_MASK>>PROB_LEVEL_SHIFT);
 $inTitle='新建题目';
@@ -210,9 +211,9 @@ $Title=$inTitle .' - '. $oj_name;
       </div>
     </div>
 
-    <script src="../assets/js/jquery.js"></script>
-    <script src="../assets/js/bootstrap.min.js"></script>
-    <script src="../assets/js/common.js"></script>
+    <script src="/assets/js/jquery.min.js"></script>
+    <script src="/assets/js/bootstrap.min.js"></script>
+    <script src="/assets/js/common.js"></script>
 
     <script type="text/javascript"> 
       $(document).ready(function(){
@@ -251,7 +252,7 @@ $Title=$inTitle .' - '. $oj_name;
 		  $('#showtools').hide();
         });
         $('#btn_upload').click(function(){
-          window.open("upload.php",'upload_win2','left='+loffset+',top='+toffset+',width=400,height=180,channelmode=yes,directories=no,toolbar=no,resizable=no,menubar=no,location=no');
+          window.open("upload.php",'upload_win2','left='+loffset+',top='+toffset+',width=400,height=300,toolbar=no,resizable=no,menubar=no,location=no,status=no');
         });
         $('#edit_form textarea').focus(function(e){cur=e.target;});
         $('#edit_form input').blur(function(e){
@@ -307,3 +308,4 @@ $Title=$inTitle .' - '. $oj_name;
     </script>
   </body>
 </html>
+<?php }?>

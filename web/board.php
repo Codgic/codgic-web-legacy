@@ -1,6 +1,6 @@
 <?php
 require 'inc/ojsettings.php';
-require('inc/checklogin.php');
+require ('inc/checklogin.php');
 
 if(isset($_GET['start_id']))
   $query_id=intval($_GET['start_id']);
@@ -50,7 +50,7 @@ $Title=$inTitle .' - '. $oj_name;
 
     <?php require('page_header.php'); ?>
     <div class="replypanel hide" id="replypanel">
-      <?php echo "<div class=\"well well-small margin-0\" style=\"background-color:{$well_class}\">";?>
+      <div class="well well-small margin-0" style="background-color:<?php echo $well_class?>">
         <h4 style="text-align:center;margin-bottom:10px;">新建讨论</h4>
         <form class="form-horizontal" method="post" action="postmessage.php">
           <fieldset>
@@ -96,8 +96,8 @@ $Title=$inTitle .' - '. $oj_name;
     <div class="container-fluid">
       <div class="row-fluid">
         <div class="span12" id="board">
-          <?php 
-		    echo"<a href=\"#\" title=\"Alt+N\" class=\"btn {$button_class} shortcut-hint\" id=\"new_msg\"><i class=\"icon-file\"></i> 新建讨论...</a>";
+		    <a href="#" title="Alt+N" class="btn <?php echo $button_class?> shortcut-hint" id="new_msg"><i class="icon-file"></i> 新建讨论...</a>
+		  <?php
             $top=$query_id;
             if($range){
               $res=mysqli_query($con,"select title,depth,user_id,message_id,in_date,thread_id,problem_id,ASCII(content) from message where thread_id<$query_id and thread_id>=$range $cond_prob order by thread_id desc,orderNum");
@@ -132,7 +132,7 @@ $Title=$inTitle .' - '. $oj_name;
                   echo '&nbsp;<span class="label label-warning">最新消息</span>';
                 if($deep==0 && $row[6])
                     echo '&nbsp;&nbsp;<a class="prob_link" href="problempage.php?problem_id=',$row[6],'">Problem ',$row[6],'</a>';
-                echo ' <button id="reply_msg',$row[3],'" class="btn btn-mini">回复</button>';
+                echo ' <button id="reply_msg',$row[3],'" class="btn btn-small">回复</button>';
                 if($row[7])
                   echo '<p class="msg_content msg_detailed">';
                 else
@@ -169,10 +169,10 @@ $Title=$inTitle .' - '. $oj_name;
       </footer>
 
     </div>
-    <script src="../assets/js/bbcode.js"></script>
-    <script src="../assets/js/jquery.js"></script>
-    <script src="../assets/js/bootstrap.min.js"></script>
-    <script src="../assets/js/common.js"></script>
+    <script src="/assets/js/bbcode.js"></script>
+    <script src="/assets/js/jquery.min.js"></script>
+    <script src="/assets/js/bootstrap.min.js"></script>
+    <script src="/assets/js/common.js"></script>
 
     <script type="text/javascript"> 
       $(document).ready(function(){

@@ -1,13 +1,13 @@
 <?php
 require 'inc/ojsettings.php';
-require('inc/checklogin.php');
+require ('inc/checklogin.php');
 $page='home';
 if(isset($_GET['page'])){
 	$page=$_GET['page'];
 }
 
 if(!isset($_SESSION['user'],$_SESSION['administrator'])){
-  die('You are not an administrator.');
+  include '403.php';
 }else if(!isset($_SESSION['admin_tfa']) || !$_SESSION['admin_tfa']){
   $_SESSION['admin_retpage'] = 'admin.php';
   header("Location: admin_auth.php?redirect=".$page);
@@ -19,7 +19,7 @@ if(!isset($_SESSION['user'],$_SESSION['administrator'])){
   $index_text=($res && ($row=mysqli_fetch_row($res))) ? str_replace('<br>', "\n", $row[0]) : '';
   $res=mysqli_query($con,"select content from user_notes where id=0");
   $category=($res && ($row=mysqli_fetch_row($res))) ? str_replace('<br>', "\n", $row[0]) : '';
-}
+
 $inTitle='管理';
 $Title=$inTitle .' - '. $oj_name;
 ?>
@@ -31,25 +31,26 @@ $Title=$inTitle .' - '. $oj_name;
           
     <div class="container-fluid admin-page">
       <div class="row-fluid">
-
         <div class="span12">
-          <div class="tabbable tabs-left">
-            <ul class="nav nav-tabs" id="nav_tab">
+          <div class="tabbable">
+            <ul class="nav nav-pills" id="nav_tab" style="padding-right:10px;padding-left:10px;margin-right:15px;margin-left:-15px;lineheight:30px;font-size:20px">
               <li class="active"><a href="#home" data-toggle="tab">主页</a></li>
               <li class=""><a href="#news" data-toggle="tab">新闻</a></li>
               <li class=""><a href="#experience" data-toggle="tab">经验</a></li>
-              <li class=""><a href="#permission" data-toggle="tab">权限</a></li>
               <li class=""><a href="#user" data-toggle="tab">用户</a></li>
+              <li class=""><a href="#others" data-toggle="tab">其它</a></li>
             </ul>
+		  </div>
             <div class="tab-content">
-              <div class="tab-pane active" id="home">
+              <div class="tab-pane fade in active" id="home">
                 <div class="row-fluid">
                   <div class="span3 operations">
                     <h3 class="center">题目</h3>
-                    <?php echo"<a href=\"newproblem.php\" class=\"btn {$button_class}\">添加题目...</a>
-					<a href=\"#\" id=\"btn_category\" class=\"btn {$button_class}\">题目分类...</a>"?>
+                    <a href="newproblem.php" class="btn <?php echo $button_class?>">添加题目...</a>
+					<a href="#" id="btn_category" class="btn <?php echo $button_class?>">题目分类...</a>
                     <a href="#" id="btn_rejudge" class="btn btn-info">重新评测...</a>
                   </div>
+				  <hr class="visible-phone">
                   <div class="span5">
                     <h3 class="center">主页</h3><br>
                     <form action="#" method="post" id="form_index">
@@ -57,28 +58,30 @@ $Title=$inTitle .' - '. $oj_name;
                       <textarea name="text" rows="10" class="border-box" style="width:100%"><?php echo htmlspecialchars($index_text)?></textarea>
                       <div class="alert hide" id="alert_result">主页更新成功！</div>
                       <div class="pull-right">
-                        <?php echo "<input type=\"submit\" class=\"btn {$button_class}\" value=\"更新\">"?>
+                        <input type="submit" class="btn <?php echo $button_class?>" value="更新">
                       </div>
                     </form>
                   </div>
+				  <hr class="visible-phone">
                   <div class="span4">
                     <h3 class="center" id="meter_title">系统信息</h3>
+					<br>
                     <div id="cpumeter" class="meter"></div>
                     <div id="memmeter" class="meter"></div>
                   </div>
                 </div>
               </div>
-              <div class="tab-pane" id="news">
+              <div class="tab-pane fade" id="news">
                 <div style="margin-left:50px;margin-right:50px">
+				<button class="btn <?php echo $button_class?> pull-right" id="new_news">添加新闻...</button>
                   <div id="table_news">
                     <div class="row-fluid">
                       <div class="alert span4">正在加载新闻...</div>
                     </div>
                   </div>
-				  <?php echo"<button class=\"btn {$button_class}\" id=\"new_news\">添加新闻...</button>"?>
                 </div>
               </div>
-              <div class="tab-pane" id="experience">
+              <div class="tab-pane fade" id="experience">
                 <div style="margin-left:50px;margin-right:50px">
 				<div class="row-fluid">
 				<div class="span6">
@@ -91,11 +94,11 @@ $Title=$inTitle .' - '. $oj_name;
                     <input type="hidden" name="op" value="add_experience_title">
                   </form>
                  </div>
-				 <div class="span5 offset1">
+				 <hr class="visible-phone">
+				 <div class="span6">
                   <form action="admin.php" method="post" id="form_level_experience">
                     <div id="table_level_experience"> 
                     </div>
-					<br><br>
                     <input type="submit" class="btn" value="更新">
                     <input type="hidden" name="op" value="update_level_experience">
                   </form>
@@ -103,45 +106,59 @@ $Title=$inTitle .' - '. $oj_name;
 			  </div>
 			  </div>
               </div>
-              <div class="tab-pane" id="permission">
+              <div class="tab-pane fade" id="user">
                 <div style="margin-left:50px">
+				<div class="row-fluid">
+				<div class="span6">
                   <div id="table_priv"></div>
                   <form action="admin.php" method="post" class="form-inline" id="form_priv">
                     <label for="input_user_id" style="display:block">添加权限</label>
                     <input type="text" id="input_user_id" name="user_id" class="input-medium" placeholder="用户名...">&nbsp;&nbsp;
-                    <select name="right" id="slt_right">
+                    <select class="input-medium" name="right" id="slt_right">
                       <option value="administrator">管理人员</option>
                       <option value="source_browser">代码审核</option>
-                      <option value="insider">题目添加</option>
+                      <option value="insider">隐藏可见</option>
                     </select>&nbsp;&nbsp;
                     <input type="submit" class="btn" value="添加">
                     <input type="hidden" name="op" value="add_priv">
                   </form>
-                </div>
-              </div>
-              <div class="tab-pane" id="user">
-                <div style="margin-left:50px">
-                  <div id="table_usr"></div>
+				</div>
+				<hr class="visible-phone">
+				<div class="span6">
+				<div id="table_usr"></div>
                   <form action="admin.php" method="post" class="form-inline" id="form_usr">
                     <label for="input_dis_usr" style="display:block">禁用某个用户</label>
                     <input type="text" id="input_dis_usr" name="user_id" class="input-medium" placeholder="用户名...">&nbsp;&nbsp;
                     <input type="submit" class="btn" value="禁用">
                     <input type="hidden" name="op" value="disable_usr">
                   </form>
-                  <hr>
-
-                  <form action="admin.php" method="post" class="form-inline" id="form_resetpwd">
-                    <label for="input_reset_usr" style="display:block">重置用户密码</label>
-                    <input type="text" id="input_reset_usr" name="user_id" class="input-medium" placeholder="用户名...">&nbsp;&nbsp;
-                    <input type="submit" class="btn" value="重置">
-                    <input type="hidden" name="op" value="reset_usr">
-                  </form>
+				</div>
+				</div>  
                 </div>
               </div>
+              <div class="tab-pane fade" id="others">
+			  <div style="margin-left:50px;margin-right:50px">
+			    <div class="row-fluid">
+                  <div class="span12">
+				  <h3>更新<?php echo $oj_name?>（临时废弃）</h3>
+				  <br>
+				  <div style="font-size:16px">
+				    当前版本: <?php echo"{$web_ver}"?>
+					<div style="margin-top:20px;height:30px">
+						<span class="alert alert-info" id="updstatus">正在查找更新...</span>
+					</div>
+				    <div id="div_updfound" class="hide" style="margin-top:10px;margin-buttom:10px">
+						<input type="button" id="btn_updnow" class="btn <?php echo $button_class?>" value="安装更新..."/>&nbsp;&nbsp;&nbsp;
+                        <a href="https://github.com/CDFLS/CWOJ/commit" id="btn_updlog">更新日志</a>
+                    </div>
+				  </div>
+                  </div>
+				</div>
+              </div>
+			  </div>
             </div>
           </div>
         </div>
-      </div>
 	  
 	<div class="modal fade hide" id="CategoryModal">
       <div class="modal-header">
@@ -191,13 +208,14 @@ $Title=$inTitle .' - '. $oj_name;
 	    <p></p>
         <div class="modal-body" style="padding-top:5px">
 		  <input type="text" id="input_newstitle" name="news" class="input-xlarge" placeholder="请输入新闻标题...">
-		  <textarea style="box-sizing: border-box;width:100%;resize:none" id="input_newscontent" rows="16" name="source" placeholder="请输入新闻内容 (可选)..."></textarea>
+		  <textarea style="box-sizing: border-box;width:100%;resize:none" id="input_newscontent" rows="14" name="source" placeholder="请输入新闻内容 (可选)..."></textarea>
           <div class="alert alert-error hide margin-0" id="addnews_res">发生错误</div>
         </div>
         <div class="modal-footer form-inline">
+		  <button class="pull-left btn btn-danger hide" id="btn_delnews">删除</button>
+		  <button class="pull-left btn btn-info" id="btn_upload">上传图片...</button>
           <button class="btn btn-primary" id="addnews_submit">提交</button>
 		  <button class="btn btn-primary hide" id="editnews_submit">提交</button>
-		  <button class="pull-left btn btn-danger hide" id="btn_delnews">删除</button>
           <a href="#" class="btn" data-dismiss="modal">关闭</a>
         </div>
 		<div class="hidden-phone" style="width:750px"></div>
@@ -208,19 +226,45 @@ $Title=$inTitle .' - '. $oj_name;
         <p>&copy; <?php echo"{$year} {$oj_copy}";?></p>
       </footer>
     </div>
-    <script src="../assets/js/jquery.js"></script>
-    <script src="../assets/js/bootstrap.min.js"></script>
-    <script src="../assets/js/common.js"></script>
-    <script src="../assets/js/highcharts.js"></script>
-    <script src="../assets/js/highcharts-more.js"></script>
+    <script src="/assets/js/jquery.min.js"></script>
+    <script src="/assets/js/bootstrap.min.js"></script>
+    <script src="/assets/js/common.js"></script>
+    <script src="/assets/js/highcharts.js"></script>
+    <script src="/assets/js/highcharts-more.js"></script>
 
     <script type="text/javascript">
+	var loffset=window.screenLeft+200;
+    var toffset=window.screenTop+200;
 	var getlevellist=function(){$('#table_level_experience').load('ajax_admin.php',{op:'list_level_experience'});};
     var gettitlelist=function(){$('#table_experience_title').load('ajax_admin.php',{op:'list_experience_title'});};
     var getprivlist=function(){$('#table_priv').load('ajax_admin.php',{op:'list_priv'});};
     var getnewslist=function(){$('#table_news').load('ajax_admin.php',{op:'list_news'});};
     var getusrlist=function(){$('#table_usr').load('ajax_admin.php',{op:'list_usr'});};
 	var cnt=-1;
+	var newver=0;
+	function chkupd(){
+		$.ajax({
+			type:"POST",
+			url:"ajax_update.php",
+			data:{"type":'check'},
+			success:function(msg){
+				if(msg=='false') {
+					$('#updstatus').html('=.= 并没有找到更新...');
+				}
+				else if(msg=='error'){
+					$('#updstatus').removeClass('alert-info').addClass('alert-danger');
+					$('#updstatus').html('连接超时，请刷新页面重试...');
+				}
+				else {
+					newver = msg;
+					$('#updstatus').removeClass('alert-info').addClass('alert-success');
+					$('#updstatus').html('发现更新的版本: '+msg);
+					$('#div_updfound').show();
+					};
+				}
+				});
+		}
+		chkupd();
       $(document).ready(function(){
 		var page='<?php echo $page?>';
 		if(page=='news'){
@@ -232,12 +276,42 @@ $Title=$inTitle .' - '. $oj_name;
 			getlevellist();
 			gettitlelist();
 		} 
-		else if(page=='permission'){
-			$('#nav_tab a[href="#permission"]').tab('show');
+		else if(page=='user'){
+			$('#nav_tab a[href="#user"]').tab('show');
 			getprivlist();
+			getusrlist();
 		}
-		else if(page=='user') $('#nav_tab a[href="#user"]').tab('show');
+		else if(page=='others') $('#nav_tab a[href="#others"]').tab('show');
 		else $('#nav_tab a[href="#home"]').tab('show');
+		$('#btn_updnow').click(function(){
+			btn_updnow.setAttribute("disabled", true); 
+			btn_updnow.value = "正在下载...";
+			$.ajax({
+			async: true,
+			type:"POST",
+			url:"ajax_update.php",
+			data:{"type":'getfile', "newver": newver},
+			success:function(msg){
+				if (msg == 'success') {
+					btn_updnow.value = "正在安装...";
+					$.ajax({
+						async: true,
+						type:"POST",
+						url:"ajax_update.php",
+						data:{"type":'install', "newver": newver},
+						success:function(msg){
+							if(msg == 'success'){
+								$('#div_updfound').hide();
+								$('#updstatus').html('成功安装更新，页面即将刷新...');
+								window.setTimeout("window.location='admin.php?page=others'",3000); 
+							}
+						}
+					});
+				}	
+				else alert(msg);
+				}
+			});
+		});
 		$('#new_news').click(function(){
 			$('#NewsModalTitle').html('添加新闻').show();
 			$('#input_newstitle').val("");
@@ -255,12 +329,11 @@ $Title=$inTitle .' - '. $oj_name;
 			$('#CategoryModal').modal('show');
 		});
 		$('#addcategory_submit').click(function(){
-			var content = $.trim($('#input_category').val());
 			$('#addcategory_res').hide();
 			$.ajax({
 					type:"POST",
 					url:"ajax_admin.php",
-					data:{"op":'update_category',"content":content},
+					data:{"op":'update_category',"content":$.trim($('#input_category').val())},
 					success:function(msg){
 						if(msg=='success') $('#CategoryModal').modal('hide');
 						else $('#addcategory_res').show();
@@ -315,12 +388,12 @@ $Title=$inTitle .' - '. $oj_name;
         $('#nav_tab').click(function(E){
           var jq=$(E.target);
           if(jq.is('a')){
-            if(E.target.innerHTML.search(/权限/i)!=-1)
-              getprivlist();
-            else if(E.target.innerHTML.search(/新闻/i)!=-1)
+            if(E.target.innerHTML.search(/新闻/i)!=-1)
               getnewslist();
-            else if(E.target.innerHTML.search(/用户/i)!=-1)
+            else if(E.target.innerHTML.search(/用户/i)!=-1){
               getusrlist();
+		      getprivlist();
+			}
             else if(E.target.innerHTML.search(/经验/i)!=-1){
               getlevellist();
               gettitlelist();
@@ -364,8 +437,6 @@ $Title=$inTitle .' - '. $oj_name;
               .filter(function(){return this.nodeType == 3;})
               .text();
             if(jq.hasClass('icon-remove')){
-              if(!window.confirm("确认要删除?"+str_id))
-                return false;
               oper='del_usr';
             }else{
               oper='en_usr';
@@ -411,18 +482,6 @@ $Title=$inTitle .' - '. $oj_name;
           });
           return false;
         });
-        $('#form_resetpwd').submit(function(E){
-          E.preventDefault();
-          if(!window.confirm("确认要重置所输入用户的密码?"))
-            return false;
-          $.ajax({
-            type:"POST",
-            url:"ajax_admin.php",
-            data:$('#form_resetpwd').serialize(),
-            success:function(info){alert(info)}
-          });
-          return false;
-        });
         $('#form_priv').submit(function(E){
           E.preventDefault();
           $.ajax({
@@ -448,7 +507,7 @@ $Title=$inTitle .' - '. $oj_name;
                 news_id:jq_id.html()
               },
               success:function(msg){
-				  var arr=msg.split("FuckZK1");
+				  var arr=msg.split("^1a@#FuckZK1#@^a1");
 				  news_title=arr[0];
 				  news_content=arr[1];
 				  $('#NewsModalTitle').html('编辑新闻').show();
@@ -505,6 +564,10 @@ $Title=$inTitle .' - '. $oj_name;
 			getnewslist();
 			return false;
 		});
+		$('#btn_upload').click(function(){
+			window.open("upload.php",'upload_win2','left='+loffset+',top='+toffset+',width=400,height=300,toolbar=no,resizable=no,menubar=no,location=no,status=no');
+			return false;
+		});
         $('#form_index').submit(function(E){
           E.preventDefault();
           $('#alert_result').hide();
@@ -552,7 +615,7 @@ $Title=$inTitle .' - '. $oj_name;
                 },        
                 yAxis: [{
                   title: {
-                    text: 'Memory'
+                    text: 'RAM'
                   }
                 }],
                 series: [{
@@ -649,3 +712,4 @@ $Title=$inTitle .' - '. $oj_name;
     </script>
   </body>
 </html>
+<?php }?>

@@ -9,7 +9,7 @@ else
   $page_id=0;
 if(strlen($req)>600)
   die('Keyword is too long');
-require('inc/checklogin.php');
+require ('inc/checklogin.php');
 require('inc/database.php');
 $keyword=mysqli_real_escape_string(trim($con,$req));
 $result=mysqli_query($con,"select user_id,nick,solved,submit from users where user_id like '%$keyword%' or nick like '%$keyword%' order by solved desc limit $page_id,100");
@@ -83,9 +83,9 @@ $Title=$inTitle .' - '. $oj_name;
       </footer>
 
     </div>
-    <script src="../assets/js/jquery.js"></script>
-    <script src="../assets/js/bootstrap.min.js"></script>
-    <script src="../assets/js/common.js"></script>
+    <script src="/assets/js/jquery.min.js"></script>
+    <script src="/assets/js/bootstrap.min.js"></script>
+    <script src="/assets/js/common.js"></script>
 
     <script type="text/javascript"> 
       $(document).ready(function(){
