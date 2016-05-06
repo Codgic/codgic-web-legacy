@@ -10,9 +10,9 @@ require('inc/ojsettings.php');
   require('inc/database.php');
   require ('inc/cookie.php');
   if(check_cookie()){
-	  echo"<script language=\"javascript\">
-      window.location= \"index.php\";
-      </script>";};
+    header("Location: index.php");
+    exit();
+	};
   ?>
     <body style="background-image: url(<?php echo $loginimg?>)">
     <div class="container-fluid">

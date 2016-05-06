@@ -36,7 +36,15 @@ function login($user, $is_cookie, $pwd='')
 	}
 	$_SESSION['pref']=serialize($pref);
 
-	$ip=mysqli_escape_string($con,$_SERVER["REMOTE_ADDR"]);
+	if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
+      $ip=mysqli_escape_string($con,$_SERVER['HTTP_CLIENT_IP']);
+    }
+	else if (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+      $ip=mysqli_escape_string($con,$_SERVER['HTTP_X_FORWARDED_FOR']);
+    }
+    else {
+		$ip=mysqli_escape_string($con,$_SERVER['REMOTE_ADDR']);
+	}
 	mysqli_query($con,"update users set accesstime=NOW(),ip='$ip' where user_id='$user'");
 
 	return TRUE;

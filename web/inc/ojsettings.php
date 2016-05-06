@@ -23,7 +23,7 @@ $temp_dir="/tmp/cwoj_postmessage.lock";
 //"daemon_ver" defines the version number of the judging service, which is shown in preference.php.
 $oj_name = 'CWOJ'; 
 $oj_copy = 'CWOJ Team'; 
-$web_ver = '0.90.160422-2156';
+$web_ver = '0.91.160506-2138';
 $daemon_ver = '1.01.160227-1736';
 
 //2.2 User policy settings

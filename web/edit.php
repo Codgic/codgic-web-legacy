@@ -350,13 +350,15 @@ $Title=$inTitle .' - '. $oj_name;
           else if(op=="tool_less")
             InsertString(cur,'&lt;');
           else if(op=="tool_img"){
-            var url=prompt("Please input image url.","");
+            var url=prompt("请输入图片链接:","");
             if(url){
               InsertString(cur,slt+'<img src="'+url+'">');
             }
           }else if(op=="tool_inline"||op=="tool_tex"){
             op=op.substr(5);
             InsertString(cur,'['+op+']'+slt+'[/'+op+']');
+          }else if(op=="btn_upload"||op=="btn_hide"){
+            return false;
           }else{
             op=op.substr(5);
             InsertString(cur,'<'+op+'>'+slt+'</'+op+'>');

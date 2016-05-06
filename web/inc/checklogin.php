@@ -12,7 +12,7 @@ if(!isset($_SESSION['user']) && (DISALLOW_GOOGLEBOT || !isset($_SERVER['HTTP_USE
 	require 'inc/cookie.php';
 	if(!check_cookie()) {
 		if($require_auth) {
-		  header("location: auth.php");
+		  header("location: /auth.php");
 		  exit;
 		}
 	}else{
