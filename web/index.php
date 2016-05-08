@@ -12,7 +12,7 @@ require ('inc/checklogin.php');
 require('inc/database.php');
 $res=mysqli_query($con,"select content from news where news_id=0");
 $index_text=($row=mysqli_fetch_row($res)) ? $row[0] : '';
-$res=mysqli_query($con,"select news_id,title from news where news_id>0 order by news_id desc");
+$res=mysqli_query($con,"select news_id,title,importance from news where news_id>0 order by importance desc, news_id desc");
 $hasnews=0;
 $newsrow=mysqli_fetch_row(mysqli_query($con,"select max(news_id) from news"));
 if($newsrow[0]>0) $hasnews=1;
@@ -47,11 +47,18 @@ $num=0;
 		<div class="span5 offset1">
 	    <h1>新闻<?php if($hasnews==1){?><a href="news.php" class="pull-right"><font size=2>更多历史新闻...</font></a></h1>
 		  <ul class="nav" style="margin-top:10px;font-size:16px">
-                <?php 
-                while($row=mysqli_fetch_row($res)){
-					$num++;
-					echo '<li style="line-height:32px"><a href="javascript:void(0);" onclick="click_news(',$row[0],')">',htmlspecialchars($row[1]),'</a></li>';
-					if($num==$news_num) break;
+             <?php 
+             while($row=mysqli_fetch_row($res)){
+	    		    	$num++;
+               $addt1='';
+               $addt2='';
+               if($row[2]=='1'){
+                    $row[1]='[顶置] '.$row[1];
+                    $addt1='<b>';
+                    $addt2='</b>';
+               }
+               echo '<li style="line-height:32px"><a href="javascript:void(0);" onclick="click_news(',$row[0],')">',$addt1.htmlspecialchars($row[1]).$addt2,'</a></li>';
+            		if($num==$news_num) break;
                 }
                 ?>
 		  </ul><?php }else{?></h1>
@@ -108,24 +115,20 @@ $num=0;
               type:"POST",
               url:"ajax_getnews.php",
               data:{"newsid":newsid},
-              success:function(msg){
-				  var arr=msg.split("^1a@#FuckZK1#@^a1");
-				  var title=arr[0];
-				  var content=arr[1];
-				  var arr=content.split("2b@#^FuckZK2^#@b2");
-				  var content=arr[0];
-				  var time=arr[1];
-				  if(!content) content='本条新闻内容为空...';
-				  $('#ajax_newstitle').html(title).show();
-				  $('#ajax_newscontent').html(content).show();
-				  $('#ajax_newstime').html('发布时间：'+time+'&nbsp;&nbsp;').show();
-                  $('#NewsModal').modal('show');
-                }
+              success:function(data){
+                      var obj=eval("("+data+")");
+                      $('#NewsModal').modal('show');
+	           			  $('#ajax_newstitle').html(obj.title).show();
+                      if($.trim(obj.content)=='') $('#ajax_newscontent').html('本条新闻内容为空...').show();
+          				  $('#ajax_newscontent').html(obj.content).show();
+           				  $('#ajax_newstime').html('发布时间：'+obj.time+'&nbsp;&nbsp;').show();
+                   }
               });
             };
         };
       $(document).ready(function(){
-		document.getElementById('clickOne').click()
+       // alert('Correction Test');
+	   	document.getElementById('clickOne').click()
         $('#ret_url').val("index.php");
         var originColor = '#E3E3E3';
         $('#newspad #title').click(function(){

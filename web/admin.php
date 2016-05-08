@@ -214,7 +214,10 @@ $Title=$inTitle .' - '. $oj_name;
         <div class="modal-footer form-inline">
 		  <button class="pull-left btn btn-danger hide" id="btn_delnews">删除</button>
 		  <button class="pull-left btn btn-info" id="btn_upload">上传图片...</button>
-          <button class="btn btn-primary" id="addnews_submit">提交</button>
+       <label class="checkbox" style="padding-right:10px">
+       <input type="checkbox" name="is_top" id="is_top">顶置新闻
+       </label>
+       <button class="btn btn-primary" id="addnews_submit">提交</button>
 		  <button class="btn btn-primary hide" id="editnews_submit">提交</button>
           <a href="#" class="btn" data-dismiss="modal">关闭</a>
         </div>
@@ -314,12 +317,13 @@ $Title=$inTitle .' - '. $oj_name;
 		});
 		$('#new_news').click(function(){
 			$('#NewsModalTitle').html('添加新闻').show();
+       $('#NewsModal').modal('show');
 			$('#input_newstitle').val("");
 		    $('#input_newscontent').val("");
 			$('#addnews_submit').show();
 		    $('#editnews_submit').hide();
 			$('#btn_delnews').hide();
-			$('#NewsModal').modal('show');
+       document.getElementById("is_top").checked = false;
 		});
         $('#ret_url').val("admin.php");
 		$('#btn_rejudge').click(function(){
@@ -352,12 +356,13 @@ $Title=$inTitle .' - '. $oj_name;
             $('#input_newstitle').removeClass('error');
             }
 			if(!a){
-				title = $.trim($('#input_newstitle').val());
-				content = $.trim($('#input_newscontent').val());
+				var importance=0;
+				if (document.getElementById('is_top').checked) 
+                    importance=1;
 				$.ajax({
 					type:"POST",
 					url:"ajax_admin.php",
-					data:{"op":'add_news',"title":title,"content":content},
+					data:{"op":'add_news',"title":$.trim($('#input_newstitle').val()),"content":$.trim($('#input_newscontent').val()),"importance":importance},
 					success:function(msg){
 						if(msg=='success') $('#NewsModal').modal('hide');
 						else $('#addnews_res').show();
@@ -503,20 +508,20 @@ $Title=$inTitle .' - '. $oj_name;
               type:"POST",
               url:"ajax_admin.php",
               data:{
-                op:'get_news_info',
+                op:'get_news',
                 news_id:jq_id.html()
               },
-              success:function(msg){
-				  var arr=msg.split("^1a@#FuckZK1#@^a1");
-				  news_title=arr[0];
-				  news_content=arr[1];
+              success:function(data){
+                  var obj=eval("("+data+")");
 				  $('#NewsModalTitle').html('编辑新闻').show();
-		          $('#NewsModal').modal('show');
+		          $('#NewsModal').modal('show');  
+				  if(obj.importance=='1') document.getElementById("is_top").checked = true;
+				else document.getElementById("is_top").checked = false;
 				  $('#addnews_submit').hide();
 				  $('#editnews_submit').show();
 				  $('#btn_delnews').show();
-		          $('#input_newstitle').val(news_title);
-				  $('#input_newscontent').val(news_content);
+		          $('#input_newstitle').val(obj.title);
+				  $('#input_newscontent').val(obj.content);
 				  }
             });
 		  }
@@ -533,12 +538,13 @@ $Title=$inTitle .' - '. $oj_name;
             $('#input_newstitle').removeClass('error');
             }
 			if(!a){
-				title = $.trim($('#input_newstitle').val());
-				content = $.trim($('#input_newscontent').val());
+				var importance=0;
+				if (document.getElementById('is_top').checked) 
+                    importance=1;
 				$.ajax({
 					type:"POST",
 					url:"ajax_admin.php",
-					data:{"op":'edit_news',"news_id":cnt,"title":title,"content":content},
+					data:{"op":'edit_news',"news_id":cnt,"title":$.trim($('#input_newstitle').val()),"content":$.trim($('#input_newscontent').val()),"importance":importance},
 					success:function(msg){
 						if(msg=='success') $('#NewsModal').modal('hide');
 						else $('#addnews_res').show();

@@ -65,7 +65,7 @@ if($op=="list_usr"){
 	</table>
 <?php
 }else if($op=="list_news"){
-	$res=mysqli_query($con,"select news_id,time,title from news where news_id>0 order by news_id desc");
+	$res=mysqli_query($con,"select news_id,time,title,importance from news where news_id>0 order by importance desc, news_id desc");
 	if(mysqli_num_rows($res)==0)
 		die ('<div class="row-fluid"><div class="alert alert-info span4">目前还没有发布过新闻...</div></div>');
 ?>
@@ -82,7 +82,14 @@ if($op=="list_usr"){
 		<tbody>
 			<?php
 				while($row=mysqli_fetch_row($res)){
-					echo '<tr><td>',$row[0],'</td><td>',$row[1],'</td><td style="text-align:left">',$row[2],'</td><td><a href="#"><i class="icon icon-pencil"></i></a></td></tr>';
+					$addt1='';
+					$addt2='';
+					if($row[3]=='1'){
+						$row[2]='[顶置] '.$row[2];
+						$addt1='<b>';
+						$addt2='</b>';
+						}
+					echo '<tr><td>',$row[0],'</td><td>',$row[1],'</td><td style="text-align:left">',$addt1.htmlspecialchars($row[2]).$addt2,'</td><td><a href="#"><i class="icon icon-pencil"></i></a></td></tr>';
 				}
 			?>
 		</tbody>
@@ -162,35 +169,36 @@ EOF;
 		mysqli_query($con,"INSERT INTO level_experience VALUES ($key,$value) ON DUPLICATE KEY UPDATE experience=$value");
 	}
 }else if($op=="add_news"){
-	if(!isset($_POST['title'])||!isset($_POST['content']))
+if(!isset($_POST['title'])||!isset($_POST['content'])||!isset($_POST['importance']))
 		die('error');
+	$importance=intval($_POST['importance']);
 	$title=mysqli_real_escape_string($con,trim($_POST['title']));
 	$content=isset($_POST['content']) ? mysqli_real_escape_string($con,str_replace("\n", "<br>", $_POST['content'])) : '';
 	$row=mysqli_fetch_row(mysqli_query($con,"select max(news_id) from news"));
 	$id=1;
 	if($row[0])
 		$id=$row[0]+1;
-	if(mysqli_query($con,"insert into news(news_id,time,title,content) values ($id,NOW(),'$title','$content')"))
+	if(mysqli_query($con,"insert into news(news_id,time,title,content,importance) values ($id,NOW(),'$title','$content','$importance')"))
 		echo 'success';
 	else
 		echo 'error';
-}else if($op=="get_news_info"){
+}else if($op=="get_news"){
 	if(!isset($_POST['news_id']))
 		die('error');
-	$news_id=$_POST['news_id'];
-	$res=mysqli_query($con,"select title,content from news where news_id='$news_id'");
-	$row=mysqli_fetch_row($res);
-	$content=($res && ($row)) ? str_replace('<br>', "\n", $row[1]) : '';
-	echo $row[0].'^1a@#FuckZK1#@^a1'.$content;
+	$newsid=intval($_POST['news_id']);
+	$res=mysqli_query($con,"select title,content,time,importance from news where news_id=$newsid");
+    $row=mysqli_fetch_row($res);
+    $row[1]=($res && ($row)) ? str_replace('<br>', "\n", $row[1]) : '';
+    $arr=array('title'=>$row[0],'content'=>$row[1],'time'=>$row[2],'importance'=>$row[3]);
+    echo json_encode($arr);
 }else if($op=="edit_news"){
-	if(!isset($_POST['news_id']))
+if(!isset($_POST['news_id'])||!isset($_POST['title'])||!isset($_POST['importance']))
 		die('error');
-	if(!isset($_POST['title']))
-		die('error');
-	$news_id=$_POST['news_id'];
+	$news_id=intval($_POST['news_id']);
+	$importance=intval($_POST['importance']);
 	$title=mysqli_real_escape_string($con,trim($_POST['title']));
 	$content=isset($_POST['content']) ? mysqli_real_escape_string($con,str_replace("\n", "<br>", $_POST['content'])) : '';
-	if(mysqli_query($con,"update news set title='$title',content='$content',time=NOW() where news_id=$news_id"))
+	if(mysqli_query($con,"update news set title='$title',content='$content',importance='$importance',time=NOW() where news_id=$news_id"))
 		echo 'success';
 	else
 		echo 'error';
@@ -200,7 +208,7 @@ EOF;
 		die('');
 	isset($_POST['right']) ? $right=$_POST['right'] : die('');
 	if($right!='administrator'&&$right!='source_browser'&&$right!='insider')
-		die('Invalid privilege');
+		die('无效的权限...');
 	mysqli_query($con,"insert into privilege VALUES ('$uid','$right','N')");
 }else if($op=="del_usr"){
 	isset($_POST['user_id']) ? $uid=mysqli_real_escape_string($con,trim($_POST['user_id'])) : die('');

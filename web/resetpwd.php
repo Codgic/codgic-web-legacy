@@ -2,6 +2,7 @@
 require ('inc/ojsettings.php');
 session_start(); 
 $_SESSION['resetpwd_flag']=0;
+$_SESSION['resetpwd_wrongnum']=0;
 $_SESSION['resetpwd_code']=rand(10000000,99999999);
 ?>
 <!DOCTYPE html>
@@ -19,7 +20,6 @@ echo "<body style=\"background-image: url({$loginimg})\">";
         </div>
       </div>
 	</div>
-	
     <div id="emailpage" class="hide row-fluid">
         <div style="display:table;margin:auto;white-space:nowrap;">
           <form class="form-vertical well" id="form_email" action="#" method="post">
@@ -156,7 +156,6 @@ echo "<body style=\"background-image: url({$loginimg})\">";
 	}
 	  $(document).ready(function() {
 		  $('#emailpage').fadeIn('slow');
-		  var user, email;
 		  var error = 0;
 		  $('#email_nxt').click(function(){
 			$('#ajax_emailresult').hide();
@@ -176,14 +175,12 @@ echo "<body style=\"background-image: url({$loginimg})\">";
 			if(!a){
 				email_nxt.setAttribute("disabled", true);
 				email_nxt.value = "请稍后...";
-				user = $.trim($('#input_userid').val());
-				email= $.trim($('#input_email').val());
 			$.ajax({
               type:"POST",
               url:'ajax_resetpwd.php',
-              data:{"type":'verify',"user":user,"email":email},
+              data:{"type":'verify',"user":$.trim($('#input_userid').val()),"email":$.trim($('#input_email').val())},
               success:function(msg){
-				  email_nxt.removeAttribute("disabled");
+				   email_nxt.removeAttribute("disabled");
 			      email_nxt.value = "下一步";
                   if(msg == 'success') {
 					  switch_verify();
@@ -201,7 +198,7 @@ echo "<body style=\"background-image: url({$loginimg})\">";
 			$.ajax({
               type:"POST",
               url:'ajax_resetpwd.php',
-              data:{"type":'resend',"user":user,"email":email},
+              data:{"type":'resend'},
               success:function(msg){
                   if(msg == 'success') {
 					  $('#ajax_verifyresult').html('邮件重新发送成功!').show();
@@ -230,40 +227,40 @@ echo "<body style=\"background-image: url({$loginimg})\">";
             };
 			if(!a){
 				verify_nxt.setAttribute("disabled", true);
-			    verify_nxt.value = "请稍后...";
-				var usercode = $.trim($('#input_verifyid').val());
+			   verify_nxt.value = "请稍后...";
 				$.ajax({
                   type:"POST",
                   url:'ajax_resetpwd.php',
-                  data:{"type":'match',"usercode":usercode},
+                  data:{"type":'match',"usercode":$.trim($('#input_verifyid').val())},
                   success:function(msg){
 					  if (msg=='success'){
-						  $.post('ajax_resetpwd.php',{"type":'setflag'},function(){switch_pwd();});
+						   switch_pwd();
 					  } 
 					  else if(msg=='timeout'){
 						  $('#ajax_verifyresult').html('身份验证过期，请重新开始...').show();
 						  window.setTimeout("window.location='resetpwd.php'",2000); 
 					  }
-					  else {
-						  error++;
-						  if(error < 3) {
-							  $('#ajax_verifyresult').html('验证码错误').show();
-							  verify_nxt.removeAttribute("disabled");
-			                  verify_nxt.value = "下一步";
-						  }
-						  else {
-							  $('#ajax_verifyresult').html('错误次数过多，请重新开始...').show();
-							  window.setTimeout("window.location='resetpwd.php'",2000); 
-					      }
+					  else if(msg=='fail'){
+					   $('#ajax_verifyresult').html('验证码错误').show();
+			    		 verify_nxt.removeAttribute("disabled");
+			        verify_nxt.value = "下一步";
 					  }
-                  }
-                });
+					  else if(msg=='fuckyou') {
+							$('#ajax_verifyresult').html('错误次数过多，请重新开始...').show();
+						  window.setTimeout("window.location='resetpwd.php'",2000); 
+				     }
+               else {
+                 $('#ajax_verifyresult').html('未知错误 =.=').show();
+                 verify_nxt.removeAttribute("disabled");
+                 verify_nxt.value = "下一步";
+               }
+               }
+           });
 			};
-		});
-		
+		});	
 		$('#pwd_save').click(function(){
 		  $('#ajax_pwdresult').hide();
-          var b=false,pwd;
+          var b=false;
           if(!$.trim($('#input_newpwd').val())) {
             $('#input_newpwd').addClass('error');
             b=true;
@@ -276,8 +273,7 @@ echo "<body style=\"background-image: url({$loginimg})\">";
           }else{
             $('#input_reppwd').removeClass('error');
           }
-          pwd=$('#input_newpwd').val();
-          if(pwd!='' && $('#input_reppwd').val()!=pwd){
+          if($('#input_newpwd').val()!='' && $('#input_reppwd').val() != $('#input_newpwd').val()){
             b=true;
             $('#newpwd_ctl').addClass('error');
             $('#reppwd_ctl').addClass('error');
@@ -286,11 +282,10 @@ echo "<body style=\"background-image: url({$loginimg})\">";
             $('#reppwd_ctl').removeClass('error');
           }
           if(!b){
-			  var newpwd = $.trim($('#input_newpwd').val());
             $.ajax({
               type:"POST",
               url:'ajax_resetpwd.php',
-              data:{"type":'update',"user":user,"newpwd":newpwd},
+              data:{"type":'update',"newpwd":$.trim($('#input_newpwd').val())},
               success:function(msg){
                   if(msg == 'success'){
 	              $('#ajax_pwdresult').html('密码重置成功，即将跳转至首页...').show();

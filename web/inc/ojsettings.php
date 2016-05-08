@@ -4,7 +4,7 @@
 
 //0. Notes
 //Please configure database in inc/database.php.
-//Please configure email in inc/mailsettings.php.
+//Please configure email that is used to send reset password emails in inc/functions.php
 
 //1. Environment Variables
 //1.1 Temporary Location
@@ -23,7 +23,7 @@ $temp_dir="/tmp/cwoj_postmessage.lock";
 //"daemon_ver" defines the version number of the judging service, which is shown in preference.php.
 $oj_name = 'CWOJ'; 
 $oj_copy = 'CWOJ Team'; 
-$web_ver = '0.91.160506-2138';
+$web_ver = '0.92.160508-1305';
 $daemon_ver = '1.01.160227-1736';
 
 //2.2 User policy settings
@@ -58,9 +58,13 @@ $news_num=6;
 
 //2.6 Testcase upload filesize
 //Don't forget to change the max file size setting in php.ini at the same time!
-$tc_size='200mb';
+$tc_size = '200mb';
 
-//2.7 Update Settings
+//2.7 Contact email
+//Contact email that is shown in auth.php.
+$contact_email = 'info@cwoj.tk';
+
+//2.8 Update Settings
 //$updbranch defines the current branch that you are in.
 //$updloc defines the address of update source (as a remote directory).
 $updbranch='master';
