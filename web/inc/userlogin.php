@@ -4,6 +4,7 @@ require_once 'inc/checkpwd.php';
 header("Content-type:text/html;charset=utf-8"); 
 function login($user, $is_cookie, $pwd='')
 {
+	require 'inc/functions.php';
 	require 'inc/database.php';
 	$user=mysqli_real_escape_string($con,$user);
 	$res=mysqli_query($con,"select password,user_id,language,defunct from users where user_id='$user'");
@@ -36,7 +37,7 @@ function login($user, $is_cookie, $pwd='')
 	}
 	$_SESSION['pref']=serialize($pref);
 
-	$ip=mysqli_escape_string($con,$_SERVER["REMOTE_ADDR"]);
+   $ip=mysqli_escape_string($con,get_ip());
 	mysqli_query($con,"update users set accesstime=NOW(),ip='$ip' where user_id='$user'");
 
 	return TRUE;

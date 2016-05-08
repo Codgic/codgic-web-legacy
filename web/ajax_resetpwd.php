@@ -1,72 +1,59 @@
 <?php
 require('inc/database.php');
-require('inc/mailsettings.php');
 require('inc/ojsettings.php');
+require('inc/functions.php');
 session_start(); 
 
 if(!isset($_POST['type']))
 	die('Invalid argument.');
-$nowtime = date("Y/m/d H:i:s");
+
 if($_POST['type'] == 'match'){
 	if(!isset($_POST['usercode']))
 	    die('Invalid argument.');
-	if(!isset($_SESSION['resetpwd_code']))
+	if(!isset($_SESSION['resetpwd_code'])||empty($_SESSION['resetpwd_code']))
 		die('timeout');
-	if($_POST['usercode']==$_SESSION['resetpwd_code'])
+	if($_POST['usercode']==$_SESSION['resetpwd_code']) {
+     $_SESSION['resetpwd_flag']=1;
 		echo 'success';
-	else 
-		echo 'fail';
+    }
+	else {
+     $_SESSION['resetpwd_wrongnum']++;
+     if($_SESSION['resetpwd_wrongnum'] >= 3) echo 'fuckyou';
+		else echo 'fail';
+    }
 }
 
 else if($_POST['type'] == 'verify'){
 	if(!isset($_POST['user'],$_POST['email']))
 		die('Invalid argument.');
-	$user = $_POST['user'];
+	$user = mysqli_real_escape_string($con,$_POST['user']);
 	if(preg_match('/\W/',$user))
 		die('无效的用户名');
 	$email = $_POST['email'];
 	$result=mysqli_query($con,"select email from users where user_id='$user'");
 	if(!($row=mysqli_fetch_row($result)) || !$row[0])
-		die ('用户不存在!');
+		die('用户不存在!');
 	if($row[0] != $email)
 		die('邮箱错误!');
-	if(!isset($_SESSION['resetpwd_code']))
+	if(!isset($_SESSION['resetpwd_code'])||empty($_SESSION['resetpwd_code']))
 		die('timeout');
 	$code = $_SESSION['resetpwd_code'];
-	$subject='CWOJ 密码重置验证';
-    $content="<div>亲爱的 {$user} ,<br><p>我们收到了您在CWOJ (https://www.cwoj.tk) 重置密码的请求并发送了验证码来确认您的身份。</p><p>请求时间: <b>{$nowtime} (UTC+08:00)</b></p><p>验证码: <b>{$code}</b></p><p>如果您没有在CWOJ有过重置密码的请求，您只需忽略这封邮件并不要把验证码告诉任何人。<br>如有任何问题，请回复该邮件来与管理员取得联系。</p><br>谢谢！<p>{$oj_copy}</p></div>";
-    postmail($email,$subject,$content);
+   $_SESSION['resetpwd_user'] = $user;
+   $_SESSION['resetpwd_email'] = $email;
+	 echo resetpwd_mail();
 }
 
 else if($_POST['type'] == 'resend'){
-	if(!isset($_POST['user'],$_POST['email']))
-	  die('Invalid argument.');
-    $user = $_POST['user'];
-	if(preg_match('/\W/',$user))
-		die('无效的用户名');
-	$email = $_POST['email'];
-	if(!isset($_SESSION['resetpwd_code']))
-		die('timeout');
-	$code = $_SESSION['resetpwd_code'];
-	$subject='CWOJ 密码重置验证';
-    $content="<div>亲爱的 {$user} ,<br><p>我们收到了您在CWOJ (https://www.cwoj.tk) 重置密码的请求并发送了验证码来确认您的身份。</p><p>请求时间: <b>{$nowtime} (UTC+08:00)</b></p><p>验证码: <b>{$code}</b></p><p>如果您没有在CWOJ有过重置密码的请求，您只需忽略这封邮件并不要把验证码告诉任何人。<br>如有任何问题，请回复该邮件来与管理员取得联系。</p><br>谢谢！<p>{$oj_copy}</p></div>";
-    postmail($email,$subject,$content);
-}
-
-else if($_POST['type'] == 'setflag'){
-	$_SESSION['resetpwd_flag']=1;
-	echo 'flagged';
+	echo resetpwd_mail();
 }
 
 else if($_POST['type'] == 'update'){
-	if(!isset($_POST['user'],$_POST['newpwd']))
+	if(!isset($_POST['newpwd']))
 	    die('Invalid argument.');
-	if(!isset($_SESSION['resetpwd_flag']) || $_SESSION['resetpwd_flag']!=1)
-		die('身份验证失败，请刷新页面重新开始...');
+	if(!isset($_SESSION['resetpwd_user']) || empty($_SESSION['resetpwd_user']) || !isset($_SESSION['resetpwd_flag']) || $_SESSION['resetpwd_flag']!=1)
+		die('身份验证超时，请刷新页面重新开始...');
 	require_once('inc/checkpwd.php');
-	$user = $_POST['user'];
-	if(preg_match('/\W/',$user))
-		die('无效的用户名');
+	$user = $_SESSION['resetpwd_user'];
 	$len=strlen($_POST['newpwd']);
 	if($len<6||$len>50)
 		die('密码不符合要求(至少6位)');

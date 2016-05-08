@@ -2,10 +2,8 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
   <meta name="renderer" content="webkit">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="<?php echo $oj_name?> - Coding your future.">
-  <?php header("Content-Type: text/html; charset=utf-8");
-  //if($_SESSION['user']!='jimmy19990') header("Location:temp.html");
-  ?>
+  <meta name="description" content="<?php echo $oj_name?> - 一个毫无特色并且时刻受到水王洪水威胁的信息竞赛刷题系统, built for you to code your future.">
+  <?php header("Content-Type: text/html; charset=utf-8");?>
   <link rel="shortcut icon" href="/assets/res/favicon.ico" type="image/x-icon" />
   <link rel="stylesheet" href="/assets/css/normalize.min.css" type="text/css" />
   <title><?php echo $Title?></title>
@@ -60,25 +58,10 @@
     <link rel="stylesheet" href="/assets/css/font-awesome-ie7.min.css">
     <script src="/assets/js/html5.js"></script>
 	<script src="/assets/js/respond.js"></script>
-	<script type="text/javascript" src="/assets/js/jquery.placeholder.js">
+	<script type="text/javascript" src="/assets/js/jquery.placeholder.min.js">
       $(function() {
       $('input, textarea').placeholder();
       });
     </script>
   <![endif]-->
-  <script type="text/javascript">
-  function checkUpdate() {
-    window.addEventListener('load', function(e) {
-        window.applicationCache.addEventListener('updateready', function(e) {
-            if (window.applicationCache.status === window.applicationCache.UPDATEREADY) {
-                   window.applicationCache.swapCache();
-                    window.location.reload();
-            } else {
-                // Manifest didn't changed. do Nothing.
-            }
-        }, false);
-    }, false);
-}
-  checkUpdate();
-  </script>
 </head>

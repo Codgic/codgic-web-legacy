@@ -1,5 +1,6 @@
 <?php
 class preferences{
+	//public $hidelogo;
 	public $hidehotkey;
 	public $autonight;
 	public $night;
@@ -8,6 +9,7 @@ class preferences{
 
 	function __construct()
 	{
+	//	$this->hidelogo='on';
 		$this->hidehotkey='off';
 		$this->night='off';
 		$this->autonight='on';

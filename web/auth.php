@@ -10,9 +10,9 @@ require('inc/ojsettings.php');
   require('inc/database.php');
   require ('inc/cookie.php');
   if(check_cookie()){
-	  echo"<script language=\"javascript\">
-      window.location= \"index.php\";
-      </script>";};
+    header("Location: index.php");
+    exit();
+	};
   ?>
     <body style="background-image: url(<?php echo $loginimg?>)">
     <div class="container-fluid">
@@ -53,7 +53,7 @@ require('inc/ojsettings.php');
             <input id="ret_url" name="url" value="index.php" type="hidden">
 			<div class="hide" id="contact" style="text-align:left">
 				<br>
-			    <p><b>联系管理员: <a href="mailto:<?php require_once 'inc/mailsettings.php'; echo $contact_email?>"><?php echo $contact_email?></a></b></p><br>
+			    <p><b>联系管理员: <a href="mailto:<?php echo $contact_email?>"><?php echo $contact_email?></a></b></p><br>
 		    </div>
 			<br>
           </form>
