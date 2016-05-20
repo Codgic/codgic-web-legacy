@@ -52,18 +52,19 @@ $Title=$inTitle .' - '. $oj_name;
     <div class="replypanel hide" id="replypanel">
       <div class="well well-small margin-0" style="background-color:<?php echo $well_class?>">
         <h4 style="text-align:center;margin-bottom:10px;">新建讨论</h4>
-        <form class="form-horizontal" method="post" action="postmessage.php">
+        <form class="form-horizontal" method="post" action="ajax_message.php" id="form_submit">
           <fieldset>
+            <input type="text" style="display:none" id="msg_op" name="op" value="msg_create" readonly="true">
             <div class="control-group">
               <label class="control-label" for="msg_input">标题</label>
               <div class="controls">
-                <input type="text" class="input-xxlarge" id="msg_input" name="message">
+                <input type="text" class="input-xxlarge" id="msg_input" name="message" placeholder="请输入消息标题...">
               </div>
             </div>
             <div class="control-group">
               <label class="control-label" for="detail_input">内容</label>
               <div class="controls">
-                <textarea class="input-xxlarge" id="detail_input" rows="7" name="detail"></textarea>
+                <textarea class="input-xxlarge" id="detail_input" rows="7" name="detail" placeholder="请输入消息内容..."></textarea>
               </div>
             </div>
             <div id="PreviewPopover" class="popover left" >
@@ -76,10 +77,10 @@ $Title=$inTitle .' - '. $oj_name;
               </div>
             </div>
             <div style="float:left">
-              <span  style="margin-left: 60px;" id="post_preview" class="btn btn-info">预览</span>
+              <span id="post_preview" class="btn btn-info">预览</span>
             </div>
             <div style="float:right">
-              <button type="submit" class="btn btn-primary shortcut-hint" title="Alt+S">发表</button>
+              <button type="submit" id="post_submit" style="margin-left:20px" class="btn btn-primary shortcut-hint" title="Alt+S">发表</button>
               <button id="cancel_input" class="btn">取消</button>
             </div>
             <div class="center text-error"><strong id="post_status"></strong></div>
@@ -132,12 +133,13 @@ $Title=$inTitle .' - '. $oj_name;
                   echo '&nbsp;<span class="label label-warning">最新消息</span>';
                 if($deep==0 && $row[6])
                     echo '&nbsp;&nbsp;<a class="prob_link" href="problempage.php?problem_id=',$row[6],'">Problem ',$row[6],'</a>';
-                echo ' <button id="reply_msg',$row[3],'" class="btn btn-small">回复</button>';
+               echo ' <button onclick="open_replypanel(',$row[3],')" class="btn btn-mini"><i class="icon-share-alt"></i> 回复</button>';
+                if($row[2]==$_SESSION['user']) echo ' <button onclick="open_editpanel(',$row[3],')" class="btn btn-mini"><i class="icon-pencil"></i> 编辑</button>';
                 if($row[7])
                   echo '<p class="msg_content msg_detailed">';
                 else
                   echo '<p class="msg_content">';
-                echo '<a class="msg_link" href="ajax_message.php?message_id=',$row[3],'" id="msg',$row[3],'">',htmlspecialchars($row[0]),'</a>';
+                echo '<a class="msg_link" href="#" id="msg',$row[3],'">',htmlspecialchars($row[0]),'</a>';
                 echo '</p></div></div>';
               }
               echo '</li>';
@@ -175,11 +177,7 @@ $Title=$inTitle .' - '. $oj_name;
     <script src="/assets/js/common.js"></script>
 
     <script type="text/javascript"> 
-      $(document).ready(function(){
-        $('#nav_bbs').parent().addClass('active');
-        $('#ret_url').val('board.php?<?php echo $query_prob,"&start_id=",$query_id?>');
-
-        function dealwithlinks($jqobj)
+      function dealwithlinks($jqobj)
         {
           $jqobj.find('a').each(function(){
             var Href = this.getAttribute("href",2);
@@ -189,6 +187,49 @@ $Title=$inTitle .' - '. $oj_name;
             this.href=Href;
           });
         }
+      function open_replypanel(msg_id){
+          <?php if(isset($_SESSION['user'])){?>
+          var title = ((msg_id=='0')?'新建消息':'新建回复: #'+msg_id);
+	$('#msg_op').val('msg_create');
+	$('#msgid_input').val(msg_id);
+	$('#replypanel h4').html(title);
+ 	$('#post_status').html('');
+	$('#PreviewPopover').hide();
+	$('#msg_input').val('');
+	$('#detail_input').val('');
+	$('#replypanel').fadeIn(300);
+	$('#msg_input').focus();
+          <?php }else{echo 'alert("请先登录！");';}?>
+          return false;
+        }
+      function open_editpanel(msg_id){
+          <?php if(isset($_SESSION['user'])){?>
+          var title = '编辑消息';
+          $('#msg_op').val('msg_edit');
+          $('#post_status').html('');
+          $('#msg_input').val('');
+          $('#detail_input').val('');
+          $.ajax({
+                  type:"POST",
+                  url:"ajax_message.php",
+                  data:{"op":'get_message', "message_id":msg_id},
+                  success:function(data){
+                      $('#msg_input').val($('#msg'+msg_id).html());
+                      $('#detail_input').val(data);
+                   }
+              });
+          $('#msgid_input').val(msg_id);
+          $('#replypanel h4').html(title);
+          $('#replypanel').fadeIn(300);
+	$('#PreviewPopover').hide();
+          $('#msg_input').focus();
+          <?php }else{echo 'alert("请先登录！");';}?>
+          return false;
+        }
+      $(document).ready(function(){
+        $('#nav_bbs').parent().addClass('active');
+        $('#ret_url').val('board.php?<?php echo $query_prob,"&start_id=",$query_id?>');
+
         $('#board').click(function(E){
           if(! $(E.target).is("a.msg_link"))
             return;
@@ -202,9 +243,14 @@ $Title=$inTitle .' - '. $oj_name;
             if(p.hasClass("msg_detailed")){
               p.addClass("expanded");
               p.after('<pre id="'+ID+'"><div id="'+ID+'_div"></div></pre>');
-              $.get('ajax_message.php?message_id='+E.target.id.substring(3),function(data){
-                dealwithlinks( $('#'+ID+'_div').html(parseBBCode(data)) );
+              $.ajax({
+                  type:"POST",
+                  url:"ajax_message.php",
+                  data:{"op":'get_message'," message_id":E.target.id.substring(3)},
+                  success:function(data){
+                      dealwithlinks( $('#'+ID+'_div').html(parseBBCode(data)) );
                 MathJax.Hub.Queue(["Typeset",MathJax.Hub,(ID+'_div')]);
+                   }
               });
             }else{
               var tmp=$('#alert_nothing').show();
@@ -215,18 +261,8 @@ $Title=$inTitle .' - '. $oj_name;
         });
         var detail_ele=document.getElementById('detail_input');
         var minW=260,minH=100;
-        function open_replypanel(msg_id){
-          <?php if(isset($_SESSION['user'])){?>
-          var title = ((msg_id=='0')?'新建讨论':'对于'+msg_id+'的回复');
-          $('#msgid_input').val(msg_id);
-          $('#replypanel h4').html(title);
-          $('#replypanel').fadeIn(300);
-          $('#msg_input').focus();
-          <?php }else{echo 'alert("请先登录！");';}?>
-          return false;
-        }
+        
         $('#new_msg').click(function(){open_replypanel('0')});
-        $('#board button').click(function(E){open_replypanel(E.target.id.substring(9))});
         reg_hotkey(78,function(){$('#new_msg').click()}); //Alt+N
 
         $('#replypanel form').submit(function(){
@@ -239,8 +275,21 @@ $Title=$inTitle .' - '. $oj_name;
             $('#post_status').html('消息太长了！');
             return false;
           }
-          $('#post_status').html('');
-          return true;
+          $('#post_submit').attr("disabled","true");
+          $('#post_status').html('正在发表...');
+		  $.ajax({
+            type:"POST",
+            url:"ajax_message.php",
+            data:$('#form_submit').serialize(),
+            success:function(msg){
+              if(/success/.test(msg))
+                location.reload();
+              else{
+                $('#post_status').html('错误:'+msg);
+               }
+            }
+          });
+          return false;
         });
         reg_hotkey(83,function(){$('#replypanel form').submit()}); //Alt+S
 

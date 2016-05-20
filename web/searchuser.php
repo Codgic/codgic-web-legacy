@@ -11,7 +11,7 @@ if(strlen($req)>600)
   die('Keyword is too long');
 require ('inc/checklogin.php');
 require('inc/database.php');
-$keyword=mysqli_real_escape_string(trim($con,$req));
+$keyword=mysqli_real_escape_string($con, trim($req));
 $result=mysqli_query($con,"select user_id,nick,solved,submit from users where user_id like '%$keyword%' or nick like '%$keyword%' order by solved desc limit $page_id,100");
 $inTitle='搜索结果';
 $Title=$inTitle .' - '. $oj_name;
@@ -106,7 +106,7 @@ $Title=$inTitle .' - '. $oj_name;
           if($target.is('a') && $target.attr('href')=='#linkU'){
             $('#user_status').html("<p>Loading...</p>").load("ajax_user.php?user_id="+Event.target.innerHTML).scrollTop(0);
             var win=$('#UserModal');
-            win.children('.modal-header').children('h4').html('User Infomation');
+            win.children('.modal-header').children('h4').html('用户信息');
             win.modal('show');
             return false;
           }

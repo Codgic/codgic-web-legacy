@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <head>
+   <!--IE是一款伟大的浏览器，可是你却是一个愚蠢的人-->
   <? require('head.php');?>
   <title>请升级你的浏览器</title>
   <base target="_blank" />

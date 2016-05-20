@@ -237,7 +237,6 @@ ul.msg_group {
 }
 .replypanel textarea{
   overflow: auto;
-  white-space: pre;
   resize: none;
 }
 .replypanel .resize-ico {
@@ -403,7 +402,7 @@ input.input-in-table{
 }
 #PreviewPopover .popover-content{
   max-height: 200px;
-  width: 450px;
+  width: auto;
   overflow-y: auto;
 }
 #PreviewPopover{

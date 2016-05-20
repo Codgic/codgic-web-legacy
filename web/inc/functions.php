@@ -55,3 +55,41 @@ function postmail($to,$subject = '',$body = ''){
         return 'success';
     }
 }
+
+function posttodaemon($data){
+   if(!isset($_SESSION['user'])) return ("您并没有登录...");
+	$encoded="";
+	while(list($k,$v) = each($data)){
+		$encoded.=($encoded ? "&" : "");
+		$encoded.=rawurlencode($k)."=".rawurlencode($v);
+	}
+	if(!($fp=fsockopen('127.0.0.1', 8881)))
+		return ("错误: 无法连接至评测服务...\n");
+
+	fputs($fp, "POST /submit_prob HTTP/1.0\r\n");
+	fputs($fp, "Host: 127.0.0.1\r\n");
+	fputs($fp, "Content-type: application/x-www-form-urlencoded\r\n");
+	fputs($fp, "Content-length: " . strlen($encoded) . "\r\n");
+	fputs($fp, "Connection: close\r\n\r\n");
+
+	fputs($fp, "$encoded\r\n");
+
+	$line = fgets($fp,128);
+	if(!strstr($line,"HTTP/1.0 200"))
+		return ("错误: 无法提交，服务器内部错误...\n");
+
+	$results="";
+	while(!feof($fp))
+		$results.=fgets($fp,128);
+	/*$inheader=true;
+	while(!feof($fp)) {
+		$line=fgets($fp,128);
+		if($inheader && $line=="\r\n")
+			$inheader=false;
+		else if(!$inheader)
+			$results.=$line;
+	}*/
+	fclose($fp);
+
+	return $results;
+}

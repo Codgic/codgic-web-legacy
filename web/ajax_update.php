@@ -1,7 +1,10 @@
 <?php
 require('inc/ojsettings.php');
 $nowtime = date("Y/m/d H:i:s");
-
+if(!isset($_SESSION['administrator']))
+	die('Not administrator');
+if(!isset($_SESSION['admin_tfa']) || !$_SESSION['admin_tfa'])
+	die('No TFA');
 if(!isset($_POST['type']))
 	die('Invalid argument.');
 

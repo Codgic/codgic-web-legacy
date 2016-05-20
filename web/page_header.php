@@ -50,6 +50,7 @@
 	</div>
 </div>
 <div class="hidden-desktop" style="margin-top:65px"></div>
+<?php if(!isset($_SESSION['user'])){ ?>
 <div class="modal fade hide" id="LoginModal">
   <form id="form_login" style="margin:0px" action="/login.php" method="post">
     <div class="modal-header">
@@ -83,3 +84,4 @@
     </div>
   </form>
 </div>
+<?php }?>

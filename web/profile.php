@@ -3,7 +3,7 @@ require 'inc/ojsettings.php';
 require ('inc/checklogin.php');
  
 if(!isset($_SESSION['user'])){
-  $info='<div style="text-align: center">然而你并没有登录。</div>';
+  $info='<div style="text-align: center">然而你并没有登录...</div>';
 }else{
   require_once 'inc/database.php';
   $user_id=$_SESSION['user'];

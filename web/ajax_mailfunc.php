@@ -21,11 +21,15 @@ require('inc/mail_flags.php');
 
 if($op=='check'){
 	$uid=$_SESSION['user'];
-	$res=mysqli_query($con,"select sum(new_mail) from mail where UPPER(defunct)='N' and to_user='$uid'");
+   $row=mysqli_fetch_row(mysqli_query($con,"select defunct from users where user_id='$uid'"));
+   if($row[0]=='Y') include ('logoff.php'); 
+	else {
+     $res=mysqli_query($con,"select sum(new_mail) from mail where UPPER(defunct)='N' and to_user='$uid'");
 	if($res && ($row=mysqli_fetch_row($res)) && $row[0])
 		echo $row[0];
 	else
 		echo '0';
+   }
 }else if($op=='send'){
 	$from=$_SESSION['user'];
 

@@ -23,7 +23,7 @@ $temp_dir="/tmp/cwoj_postmessage.lock";
 //"daemon_ver" defines the version number of the judging service, which is shown in preference.php.
 $oj_name = 'CWOJ'; 
 $oj_copy = 'CWOJ Team'; 
-$web_ver = '0.92.160508-1305';
+$web_ver = '0.95.160520-2054';
 $daemon_ver = '1.01.160227-1736';
 
 //2.2 User policy settings
@@ -56,15 +56,11 @@ $num_403 = 1;
 //"news_num" defines the maxium number of news shown in index.php
 $news_num=6; 
 
-//2.6 Testcase upload filesize
-//Don't forget to change the max file size setting in php.ini at the same time!
-$tc_size = '200mb';
-
-//2.7 Contact email
+//2.6 Contact email
 //Contact email that is shown in auth.php.
 $contact_email = 'info@cwoj.tk';
 
-//2.8 Update Settings
+//2.7 Update Settings (Not available in this version)
 //$updbranch defines the current branch that you are in.
 //$updloc defines the address of update source (as a remote directory).
 $updbranch='master';

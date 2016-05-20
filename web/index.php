@@ -13,9 +13,7 @@ require('inc/database.php');
 $res=mysqli_query($con,"select content from news where news_id=0");
 $index_text=($row=mysqli_fetch_row($res)) ? $row[0] : '';
 $res=mysqli_query($con,"select news_id,title,importance from news where news_id>0 order by importance desc, news_id desc");
-$hasnews=0;
 $newsrow=mysqli_fetch_row(mysqli_query($con,"select max(news_id) from news"));
-if($newsrow[0]>0) $hasnews=1;
 $categoryrow=mysqli_fetch_row(mysqli_query($con,"select content from user_notes where id=0"));
 $category=$categoryrow[0];
 $inTitle='主页';
@@ -45,7 +43,7 @@ $num=0;
       </div>
 	  <div class="row-fluid">
 		<div class="span5 offset1">
-	    <h1>新闻<?php if($hasnews==1){?><a href="news.php" class="pull-right"><font size=2>更多历史新闻...</font></a></h1>
+	    <h1>新闻<?php if($newsrow[0]>0){?><a href="news.php" class="pull-right"><font size=2>更多历史新闻...</font></a></h1>
 		  <ul class="nav" style="margin-top:10px;font-size:16px">
              <?php 
              while($row=mysqli_fetch_row($res)){
@@ -127,8 +125,6 @@ $num=0;
             };
         };
       $(document).ready(function(){
-       // alert('Correction Test');
-	   	document.getElementById('clickOne').click()
         $('#ret_url').val("index.php");
         var originColor = '#E3E3E3';
         $('#newspad #title').click(function(){
