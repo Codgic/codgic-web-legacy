@@ -37,7 +37,7 @@ $Title=$inTitle .' - '. $oj_name;
 			?>
 			<div class="row-fluid">
 				<div class="span2 offset2 form-inline">
-				    <?php echo"<span id=\"sendnew\" style=\"margin:5px\" class=\"btn {$button_class} shortcut-hint\" title=\"Alt+N\"><i class=\"icon-inbox\"></i> 新建... </span>";?>
+				    <span id="sendnew" style="margin:5px" class="btn <?php echo $btn_class?>" shortcut-hint" title="Alt+N"><i class="icon-inbox"></i> 新建... </span>
 		            <label class="checkbox"><input <?php if(isset($_GET['starred']))echo 'checked'?>  id="chk_starred" type="checkbox" name="star">星标</label>
 					<p></p>
 				</div>

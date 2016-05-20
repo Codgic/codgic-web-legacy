@@ -12,7 +12,7 @@ function check_cookie()
 	$arr = unserialize($cookie);
 	//print_r($arr);
 
-	if(false===$arr || !isset($arr['magic']) || $arr['magic']!="bsoj")
+	if(false===$arr || !isset($arr['magic']) || $arr['magic']!="cwoj")
 		return false;
 	$user = $arr['user'];
 	if(preg_match('/\W/',$user) || strlen($user)==0)
@@ -23,7 +23,7 @@ function check_cookie()
 }
 function write_cookie()
 {
-	$arr = array('magic'=>'bsoj');
+	$arr = array('magic'=>'cwoj');
 	$arr['user']=$_SESSION['user'];
 
 	$data = encrypt(cookie_key, serialize($arr));

@@ -2,7 +2,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
   <meta name="renderer" content="webkit">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="<?php echo $oj_name?> - 一个毫无特色并且时刻受到水王洪水威胁的信息竞赛刷题系统, built for you to code your future.">
+  <meta name="description" content="<?php echo $oj_name?> - 一个开源且毫无特色并且时刻受到水王洪水威胁的信息竞赛刷题系统, built for you to code your future. 愿你在<?php echo $oj_name?>玩(bei)耍(nve)愉快! NOIP NOI 信息竞赛 刷题 水王">
   <?php header("Content-Type: text/html; charset=utf-8");?>
   <link rel="shortcut icon" href="/assets/res/favicon.ico" type="image/x-icon" />
   <link rel="stylesheet" href="/assets/css/normalize.min.css" type="text/css" />
@@ -11,7 +11,6 @@
   <script src="/assets/js/jquery.min.js"></script> 
   <?php 
   $year=date('Y');
-  require 'inc/ojsettings.php';
   require_once 'inc/preferences.php';
   if(isset($_SESSION['pref']))
 	  $pref=unserialize($_SESSION['pref']);
@@ -58,10 +57,6 @@
     <link rel="stylesheet" href="/assets/css/font-awesome-ie7.min.css">
     <script src="/assets/js/html5.js"></script>
 	<script src="/assets/js/respond.js"></script>
-	<script type="text/javascript" src="/assets/js/jquery.placeholder.min.js">
-      $(function() {
-      $('input, textarea').placeholder();
-      });
-    </script>
+	<script type="text/javascript" src="/assets/js/jquery.placeholder.min.js"></script>
   <![endif]-->
 </head>

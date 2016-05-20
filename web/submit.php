@@ -1,42 +1,6 @@
 <?php
 require('inc/lang_conf.php');
-
-function posttodaemon($data){
-	$encoded="";
-	while(list($k,$v) = each($data)){
-		$encoded.=($encoded ? "&" : "");
-		$encoded.=rawurlencode($k)."=".rawurlencode($v);
-	}
-	if(!($fp=fsockopen('127.0.0.1', 8881)))
-		return ('Can not connect to judging system. Please contact jimmy19990!\n');
-
-	fputs($fp, "POST /submit_prob HTTP/1.0\r\n");
-	fputs($fp, "Host: 127.0.0.1\r\n");
-	fputs($fp, "Content-type: application/x-www-form-urlencoded\r\n");
-	fputs($fp, "Content-length: " . strlen($encoded) . "\r\n");
-	fputs($fp, "Connection: close\r\n\r\n");
-
-	fputs($fp, "$encoded\r\n");
-
-	$line = fgets($fp,128);
-	if(!strstr($line,"HTTP/1.0 200"))
-		return ('Submit failed, internal error.\n');
-
-	$results="";
-	while(!feof($fp))
-		$results.=fgets($fp,128);
-	/*$inheader=true;
-	while(!feof($fp)) {
-		$line=fgets($fp,128);
-		if($inheader && $line=="\r\n")
-			$inheader=false;
-		else if(!$inheader)
-			$results.=$line;
-	}*/
-	fclose($fp);
-
-	return $results;
-}
+require('inc/functions.php');
 require ('inc/checklogin.php');
 
 if(!isset($_SESSION['user']) || strlen($_SESSION['user'])==0)

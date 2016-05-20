@@ -44,7 +44,7 @@ $Title=$inTitle .' - '. $oj_name;
           </div>
         </div>
         <div class="row-fluid">
-          <div class="span10 offset1 hide" id="uploader_wrap" style="margin-bottom:10px">
+          <div class="span10 offset1" id="uploader_wrap" style="margin-bottom:10px">
             <div id="html5_uploader" >你的浏览器不支持HTML5!</div>
           </div>
         </div>
@@ -66,6 +66,7 @@ $Title=$inTitle .' - '. $oj_name;
     <script src="/assets/js/bootstrap.min.js"></script>
     <script src="/assets/js/jquery-ui.min.js"></script>
     <script src="/assets/js/plupload.full.min.js"></script>
+    <script src="/assets/js/plupload.zh_CN.js"></script>
     <script src="/assets/js/jquery.ui.plupload.min.js"></script>
 
     <script src="/assets/js/common.js"></script>
@@ -88,6 +89,7 @@ $Title=$inTitle .' - '. $oj_name;
         })
       }
       $(document).ready(function(){
+        $('#uploader_wrap').hide(); //Fuck Microsoft Edge!
         $('#ret_url').val("testcase.php?problem_id="+problem_id);
         refresh_list();
         $('#btn_refresh').click(function(){
@@ -114,23 +116,21 @@ $Title=$inTitle .' - '. $oj_name;
       uploader=$("#html5_uploader").plupload({
         runtimes : 'html5',
         url : 'ajax_testcase.php',
-        chunk_size : '<?php echo $tc_size?>',
+        chunk_size : '10mb',
         multipart : true,
         multipart_params: {
           "problem_id": problem_id
         },
         max_retries: 2,
+        rename : true,
+	    	dragdrop: true,
         complete:function(){
           refresh_list();
           $('#uploader_wrap').slideUp();
-        }
-        // filters : {
-        //  max_file_size : '10mb',
-        //  mime_types: [
-        //    {title : "Image files", extensions : "jpg,gif,png"},
-        //    {title : "Zip files", extensions : "zip"}
-        //  ]
-        // }
+        },
+         filters : [
+            {title : "FuckZK Files", extensions : "in,out,cpp"},
+         ],
       });
     </script>
   </body>

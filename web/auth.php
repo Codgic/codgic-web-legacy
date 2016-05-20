@@ -23,7 +23,7 @@ require('inc/ojsettings.php');
       </div>
 	</div>
       <div id="loginpage" class="hide row-fluid">
-        <div style="display:table;margin:auto;">
+        <div style="display:table;margin:auto;white-space:normal">
           <form class="form-vertical well" id="form_login" action="login.php" method="post">
             <h1 class="center">欢迎回家</h1>
             <hr style="border-bottom-color: #E5E5E5;">
@@ -61,7 +61,7 @@ require('inc/ojsettings.php');
       </div>
 
       <div id="regpage" class="hide row-fluid">
-        <div style="display:table;margin:auto;">
+        <div style="display:table;margin:auto;white-space:normal">
           <form class="form-vertical well" id="form_profile" action="#" method="post">
 		    <h1 class="center">申请账号</h1>
             <hr style="border-bottom-color: #E5E5E5;">

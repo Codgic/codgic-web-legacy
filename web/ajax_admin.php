@@ -32,7 +32,7 @@ if($op=="list_usr"){
 				while($row=mysqli_fetch_row($res)){
 					echo '<tr><td>',$row[0];
 					if(is_null($row[1]))
-						echo '<span style="color:red">(new)</span>';
+						echo '<span style="color:red">(新用户)</span>';
 					echo '</td>';
 					echo '<td>',$row[1],'</td>';
 					echo '<td>',$row[3],'</td>';
@@ -209,9 +209,11 @@ if(!isset($_POST['news_id'])||!isset($_POST['title'])||!isset($_POST['importance
 	isset($_POST['right']) ? $right=$_POST['right'] : die('');
 	if($right!='administrator'&&$right!='source_browser'&&$right!='insider')
 		die('无效的权限...');
-	mysqli_query($con,"insert into privilege VALUES ('$uid','$right','N')");
+  $row=mysqli_fetch_row(mysqli_query($con,"select exists(select 1 from privilege where user_id='$uid' and rightstr='$right')"));
+	if(!$row[0]) mysqli_query($con,"insert into privilege VALUES ('$uid','$right','N')");
 }else if($op=="del_usr"){
 	isset($_POST['user_id']) ? $uid=mysqli_real_escape_string($con,trim($_POST['user_id'])) : die('');
+   if(!strcasecmp($uid,$_SESSION['user'])) die('');
 	mysqli_query($con,"delete from users where user_id='$uid' and (accesstime IS NULL)");
 }else if($op=="del_priv"){
 	isset($_POST['user_id']) ? $uid=mysqli_real_escape_string($con,trim($_POST['user_id'])) : die('');
@@ -234,18 +236,18 @@ if(!isset($_POST['news_id'])||!isset($_POST['title'])||!isset($_POST['importance
 	isset($_POST['user_id']) ? $uid=mysqli_real_escape_string($con,trim($_POST['user_id'])) : die('');
 	mysqli_query($con,"update users set defunct='N' where user_id='$uid'");
 }else if($op=="disable_usr"){
-	isset($_POST['user_id']) ? $uid=mysqli_real_escape_string($con,trim($_POST['user_id'])) : die('');
-	if($_POST['user_id']==$_SESSION['user']) die('');
+	isset($_POST['user_id']) ?  $uid=mysqli_real_escape_string($con,trim($_POST['user_id'])) : die('');
+   if(!strcasecmp($uid,$_SESSION['user'])) die('');
 	mysqli_query($con,"update users set defunct='Y' where user_id='$uid'");
 }else if($op=='update_index'){
 	$index_text=isset($_POST['text']) ? mysqli_real_escape_string($con,str_replace("\n", "<br>", $_POST['text'])) : '';
-	if(mysqli_query($con,"insert into news (news_id,content) VALUES (0,'$index_text') ON DUPLICATE KEY UPDATE content='$index_text'"))
+	if(mysqli_query($con,"insert into news (news_id,content,time) VALUES (0,'$index_text',NOW()) ON DUPLICATE KEY UPDATE content='$index_text', time=NOW()"))
 		echo "success";
 	else
 		echo "fail";
 }else if($op=="update_category"){
 	$category=isset($_POST['content']) ? mysqli_real_escape_string($con,trim($_POST['content'])) : '';
-	if(mysqli_query($con,"update user_notes set content='$category' where id=0"))
+	if(mysqli_query($con,"insert into user_notes (id,content,time) VALUES (0,'$category',NOW()) ON DUPLICATE KEY UPDATE content='$category',time=NOW()")) 
 		echo 'success';
 	else
 		echo 'fail';

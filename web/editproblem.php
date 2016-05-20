@@ -14,7 +14,7 @@ function CMP_TYPE($way, $precision)
 session_start();
 if(!isset($_SESSION['user'])||!isset($_SESSION['administrator']))
 	die('You are not administrator');
-if(!isset($_POST['op']))
+else if(!isset($_POST['op']))
 	die('Invalid operation.');
 
 require('inc/database.php');

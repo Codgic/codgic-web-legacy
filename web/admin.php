@@ -56,7 +56,7 @@ $Title=$inTitle .' - '. $oj_name;
                     <form action="#" method="post" id="form_index">
                       <input type="hidden" name="op" value="update_index">
                       <textarea name="text" rows="10" class="border-box" style="width:100%"><?php echo htmlspecialchars($index_text)?></textarea>
-                      <div class="alert hide" id="alert_result">主页更新成功！</div>
+                      <span class="alert alert-success hide" id="alert_result">主页更新成功！</span>
                       <div class="pull-right">
                         <input type="submit" class="btn <?php echo $button_class?>" value="更新">
                       </div>
@@ -584,6 +584,11 @@ $Title=$inTitle .' - '. $oj_name;
             success:function(msg){
               if(/success/.test(msg))
                 $('#alert_result').show();
+              else{
+                $('#alert_result').removeClass("alert-success");
+                $('#alert_result').addClass("alert-danger");
+                $('#alert_result').html('主页更新失败...').show();
+               }
             }
           });
           return false;
