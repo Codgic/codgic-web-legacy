@@ -30,13 +30,13 @@ require('inc/ojsettings.php');
             <div id="uid_ctl" class="control-group">
               <div class="controls" style="white-space:nowrap">
                 <input class="input-xlarge" autofocus="autofocus" type="text" id="uid" name="uid" placeholder="用户名">
-				<span class="icon-user" style="margin-left:-20px;margin-top:7px;position:absolute"></span>
+				<span class="fa fa-fw fa-user" style="margin-left:-25px;margin-top:7px;position:absolute"></span>
               </div>
             </div>
             <div id="pwd_ctl" class="control-group" style="white-space:nowrap">
                 <div class="controls">
                   <input class="input-xlarge" id="pwd" name="pwd" type="password" placeholder="密码">
-				  <span class="icon-key" style="margin-left:-20px;margin-top:7px;position:absolute"></span>
+				  <span class="fa fa-fw fa-lock" style="margin-left:-25px;margin-top:7px;position:absolute"></span>
                 </div>
             </div>
             <div class="control-group">
@@ -70,37 +70,37 @@ require('inc/ojsettings.php');
               <div class="control-group" id="userid_ctl" style="white-space:nowrap">
                 <div class="controls">
                   <input class="input-xlarge" type="text" autofocus="autofocus" name="userid" id="input_userid" placeholder="用户名">
-				  <span class="icon-user" style="margin-left:-20px;margin-top:7px;position:absolute"></span>
+				  <span class="fa fa-fw fa-user" style="margin-left:-25px;margin-top:7px;position:absolute"></span>
                 </div>
               </div>
               <div class="control-group" style="white-space:nowrap">
                 <div class="controls">
                   <input class="input-xlarge" type="text" autofocus="autofocus" name="nick" id="input_nick" placeholder="昵称">
-				  <span class="icon-pencil" style="margin-left:-20px;margin-top:7px;position:absolute"></span>
+				  <span class="fa fa-fw fa-pencil" style="margin-left:-25px;margin-top:7px;position:absolute"></span>
                 </div>
               </div>
               <div class="control-group" id="newpwd_ctl" style="white-space:nowrap">
                 <div class="controls">
                   <input class="input-xlarge" type="password" autofocus="autofocus" id="input_newpwd" name="newpwd" placeholder="密码">
-				  <span class="icon-key" style="margin-left:-20px;margin-top:7px;position:absolute"></span>
+				  <span class="fa fa-fw fa-lock" style="margin-left:-25px;margin-top:7px;position:absolute"></span>
                 </div>
               </div>
               <div class="control-group" id="reppwd_ctl" style="white-space:nowrap">
                 <div class="controls">
                   <input class="input-xlarge" type="password" autofocus="autofocus" id="input_reppwd" placeholder="重复密码">
-				  <span class="icon-refresh" style="margin-left:-20px;margin-top:7px;position:absolute"></span>
+				  <span class="fa fa-fw fa-refresh" style="margin-left:-25px;margin-top:7px;position:absolute"></span>
                 </div>
               </div>
               <div class="control-group" style="white-space:nowrap">
                 <div class="controls">
                   <input class="input-xlarge" type="text" autofocus="autofocus" name="email" id="input_email" placeholder="邮箱">
-				  <span class="icon-envelope" style="margin-left:-20px;margin-top:7px;position:absolute"></span>
+				  <span class="fa fa-fw fa-envelope" style="margin-left:-25px;margin-top:7px;position:absolute"></span>
                 </div>
               </div>
               <div class="control-group" style="white-space:nowrap">
                 <div class="controls">
                   <input class="input-xlarge" type="text" autofocus="autofocus" name="school" id="input_school" placeholder="学校">
-				  <span class="icon-home" style="margin-left:-20px;margin-top:7px;position:absolute"></span>
+				  <span class="fa fa-fw fa-home" style="margin-left:-25px;margin-top:7px;position:absolute"></span>
                 </div>
               </div>
               <div class="center" style="white-space:normal">
@@ -114,7 +114,6 @@ require('inc/ojsettings.php');
           </form>
         </div>
       </div>
-    <script src="/assets/js/jquery.min.js"></script>
     <script src="/assets/js/common.js"></script>
     <script type="text/javascript">
       function switch_page() {

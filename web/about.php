@@ -35,6 +35,7 @@ $Title=$inTitle .' - '. $oj_name;
 			<hr>
             <p><b>CWOJ Team：</b></p>
 		    <p>jimmy19990： 前端和后端。</p>
+		    <p>Michale： 服务器运维。</p>
 		    <p>Void： 题库管理。</p>
 		    <p>dreamfly： 题库管理。</p>
           </div>
@@ -46,40 +47,39 @@ $Title=$inTitle .' - '. $oj_name;
             <h2>问&答</h2>
           </div>
           <div>
-            <h3>问：本OJ采用什么编译器进行编译？编译语句是什么？</h3>
-            <p>答：管那么多干嘛！</p>
-            <p>我们使用GNU GCC/G++来编译C/C++程序，用Free Pascal来编译Pascal程序，服务器系统环境为<?php echo PHP_OS?>。</p>
+            <p><h3>问：本OJ采用什么编译器进行编译？编译语句是什么？</h3></p>
+            <p>答：我们使用GNU GCC/G++来编译C/C++程序，用Free Pascal来编译Pascal程序，服务器系统环境为<?php echo PHP_OS?>。</p>
             <p>其中，编译语句为：</p>
             <table class="table table-striped table-bordered table-condensed table-last-left-aligned" id="tab_options">
               <tbody>
                 <tr>
-                  <td>C++</td>
-                  <td>g++ -static -fno-asm -s -w -lm -O -DONLINE_JUDGE</td>
+                  <td><samp>C++</samp></td>
+                  <td><code>g++ -static -fno-asm -s -w -lm -O -DONLINE_JUDGE</code></td>
                 </tr>
                 <tr>
-                  <td>C</td>
-                  <td>gcc -static -fno-asm -s -w -lm -O -DONLINE_JUDGE</td>
+                  <td><samp>C</samp></td>
+                  <td><code>gcc -static -fno-asm -s -w -lm -O -DONLINE_JUDGE</code></td>
                 </tr>
                 <tr>
-                  <td>Pascal</td>
-                  <td>fpc -Xs -Sgic -dONLINE_JUDGE</td>
+                  <td><samp>Pascal</samp></td>
+                  <td><code>fpc -Xs -Sgic -dONLINE_JUDGE</code></td>
                 </tr>
                 <tr>
-                  <td>C++ 11</td>
-                  <td>g++ -static --std=gnu++0x -lm -O -DONLINE_JUDGE</td>
+                  <td><samp>C++ 11</samp></td>
+                  <td><code>g++ -static --std=gnu++0x -lm -O -DONLINE_JUDGE</code></td>
                 </tr>
               </tbody>
             </table>
           </div>
           <hr>
           <div>
-            <h3>问：有必要写文件操作吗？</h3>
+            <p><h3>问：有必要写文件操作吗？</h3></p>
             <p>答：使用标准的输入输出就行了。</p>
-			<p>用户的程序中不允许出现任何文件操作，如果进行的话祝您RE愉快（Runtime Error）。</p>
+			<p>提交的程序中不允许出现任何文件操作，如果进行的话祝您RE愉快（Runtime Error）。</p>
           </div>
           <hr>
           <div>
-            <h3>问：评测程序的返回信息都是什么意思？</h3>
+            <p><h3>问：评测程序的返回信息都是什么意思？</h3></p>
             <p>答：这里有一个列表：</p>
             <table class="table table-condensed table-last-left-aligned" id="about_msg">
               <tbody>
@@ -113,9 +113,15 @@ $Title=$inTitle .' - '. $oj_name;
                 </tr>
               </tbody>
             </table>
-			<hr>
-          <p><h4>如果您还有其他任何问题，建议或是错误报告，请发布到： <a href="board.php">讨论中心</a>。</h4></p>
           </div>
+	<hr>
+	<div>
+            <p><h3>问：学校用这套OJ，会不会给人一种感觉——就是内定呀——是钦点呀？ </h3></p>
+            <p>答：你——我感觉你啊，还要学习一个——你非常熟悉严玉德的作风，你们毕竟还too young!——明白这意思吗？信息老师哪个我没见过？你要知道，水漫成外的张主任，那比你们不知道高到哪里去了！嗯，我和他谈笑风生。</p>
+	    <p>唉，我也替你着急呀，真的。 你就——我以为整天的—— 你有一个好——全世界跑到什么地方，你比其他的OIer，水得还快！ 但是问来问去的问题呀，都too simple!啊~ sometimes naive! 懂了没？！</p>
+        </div>
+ 	<hr>
+          <p><h4>如果您还有其他任何问题，建议或是错误报告，请发布到： <a href="board.php">讨论中心</a>。</h4></p>
         </div>
       </div>
       <hr>
@@ -124,8 +130,6 @@ $Title=$inTitle .' - '. $oj_name;
       </footer>
     </div>
     </div>
-    <script src="/assets/js/jquery.min.js"></script>
-    <script src="/assets/js/bootstrap.min.js"></script>
     <script src="/assets/js/common.js"></script>
     <script type="text/javascript"> 
       $(document).ready(function(){

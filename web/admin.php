@@ -16,7 +16,7 @@ if(!isset($_SESSION['user'],$_SESSION['administrator'])){
   require('inc/database.php');
 
   $res=mysqli_query($con,'select content from news where news_id=0');
-  $index_text=($res && ($row=mysqli_fetch_row($res))) ? str_replace('<br>', "\n", $row[0]) : '';
+  //$index_text=($res && ($row=mysqli_fetch_row($res))) ? str_replace('<br>', "\n", $row[0]) : '';
   $res=mysqli_query($con,"select content from user_notes where id=0");
   $category=($res && ($row=mysqli_fetch_row($res))) ? str_replace('<br>', "\n", $row[0]) : '';
 
@@ -229,12 +229,9 @@ $Title=$inTitle .' - '. $oj_name;
         <p>&copy; <?php echo"{$year} {$oj_copy}";?></p>
       </footer>
     </div>
-    <script src="/assets/js/jquery.min.js"></script>
-    <script src="/assets/js/bootstrap.min.js"></script>
     <script src="/assets/js/common.js"></script>
     <script src="/assets/js/highcharts.js"></script>
     <script src="/assets/js/highcharts-more.js"></script>
-
     <script type="text/javascript">
 	var loffset=window.screenLeft+200;
     var toffset=window.screenTop+200;
@@ -408,7 +405,7 @@ $Title=$inTitle .' - '. $oj_name;
         $('#table_experience_title').click(function(E){
           E.preventDefault()
           var $i=$(E.target);
-          if($i.is('i.icon-remove')){
+          if($i.is('i.fa-remove')){
             var id=$i.data('id');
             $.post('ajax_admin.php',{'op':'del_title','id':id},function(){
               gettitlelist();
@@ -441,7 +438,7 @@ $Title=$inTitle .' - '. $oj_name;
             var str_id=jq.parents('tr').first().children().first().contents()
               .filter(function(){return this.nodeType == 3;})
               .text();
-            if(jq.hasClass('icon-remove')){
+            if(jq.hasClass('fa-remove')){
               oper='del_usr';
             }else{
               oper='en_usr';

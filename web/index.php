@@ -32,18 +32,18 @@ $num=0;
             <div id="title" class="center" style="text-align:center; cursor: pointer;">
 				<h1>公告栏</h1>
             </div> 
-            <div id="mainarea" style="display:">
+            <div id="mainarea">
                 <?php echo $index_text?>
             </div>
 			<div id="title" class="center" style="text-align:center; font-size:24px;cursor:pointer;">
-				<h2><b><i class="icon-double-angle-up"></i></b></h2>
+				<h2><b><i class="fa fa-fw fa-angle-double-up"></i></b></h2>
             </div>
           </div>
         </div>
       </div>
 	  <div class="row-fluid">
 		<div class="span5 offset1">
-	    <h1>新闻<?php if($newsrow[0]>0){?><a href="news.php" class="pull-right"><font size=2>更多历史新闻...</font></a></h1>
+	    <h1><i class="fa fa-fw fa-newspaper-o"></i> 新闻<?php if($newsrow[0]>0){?><a href="news.php" class="pull-right"><font size=2>更多历史新闻...</font></a></h1>
 		  <ul class="nav" style="margin-top:10px;font-size:16px">
              <?php 
              while($row=mysqli_fetch_row($res)){
@@ -64,8 +64,8 @@ $num=0;
 		  <?php }?>
 	  </div>
       <div class="span5">
-        <h1>分类</h1>
-		<div class="accordion" id="accordion2" style="margin-top:12px;font-size:16px">
+        <h1><i class="fa fa-fw fa-th"></i> 分类</h1>
+		<div class="accordion" id="index_category" style="margin-top:12px;font-size:16px">
 		<?php if(trim($category)!='') echo "$category";
 		      else echo'<p><font color="grey" size=5>:( 暂时没有发布题目分类目录~</font></p>';?>
 		</div>
@@ -94,7 +94,6 @@ $num=0;
         </div>
       </form>
     </div>
-	<!--<canvas id="canvas" style="position:fixed;top:0;z-index:-999"></canvas>-->
     <script type="text/javascript">
       <?php
         echo 'var ws_url="ws://',$_SERVER["SERVER_ADDR"],':6844/";';
@@ -102,8 +101,6 @@ $num=0;
           echo 'var userid="',encode_user_id('id-'.$_SESSION['user']),'";';
       ?>
     </script>
-    <script src="/assets/js/jquery.min.js"></script>
-    <script src="/assets/js/bootstrap.min.js"></script>
     <script src="/assets/js/common.js"></script>
     <script src="/assets/js/chat.js"></script>
     <script type="text/javascript"> 
@@ -129,8 +126,8 @@ $num=0;
         var originColor = '#E3E3E3';
         $('#newspad #title').click(function(){
             $('#newspad #mainarea').slideToggle();
-            $('#title i').toggleClass('icon-double-angle-down');
-            $('#title i').toggleClass('icon-double-angle-up');
+            $('#title i').toggleClass('fa fa-fw fa-angle-double-down');
+            $('#title i').toggleClass('fa fa-fw fa-angle-double-up');
             /* change color, unnecessary in this theme
             var tmp = $('#newspad').css('background-color');
             $('#newspad').css('background-color', originColor);

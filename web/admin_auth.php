@@ -51,13 +51,8 @@ $Title=$inTitle .' - '. $oj_name;
       <footer>
         <p>&copy; <?php echo"{$year} {$oj_copy}";?></p>
       </footer>
-
     </div>
-
-    <script src="/assets/js/jquery.min.js"></script>
-    <script src="/assets/js/bootstrap.min.js"></script>
     <script src="/assets/js/common.js"></script>
-
     <script type="text/javascript">
 	  var redirect="<?php echo $redirect?>";
       $(document).ready(function(){

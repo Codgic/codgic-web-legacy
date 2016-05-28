@@ -74,10 +74,7 @@ $Title=$inTitle .' - '. $oj_name;
       <p>&copy; <?php echo"{$year} {$oj_copy}";?></p>
       </footer>
     </div>
-    <script src="/assets/js/jquery.min.js"></script>
-    <script src="/assets/js/bootstrap.min.js"></script>
     <script src="/assets/js/common.js"></script>
-
     <script type="text/javascript"> 
       $(document).ready(function(){
         var cur_page=<?php echo $page_id ?>;
@@ -89,14 +86,14 @@ $Title=$inTitle .' - '. $oj_name;
           if($target.is('i.save_problem')){
             var pid = $target.attr('data-pid');
             var op;
-            if($target.hasClass('icon-star'))
+            if($target.hasClass('fa-star'))
               op='rm_saved';
             else
               op='add_saved';
             $.get('ajax_saveproblem.php?prob='+pid+'&op='+op,function(result){
               if(/__ok__/.test(result)){
-                $target.toggleClass('icon-star-empty')
-                $target.toggleClass('icon-star')
+                $target.toggleClass('fa-star-o')
+                $target.toggleClass('fa-star')
               }
             });
           }

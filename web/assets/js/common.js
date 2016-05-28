@@ -252,6 +252,7 @@ $('#search_input').focus(function(){
 	$("#search_input").css("width","");
 }); 
 $('#search_input').focusout(function(){
+if($('#search_input').val()==''){
     if($("#nav_user").hasClass("recover")) {
         $("#nav_user").removeClass("recover");
         $(".main_menu").removeClass("visible-desktop");
@@ -267,5 +268,6 @@ $('#search_input').focusout(function(){
         $(".login_menu").show();
     }
     $("#search_input").css("width","135px");
+}
 }); 
 $('#search_input').keyup(hotkey_hint_dismiss);

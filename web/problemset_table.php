@@ -17,7 +17,7 @@
         echo '<tr>';
         echo '<td>',$row[0],'</td>';
         if(isset($_SESSION['user'])){
-          echo '<td class="width-for-2x-icon"><i class=', is_null($row[6]) ? '"icon-remove icon-2x" style="visibility:hidden"' : ($row[6]? '"icon-remove icon-2x" style="color:red"' : '"icon-2x icon-ok" style="color:green"'), '></i>', '</td>';
+          echo '<td class="width-for-2x-icon"><i class=', is_null($row[6]) ? '"fa fa-remove fa-2x" style="visibility:hidden"' : ($row[6]? '"fa fa-remove fa-2x" style="color:red"' : '"fa fa-2x fa-check" style="color:green"'), '></i>', '</td>';
           echo '<td style="text-align:left;border-left:0;">';
         }else{
           echo '<td style="text-align:left">';
@@ -26,7 +26,7 @@
         if($row[5]=='Y')echo '&nbsp;&nbsp;<span class="label label-important">已删除</span>';
         echo '</a>';
         if(isset($_SESSION['user'])){
-          echo '<td class="width-for-2x-icon" style="border-left:0;"><i data-pid="',$row[0],'" class="', is_null($row[7]) ? 'icon-star-empty' : 'icon-star', ' icon-2x text-warning save_problem" style="cursor:pointer;"></i></td>';
+          echo '<td class="width-for-2x-icon" style="border-left:0;"><i data-pid="',$row[0],'" class="', is_null($row[7]) ? 'fa fa-star-o' : 'fa fa-star', ' fa-2x text-warning save_problem" style="cursor:pointer;"></i></td>';
         }
         echo '</td>';
         echo '<td><a href="record.php?result=0&amp;problem_id=',$row[0],'">',$row[2],'</a>/';

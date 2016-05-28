@@ -30,7 +30,7 @@ $Title=$inTitle .' - '. $oj_name;
         <select class="input-small" id="user_page"></select>
         <div class="pull-right">
           <form id="searchuser_form" action="searchuser.php" method="get" style="margin: 0 0">
-            <div class="input-append"><input id="searchuser_input" autofocus="autofocus" type="text" name="q" class="input-medium" style="width:95px" placeholder="搜索用户..."><span id="search_addon" class="add-on"><i class="icon-search"></i></span></div>
+            <div class="input-append"><input id="searchuser_input" autofocus="autofocus" type="text" name="q" class="input-medium" style="width:95px" placeholder="搜索用户..."><a href="javascript:su_submit;"><span id="search_addon" class="add-on"><i class="fa fa-search" style="color:grey"></i></span></a></div>
           </form>
         </div>
         <div class="btn-group pull-right" style="margin-right:9px">
@@ -111,10 +111,7 @@ $Title=$inTitle .' - '. $oj_name;
       </footer>
 
     </div><!--/.container-->
-    <script src="/assets/js/jquery.min.js"></script>
-    <script src="/assets/js/bootstrap.min.js"></script>
     <script src="/assets/js/common.js"></script>
-
     <script type="text/javascript">
       function intersection(obj1,obj2,arr1,arr2,ist){
         for(var k in obj1){
@@ -191,7 +188,7 @@ $Title=$inTitle .' - '. $oj_name;
             return true;
           return false;
         });
-        $('#searchuser_form').submit(function(){
+        $('#searchuser_form').submit(function su_submit(){
           if($.trim($('#searchuser_input').val()).length==0)
             return false;
           return true;

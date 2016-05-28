@@ -125,7 +125,6 @@ $Title=$inTitle .' - '. $oj_name;
 <!DOCTYPE html>
 <html>
   <?php require('head.php'); ?>
-
   <body style="margin-left:0; margin-right:0">
     <?php require('page_header.php'); ?>
     <div class="container-fluid">
@@ -201,7 +200,7 @@ $Title=$inTitle .' - '. $oj_name;
                   }
                   echo '<td>',round($row[7]/1024,2),' KB</td>';
                   echo '<td><a href="sourcecode.php?solution_id=',$row[0],'">',$LANG_NAME[$row[8]],'</a>';
-                  echo ' <a href="#sw_open_',$row[0],'"><i class=', ($row[10] ? '"icon-eye-open text-success"' : '"icon-eye-close muted"'), '></i></a> </td>';
+                  echo ' <a href="#sw_open_',$row[0],'"><i class=', ($row[10] ? '"fa fa-eye text-success"' : '"fa fa-eye-slash muted"'), '></i></a> </td>';
                   echo '<td>',$row[9],'</td>';
                   echo '</tr>';
                 }
@@ -213,10 +212,10 @@ $Title=$inTitle .' - '. $oj_name;
       <div class="row-fluid">
         <ul class="pager">
           <li>
-            <a class="pager-pre-link shortcut-hint" title="Alt+A" href="record.php?<?php echo htmlspecialchars(get_pre_link())?>" id="btn-pre"><i class="icon-angle-left"></i> 上一页</a>
+            <a class="pager-pre-link shortcut-hint" title="Alt+A" href="record.php?<?php echo htmlspecialchars(get_pre_link())?>" id="btn-pre"><i class="fa fa-angle-left"></i> 上一页</a>
           </li>
           <li>
-            <a class="pager-next-link shortcut-hint" title="Alt+D" href="record.php?<?php echo htmlspecialchars(get_next_link())?>" id="btn-next">下一页 <i class="icon-angle-right"></i></a>
+            <a class="pager-next-link shortcut-hint" title="Alt+D" href="record.php?<?php echo htmlspecialchars(get_next_link())?>" id="btn-next">下一页 <i class="fa fa-angle-right"></i></a>
           </li>
         </ul>
       </div>
@@ -239,10 +238,7 @@ $Title=$inTitle .' - '. $oj_name;
       </footer>
 
     </div><!--/.container-->
-    <script src="/assets/js/jquery.min.js"></script>
-    <script src="/assets/js/bootstrap.min.js"></script>
     <script src="/assets/js/common.js"></script>
-
     <script type="text/javascript"> 
       $(document).ready(function(){
         $('#slt_lang>option[value=<?php echo $lang;?>]').prop('selected',true);
@@ -252,14 +248,14 @@ $Title=$inTitle .' - '. $oj_name;
         $('#ret_url').val("record.php"+window.location.search);
 
         function toggle_s(obj){
-          if(obj.hasClass('icon-eye-close')){
-            obj.removeClass('icon-eye-close');
-            obj.addClass('icon-eye-open');
+          if(obj.hasClass('fa-eye-slash')){
+            obj.removeClass('fa-eye-slash');
+            obj.addClass('fa-eye');
             obj.removeClass('muted');
             obj.addClass('text-success');
           }else{
-            obj.removeClass('icon-eye-open');
-            obj.addClass('icon-eye-close');
+            obj.removeClass('fa-eye');
+            obj.addClass('fa-eye-slash');
             obj.removeClass('text-success');
             obj.addClass('muted');
           }

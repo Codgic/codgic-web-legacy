@@ -37,8 +37,8 @@ if($op=="list_usr"){
 					echo '<td>',$row[1],'</td>';
 					echo '<td>',$row[3],'</td>';
 					echo '<td>',$row[2],'</td>';
-					echo '<td><a href="#"><i class="icon icon-ok"></i></a></td>';
-					echo '<td>',($row[4]?'<a href="#"><i class="icon icon-remove"></i></a>':''),'</td></tr>';
+					echo '<td><a href="#"><i class="fa fa-check"></i></a></td>';
+					echo '<td>',($row[4]?'<a href="#"><i class="fa fa-remove"></i></a>':''),'</td></tr>';
 				}
 			?>
 		</tbody>
@@ -58,7 +58,7 @@ if($op=="list_usr"){
 			<?php 
 				$res=mysqli_query($con,"select user_id,rightstr from privilege order by user_id");
 				while($row=mysqli_fetch_row($res)){
-					echo '<tr><td>',$row[0],'</td><td>',$row[1],'</td><td><a href="#"><i class="icon icon-remove"></i></a></td></tr>';
+					echo '<tr><td>',$row[0],'</td><td>',$row[1],'</td><td><a href="#"><i class="fa fa-remove"></i></a></td></tr>';
 				}
 			?>
 		</tbody>
@@ -89,7 +89,7 @@ if($op=="list_usr"){
 						$addt1='<b>';
 						$addt2='</b>';
 						}
-					echo '<tr><td>',$row[0],'</td><td>',$row[1],'</td><td style="text-align:left">',$addt1.htmlspecialchars($row[2]).$addt2,'</td><td><a href="#"><i class="icon icon-pencil"></i></a></td></tr>';
+					echo '<tr><td>',$row[0],'</td><td>',$row[1],'</td><td style="text-align:left">',$addt1.htmlspecialchars($row[2]).$addt2,'</td><td><a href="#"><i class="fa fa-pencil"></i></a></td></tr>';
 				}
 			?>
 		</tbody>
@@ -115,7 +115,7 @@ if($op=="list_usr"){
         <tr>
           <td>$row[1]</td>
           <td>$t</td>
-          <td><a href="#"><i data-id="$row[1]" class="icon icon-remove"></i></a></td>
+          <td><a href="#"><i data-id="$row[1]" class="fa fa-remove"></i></a></td>
         </tr>
 EOF;
 			}
@@ -247,7 +247,7 @@ if(!isset($_POST['news_id'])||!isset($_POST['title'])||!isset($_POST['importance
 		echo "fail";
 }else if($op=="update_category"){
 	$category=isset($_POST['content']) ? mysqli_real_escape_string($con,trim($_POST['content'])) : '';
-	if(mysqli_query($con,"insert into user_notes (id,content,time) VALUES (0,'$category',NOW()) ON DUPLICATE KEY UPDATE content='$category',time=NOW()")) 
+	if(mysqli_query($con,"insert into user_notes (id,problem_id,tags,user_id,content,edit_time) VALUES (0,0,'','root','$category',NOW()) ON DUPLICATE KEY UPDATE content='$category', edit_time=NOW()")) 
 		echo 'success';
 	else
 		echo 'fail';

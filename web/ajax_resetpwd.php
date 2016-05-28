@@ -11,7 +11,7 @@ if($_POST['type'] == 'match'){
 	if(!isset($_POST['usercode']))
 	    die('Invalid argument.');
 	if(!isset($_SESSION['resetpwd_code'])||empty($_SESSION['resetpwd_code']))
-		die('timeout');
+		die('未知错误 =.=');
 	if($_POST['usercode']==$_SESSION['resetpwd_code']) {
      $_SESSION['resetpwd_flag']=1;
 		echo 'success';
@@ -60,8 +60,10 @@ else if($_POST['type'] == 'update'){
 	$query='update users set password=\''.mysqli_real_escape_string($con,my_rsa($_POST['newpwd'])).'\'';
 	$query.=" where user_id='$user'";
 	$_SESSION['resetpwd_flag']=0;
-	if(mysqli_query($con,$query))
+	if(mysqli_query($con,$query)){
 		echo 'success';
+     session_destroy();
+  }
 	else
 		echo '未知错误 =.=';
 }

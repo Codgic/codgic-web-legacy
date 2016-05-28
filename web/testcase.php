@@ -27,7 +27,6 @@ $Title=$inTitle .' - '. $oj_name;
 <!DOCTYPE html>
 <html>
   <?php require('head.php'); ?>
-
   <body>
     <?php require('page_header.php'); ?>  
           
@@ -38,9 +37,9 @@ $Title=$inTitle .' - '. $oj_name;
         <div class="row-fluid">
           <div class="span10 offset1" style="margin-bottom:10px">
             <span class="btn btn-primary" id="btn_refresh">
-              <i class="icon-refresh icon-spin"></i> 刷新</span>
+              <i class="fa fa-refresh fa-spin"></i> 刷新</span>
             <a class="btn btn-info" id="btn_uploader" data-toggle="modal">
-              <i class="icon-upload-alt"></i> 上传</a>
+              <i class="fa fa-upload"></i> 上传</a>
           </div>
         </div>
         <div class="row-fluid">
@@ -59,16 +58,11 @@ $Title=$inTitle .' - '. $oj_name;
       <footer>
         <p>&copy; <?php echo"{$year} {$oj_copy}";?></p>
       </footer>
-
     </div>
-
-    <script src="/assets/js/jquery.min.js"></script>
-    <script src="/assets/js/bootstrap.min.js"></script>
     <script src="/assets/js/jquery-ui.min.js"></script>
     <script src="/assets/js/plupload.full.min.js"></script>
     <script src="/assets/js/plupload.zh_CN.js"></script>
     <script src="/assets/js/jquery.ui.plupload.min.js"></script>
-
     <script src="/assets/js/common.js"></script>
     <script type="text/javascript"> 
       var problem_id = <?php echo $prob_id?>;
@@ -77,14 +71,14 @@ $Title=$inTitle .' - '. $oj_name;
       LoadCSS('../assets/css/jquery.ui.plupload.css');
       function refresh_list()
       {
-        $('#btn_refresh>i').addClass('icon-spin');
+        $('#btn_refresh>i').addClass('fa-spin');
         $.getJSON('ajax_testcase.php?op=list&problem_id='+problem_id, function(obj){
           if(obj.files){
             var $list = $('#file_list').html('');
             $.each(obj.files,function(index,val){
-              $list.append('<tr><td style="text-align:left">'+htmlEncode(val)+'</td><td><a href="#" class="text-error"><i class="icon icon-remove"></i></a></td></tr>');
+              $list.append('<tr><td style="text-align:left">'+htmlEncode(val)+'</td><td><a href="#" class="text-error"><i class="fa fa-remove"></i></a></td></tr>');
             });
-            $('#btn_refresh>i').removeClass('icon-spin');
+            $('#btn_refresh>i').removeClass('fa-spin');
           }
         })
       }
@@ -121,7 +115,7 @@ $Title=$inTitle .' - '. $oj_name;
         multipart_params: {
           "problem_id": problem_id
         },
-        max_retries: 2,
+      //  max_retries: 2,
         rename : true,
 	    	dragdrop: true,
         complete:function(){

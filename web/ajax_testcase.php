@@ -4,6 +4,10 @@ if(!isset($_SESSION['administrator']))
 	die('Not administrator');
 if(!isset($_SESSION['admin_tfa']) || !$_SESSION['admin_tfa'])
 	die('No TFA');
+function get_extension($file)
+{
+return pathinfo($file, PATHINFO_EXTENSION);
+}
 
 function get_testcase_dir()
 {
@@ -37,6 +41,8 @@ function upload_file_handler($targetDir)
 		header($_SERVER['SERVER_PROTOCOL'] . ' 500 Internal Server Error', true, 500);
 		die('{"jsonrpc" : "2.0", "error" : {"code": 104, "message": "Illegal file name."}, "id" : "id"}');
 	}
+  if(get_extension($fileName)!="in" && get_extension($fileName)!="out" && get_extension($fileName)!="cpp")
+      die('Unpermitted extension.');
 	$filePath = $targetDir . DIRECTORY_SEPARATOR . $fileName;
 
 	// Chunking might be enabled

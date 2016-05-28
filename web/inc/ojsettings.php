@@ -21,9 +21,10 @@ $temp_dir="/tmp/cwoj_postmessage.lock";
 //"oj_copy" defines the copyright text on the footer of each page.
 //"web_ver" defines the version number of the web part, which is shown in preference.php.
 //"daemon_ver" defines the version number of the judging service, which is shown in preference.php.
+$year=date('Y');
 $oj_name = 'CWOJ'; 
 $oj_copy = 'CWOJ Team'; 
-$web_ver = '0.95.160520-2054';
+$web_ver = '0.96.150528-1047';
 $daemon_ver = '1.01.160227-1736';
 
 //2.2 User policy settings
@@ -54,7 +55,7 @@ $num_403 = 1;
 
 //2.5 News Settings
 //"news_num" defines the maxium number of news shown in index.php
-$news_num=6; 
+$news_num=7; 
 
 //2.6 Contact email
 //Contact email that is shown in auth.php.

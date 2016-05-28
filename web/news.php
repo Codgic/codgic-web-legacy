@@ -83,8 +83,6 @@ $res=mysqli_query($con,"select news_id,title,time,importance from news where new
 	<footer>
        <p>&copy; <?php echo"{$year} {$oj_copy}";?></p>
     </footer>
-    <script src="/assets/js/jquery.min.js"></script>
-    <script src="/assets/js/bootstrap.min.js"></script>
     <script src="/assets/js/common.js"></script>
     <script type="text/javascript"> 
 	function click_news(newsid){

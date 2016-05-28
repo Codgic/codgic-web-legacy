@@ -1,14 +1,6 @@
 <?php
-require_once 'inc/ojsettings.php';
-if(!defined('DISALLOW_GOOGLEBOT'))
-define('DISALLOW_GOOGLEBOT',0);
-
-if(!isset($_SESSION)) 
-{ 
-session_start(); 
-}  
-
-if(!isset($_SESSION['user']) && (DISALLOW_GOOGLEBOT || !isset($_SERVER['HTTP_USER_AGENT']) || FALSE===strstr($_SERVER['HTTP_USER_AGENT'],'Googlebot'))){
+if(!isset($_SESSION)) session_start();
+if(!isset($_SESSION['user'])){
 	require 'inc/cookie.php';
 	if(!check_cookie()) {
 		if($require_auth) {

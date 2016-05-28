@@ -43,7 +43,7 @@ $Title=$inTitle .' - '. $oj_name;
 						        <td style="text-align:left"><a href="problempage.php?problem_id=<?php echo $row[0]?>" ><?php echo $row[1] ?></a></td>
 								<td><?php echo $row[3] ?></td>
 								<td><?php echo $row[2] ?></td>
-								<td><i data-pid="<?php echo $row[0] ?>" style="cursor:pointer;" class="text-error icon-remove"></i></td>
+								<td><i data-pid="<?php echo $row[0] ?>" style="cursor:pointer;" class="text-error fa fa-remove"></i></td>
 							</tr>
 						<?php } ?>
 						</tbody>
@@ -55,12 +55,8 @@ $Title=$inTitle .' - '. $oj_name;
 			<footer>
 				<p>&copy; <?php echo"{$year} {$oj_copy}";?></p>
 			</footer>
-
 		</div><!--/.container-->
-		<script src="/assets/js/jquery.min.js"></script>
-	    <script src="/assets/js/bootstrap.min.js"></script>
 		<script src="/assets/js/common.js"></script>
-
 		<script type="text/javascript"> 
 			$(document).ready(function(){
 				$('#ret_url').val("marked.php");

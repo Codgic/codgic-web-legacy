@@ -24,7 +24,7 @@ $Title=$inTitle .' - '. $oj_name;
           <div style="width:250px;margin:0 auto">
             <form id="searchuser_form" action="solved.php" method="get" class="form-inline" style="margin-bottom:10px;">
               <label for="searchuser_input" class="label-select">用户: </label>
-              <div class="input-append"><input autofocus="autofocus" value="<?php if(isset($search))echo htmlspecialchars($search);?>" id="searchuser_input" type="text" name="q" class="input-medium" placeholder="搜索用户..."><span id="search_addon" class="add-on"><i class="icon-search"></i></span></div>
+              <div class="input-append"><input autofocus="autofocus" value="<?php if(isset($search))echo htmlspecialchars($search);?>" id="searchuser_input" type="text" name="q" class="input-medium" placeholder="搜索用户..."><span id="search_addon" class="add-on"><i class="fa fa-fw fa-search" style="color:grey"></i></span></div>
             </form>
           </div>
         </div>
@@ -71,12 +71,8 @@ $Title=$inTitle .' - '. $oj_name;
       <footer>
        <p>&copy; <?php echo"{$year} {$oj_copy}";?></p>
       </footer>
-
     </div>
-    <script src="/assets/js/jquery.min.js"></script>
-    <script src="/assets/js/bootstrap.min.js"></script>
     <script src="/assets/js/common.js"></script>
-
     <script type="text/javascript">
       $(document).ready(function(){
         $('#userlist').click(function(Event){

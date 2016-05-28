@@ -21,8 +21,8 @@ $Title=$inTitle .' - '. $oj_name;
           <p class="muted">评测结束后，该页面会自动刷新。</p></font>
           <div class="row">
             <div class="span4 offset2">
-              <div id="ele_queue" class="alert alert-info center"><strong><i class="icon-spinner icon-large icon-spin"></i> 正在等待，请坐和放宽...</strong></div>
-              <div id="ele_judge" class="hide alert alert-success center"><strong><i class="icon-spinner icon-spin"></i> 正在评测，请坐和放宽...</strong></div>
+              <div id="ele_queue" class="alert alert-info center"><strong><i class="fa fa-spinner fa-lg fa-spin"></i> 正在等待，请坐和放宽...</strong></div>
+              <div id="ele_judge" class="hide alert alert-success center"><strong><i class="fa fa-spinner fa-lg fa-spin"></i> 正在评测，请坐和放宽...</strong></div>
             </div>
           </div>
           <div class="hide well well-small margin-0" id="ele_table">
@@ -36,8 +36,8 @@ $Title=$inTitle .' - '. $oj_name;
           <div class="hide" id="ele_finish" style="margin-top: 15px;">
 		  
            <font size=3><b><p><span id="judge_result"></span></p></b></font>
-            <ul class="pager"><li class="previous"><a class="pager-pre-link shortcut-hint" title="Alt+P" id="btn_back" href="#"><i class="icon-angle-left"></i> 题目页面</a></li>
-            <li class="next"><a class="pager-next-link shortcut-hint" title="Alt+R" href="record.php">提交记录 <i class="icon-angle-right"></i></a></li></ul>
+            <ul class="pager"><li class="previous"><a class="pager-pre-link shortcut-hint" title="Alt+P" id="btn_back" href="#"><i class="fa fa-angle-left"></i> 题目页面</a></li>
+            <li class="next"><a class="pager-next-link shortcut-hint" title="Alt+R" href="record.php">提交记录 <i class="fa fa-angle-right"></i></a></li></ul>
           </div>
         </div>
     	</div>
@@ -45,11 +45,7 @@ $Title=$inTitle .' - '. $oj_name;
       <footer>
         <p>&copy; <?php echo"{$year} {$oj_copy}";?></p>
       </footer>
-
     </div>
-
-    <script src="/assets/js/jquery.min.js"></script>
-    <script src="/assets/js/bootstrap.min.js"></script>
     <script type="text/javascript"> 
 	  $.ajaxSetup({cache:false});
       res_tyep={"0":"Correct","2":"Time Out","3":"MLE","4":"Wrong Answer","5":"Runtime Error","99":"Validator Error"};

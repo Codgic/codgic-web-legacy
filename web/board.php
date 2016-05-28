@@ -93,11 +93,11 @@ $Title=$inTitle .' - '. $oj_name;
         <div class="resize-ico" id="resize"></div>   
       </div>
     </div>
-    <div class="alert hide center alert-popup" id="alert_nothing">你貌似没填写内容哦...</div>
+    <div class="alert hide center alert-popup" id="alert_nothing">本条消息内容为空...</div>
     <div class="container-fluid">
       <div class="row-fluid">
         <div class="span12" id="board">
-		    <a href="#" title="Alt+N" class="btn <?php echo $button_class?> shortcut-hint" id="new_msg"><i class="icon-file"></i> 新建讨论...</a>
+		    <a href="#" title="Alt+N" class="btn <?php echo $button_class?> shortcut-hint" id="new_msg"><i class="fa fa-file-text-o"></i> 新建讨论...</a>
 		  <?php
             $top=$query_id;
             if($range){
@@ -132,9 +132,9 @@ $Title=$inTitle .' - '. $oj_name;
                 if($row[3]==$row[5] && $deep>0)
                   echo '&nbsp;<span class="label label-warning">最新消息</span>';
                 if($deep==0 && $row[6])
-                    echo '&nbsp;&nbsp;<a class="prob_link" href="problempage.php?problem_id=',$row[6],'">Problem ',$row[6],'</a>';
-               echo ' <button onclick="open_replypanel(',$row[3],')" class="btn btn-mini"><i class="icon-share-alt"></i> 回复</button>';
-                if($row[2]==$_SESSION['user']) echo ' <button onclick="open_editpanel(',$row[3],')" class="btn btn-mini"><i class="icon-pencil"></i> 编辑</button>';
+                    echo '&nbsp;&nbsp;<a class="prob_link" href="problempage.php?problem_id=',$row[6],'">题目#',$row[6],'</a>';
+               echo ' <button onclick="open_replypanel(',$row[3],')" class="btn btn-mini"><i class="fa fa-fw fa-reply"></i> 回复</button>';
+                if($row[2]==$_SESSION['user']) echo ' <button onclick="open_editpanel(',$row[3],')" class="btn btn-mini"><i class="fa fa-fw fa-pencil"></i> 编辑</button>';
                 if($row[7])
                   echo '<p class="msg_content msg_detailed">';
                 else
@@ -157,10 +157,10 @@ $Title=$inTitle .' - '. $oj_name;
       <div class="row">
         <ul class="pager">
           <li>
-            <a class="pager-pre-link shortcut-hint" title="Alt+A" href="board.php?<?php echo $query_prob,'&amp;start_id=',get_pre_link($top) ?>" id="btn-pre"> <i class="icon-angle-left"></i> 较新的</a>
+            <a class="pager-pre-link shortcut-hint" title="Alt+A" href="board.php?<?php echo $query_prob,'&amp;start_id=',get_pre_link($top) ?>" id="btn-pre"> <i class="fa fa-angle-left"></i> 较新的</a>
           </li>
           <li>
-            <a class="pager-next-link shortcut-hint" title="Alt+D" href="<?php if($range) echo 'board.php?',$query_prob,'&amp;start_id=',$range; ?>#" id="btn-next">较旧的 <i class="icon-angle-right"></i></a>
+            <a class="pager-next-link shortcut-hint" title="Alt+D" href="<?php if($range) echo 'board.php?',$query_prob,'&amp;start_id=',$range; ?>#" id="btn-next">较旧的 <i class="fa fa-angle-right"></i></a>
           </li>
         </ul>
       </div> 
@@ -172,10 +172,7 @@ $Title=$inTitle .' - '. $oj_name;
 
     </div>
     <script src="/assets/js/bbcode.js"></script>
-    <script src="/assets/js/jquery.min.js"></script>
-    <script src="/assets/js/bootstrap.min.js"></script>
     <script src="/assets/js/common.js"></script>
-
     <script type="text/javascript"> 
       function dealwithlinks($jqobj)
         {
@@ -275,7 +272,7 @@ $Title=$inTitle .' - '. $oj_name;
             $('#post_status').html('消息太长了！');
             return false;
           }
-          $('#post_submit').attr("disabled","true");
+          post_submit.setAttribute("disabled",true);
           $('#post_status').html('正在发表...');
 		  $.ajax({
             type:"POST",
@@ -285,6 +282,7 @@ $Title=$inTitle .' - '. $oj_name;
               if(/success/.test(msg))
                 location.reload();
               else{
+                post_submit.removeAttribute("disabled");
                 $('#post_status').html('错误:'+msg);
                }
             }

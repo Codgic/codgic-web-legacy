@@ -18,7 +18,6 @@ if(!isset($_SESSION['user']))
 if(!isset($_POST['op']))
   die('Wrong Argument');
 else $op=$_POST['op'];
-
 if($op=='get_message') {
 if(!isset($_POST['message_id']))
 	die('Wrong argument.');

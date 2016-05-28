@@ -49,20 +49,20 @@ else{
     else{
       $statis=mysqli_fetch_row($user_status);
       if($statis[0]==0){
-        $info = '<tr><td colspan="2" class="gradient-green center"><i class="icon-ok icon-white"></i> 恭喜AC!</td></tr>';
+        $info = '<tr><td colspan="2" class="gradient-green center"><i class="fa fa-check"></i> 恭喜AC!</td></tr>';
       }else{
-        $info = '<tr><td colspan="2" class="gradient-red center"><i class="icon-remove icon-white"></i> 再试一次吧!</td></tr>';
+        $info = '<tr><td colspan="2" class="gradient-red center"><i class="fa fa-remove"></i> 再试一次吧!</td></tr>';
       }
     }
     $current_user=$_SESSION['user'];
     $result=mysqli_query($con,"SELECT problem_id FROM saved_problem where user_id='$current_user' and problem_id=$prob_id");
     $mark_flag=mysqli_fetch_row($result);
     if(!($mark_flag)){
-        $mark_icon_class='icon-star-empty';
+        $mark_icon_class='fa fa-star-o';
         $mark_btn_class='btn btn-default btn-block';
         $mark_btn_html='收藏题目';
     }else{
-        $mark_icon_class='icon-star';
+        $mark_icon_class='fa fa-star';
         $mark_btn_class='btn btn-danger btn-block';
         $mark_btn_html='取消收藏';
     }
@@ -265,9 +265,8 @@ $Title=$inTitle .' - '. $oj_name;
       <footer>
         <p>&copy; <?php echo"{$year} {$oj_copy}";?></p>
       </footer>
-
     </div>
-
+	
     <div class="modal fade hide" id="SubmitModal">
       <div class="modal-header">
         <a class="close" data-dismiss="modal">&times;</a>
@@ -329,11 +328,7 @@ $Title=$inTitle .' - '. $oj_name;
       <?php echo"<span id=\"btn_submit2\" title=\"Alt+S\" class=\"btn {$button_class} shortcut-hint\">提交</span>
 	  <span id=\"btn_show\" title=\"Alt+H\" class=\"btn btn {$button_class} shortcut-hint\">&laquo; 显示详情</span>";?>
     </div>
-
-    <script src="/assets/js/jquery.min.js"></script>
-    <script src="/assets/js/bootstrap.min.js"></script>
     <script src="/assets/js/common.js"></script>
-
     <script type="text/javascript">
       var hide_info = 0;
       $(document).ready(function(){
@@ -405,7 +400,7 @@ $Title=$inTitle .' - '. $oj_name;
                     var tg=$("#action_mark");
                     tg.toggleClass("btn-danger");
                     tg.toggleClass("btn-default");
-                    tg.find('i').toggleClass('icon-star-empty').toggleClass('icon-star');
+                    tg.find('i').toggleClass('fa-star-o').toggleClass('fa-star');
                     var tg=$("#action_mark_html");
                     if(tg.html()=="收藏题目")
                         tg.html("取消收藏");

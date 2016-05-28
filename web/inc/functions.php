@@ -11,6 +11,23 @@ function get_ip(){
 	}
 }
 
+function get_ipgeo($ip = ''){
+	if(preg_match("/^((192\.168|172\.([1][6-9]|[2]\d|3[01]))(\.([2][0-4]\d|[2][5][0-5]|[01]?\d?\d)){2}|10(\.([2][0-4]\d|[2][5][0-5]|[01]?\d?\d)){3})$/",$ip)) return '内网';
+    $res = @file_get_contents('http://int.dpool.sina.com.cn/iplookup/iplookup.php?format=js&ip=' . $ip);
+    if(empty($res)){ return '未知'; }
+    $jsonMatches = array();
+    preg_match('#\{.+?\}#', $res, $jsonMatches);
+    if(!isset($jsonMatches[0])){ return false; }
+    $json = json_decode($jsonMatches[0], true);
+    if(isset($json['ret']) && $json['ret'] == 1){
+        $json['ip'] = $ip;
+        unset($json['ret']);
+    }else{
+        return '未知';
+    }
+	return $json["city"];
+}
+
 function resetpwd_mail(){
     require('inc/ojsettings.php');
     if(!isset($_SESSION['resetpwd_user']) || !isset($_SESSION['resetpwd_email']) || !isset($_SESSION['resetpwd_code'])) return 'timeout';

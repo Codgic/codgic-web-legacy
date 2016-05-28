@@ -21,22 +21,22 @@ echo "<body style=\"background-image: url({$loginimg})\">";
       </div>
 	</div>
     <div id="emailpage" class="hide row-fluid">
-        <div style="display:table;margin:auto;white-space:nowrap;">
-          <form class="form-vertical well" id="form_email" action="#" method="post">
-            <h1 class="center"> 重置密码</h1>
-            <hr style="border-bottom-color: #E5E5E5;">
+      <div style="display:table;margin:auto;white-space:nowrap;">
+		<form class="form-vertical well" id="form_email" action="#" method="post">
+          <h1 class="center"> 重置密码</h1>
+          <hr style="border-bottom-color: #E5E5E5;">
             <div id="email_ctl" class="control-group">
             <fieldset>
               <div class="control-group" id="userid_ctl">
                 <div class="controls">
                   <input class="input-xlarge" type="text" name="userid" id="input_userid" placeholder="用户名">
-				  <span class="icon-user" style="margin-left:-20px;margin-top:7px;position:absolute"></span>
+				  <span class="fa fa-fw fa-user" style="margin-left:-25px;margin-top:7px;position:absolute"></span>
                 </div>
               </div>
-			   <div class="control-group" id="email_ctl">
+			  <div class="control-group" id="email_ctl">
                 <div class="controls">
                   <input class="input-xlarge" type="text" name="email" id="input_email" placeholder="邮箱">
-				  <span class="icon-envelope" style="margin-left:-20px;margin-top:7px;position:absolute"></span>
+				  <span class="fa fa-fw fa-envelope" style="margin-left:-25px;margin-top:7px;position:absolute"></span>
                 </div>
               </div>
               <div class="center">
@@ -49,8 +49,8 @@ echo "<body style=\"background-image: url({$loginimg})\">";
             </fieldset>
 			</div>
          </form> 
-         </div>
-      </div>
+       </div>
+    </div>
 	 
 	<div id="verifypage" class="hide row-fluid">
         <div style="display:table;margin:auto;white-space:nowrap">
@@ -63,7 +63,7 @@ echo "<body style=\"background-image: url({$loginimg})\">";
               <div class="control-group" id="verify_ctl">
                 <div class="controls">
                   <input class="input-xlarge" type="text" name="verifyid" id="input_verifyid" placeholder="验证码">
-				  <span class="icon-lock" style="margin-left:-20px;margin-top:7px;position:absolute"></span>
+				  <span class="fa fa-fw fa-key" style="margin-left:-25px;margin-top:7px;position:absolute"></span>
                 </div>
               </div>
               <div class="center">
@@ -75,50 +75,49 @@ echo "<body style=\"background-image: url({$loginimg})\">";
                 <span id="ajax_verifyresult" class="hide alert alert-error"></span>
               </div>
               <div class="hide" id="emailtip" style="text-align:left">
-				    <br>
-					<p>在某些情况下邮件可能需要几分钟才能到达。<br>
-                    若您仍未收到，请尝试以下步骤：</p>
-					<p>1. 重新发送一封邮件</p>
-					<p>2. 去您邮箱的垃圾邮件栏里看一看</p>
-					<p>3. 联系管理员</p>
+				<br>
+				<p>在某些情况下邮件可能需要几分钟才能到达。<br>
+                若您仍未收到，请尝试以下步骤：</p>
+				<p>1. 重新发送一封邮件</p>
+				<p>2. 去您邮箱的垃圾邮件栏里看一看</p>
+				<p>3. 联系管理员</p>
 			  </div>
             </fieldset>
-			</div>
-         </form> 
+		    </div>
+          </form> 
          </div>
       </div>
       
-      <div id="pwdpage" class="hide row-fluid">
-        <div style="display:table;margin:auto;white-space:nowrap">
-          <form class="form-vertical well" id="form_pwd" action="#" method="post">
-            <h1 class="center">重置密码</h1>
-            <hr style="border-bottom-color: #E5E5E5;">
-            <div id="pwd_ctl" class="control-group">
-            <fieldset>
+    <div id="pwdpage" class="hide row-fluid">
+      <div style="display:table;margin:auto;white-space:nowrap">
+		<form class="form-vertical well" id="form_pwd" action="#" method="post">
+          <h1 class="center">重置密码</h1>
+          <hr style="border-bottom-color: #E5E5E5;">
+          <div id="pwd_ctl" class="control-group">
+          <fieldset>
             <div class="control-group" id="newpwd_ctl">
-                <div class="controls">
-                  <input class="input-xlarge" type="password" id="input_newpwd" name="newpwd" placeholder="新密码">
-				  <span class="icon-key" style="margin-left:-20px;margin-top:7px;position:absolute"></span>
-                </div>
+              <div class="controls">
+                <input class="input-xlarge" type="password" id="input_newpwd" name="newpwd" placeholder="新密码">
+				<span class="fa fa-fw fa-key" style="margin-left:-25px;margin-top:7px;position:absolute"></span>
               </div>
-              <div class="control-group" id="reppwd_ctl">
-                <div class="controls">
-                  <input class="input-xlarge" type="password" id="input_reppwd" placeholder="重复密码">
-				  <span class="icon-refresh" style="margin-left:-20px;margin-top:7px;position:absolute"></span>
-                </div>
+            </div>
+            <div class="control-group" id="reppwd_ctl">
+              <div class="controls">
+                <input class="input-xlarge" type="password" id="input_reppwd" placeholder="重复密码">
+				<span class="fa fa-fw fa-refresh" style="margin-left:-25px;margin-top:7px;position:absolute"></span>
               </div>
-              <div class="center">
-                <span id="pwd_save" class="btn btn-primary">下一步</span>&nbsp;&nbsp;&nbsp;
-              </div>
-              <div class="center" style="margin-top:20px">
-                <span id="ajax_pwdresult" class="hide alert alert-error"></span>
-              </div>
-            </fieldset>
-			</div>
-         </form> 
-         </div>
-      </div>
-	<script src="/assets/js/jquery.min.js"></script>
+            </div>
+            <div class="center">
+              <span id="pwd_save" class="btn btn-primary">下一步</span>&nbsp;&nbsp;&nbsp;
+            </div>
+            <div class="center" style="margin-top:20px">
+              <span id="ajax_pwdresult" class="hide alert alert-error"></span>
+            </div>
+          </fieldset>
+		  </div>
+        </form> 
+       </div>
+	</div>
     <script src="/assets/js/common.js"></script>
     <script type="text/javascript">
 	function get_rand(begin, end) {

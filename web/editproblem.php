@@ -18,6 +18,7 @@ else if(!isset($_POST['op']))
 	die('Invalid operation.');
 
 require('inc/database.php');
+mysqli_query($con,"set names utf8mb4");
 $time=intval($_POST['time']);
 $memory=intval($_POST['memory']);
 $compare_way=isset($_POST['compare']) ? CMP_TYPE($_POST['compare'], intval($_POST['precision'])) : 0;

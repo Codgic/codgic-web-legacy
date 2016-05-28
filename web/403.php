@@ -26,8 +26,6 @@ $img_id=mt_rand(1,intval($num_403));
         <p>&copy; <?php echo"{$year} {$oj_copy}";?></p>
       </footer>
       </div>
-    <script src="/assets/js/jquery.min.js"></script>
-    <script src="/assets/js/bootstrap.min.js"></script>
     <script src="/assets/js/common.js"></script>
   </body>
 </html>

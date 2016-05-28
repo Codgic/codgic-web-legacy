@@ -37,7 +37,7 @@ $Title=$inTitle .' - '. $oj_name;
 			?>
 			<div class="row-fluid">
 				<div class="span2 offset2 form-inline">
-				    <span id="sendnew" style="margin:5px" class="btn <?php echo $btn_class?>" shortcut-hint" title="Alt+N"><i class="icon-inbox"></i> 新建... </span>
+				    <span id="sendnew" style="margin:5px" class="btn <?php echo $btn_class?>" shortcut-hint" title="Alt+N"><i class="fa fa-fw fa-send"></i> 新建... </span>
 		            <label class="checkbox"><input <?php if(isset($_GET['starred']))echo 'checked'?>  id="chk_starred" type="checkbox" name="star">星标</label>
 					<p></p>
 				</div>
@@ -52,7 +52,7 @@ $Title=$inTitle .' - '. $oj_name;
 								<div class="mail-container">
 									<div class="mail-title">
 										<a href="#star" style="text-decoration:none">
-											<i class="<?php echo ($row[5]&MAIL_FLAG_STAR)?'icon-star':'icon-star-empty'?> icon-large text-warning"></i>
+											<i class="<?php echo ($row[5]&MAIL_FLAG_STAR)?'fa fa-star':'fa fa-star-o'?> fa-lg text-warning"></i>
 										</a>
 										<?php 
 										echo '<a href="#title">',htmlspecialchars($row[1]),'</a>';
@@ -64,11 +64,11 @@ $Title=$inTitle .' - '. $oj_name;
 										<div class="mail-op">
 											接收时间: <?php echo substr($row[4],-8)?>
 											<a href="#del" class="btn btn-mini btn-danger">
-												<i class="icon-trash icon-white"></i>
+												<i class="fa fa-fw fa-trash"></i>
 												删除
 											</a>
 											<a href="#rep" class="btn btn-mini btn-primary">
-												<i class="icon-share-alt icon-white"></i>
+												<i class="fa fa-fw fa-reply"></i>
 												回复
 											</a>
 										</div>
@@ -83,10 +83,10 @@ $Title=$inTitle .' - '. $oj_name;
 			<div class="row-fluid">
 				<ul class="pager">
 					<li>
-						<a class="pager-pre-link shortcut-hint" title="Alt+A" href="#" id="btn-pre"><i class="icon-angle-left"></i> 上一页</a>
+						<a class="pager-pre-link shortcut-hint" title="Alt+A" href="#" id="btn-pre"><i class="fa fa-fw fa-angle-left"></i> 上一页</a>
 					</li>
 					<li>
-						<a class="pager-next-link shortcut-hint" title="Alt+D" href="#" id="btn-next">下一页 <i class="icon-angle-right"></i></a>
+						<a class="pager-next-link shortcut-hint" title="Alt+D" href="#" id="btn-next">下一页 <i class="fa fa-fw fa-angle-right"></i></a>
 					</li>
 				</ul>
 			</div>  
@@ -133,10 +133,7 @@ $Title=$inTitle .' - '. $oj_name;
 			</footer>
 
 		</div><!--/.container-->
-		<script src="/assets/js/jquery.min.js"></script>
-	    <script src="/assets/js/bootstrap.min.js"></script>
 		<script src="/assets/js/common.js"></script>
-
 		<script type="text/javascript"> 
 			$(document).ready(function(){
 				var cur=<?php echo $page?>;
@@ -196,7 +193,7 @@ $Title=$inTitle .' - '. $oj_name;
 						case 'star':
 							k=$a.parents('li');
 							$.ajax('ajax_mailfunc.php?op=star&mail_id='+k.attr('id').substr(4));
-							$a.find('i').toggleClass('icon-star').toggleClass('icon-star-empty');
+							$a.find('i').toggleClass('fa-star').toggleClass('fa-star-o');
 							break;
 					}
 					return false;

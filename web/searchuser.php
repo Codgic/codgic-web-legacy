@@ -9,6 +9,7 @@ else
   $page_id=0;
 if(strlen($req)>600)
   die('Keyword is too long');
+require ('inc/ojsettings.php');
 require ('inc/checklogin.php');
 require('inc/database.php');
 $keyword=mysqli_real_escape_string($con, trim($req));
@@ -81,12 +82,8 @@ $Title=$inTitle .' - '. $oj_name;
       <footer>
         <p>&copy; <?php echo"{$year} {$oj_copy}";?></p>
       </footer>
-
     </div>
-    <script src="/assets/js/jquery.min.js"></script>
-    <script src="/assets/js/bootstrap.min.js"></script>
     <script src="/assets/js/common.js"></script>
-
     <script type="text/javascript"> 
       $(document).ready(function(){
         var thispage=<?php echo $page_id?>;

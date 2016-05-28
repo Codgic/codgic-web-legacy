@@ -88,7 +88,7 @@ $Title=$inTitle .' - '. $oj_name;
                 echo '<tr>';
                 echo '<td>',$row[0],'</td>';
                 if(isset($_SESSION['user'])){
-                  echo '<td style="width:36px;text-align:center;"><i class=', is_null($row[3]) ? '"icon-remove icon-2x" style="visibility:hidden"' : ($row[3]? '"icon-remove icon-2x" style="color:red"' : '"icon-2x icon-ok" style="color:green"'), '></i>', '</td>';
+                  echo '<td style="width:36px;text-align:center;"><i class=', is_null($row[3]) ? '"fa fa-fw fa-remove fa-2x" style="visibility:hidden"' : ($row[3]? '"fa fa-fw fa-remove fa-2x" style="color:red"' : '"fa fa-fw fa-2x fa-check" style="color:green"'), '></i>', '</td>';
                   echo '<td style="border-left:0;">';
                 }else{
                   echo '<td>';
@@ -119,12 +119,8 @@ $Title=$inTitle .' - '. $oj_name;
       <footer>
        <p>&copy; <?php echo"{$year} {$oj_copy}";?></p>
       </footer>
-
     </div>
-    <script src="/assets/js/jquery.min.js"></script>
-    <script src="/assets/js/bootstrap.min.js"></script>
     <script src="/assets/js/common.js"></script>
-
     <script type="text/javascript"> 
       $(document).ready(function(){
         var thispage=<?php echo $page_id?>;

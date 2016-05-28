@@ -1,8 +1,12 @@
 <?php
+require('inc/ojsettings.php');
+session_start();
+if($require_auth==1&&!isset($_SESSION['user'])) die('你没有权限...');
 if(!isset($_GET['user_id']))
 	die('Wrong argument.');
 
 require('inc/database.php');
+require('inc/functions.php');
 $user=mysqli_real_escape_string($con,$_GET['user_id']);
 
 $query="select email,ip,accesstime,school,reg_time,submit,solved from users where user_id='$user'";
@@ -26,7 +30,6 @@ if(isset($_GET['type'])&&$_GET['type']=='json'){
 }else{
 	if(!$row)
 		die('用户不存在');
-	session_start();
 	header('Content-Type: text/html; charset=utf-8');
 ?>
 <table class="table table-condensed table-first-left-aligned" style="margin-bottom:0px;">
@@ -39,7 +42,7 @@ if(isset($_GET['type'])&&$_GET['type']=='json'){
 	<tr><td colspan="2">用户:</td><td><?php echo $user;?></td></tr>
 	<tr><td colspan="2">最近登录:</td><td><?php echo $row[2];?></td></tr>
 <?php if(isset($_SESSION['administrator'])){?>
-	<tr><td colspan="2">IP地址:</td><td><?php echo $row[1];?></td></tr>
+	<tr><td colspan="2">IP地址:</td><td><?php echo $row[1].' '.get_ipgeo($row[1]);?></td></tr>
 <?php }?>
 	<tr><td colspan="2">学校:</td><td><?php echo htmlspecialchars($row[3]);?></td></tr>
 	<tr><td colspan="2">邮箱:</td><td><?php echo htmlspecialchars($row[0]);?></td></tr>

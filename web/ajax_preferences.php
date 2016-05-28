@@ -9,6 +9,7 @@ $pref=unserialize($_SESSION['pref']);
 
 function processOption($name)
 {
+   require('inc/database.php');
 	global $pref,$user;
 	if(isset($_POST[$name])){
 		$tmp='on';
