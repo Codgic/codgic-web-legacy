@@ -198,7 +198,7 @@ if(!isset($_POST['news_id'])||!isset($_POST['title'])||!isset($_POST['importance
 	$importance=intval($_POST['importance']);
 	$title=mysqli_real_escape_string($con,trim($_POST['title']));
 	$content=isset($_POST['content']) ? mysqli_real_escape_string($con,str_replace("\n", "<br>", $_POST['content'])) : '';
-	if(mysqli_query($con,"update news set title='$title',content='$content',importance='$importance',time=NOW() where news_id=$news_id"))
+	if(mysqli_query($con,"update news set title='$title',content='$content',importance='$importance' where news_id=$news_id"))
 		echo 'success';
 	else
 		echo 'error';

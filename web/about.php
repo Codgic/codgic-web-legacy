@@ -35,8 +35,8 @@ $Title=$inTitle .' - '. $oj_name;
 			<hr>
             <p><b>CWOJ Team：</b></p>
 		    <p>jimmy19990： 前端和后端。</p>
-		    <p>Michale： 服务器运维。</p>
 		    <p>Void： 题库管理。</p>
+			<p>Michale： 服务器运维。</p>
 		    <p>dreamfly： 题库管理。</p>
           </div>
 		</div>

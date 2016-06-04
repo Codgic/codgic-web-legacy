@@ -46,13 +46,12 @@ $Title=$inTitle .' - '. $oj_name;
       skipStartupTypeset:true
     });
     </script>
-    <?php require('inc/mathjax_head.php');?>
-
-    <?php require('page_header.php'); ?>
+    <?php require('inc/mathjax_head.php');
+	require('page_header.php'); ?>
     <div class="replypanel hide" id="replypanel">
-      <div class="well well-small margin-0" style="background-color:<?php echo $well_class?>">
+      <div class="well well-small well-replypanel margin-0">
         <h4 style="text-align:center;margin-bottom:10px;">新建讨论</h4>
-        <form class="form-horizontal" method="post" action="ajax_message.php" id="form_submit">
+        <form class="form-horizontal" method="post" action="#" id="form_submit">
           <fieldset>
             <input type="text" style="display:none" id="msg_op" name="op" value="msg_create" readonly="true">
             <div class="control-group">
@@ -93,7 +92,7 @@ $Title=$inTitle .' - '. $oj_name;
         <div class="resize-ico" id="resize"></div>   
       </div>
     </div>
-    <div class="alert hide center alert-popup" id="alert_nothing">本条消息内容为空...</div>
+    <div class="alert hide center alert-popup" id="alert_error"></div>
     <div class="container-fluid">
       <div class="row-fluid">
         <div class="span12" id="board">
@@ -125,16 +124,16 @@ $Title=$inTitle .' - '. $oj_name;
                   echo '<hr><ul class="unstyled">';
                 echo '<li class="msg_item">';
                 if((++$cnt)&1)
-                  echo "<div class=\"msg msg_odd\" style=\"background-color:{$nwell_class}\">";
+                  echo '<div class="msg msg_odd">';
                 else
-                  echo "<div class=\"msg msg_even\" style=\"background-color:{$nwell_class}\">";
+                  echo '<div class="msg msg_even">';
                 echo '<div class="msg_container"><strong>',$row[2],'</strong> ',$row[4];
                 if($row[3]==$row[5] && $deep>0)
                   echo '&nbsp;<span class="label label-warning">最新消息</span>';
                 if($deep==0 && $row[6])
                     echo '&nbsp;&nbsp;<a class="prob_link" href="problempage.php?problem_id=',$row[6],'">题目#',$row[6],'</a>';
                echo ' <button onclick="open_replypanel(',$row[3],')" class="btn btn-mini"><i class="fa fa-fw fa-reply"></i> 回复</button>';
-                if($row[2]==$_SESSION['user']) echo ' <button onclick="open_editpanel(',$row[3],')" class="btn btn-mini"><i class="fa fa-fw fa-pencil"></i> 编辑</button>';
+                if(isset($_SESSION['user'])&&$row[2]==$_SESSION['user']) echo ' <button onclick="open_editpanel(',$row[3],')" class="btn btn-mini"><i class="fa fa-fw fa-pencil"></i> 编辑</button>';
                 if($row[7])
                   echo '<p class="msg_content msg_detailed">';
                 else
@@ -186,17 +185,22 @@ $Title=$inTitle .' - '. $oj_name;
         }
       function open_replypanel(msg_id){
           <?php if(isset($_SESSION['user'])){?>
-          var title = ((msg_id=='0')?'新建消息':'新建回复: #'+msg_id);
-	$('#msg_op').val('msg_create');
-	$('#msgid_input').val(msg_id);
-	$('#replypanel h4').html(title);
- 	$('#post_status').html('');
-	$('#PreviewPopover').hide();
-	$('#msg_input').val('');
-	$('#detail_input').val('');
-	$('#replypanel').fadeIn(300);
-	$('#msg_input').focus();
-          <?php }else{echo 'alert("请先登录！");';}?>
+			var title = ((msg_id=='0')?'新建消息':'新建回复: #'+msg_id);
+			$('#msg_op').val('msg_create');
+			$('#msgid_input').val(msg_id);
+			$('#replypanel h4').html(title);
+			$('#post_status').html('');
+			$('#PreviewPopover').hide();
+			$('#msg_input').val('');
+			$('#detail_input').val('');
+			$('#replypanel').fadeIn(300);
+			$('#msg_input').focus();
+          <?php }else{ ?>
+		    $('#alert_error').removeClass('alert-info');
+			$('#alert_error').addClass('alert-danger');
+			$('#alert_error').html('<i class="fa fa-fw fa-remove"></i> 您尚未登录...').fadeIn();
+            setTimeout(function(){$('#alert_error').fadeOut();},2000);
+		  <?php }?>
           return false;
         }
       function open_editpanel(msg_id){
@@ -218,9 +222,13 @@ $Title=$inTitle .' - '. $oj_name;
           $('#msgid_input').val(msg_id);
           $('#replypanel h4').html(title);
           $('#replypanel').fadeIn(300);
-	$('#PreviewPopover').hide();
+		  $('#PreviewPopover').hide();
           $('#msg_input').focus();
-          <?php }else{echo 'alert("请先登录！");';}?>
+          <?php }else{ ?>
+		  $('#alert_error').removeClass('alert-info');
+		  $('#alert_error').addClass('alert-danger');
+		  $('#alert_error').html('<i class="fa fa-fw fa-remove"></i> 您尚未登录...').fadeIn();
+		  <?php }?>
           return false;
         }
       $(document).ready(function(){
@@ -250,8 +258,10 @@ $Title=$inTitle .' - '. $oj_name;
                    }
               });
             }else{
-              var tmp=$('#alert_nothing').show();
-              setTimeout(function(){tmp.fadeOut(400);},1000);
+			  $('#alert_error').removeClass('alert-danger');
+			  $('#alert_error').addClass('alert-info');
+              $('#alert_error').html('<i class="fa fa-fw fa-info"></i> 本条消息内容为空...').fadeIn();
+              setTimeout(function(){$('#alert_error').fadeOut();},2000);
             }
           }
           return false;
@@ -287,6 +297,7 @@ $Title=$inTitle .' - '. $oj_name;
                }
             }
           });
+
           return false;
         });
         reg_hotkey(83,function(){$('#replypanel form').submit()}); //Alt+S

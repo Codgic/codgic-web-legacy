@@ -118,7 +118,6 @@ echo "<body style=\"background-image: url({$loginimg})\">";
         </form> 
        </div>
 	</div>
-    <script src="/assets/js/common.js"></script>
     <script type="text/javascript">
 	function get_rand(begin, end) {
 		return Math.floor(Math.random()*(end-begin))+begin;
@@ -185,7 +184,7 @@ echo "<body style=\"background-image: url({$loginimg})\">";
 					  switch_verify();
 					  settime(resend_btn);
 				  }
-				  else $('#ajax_emailresult').html(msg).show();
+				  else $('#ajax_emailresult').html('<i class="fa fa-fw fa-remove"></i> '+msg).show();
               }
             });
 			};
@@ -200,11 +199,11 @@ echo "<body style=\"background-image: url({$loginimg})\">";
               data:{"type":'resend'},
               success:function(msg){
                   if(msg == 'success') {
-					  $('#ajax_verifyresult').html('邮件重新发送成功!').show();
+					  $('#ajax_verifyresult').html('<i class="fa fa-fw fa-check"></i> 邮件重新发送成功!').show();
 					  settime(resend_btn);
 				  }
 				  else if(msg == 'timeout'){
-						  $('#ajax_verifyresult').html('身份验证过期，请重新开始...').show();
+						  $('#ajax_verifyresult').html('<i class="fa fa-fw fa-remove"></i> 身份验证过期，请重新开始...').show();
 						  window.setTimeout("window.location='resetpwd.php'",2000); 
 					  }
 				  else {
@@ -226,7 +225,7 @@ echo "<body style=\"background-image: url({$loginimg})\">";
             };
 			if(!a){
 				verify_nxt.setAttribute("disabled", true);
-			   verify_nxt.value = "请稍后...";
+				verify_nxt.value = '<i class="fa fa-fw fa-circle-o-notch fa-spin"></i> 请稍后...';
 				$.ajax({
                   type:"POST",
                   url:'ajax_resetpwd.php',
@@ -236,20 +235,20 @@ echo "<body style=\"background-image: url({$loginimg})\">";
 						   switch_pwd();
 					  } 
 					  else if(msg=='timeout'){
-						  $('#ajax_verifyresult').html('身份验证过期，请重新开始...').show();
+						  $('#ajax_verifyresult').html('<i class="fa fa-fw fa-remove"></i> 身份验证过期，请重新开始...').show();
 						  window.setTimeout("window.location='resetpwd.php'",2000); 
 					  }
 					  else if(msg=='fail'){
-					   $('#ajax_verifyresult').html('验证码错误').show();
+					   $('#ajax_verifyresult').html('<i class="fa fa-fw fa-remove"></i> 验证码错误...').show();
 			    		 verify_nxt.removeAttribute("disabled");
 			        verify_nxt.value = "下一步";
 					  }
 					  else if(msg=='fuckyou') {
-							$('#ajax_verifyresult').html('错误次数过多，请重新开始...').show();
+							$('#ajax_verifyresult').html('<i class="fa fa-fw fa-remove"></i> 错误次数过多，请重新开始...').show();
 						  window.setTimeout("window.location='resetpwd.php'",2000); 
 				     }
                else {
-                 $('#ajax_verifyresult').html('未知错误 =.=').show();
+                 $('#ajax_verifyresult').html('<i class="fa fa-fw fa-remove"></i> 未知错误...').show();
                  verify_nxt.removeAttribute("disabled");
                  verify_nxt.value = "下一步";
                }
@@ -287,10 +286,12 @@ echo "<body style=\"background-image: url({$loginimg})\">";
               data:{"type":'update',"newpwd":$.trim($('#input_newpwd').val())},
               success:function(msg){
                   if(msg == 'success'){
-	              $('#ajax_pwdresult').html('密码重置成功，即将跳转至首页...').show();
+				  $('#ajax_pwdresult').removeClass('alert-danger');
+				  $('#ajax_pwdresult').addClass('alert-success');
+	              $('#ajax_pwdresult').html('<i class="fa fa-fw fa-check"></i> 密码重置成功，即将跳转至首页...').show();
 	              window.setTimeout("window.location='index.php'",2000); 
                 }else{
-                    $('#ajax_pwdresult').html(msg).show();
+                  $('#ajax_pwdresult').html('<i class="fa fa-fw fa-remove"></i> '+msg).show();
               }
             }
         });

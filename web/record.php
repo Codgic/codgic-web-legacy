@@ -167,7 +167,7 @@ $Title=$inTitle .' - '. $oj_name;
       <div class="row-fluid">
         <div class="span10 offset1">
 
-            <table class=" table table-responsive table-hover table-bordered">
+            <table class=" table table-hover table-bordered">
               <thead><tr>
                 <th style="width:6%">ID</th>
                 <th style="width:7%">题目</th>

@@ -79,7 +79,7 @@ else{
     }
 
   }else{
-    $info = '<tr><td colspan="2" class="center muted" >然而你并没有登录...</td></tr>';
+    $info = '<tr><td colspan="2" class="center muted" >您尚未登录...</td></tr>';
   } 
   $result=mysqli_query($con,"select submit_user,solved,submit from problem where problem_id=$prob_id");
   $statis=mysqli_fetch_row($result);
@@ -100,8 +100,8 @@ $Title=$inTitle .' - '. $oj_name;
 <!DOCTYPE html>
 <html>
   <?php require('head.php'); ?>
-
   <body>
+    <div class="alert hide center alert-popup alert-danger" id="alert_error"></div>
     <?php
     if($row[12]&PROB_HAS_TEX)
       require('inc/mathjax_head.php');
@@ -412,7 +412,7 @@ $Title=$inTitle .' - '. $oj_name;
         });
         function click_submit(){
           <?php if(!isset($_SESSION['user'])){?>
-            alert("请先登录CWOJ...");
+            $('#alert_error').html('<i class="fa fa-fw fa-remove"></i> 您尚未登录...').fadeIn();
           <?php }else{?>
             $('#prob_input').val(''+prob);
             $('#SubmitModal').modal('show');

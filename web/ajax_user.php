@@ -52,7 +52,7 @@ if(isset($_GET['type'])&&$_GET['type']=='json'){
 		$i=0;
 		$failed=mysqli_query($con,"select problem_id from solution where user_id='$user' group by problem_id having min(result)>0");
 		$number=mysqli_num_rows($failed);
-		echo "<tr><td>做错的题目:<br>($number)</td><td colspan=\"2\"><samp>";
+		echo "<tr><td>未AC:<br>($number)</td><td colspan=\"2\"><samp>";
 		while($row=mysqli_fetch_row($failed)){
 			echo '<a href="problempage.php?problem_id=',$row[0],'">',$row[0],'</a>&nbsp;';
 			if((++$i)==11){
@@ -64,7 +64,7 @@ if(isset($_GET['type'])&&$_GET['type']=='json'){
 		$i=0;
 		$solved=mysqli_query($con,"select problem_id from solution where result=0 and user_id='$user' group by problem_id");
 		$number=mysqli_num_rows($solved);
-		echo "<tr><td>解决的题目:<br>($number)</td><td colspan=\"2\"><samp>";
+		echo "<tr><td>已AC:<br>($number)</td><td colspan=\"2\"><samp>";
 		while($row=mysqli_fetch_row($solved)){
 			echo '<a href="problempage.php?problem_id=',$row[0],'">',$row[0],'</a>&nbsp;';
 			if((++$i)==11){

@@ -1,10 +1,10 @@
 <?php
-if(!isset($_SESSION)) session_start();
+if(!isset($_SESSION)) session_start(); 
 if(!isset($_SESSION['user'])){
 	require 'inc/cookie.php';
 	if(!check_cookie()) {
 		if($require_auth) {
-		  header("location: /auth.php");
+		  header("location: /login.php");
 		  exit;
 		}
 	}else{

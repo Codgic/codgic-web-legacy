@@ -14,7 +14,7 @@ else
 	$cond_starred='';
 
 if(!isset($_SESSION['user']))
-	$info = 'Not logged in.';
+	$info = '您尚未登录...';
 else{
 	require('inc/database.php');
 	$user_id=$_SESSION['user'];

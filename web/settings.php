@@ -92,7 +92,7 @@ $Title=$inTitle .' - '. $oj_name;
             return false;
           $.post('ajax_opensource.php',{id:'all'});
         });
-        $('#ret_url').val("control.php");
+        $('#ret_url').val("settings.php");
       });
     </script>
   </body>

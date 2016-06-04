@@ -24,7 +24,7 @@ $res=mysqli_query($con,"select news_id,title,time,importance from news where new
 	<div class="container-fluid">
 	  <div class="row-fluid">
         <div class="span10 offset1">
-            <table class="table table-responsive table-striped table-bordered">
+            <table class="table table-striped table-bordered">
               <thead><tr>
                 <th style="width:6%">No.</th>
                 <th>标题</th>

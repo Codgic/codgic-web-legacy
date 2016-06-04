@@ -3,7 +3,7 @@ if(!isset($_POST['id']))
 	die('Invaild argument.');
 session_start();
 if(!isset($_SESSION['user']))
-	die('然而你并没有登录。');
+	die('您尚未登录...');
 
 require('inc/database.php');
 

@@ -17,7 +17,7 @@ $img_id=mt_rand(1,intval($num_404));
             <h2>ERROR 404: 你要访问的页面不存在</h2>
           </div>
 		  <div>
-		  <center><p><a href="/index.php"><img src="/assets/res/404_<?php echo $img_id?>.jpg"></a></p></center>
+		  <center><p><a href="/index.php"><img src="/assets/res/404_<?php echo $img_id?>.png"></a></p></center>
         </div>
       </div>
       </div>

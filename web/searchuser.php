@@ -66,7 +66,7 @@ $Title=$inTitle .' - '. $oj_name;
           </li>
         </ul>
       </div>
-      <div class="modal hide" id="UserModal">
+      <div class="modal fade hide" id="UserModal">
         <div class="modal-header">
           <a class="close" data-dismiss="modal">×</a>
           <h4>用户信息</h4>

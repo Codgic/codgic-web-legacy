@@ -22,7 +22,8 @@ $Title=$inTitle .' - '. $oj_name;
   <?php require('head.php'); ?>
 
   <body>
-    <?php require('page_header.php'); ?>       
+    <?php require('page_header.php'); ?>      
+	<div class="alert hide center alert-popup alert-danger" id="alert_error"></div>
     <div class="container-fluid">
 	<div class="row-fluid">
       <div class="span10 offset1 form-inline" style="margin-bottom:10px">
@@ -53,7 +54,7 @@ $Title=$inTitle .' - '. $oj_name;
       <div class="row-fluid">
         <div class="span10 offset1">
 		
-            <table class="table table-responsive table-hover table-bordered " style="margin-bottom:0 margin-right:10px">
+            <table class="table table-hover table-bordered " style="margin-bottom:0 margin-right:10px">
               <thead><tr>
                 <th style="width:5%">No.</th>
                 <th style="width:15%">用户名</th>
@@ -134,10 +135,9 @@ $Title=$inTitle .' - '. $oj_name;
         }
       }
       function user_diff(id1,info1,id2,info2)
-      {
+	  {
         var arr1=[],arr2=[],ist=[];
         content='<table class="table table-condensed" style="margin-bottom:0px;">';
-        content+='<caption>'+id1+' vs '+id2+'</caption>';
         intersection(info1.solved,info2.solved,arr1,arr2,ist);
         content+='<tr class="success"><td>只有'+id1;
         content+='才AC的题目:</td></tr><tr><td><samp>';output(arr1);
@@ -200,23 +200,33 @@ $Title=$inTitle .' - '. $oj_name;
         $('#btn_usrcmp').click(function(){
           var user1=$.trim($('#ipt_user1').val());
           var user2=$.trim($('#ipt_user2').val());
-          if(!user1||!user2)
-            return;
+          if(!user1||!user2){
+			  $('#alert_error').html('<i class="fa fa-fw fa-remove"></i> 人不齐怎么比...').fadeIn();
+			  setTimeout(function(){$('#alert_error').fadeOut();},2000);
+              return;
+		  }
+		  if(user1==user2){
+			  $('#alert_error').html('<i class="fa fa-fw fa-remove"></i> 才不陪你玩呢...').fadeIn();
+			  setTimeout(function(){$('#alert_error').fadeOut();},2000);
+              return;
+		  }
           $.getJSON("ajax_user.php?type=json&user_id="+user1, function(info1){
             if(info1.hasOwnProperty('nobody')){
-              alert('"'+user1+'" 不存在');
+			  $('#alert_error').html('<i class="fa fa-fw fa-remove"></i> 用户 "'+user1+'" 不存在...').fadeIn();
+			  setTimeout(function(){$('#alert_error').fadeOut();},2000);
               return;
             }
             $.getJSON("ajax_user.php?type=json&user_id="+user2, function(info2){
               if(info2.hasOwnProperty('nobody')){
-                alert('"'+user2+'" 不存在');
-                return;
+                $('#alert_error').html('<i class="fa fa-fw fa-remove"></i> 用户 "'+user2+'" 不存在...').fadeIn();
+			    setTimeout(function(){$('#alert_error').fadeOut();},2000);
+				return;
               }
               $('#usrcmp_menu').parent().removeClass('open');
               user_diff(user1,info1,user2,info2);
               $('#user_status').html(content).scrollTop(0);
               var win=$('#UserModal');
-              win.children('.modal-header').children('h4').html('用户比较');
+              win.children('.modal-header').children('h4').html(user1+' vs '+user2);
               win.modal('show');
               return false;
             });

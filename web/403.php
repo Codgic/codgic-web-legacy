@@ -17,7 +17,7 @@ $img_id=mt_rand(1,intval($num_403));
             <h2>ERROR 403: 我拒绝!</h2>
           </div>
 		  <div>
-		  <center><p><a href="/index.php"><img src="/assets/res/403_<?php echo $img_id?>.jpg"></a></p></center>
+		  <center><p><a href="/index.php"><img src="/assets/res/403_<?php echo $img_id?>.png"></a></p></center>
         </div>
       </div>
       </div>

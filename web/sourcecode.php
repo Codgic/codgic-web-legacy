@@ -3,7 +3,7 @@ require 'inc/ojsettings.php';
 function check_permission($prob_id,$opened,$user)
 {
   if(!isset($_SESSION['user']))
-    return "然而你并没有登录";
+    return "您尚未登录...";
   if(strcmp($user,$_SESSION['user'])==0 || isset($_SESSION['source_browser']))
     return TRUE;
   require 'inc/database.php';

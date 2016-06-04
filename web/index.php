@@ -12,10 +12,9 @@ require ('inc/checklogin.php');
 require('inc/database.php');
 $res=mysqli_query($con,"select content from news where news_id=0");
 $index_text=($row=mysqli_fetch_row($res)) ? $row[0] : '';
-$res=mysqli_query($con,"select news_id,title,importance from news where news_id>0 order by importance desc, news_id desc");
-$newsrow=mysqli_fetch_row(mysqli_query($con,"select max(news_id) from news"));
-$categoryrow=mysqli_fetch_row(mysqli_query($con,"select content from user_notes where id=0"));
-$category=$categoryrow[0];
+$res=mysqli_query($con,"select news_id,title,importance from news where news_id>0 order by importance desc, news_id desc limit 0,$news_num");
+$row=mysqli_fetch_row(mysqli_query($con,"select content from user_notes where id=0"));
+$category=$row[0];
 $inTitle='主页';
 $Title=$inTitle .' - '. $oj_name;
 $num=0;
@@ -43,23 +42,23 @@ $num=0;
       </div>
 	  <div class="row-fluid">
 		<div class="span5 offset1">
-	    <h1><i class="fa fa-fw fa-newspaper-o"></i> 新闻<?php if($newsrow[0]>0){?><a href="news.php" class="pull-right"><font size=2>更多历史新闻...</font></a></h1>
+	    <h1><i class="fa fa-fw fa-newspaper-o"></i> 新闻<?php if(mysqli_num_rows($res)!=0){?><a href="news.php" class="pull-right"><font size=2>更多历史新闻...</font></a></h1>
 		  <ul class="nav" style="margin-top:10px;font-size:16px">
-             <?php 
+            <?php 
              while($row=mysqli_fetch_row($res)){
-	    		    	$num++;
-               $addt1='';
-               $addt2='';
-               if($row[2]=='1'){
+				$num++;
+				$addt1='';
+				$addt2='';
+				if($row[2]=='1'){
                     $row[1]='[顶置] '.$row[1];
                     $addt1='<b>';
                     $addt2='</b>';
-               }
-               echo '<li style="line-height:32px"><a href="javascript:void(0);" onclick="click_news(',$row[0],')">',$addt1.htmlspecialchars($row[1]).$addt2,'</a></li>';
-            		if($num==$news_num) break;
-                }
-                ?>
-		  </ul><?php }else{?></h1>
+				}
+				echo '<li style="line-height:32px"><a href="javascript:void(0);" onclick="click_news(',$row[0],')">',$addt1.htmlspecialchars($row[1]).$addt2,'</a></li>';
+				}
+			?>
+		  </ul>
+		  <?php }else{?>
 		  <br><p><font color='grey' size=5>:( 暂时没有发布过新闻~</font></p>
 		  <?php }?>
 	  </div>
@@ -94,13 +93,6 @@ $num=0;
         </div>
       </form>
     </div>
-    <script type="text/javascript">
-      <?php
-        echo 'var ws_url="ws://',$_SERVER["SERVER_ADDR"],':6844/";';
-        if(isset($_SESSION['user']))
-          echo 'var userid="',encode_user_id('id-'.$_SESSION['user']),'";';
-      ?>
-    </script>
     <script src="/assets/js/common.js"></script>
     <script src="/assets/js/chat.js"></script>
     <script type="text/javascript"> 

@@ -26,7 +26,8 @@ $Title=$inTitle .' - '. $oj_name;
 			?>
 			<div class="row-fluid">
 				<div class="span8 offset2">
-					<table class="table table-hover table-condensed table-bordered">
+				<?php if(mysqli_num_rows($result)!=0){ ?>
+					<table class="table table-hover table-bordered">
 						<thead><tr>
 							<th style="width:6%">题号</th>
 							<th>题目</th>
@@ -48,6 +49,9 @@ $Title=$inTitle .' - '. $oj_name;
 						<?php } ?>
 						</tbody>
 					</table>
+				<?php }else{?>
+				<div><br><p><font color='grey' size=5>:( 您还没有收藏过题目哦，去题库逛逛吧~</font></p></div>
+				<?php }?>
 				</div>
 			</div>  
 			<?php } ?>

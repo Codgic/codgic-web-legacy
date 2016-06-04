@@ -24,7 +24,7 @@ $temp_dir="/tmp/cwoj_postmessage.lock";
 $year=date('Y');
 $oj_name = 'CWOJ'; 
 $oj_copy = 'CWOJ Team'; 
-$web_ver = '0.96.150528-1047';
+$web_ver = '0.97.160603-2135';
 $daemon_ver = '1.01.160227-1736';
 
 //2.2 User policy settings

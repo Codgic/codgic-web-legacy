@@ -59,7 +59,7 @@ $Title=$inTitle .' - '. $oj_name;
 		<?php }else if(isset($info)){ ?>
 			<h2 style="margin:10px auto">错误</h2>
 			<hr>
-			<div class="alert alert-danger"><?php echo $info ?></div>
+			<div class="alert alert-danger"><i class="fa fa-fw fa-remove"></i> <?php echo $info ?></div>
 			<a href="#" class="btn btn-primary" onclick="return history.back(),false;">&laquo;返回</a>
 		<?php }else{ ?>
 			<h2 style="margin:10px auto">上传图片</h2>
@@ -68,7 +68,7 @@ $Title=$inTitle .' - '. $oj_name;
 				<div><p><span>选择图片:<br></span><input type="file" name="file" id="file"></p></div>
 				<div><p><span>文件名(不含后缀):<br></span><input type="text" name="savename" value="<?php echo htmlspecialchars($filename);?>" style="width:233px;"></p></div>
 				<div>
-					<div class="alert alert-danger hide" id="info"> </div>
+					<div class="alert alert-danger hide" id="info"></div>
 					<input class="btn btn-primary" type="submit" value="上传"> 
 				</div>
 			</form>
@@ -83,7 +83,7 @@ $Title=$inTitle .' - '. $oj_name;
 				return true;
 			}else{
 				$('#info').show();
-				document.getElementById('info').innerHTML="不受支持的图片格式";
+				document.getElementById('info').innerHTML="<i class="fa fa-fw fa-remove"></i> 不受支持的图片格式...";
 			}
 			return false;
 		}

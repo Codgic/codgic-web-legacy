@@ -25,9 +25,9 @@ if(!isset($_SESSION['administrator']))
 $range="limit $page_id,100";
 if(isset($_SESSION['user'])){
   $user_id=$_SESSION['user'];
-  $result=mysqli_query($con,"SELECT problem_id,title,accepted,submit,in_date,defunct,res,saved.pid from problem LEFT JOIN (select problem_id as pid,MIN(result) as res from solution where user_id='$user_id' group by problem_id) as solved on(solved.pid=problem_id) left join (select problem_id as pid from saved_problem where user_id='$user_id') as saved on(saved.pid=problem_id) where $cond order by problem_id $range");
+  $result=mysqli_query($con,"SELECT problem_id,title,accepted,submit,source,defunct,res,saved.pid from problem LEFT JOIN (select problem_id as pid,MIN(result) as res from solution where user_id='$user_id' group by problem_id) as solved on(solved.pid=problem_id) left join (select problem_id as pid from saved_problem where user_id='$user_id') as saved on(saved.pid=problem_id) where $cond order by problem_id $range");
 }else{
-  $result=mysqli_query($con,"select problem_id,title,accepted,submit,in_date,defunct from problem where $cond order by problem_id $range");
+  $result=mysqli_query($con,"select problem_id,title,accepted,submit,source,defunct from problem where $cond order by problem_id $range");
 }
 
 $inTitle="$level 级题目";

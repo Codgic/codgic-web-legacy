@@ -16,7 +16,7 @@ if(!isset($_SESSION['user'],$_SESSION['administrator'])){
   require('inc/database.php');
 
   $res=mysqli_query($con,'select content from news where news_id=0');
-  //$index_text=($res && ($row=mysqli_fetch_row($res))) ? str_replace('<br>', "\n", $row[0]) : '';
+  $index_text=($res && ($row=mysqli_fetch_row($res))) ? str_replace('<br>', "\n", $row[0]) : '';
   $res=mysqli_query($con,"select content from user_notes where id=0");
   $category=($res && ($row=mysqli_fetch_row($res))) ? str_replace('<br>', "\n", $row[0]) : '';
 
@@ -38,7 +38,7 @@ $Title=$inTitle .' - '. $oj_name;
               <li class=""><a href="#news" data-toggle="tab">新闻</a></li>
               <li class=""><a href="#experience" data-toggle="tab">经验</a></li>
               <li class=""><a href="#user" data-toggle="tab">用户</a></li>
-              <li class=""><a href="#others" data-toggle="tab">其它</a></li>
+              <!--<li class=""><a href="#others" data-toggle="tab">其它</a></li>-->
             </ul>
 		  </div>
             <div class="tab-content">
@@ -56,7 +56,7 @@ $Title=$inTitle .' - '. $oj_name;
                     <form action="#" method="post" id="form_index">
                       <input type="hidden" name="op" value="update_index">
                       <textarea name="text" rows="10" class="border-box" style="width:100%"><?php echo htmlspecialchars($index_text)?></textarea>
-                      <span class="alert alert-success hide" id="alert_result">主页更新成功！</span>
+                      <span class="alert alert-success hide" id="alert_result"><i class="fa fa-fw fa-check"></i> 主页更新成功!</span>
                       <div class="pull-right">
                         <input type="submit" class="btn <?php echo $button_class?>" value="更新">
                       </div>
@@ -76,7 +76,7 @@ $Title=$inTitle .' - '. $oj_name;
 				<button class="btn <?php echo $button_class?> pull-right" id="new_news">添加新闻...</button>
                   <div id="table_news">
                     <div class="row-fluid">
-                      <div class="alert span4">正在加载新闻...</div>
+                      <div class="alert alert-info span4"><i class="fa fa-circle-o-notch fa-spin"></i> 正在加载新闻...</div>
                     </div>
                   </div>
                 </div>
@@ -136,7 +136,7 @@ $Title=$inTitle .' - '. $oj_name;
 				</div>  
                 </div>
               </div>
-              <div class="tab-pane fade" id="others">
+              <!--<div class="tab-pane fade" id="others">
 			  <div style="margin-left:50px;margin-right:50px">
 			    <div class="row-fluid">
                   <div class="span12">
@@ -145,7 +145,7 @@ $Title=$inTitle .' - '. $oj_name;
 				  <div style="font-size:16px">
 				    当前版本: <?php echo"{$web_ver}"?>
 					<div style="margin-top:20px;height:30px">
-						<span class="alert alert-info" id="updstatus">正在查找更新...</span>
+						<span class="alert alert-info" id="updstatus"><i class="fa fa-fw fa-circle-o-notch fa-spin"></i> 正在查找更新...</span>
 					</div>
 				    <div id="div_updfound" class="hide" style="margin-top:10px;margin-buttom:10px">
 						<input type="button" id="btn_updnow" class="btn <?php echo $button_class?>" value="安装更新..."/>&nbsp;&nbsp;&nbsp;
@@ -155,7 +155,7 @@ $Title=$inTitle .' - '. $oj_name;
                   </div>
 				</div>
               </div>
-			  </div>
+			  </div>-->
             </div>
           </div>
         </div>
@@ -169,7 +169,7 @@ $Title=$inTitle .' - '. $oj_name;
 	    <p></p>
         <div class="modal-body" style="padding-top:5px">
 		  <textarea style="box-sizing: border-box;width:100%;resize:none" id="input_category" rows="16" name="source" placeholder="请输入显示在首页的题目分类列表代码..."><?php echo $category?></textarea>
-          <div class="alert alert-error hide margin-0" id="addcategory_res">发生错误</div>
+          <div class="alert alert-error hide margin-0" id="addcategory_res"><i class="fa fa-fw fa-remove"></i> 发生错误...</div>
         </div>
         <div class="modal-footer form-inline">
           <button class="btn btn-primary" id="addcategory_submit">提交</button>
@@ -209,7 +209,7 @@ $Title=$inTitle .' - '. $oj_name;
         <div class="modal-body" style="padding-top:5px">
 		  <input type="text" id="input_newstitle" name="news" class="input-xlarge" placeholder="请输入新闻标题...">
 		  <textarea style="box-sizing: border-box;width:100%;resize:none" id="input_newscontent" rows="14" name="source" placeholder="请输入新闻内容 (可选)..."></textarea>
-          <div class="alert alert-error hide margin-0" id="addnews_res">发生错误</div>
+          <div class="alert alert-error hide margin-0" id="addnews_res"><i class="fa fa-fw fa-remove"></i> 发生错误...</div>
         </div>
         <div class="modal-footer form-inline">
 		  <button class="pull-left btn btn-danger hide" id="btn_delnews">删除</button>
@@ -253,12 +253,12 @@ $Title=$inTitle .' - '. $oj_name;
 				}
 				else if(msg=='error'){
 					$('#updstatus').removeClass('alert-info').addClass('alert-danger');
-					$('#updstatus').html('连接超时，请刷新页面重试...');
+					$('#updstatus').html('<i class="fa fa-fw fa-remove"></i> 连接超时，请刷新页面重试...');
 				}
 				else {
 					newver = msg;
 					$('#updstatus').removeClass('alert-info').addClass('alert-success');
-					$('#updstatus').html('发现更新的版本: '+msg);
+					$('#updstatus').html('<i class="fa fa-fw fa-info"></i> 发现更新的版本: '+msg);
 					$('#div_updfound').show();
 					};
 				}
@@ -281,37 +281,37 @@ $Title=$inTitle .' - '. $oj_name;
 			getprivlist();
 			getusrlist();
 		}
-		else if(page=='others') $('#nav_tab a[href="#others"]').tab('show');
+		//else if(page=='others') $('#nav_tab a[href="#others"]').tab('show');
 		else $('#nav_tab a[href="#home"]').tab('show');
-		$('#btn_updnow').click(function(){
-			btn_updnow.setAttribute("disabled", true); 
-			btn_updnow.value = "正在下载...";
-			$.ajax({
-			async: true,
-			type:"POST",
-			url:"ajax_update.php",
-			data:{"type":'getfile', "newver": newver},
-			success:function(msg){
-				if (msg == 'success') {
-					btn_updnow.value = "正在安装...";
-					$.ajax({
-						async: true,
-						type:"POST",
-						url:"ajax_update.php",
-						data:{"type":'install', "newver": newver},
-						success:function(msg){
-							if(msg == 'success'){
-								$('#div_updfound').hide();
-								$('#updstatus').html('成功安装更新，页面即将刷新...');
-								window.setTimeout("window.location='admin.php?page=others'",3000); 
-							}
-						}
-					});
-				}	
-				else alert(msg);
-				}
-			});
-		});
+		// $('#btn_updnow').click(function(){
+			// btn_updnow.setAttribute("disabled", true); 
+			// btn_updnow.value = "正在下载...";
+			// $.ajax({
+			// async: true,
+			// type:"POST",
+			// url:"ajax_update.php",
+			// data:{"type":'getfile', "newver": newver},
+			// success:function(msg){
+				// if (msg == 'success') {
+					// btn_updnow.value = "正在安装...";
+					// $.ajax({
+						// async: true,
+						// type:"POST",
+						// url:"ajax_update.php",
+						// data:{"type":'install', "newver": newver},
+						// success:function(msg){
+							// if(msg == 'success'){
+								// $('#div_updfound').hide();
+								// $('#updstatus').html('成功安装更新，页面即将刷新...');
+								// window.setTimeout("window.location='admin.php?page=others'",3000); 
+							// }
+						// }
+					// });
+				// }	
+				// else alert(msg);
+				// }
+			// });
+		// });
 		$('#new_news').click(function(){
 			$('#NewsModalTitle').html('添加新闻').show();
        $('#NewsModal').modal('show');
@@ -579,12 +579,15 @@ $Title=$inTitle .' - '. $oj_name;
             url:"ajax_admin.php",
             data:$('#form_index').serialize(),
             success:function(msg){
-              if(/success/.test(msg))
-                $('#alert_result').show();
+              if(/success/.test(msg)){
+				$('#alert_result').removeClass("alert-danger");
+                $('#alert_result').addClass("alert-success");
+				$('#alert_result').html('<i class="fa fa-fw fa-check"></i> 主页更新成功!').show();
+			  }
               else{
                 $('#alert_result').removeClass("alert-success");
                 $('#alert_result').addClass("alert-danger");
-                $('#alert_result').html('主页更新失败...').show();
+                $('#alert_result').html('<i class="fa fa-fw fa-remove"></i> 主页更新失败...').show();
                }
             }
           });

@@ -27,20 +27,16 @@
   };
 	if($t_night=='on') {
 		$loginimg='/assets/res/loginbg_dark.png';
-		$css1='/assets/css/cerulean_dark.min.css';
-		$css2='/assets/css/docs_dark.css?v=12';
-		$well_class='#212121';
-		$nwell_class='#404040';
+		$css1='/assets/css/cerulean_dark.min.css?v=0';
+		$css2='/assets/css/docs_dark.css?v=1';
 		$nav_class='navbar-inverse';
      $button_class='btn-inverse';
    }else{
 		$loginimg='/assets/res/loginbg.png';
-		$css1='/assets/css/cerulean.min.css';
-		$css2='/assets/css/docs.css?v=12';
-		$well_class='#fff';
-		$nwell_class='#f5f5f5';
+		$css1='/assets/css/cerulean.min.css?v=0';
+		$css2='/assets/css/docs.css?v=1';
 		$nav_class='';
-	    $button_class='btn-primary';
+	   	$button_class='btn-primary';
 	};
   ?>
   <link href="<?php echo $css1?>" rel="stylesheet" type="text/css">
@@ -56,7 +52,7 @@
   </script>
   <![endif]-->
   <!--[if lt IE 9]>
-    <script src="/assets/js/html5.min.js"></script>
+        <script src="/assets/js/html5.min.js"></script>
    	<script src="/assets/js/respond.min.js"></script>
 	<script type="text/javascript" src="/assets/js/jquery.placeholder.min.js">
   <![endif]-->
