@@ -315,7 +315,7 @@ $Title=$inTitle .' - '. $oj_name;
           <div class="pull-left">
             <div class="input-prepend">
               <span class="add-on"><b>标签</b></span>
-              <input class="span2" id="tags_edit" type="text">
+              <input class="span2" id="tags_edit" type="text" name="tags">
             </div>
           </div>
           <button class="btn btn-primary" type="submit">保存</button>

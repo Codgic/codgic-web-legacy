@@ -7,15 +7,15 @@
 <div class="navbar navbar-fixed-top <?php echo $nav_class?>" style="padding:0;width:100%;position:fixed;top:0px;margin:0px">
 	<div class="navbar-inner" style="padding:0;top:0px;margin:0px">
 		<div class="container-fluid navbar-padding-fix">
+		  <a class="brand" href="/index.php" style="margin-left:0px"><i class="fa fa-home"></i> <?php echo $oj_name?></a>
           <a class="btn btn-navbar <?php echo $button_class?> pull-right" data-toggle="collapse" data-target=".nav-collapse">
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </a>
-		<a class="brand hidden-desktop pull-left" style="margin-left:3px"><?php echo"$inTitle";?></a>
+		<a class="brand hidden-desktop"><?php echo"$inTitle";?></a>
           <div class="nav-collapse collapse" style="height:0px">
             <ul class="nav main_menu pull-left" style="margin:0px;padding:0">
-              <li><a class="brand" href="/index.php"><i class="fa fa-home"></i> <?php echo $oj_name?></a></li>
               <li><a id="nav_bbs" class="shortcut-hint" title="Alt+B" href="/board.php"><i class="fa fa-fw fa-comment"></i> 讨论</a></li>
               <li><a id="nav_set" class="shortcut-hint" title="Alt+S"href="/problemset.php"><i class="fa fa-fw fa-th-list"></i> 题库</a></li>
               <li><a id="nav_prob" class="shortcut-hint" title="Alt+P" href="/problempage.php"><i class="fa fa-fw fa-coffee"></i> 题目</a></li>

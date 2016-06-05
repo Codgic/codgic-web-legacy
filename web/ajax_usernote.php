@@ -13,7 +13,7 @@ $user=$_SESSION['user'];
 
 $res=mysqli_query($con,"INSERT INTO user_notes(problem_id,user_id,tags,content,edit_time) VALUES ($problem_id,'$user','$tags','$content',NOW())");
 if(!$res){
-    if(mysqli_errno() == 1062){ //dup
+    if(mysqli_errno($con) == 1062){ //dup
         $res=mysqli_query($con,"UPDATE user_notes set tags='$tags',content='$content',edit_time=NOW() where problem_id=$problem_id and user_id='$user'");
     }
     if(!$res)
