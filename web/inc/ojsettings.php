@@ -24,14 +24,14 @@ $temp_dir="/tmp/cwoj_postmessage.lock";
 $year=date('Y');
 $oj_name = 'CWOJ'; 
 $oj_copy = 'CWOJ Team'; 
-$web_ver = '0.97.160603-2135';
+$web_ver = '0.97.160702-1418';
 $daemon_ver = '1.01.160227-1736';
 
 //2.2 User policy settings
 //"require_auth" determines whether log in is needed to access CWOJ.
 //If "require_auth" is set to 0, then guests can access CWOJ without the need to log in.
 //If "require_auth" is set to 1, then guests must login to access CWOJ.
-$require_auth=1;
+$require_auth=0;
 
 //"require_confirm" determines whether registers must be confirmed by administrators.
 //If "require_confirm" is set to 0, then new users can log in instantly after registering.
@@ -60,9 +60,3 @@ $news_num=7;
 //2.6 Contact email
 //Contact email that is shown in auth.php.
 $contact_email = 'info@cwoj.tk';
-
-//2.7 Update Settings (Not available in this version)
-//$updbranch defines the current branch that you are in.
-//$updloc defines the address of update source (as a remote directory).
-$updbranch='master';
-$updloc='https://raw.githubusercontent.com/CDFLS/CWOJ/'.$updbranch.'/update/';

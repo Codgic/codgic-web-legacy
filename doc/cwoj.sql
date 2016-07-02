@@ -16,25 +16,6 @@ SET time_zone = "+00:00";
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
 /*!40101 SET NAMES utf8mb4 */;
 
---
--- Database: `cwoj`
---
-
-DELIMITER $$
---
--- Functions
---
-CREATE DEFINER=`root`@`localhost` FUNCTION `get_problem_level` (`pid` INT) RETURNS INT(11) READS SQL DATA
-BEGIN
-RETURN IFNULL((SELECT (has_tex>>3)&7 FROM problem WHERE problem_id = pid),0);
-END$$
-
-CREATE DEFINER=`root`@`localhost` FUNCTION `problem_flag_to_level` (`flag` INT) RETURNS INT(11) NO SQL
-BEGIN
-RETURN (flag>>3)&7;
-END$$
-
-DELIMITER ;
 
 -- --------------------------------------------------------
 
