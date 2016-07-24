@@ -6,8 +6,9 @@ if(!isset($_SESSION['user'],$_GET['prob'],$_GET['op'],$_GET['type']))
 $user=$_SESSION['user'];
 $problem_id=intval($_GET['prob']);
 
-if($_GET['type']==1) $type='problem';
-else if($_GET['type']==2) $type='contest';
+if($_GET['type']=='problem') $type='problem';
+else if($_GET['type']=='contest') $type='contest';
+else die('参数无效...');
 
 if($_GET['op']=='rm_saved'){
 	mysqli_query($con,"DELETE from saved_$type where user_id='$user' and {$type}_id=$problem_id");
