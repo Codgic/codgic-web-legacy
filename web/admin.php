@@ -1,23 +1,18 @@
 <?php
 require 'inc/ojsettings.php';
-require ('inc/checklogin.php');
-$page='home';
-if(isset($_GET['page'])){
-	$page=$_GET['page'];
-}
-
-if(!isset($_SESSION['user'],$_SESSION['administrator'])){
+require 'inc/checklogin.php';
+require 'inc/privilege.php';
+if(!check_priv(PRIV_PROBLEM) && !check_priv(PRIV_PROBLEM)){
   include '403.php';
 }else if(!isset($_SESSION['admin_tfa']) || !$_SESSION['admin_tfa']){
-  $_SESSION['admin_retpage'] = 'admin.php';
-  header("Location: admin_auth.php?redirect=".$page);
+  $_SESSION['admin_retpage'] = $_SERVER['PHP_SELF'];
+  header("Location: admin_auth.php");
   exit;
 }else{
-  require('inc/database.php');
-
-  $res=mysqli_query($con,'select content from news where news_id=0');
+  require 'inc/database.php';
+  $res=mysqli_query($con,'select content from news where news_id=0 limit 1');
   $index_text=($res && ($row=mysqli_fetch_row($res))) ? str_replace('<br>', "\n", $row[0]) : '';
-  $res=mysqli_query($con,"select content from user_notes where id=0");
+  $res=mysqli_query($con,"select content from user_notes where id=0 limit 1");
   $category=($res && ($row=mysqli_fetch_row($res))) ? str_replace('<br>', "\n", $row[0]) : '';
 
 $inTitle='管理';
@@ -25,311 +20,376 @@ $Title=$inTitle .' - '. $oj_name;
 ?>
 <!DOCTYPE html>
 <html>
-  <?php require('head.php'); ?>
+  <?php require 'head.php'; ?>
   <body>
-    <?php require('page_header.php'); ?>  
+    <?php require 'page_header.php'; ?>  
           
-    <div class="container-fluid admin-page">
-      <div class="row-fluid">
-        <div class="span12">
-          <div class="tabbable">
-            <ul class="nav nav-pills" id="nav_tab" style="padding-right:10px;padding-left:10px;margin-right:15px;margin-left:-15px;lineheight:30px;font-size:20px">
-              <li class="active"><a href="#home" data-toggle="tab">主页</a></li>
-              <li class=""><a href="#news" data-toggle="tab">新闻</a></li>
-              <li class=""><a href="#experience" data-toggle="tab">经验</a></li>
-              <li class=""><a href="#user" data-toggle="tab">用户</a></li>
-              <!--<li class=""><a href="#others" data-toggle="tab">其它</a></li>-->
-            </ul>
-		  </div>
-            <div class="tab-content">
-              <div class="tab-pane fade in active" id="home">
-                <div class="row-fluid">
-                  <div class="span3 operations">
-                    <h3 class="center">题目</h3>
-                    <a href="newproblem.php" class="btn <?php echo $button_class?>">添加题目...</a>
-					<a href="#" id="btn_category" class="btn <?php echo $button_class?>">题目分类...</a>
-                    <a href="#" id="btn_rejudge" class="btn btn-info">重新评测...</a>
+    <div class="container admin-page">
+      <div class="row">
+        <div class="col-xs-12">
+		  <ul class="nav nav-pills" id="nav_tab">
+			<li class="active"><a href="#home" data-toggle="tab"><i class="fa fa-fw fa-home"></i> <span class="hidden-xs">主页</span></a></li>
+            <?php if(check_priv(PRIV_SYSTEM)){?>
+			<li><a href="#news" data-toggle="tab"><i class="fa fa-fw fa-newspaper-o"></i> <span class="hidden-xs">新闻</span></a></li>
+			<li><a href="#experience" data-toggle="tab"><i class="fa fa-fw fa-diamond"></i> <span class="hidden-xs">经验</span></a></li>
+			<li><a href="#user" data-toggle="tab"><i class="fa fa-fw fa-users"></i> <span class="hidden-xs">用户</span></a></li>
+            <?php }?>
+		  </ul>
+		  <br>
+          <div class="tab-content">
+			<div class="tab-pane fade in active" id="home">
+			  <div class="row">
+				<div class="col-xs-12 col-sm-3 operations">
+				  <h3 class="text-center">题目</h3>
+				  <a href="editproblem.php" class="btn btn-primary">添加题目</a>
+				  <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#CategoryModal">题目分类</a>
+                  <a href="#" class="btn btn-warning" data-toggle="modal" data-target="#RejudgeModal">重新评测</a>
+                </div>
+				<hr class="visible-xs">
+                <div class="col-xs-12 col-sm-5">
+                  <h3 class="text-center">主页</h3><br>
+                  <form action="#" method="post" id="form_index">
+					<input type="hidden" name="op" value="update_index">
+					<div class="form-group">  
+					  <textarea class="form-control" name="text" rows="10"><?php echo htmlspecialchars($index_text)?></textarea>
+					</div>  
+                    <div class="alert alert-success collapse" id="alert_result"><i class="fa fa-fw fa-check"></i> 主页更新成功!</div>
+                    <div class="pull-right">
+					  <input type="submit" class="btn btn-default" value="更新">
+                    </div>
+                  </form>
+                </div>
+				<hr class="visible-xs">
+                <div class="col-xs-12 col-sm-4">
+                  <h3 class="text-center" id="meter_title">系统信息</h3>
+				  <br>
+				  <label>CPU:</label>
+				  <div class="progress">
+					<div class="progress-bar progress-bar-striped active" id="pg_cpu"></div>
+				  </div>
+				  <label>RAM:</label>
+				  <div class="progress">
+				    <div class="progress-bar progress-bar-striped active" id="pg_mem"></div>
+				  </div>
+				  <label>Daemon:</label>
+				  <div id="pg_daemon"></div>
+                </div>
+              </div>
+            </div>
+            <?php if(check_priv(PRIV_SYSTEM)){?>
+            <div class="tab-pane fade" id="news">
+              <div class="row">
+                <div class="col-xs-12">
+                  <div class="pull-right">
+                    <button class="btn btn-primary" id="new_news">添加新闻...</buttton>
                   </div>
-				  <hr class="visible-phone">
-                  <div class="span5">
-                    <h3 class="center">主页</h3><br>
-                    <form action="#" method="post" id="form_index">
-                      <input type="hidden" name="op" value="update_index">
-                      <textarea name="text" rows="10" class="border-box" style="width:100%"><?php echo htmlspecialchars($index_text)?></textarea>
-                      <span class="alert alert-success hide" id="alert_result"><i class="fa fa-fw fa-check"></i> 主页更新成功!</span>
-                      <div class="pull-right">
-                        <input type="submit" class="btn <?php echo $button_class?>" value="更新">
-                      </div>
+                  <div id="table_news">
+                    <div class="alert alert-info col-sm-6"><i class="fa fa-circle-o-notch fa-spin"></i> 正在加载新闻...</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="tab-pane fade" id="experience">
+			  <div class="row">
+                <div class="col-xs-12 col-sm-6">
+                  <div id="table_experience_title"></div>
+                    <form action="admin.php" method="post" class="form-inline" id="form_experience_title">
+                      <input type="text" id="input_experience" name="experience" class="form-control" placeholder="经验值&nbsp;&ge;">&nbsp;&nbsp;
+                      <input type="text" id="input_experience_title" name="title" class="form-control" placeholder="头衔">&nbsp;&nbsp;
+                      <input type="submit" class="btn btn-default" value="添加">
+                      <input type="hidden" name="op" value="add_experience_title">
+					</form>
+                  </div>
+                  <hr class="visible-xs">
+                  <div class="col-xs-12 col-sm-6">
+                    <form action="admin.php" method="post" id="form_level_experience">
+                      <div id="table_level_experience"></div>
+                      <input type="submit" class="btn btn-default" value="更新">
+                      <input type="hidden" name="op" value="update_level_experience">
                     </form>
                   </div>
-				  <hr class="visible-phone">
-                  <div class="span4">
-                    <h3 class="center" id="meter_title">系统信息</h3>
-					<br>
-                    <div id="cpumeter" class="meter"></div>
-                    <div id="memmeter" class="meter"></div>
-                  </div>
                 </div>
-              </div>
-              <div class="tab-pane fade" id="news">
-                <div style="margin-left:50px;margin-right:50px">
-				<button class="btn <?php echo $button_class?> pull-right" id="new_news">添加新闻...</button>
-                  <div id="table_news">
-                    <div class="row-fluid">
-                      <div class="alert alert-info span4"><i class="fa fa-circle-o-notch fa-spin"></i> 正在加载新闻...</div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="tab-pane fade" id="experience">
-                <div style="margin-left:50px;margin-right:50px">
-				<div class="row-fluid">
-				<div class="span6">
-                  <div id="table_experience_title"> 
-                  </div>
-                  <form action="admin.php" method="post" class="form-inline" id="form_experience_title">
-                    <input type="text" id="input_experience" name="experience" class="input-medium" placeholder="经验值&nbsp;&ge;">&nbsp;&nbsp;
-                    <input type="text" id="input_experience_title" name="title" class="input-medium" placeholder="头衔">&nbsp;&nbsp;
-                    <input type="submit" class="btn" value="添加">
-                    <input type="hidden" name="op" value="add_experience_title">
-                  </form>
-                 </div>
-				 <hr class="visible-phone">
-				 <div class="span6">
-                  <form action="admin.php" method="post" id="form_level_experience">
-                    <div id="table_level_experience"> 
-                    </div>
-                    <input type="submit" class="btn" value="更新">
-                    <input type="hidden" name="op" value="update_level_experience">
-                  </form>
-                </div>
-			  </div>
-			  </div>
               </div>
               <div class="tab-pane fade" id="user">
-                <div style="margin-left:50px">
-				<div class="row-fluid">
-				<div class="span6">
-                  <div id="table_priv"></div>
-                  <form action="admin.php" method="post" class="form-inline" id="form_priv">
-                    <label for="input_user_id" style="display:block">添加权限</label>
-                    <input type="text" id="input_user_id" name="user_id" class="input-medium" placeholder="用户名...">&nbsp;&nbsp;
-                    <select class="input-medium" name="right" id="slt_right">
-                      <option value="administrator">管理人员</option>
-                      <option value="source_browser">代码审核</option>
-                      <option value="insider">隐藏可见</option>
-                    </select>&nbsp;&nbsp;
-                    <input type="submit" class="btn" value="添加">
-                    <input type="hidden" name="op" value="add_priv">
-                  </form>
-				</div>
-				<hr class="visible-phone">
-				<div class="span6">
-				<div id="table_usr"></div>
-                  <form action="admin.php" method="post" class="form-inline" id="form_usr">
-                    <label for="input_dis_usr" style="display:block">禁用某个用户</label>
-                    <input type="text" id="input_dis_usr" name="user_id" class="input-medium" placeholder="用户名...">&nbsp;&nbsp;
-                    <input type="submit" class="btn" value="禁用">
-                    <input type="hidden" name="op" value="disable_usr">
-                  </form>
-				</div>
-				</div>  
+				<div class="row">
+                  <div class="col-xs-8 col-sm-5 col-md-3 pull-right">
+                    <div class="form-group has-feedback">
+                      <input class="form-control" id="user_q" name="q" type="text" placeholder="搜索用户...">
+                      <span class="form-control-feedback"><i class="fa fa-fw fa-user"></i></span>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-xs-12">
+                    <div class="table-responsive" id="table_usr"></div>
+                  </div>
+                </div>
+                <div class="row">
+                  <ul class="pager">
+                    <li>
+                      <a class="pager-pre-link shortcut-hint" title="Alt+A" href="#" id="usr_pre"><i class="fa fa-fw fa-angle-left"></i> 上一页</a>
+                    </li>
+                    <li>
+                      <a class="pager-next-link shortcut-hint" title="Alt+D" href="#" id="usr_nxt">下一页 <i class="fa fa-fw fa-angle-right"></i></a>
+                    </li>
+                  </ul>
                 </div>
               </div>
-              <!--<div class="tab-pane fade" id="others">
-			  <div style="margin-left:50px;margin-right:50px">
-			    <div class="row-fluid">
-                  <div class="span12">
-				  <h3>更新<?php echo $oj_name?>（临时废弃）</h3>
-				  <br>
-				  <div style="font-size:16px">
-				    当前版本: <?php echo"{$web_ver}"?>
-					<div style="margin-top:20px;height:30px">
-						<span class="alert alert-info" id="updstatus"><i class="fa fa-fw fa-circle-o-notch fa-spin"></i> 正在查找更新...</span>
-					</div>
-				    <div id="div_updfound" class="hide" style="margin-top:10px;margin-buttom:10px">
-						<input type="button" id="btn_updnow" class="btn <?php echo $button_class?>" value="安装更新..."/>&nbsp;&nbsp;&nbsp;
-                        <a href="https://github.com/CDFLS/CWOJ/commit" id="btn_updlog">更新日志</a>
-                    </div>
-				  </div>
-                  </div>
-				</div>
+            </div>
+            <?php }?>
+          </div>
+        </div>
+      </div>
+      
+      <div class="modal fade" id="CategoryModal">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">题目分类编辑</h4>
               </div>
-			  </div>-->
+              <form action="#" method="post" id="form_category"> 
+              <div class="modal-body">
+                <div class="form-group">
+                  <textarea class="form-control" id="input_category" rows="16" name="source" placeholder="请输入显示在首页的题目分类列表代码..."><?php echo $category?></textarea>
+                </div>
+              <div class="alert alert-danger collapse" id="addcategory_res"><i class="fa fa-fw fa-remove"></i> 发生错误...</div>
+            </div>
+            <div class="modal-footer">
+              <button class="btn btn-primary" type="submit">提交</button>
+              <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+            </div>
+            </form> 
+          </div>
+        </div>
+      </div>
+    
+      <div class="modal fade" id="RejudgeModal">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+		    <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title">重新评测</h4>
+          </div>
+          <form action="#" method="post" id="form_rejudge">
+          <input type="hidden" name="op" value="rejudge">
+          <div class="modal-body">
+            <div class="form-group">
+              <label>请输入需要重新评测的题号:</label>
+              <input class="form-control" id="input_rejudge" type="number" name="problem" placeholder="1000~9999">
+            </div>
+            <div class="alert alert-danger collapse" id="rejudge_res"></div>
+          </div>
+          <div class="modal-footer">
+			<button class="btn btn-primary" type="submit">重新评测</button>
+            <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+          </div>
+          </form> 
+          </div>
+        </div>
+      </div>
+      
+      <?php if(check_priv(PRIV_SYSTEM)){?>
+      <div class="modal fade" id="NewsModal">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+              <h4 class="modal-title"></h4>
+            </div>
+            <form action="#" method="post" id="form_news">
+            <input type="hidden" id="news_op" name="op" value="add_news">
+            <input type="hidden" id="news_id" name="news_id" value="0">  
+            <div class="modal-body">
+              <div class="form-group">
+                <input type="text" class="form-control" id="input_newstitle" name="title" placeholder="请输入新闻标题...">
+              </div>
+              <div class="form-group">
+                <textarea class="form-control" id="input_newscontent" rows="14" name="content" placeholder="请输入新闻内容 (可选)..."></textarea>
+              </div>
+              <div class="alert alert-danger collapse" id="news_res"></div>
+            </div>
+            <div class="modal-footer">
+              <div class="checkbox" style="display:inline-block">
+                <label><input type="checkbox" name="importance" id="is_top">顶置</label>
+              </div>
+              <button class="btn btn-primary" type="submit">提交</button>
+              <button class="pull-left btn btn-danger collapse" id="btn_delnews">删除</button>
+              <button class="pull-left btn btn-primary" id="btn_upload">上传图片...</button>  
+              <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+            </div>
+            </form> 
+          </div>
+        </div>
+      </div>
+      
+      <div class="modal fade" id="EmailModal">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+              <h4 class="modal-title"></h4>
+            </div>
+            <form action="#" method="post" id="form_email">
+            <input type="hidden" name="op" value="sendemail">
+            <input type="hidden" id="email_touser" name="to_user" value="">  
+            <div class="modal-body">
+              <div class="form-group">
+                <input type="text" class="form-control" id="input_emailtitle" name="title" placeholder="请输入邮件标题...">
+              </div>
+              <div class="form-group">
+                <textarea class="form-control" id="input_emailcontent" rows="14" name="content" placeholder="请输入邮件内容..."></textarea>
+              </div>
+              <div class="alert alert-danger collapse" id="email_res"></div>
+            </div>
+            <div class="modal-footer">
+              <button class="btn btn-primary" type="submit">提交</button>
+              <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+            </div>
+            </form> 
+          </div>
+        </div>
+      </div>
+      
+      <div class="modal fade" id="PrivModal">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+              <h4 class="modal-title"></h4>
+            </div>
+            <form action="#" method="post" id="form_priv">
+            <input type="hidden" name="op" value="update_priv">
+            <input type="hidden" id="priv_uid" name="user_id" value="">  
+            <div class="modal-body">
+              <div class="checkbox">
+                <label><input type="checkbox" name="0" id="chk_insider">校内(<?php echo PRIV_INSIDER?>)</label>
+              </div>
+              <div class="checkbox">
+                <label><input type="checkbox" name="1" id="chk_source">源码(<?php echo PRIV_SOURCE?>)</label>
+              </div>
+              <div class="checkbox">
+                <label><input type="checkbox" name="2" id="chk_problem">题库(<?php echo PRIV_PROBLEM?>)</label>
+              </div>
+              <div class="checkbox">
+                <label><input type="checkbox" name="3" id="chk_system">系统(<?php echo PRIV_SYSTEM?>)</label>
+              </div>
+              <div class="alert alert-danger collapse" id="priv_res"></div>
+            </div>
+            <div class="modal-footer">
+              <button class="btn btn-primary" type="submit">提交</button>
+              <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+            </div>
+            </form> 
+          </div>
+        </div>
+      </div>
+      
+      <div class="modal fade" id="UserModal">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+              <h4 class="modal-title">用户信息</h4>
+            </div>
+            <div class="modal-body" id="user_status">
+              <p>信息不可用……</p>
+            </div>
+            <div class="modal-footer">
+              <form action="mail.php" method="post">
+                <input type="hidden" name="touser" id="input_touser">
+                <?php if(isset($_SESSION['user'])){?>
+                <button type="submit" class="btn btn-default pull-left"><i class="fa fa-fw fa-envelope-o"></i> 发私信</button>
+                <?php }?>
+              </form>
+              <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
             </div>
           </div>
         </div>
-	  
-	<div class="modal fade hide" id="CategoryModal">
-      <div class="modal-header">
-        <a class="close" data-dismiss="modal">&times;</a>
-        <h4>题目分类编辑</h4>
       </div>
-      <form class="margin-0" method="post" id="category_submit">
-	    <p></p>
-        <div class="modal-body" style="padding-top:5px">
-		  <textarea style="box-sizing: border-box;width:100%;resize:none" id="input_category" rows="16" name="source" placeholder="请输入显示在首页的题目分类列表代码..."><?php echo $category?></textarea>
-          <div class="alert alert-error hide margin-0" id="addcategory_res"><i class="fa fa-fw fa-remove"></i> 发生错误...</div>
-        </div>
-        <div class="modal-footer form-inline">
-          <button class="btn btn-primary" id="addcategory_submit">提交</button>
-          <a href="#" class="btn" data-dismiss="modal">关闭</a>
-        </div>
-		<div class="hidden-phone" style="width:750px"></div>
-      </form>
-    </div>
-	 
-	  <div class="modal fade hide" id="RejudgeModal">
-      <div class="modal-header">
-        <a class="close" data-dismiss="modal">&times;</a>
-        <h4>重新评测</h4>
-      </div>
-      <form class="margin-0" method="post" id="rejudge_num">
-        <div class="modal-body">
-		    <label class="control-label">请输入需要重新评测的题号:</label>
-	        <input class="input-xlarge" id="input_rejudge" type="number" placeholder="1000~9999">
-			<div class="alert hide" id="rejudge_res" style="margin-top:20px"></div>
-        </div>
-        <div class="modal-footer form-inline">
-          <div class="pull-left">
-          </div>
-		  <button class="btn btn-primary" id="rejudge_submit">重新评测</button>
-          <a href="#" class="btn" data-dismiss="modal">关闭</a>
-        </div>
-      </form>
-    </div>
-	
-	<div class="modal fade hide" id="NewsModal">
-      <div class="modal-header">
-        <a class="close" data-dismiss="modal">&times;</a>
-        <h4><span class="hide" id="NewsModalTitle"></span></h4>
-      </div>
-      <form class="margin-0" method="post" id="news_submit">
-	    <p></p>
-        <div class="modal-body" style="padding-top:5px">
-		  <input type="text" id="input_newstitle" name="news" class="input-xlarge" placeholder="请输入新闻标题...">
-		  <textarea style="box-sizing: border-box;width:100%;resize:none" id="input_newscontent" rows="14" name="source" placeholder="请输入新闻内容 (可选)..."></textarea>
-          <div class="alert alert-error hide margin-0" id="addnews_res"><i class="fa fa-fw fa-remove"></i> 发生错误...</div>
-        </div>
-        <div class="modal-footer form-inline">
-		  <button class="pull-left btn btn-danger hide" id="btn_delnews">删除</button>
-		  <button class="pull-left btn btn-info" id="btn_upload">上传图片...</button>
-       <label class="checkbox" style="padding-right:10px">
-       <input type="checkbox" name="is_top" id="is_top">顶置新闻
-       </label>
-       <button class="btn btn-primary" id="addnews_submit">提交</button>
-		  <button class="btn btn-primary hide" id="editnews_submit">提交</button>
-          <a href="#" class="btn" data-dismiss="modal">关闭</a>
-        </div>
-		<div class="hidden-phone" style="width:750px"></div>
-      </form>
-    </div>
+      <?php }?>
       <hr>
       <footer>
         <p>&copy; <?php echo"{$year} {$oj_copy}";?></p>
       </footer>
     </div>
-    <script src="/assets/js/common.js"></script>
-    <script src="/assets/js/highcharts.js"></script>
-    <script src="/assets/js/highcharts-more.js"></script>
+    <script src="/assets/js/common.js?v=<?php echo $web_ver?>"></script>
     <script type="text/javascript">
 	var loffset=window.screenLeft+200;
     var toffset=window.screenTop+200;
 	var getlevellist=function(){$('#table_level_experience').load('ajax_admin.php',{op:'list_level_experience'});};
     var gettitlelist=function(){$('#table_experience_title').load('ajax_admin.php',{op:'list_experience_title'});};
-    var getprivlist=function(){$('#table_priv').load('ajax_admin.php',{op:'list_priv'});};
     var getnewslist=function(){$('#table_news').load('ajax_admin.php',{op:'list_news'});};
-    var getusrlist=function(){$('#table_usr').load('ajax_admin.php',{op:'list_usr'});};
-	var cnt=-1;
-	var newver=0;
-	function chkupd(){
-		$.ajax({
-			type:"POST",
-			url:"ajax_update.php",
-			data:{"type":'check'},
-			success:function(msg){
-				if(msg=='false') {
-					$('#updstatus').html('=.= 并没有找到更新...');
-				}
-				else if(msg=='error'){
-					$('#updstatus').removeClass('alert-info').addClass('alert-danger');
-					$('#updstatus').html('<i class="fa fa-fw fa-remove"></i> 连接超时，请刷新页面重试...');
-				}
-				else {
-					newver = msg;
-					$('#updstatus').removeClass('alert-info').addClass('alert-success');
-					$('#updstatus').html('<i class="fa fa-fw fa-info"></i> 发现更新的版本: '+msg);
-					$('#div_updfound').show();
-					};
-				}
-				});
-		}
-		chkupd();
+    var getusrlist=function(e=1,q=''){$('#table_usr').load('ajax_admin.php',{op:'list_usr',page_id:e,q:q});};
+	var cnt=-1,kw='',upid=1;
       $(document).ready(function(){
-		var page='<?php echo $page?>';
-		if(page=='news'){
-			$('#nav_tab a[href="#news"]').tab('show');
-			getnewslist();
-		}
-		else if(page=='experience'){
-			$('#nav_tab a[href="#experience"]').tab('show');
-			getlevellist();
-			gettitlelist();
-		} 
-		else if(page=='user'){
-			$('#nav_tab a[href="#user"]').tab('show');
-			getprivlist();
-			getusrlist();
-		}
-		//else if(page=='others') $('#nav_tab a[href="#others"]').tab('show');
-		else $('#nav_tab a[href="#home"]').tab('show');
-		// $('#btn_updnow').click(function(){
-			// btn_updnow.setAttribute("disabled", true); 
-			// btn_updnow.value = "正在下载...";
-			// $.ajax({
-			// async: true,
-			// type:"POST",
-			// url:"ajax_update.php",
-			// data:{"type":'getfile', "newver": newver},
-			// success:function(msg){
-				// if (msg == 'success') {
-					// btn_updnow.value = "正在安装...";
-					// $.ajax({
-						// async: true,
-						// type:"POST",
-						// url:"ajax_update.php",
-						// data:{"type":'install', "newver": newver},
-						// success:function(msg){
-							// if(msg == 'success'){
-								// $('#div_updfound').hide();
-								// $('#updstatus').html('成功安装更新，页面即将刷新...');
-								// window.setTimeout("window.location='admin.php?page=others'",3000); 
-							// }
-						// }
-					// });
-				// }	
-				// else alert(msg);
-				// }
-			// });
-		// });
+		$(function(){
+			var hash = window.location.hash;
+			hash && $('ul.nav a[href="' + hash + '"]').tab('show');
+            if(hash=='#news')
+                getnewslist();
+            else if(hash=='#user'){
+                getusrlist();
+            }
+            else if(hash=='#experience'){
+                getlevellist();
+                gettitlelist();
+            }
+			$('#nav_tab a').click(function (e) {
+				if(this.hash=='#news')
+					getnewslist();
+				else if(this.hash=='#user'){
+					getusrlist(upid,kw);
+				}
+				else if(this.hash=='#experience'){
+					getlevellist();
+					gettitlelist();
+				}
+				$(this).tab('show');
+				window.location.hash = this.hash;
+			});
+		});
+		update_chart();
+		$('#table_news').click(function(E){
+		 var news_title,news_content;
+		 E.preventDefault();
+		 var jq=$(E.target);
+          if(jq.is('i')){
+            var jq_id=jq.parent().parent().prev().prev().prev();
+			cnt = jq_id.html();
+			$.ajax({
+              type:"POST",
+              url:"ajax_admin.php",
+              data:{
+                op:'get_news',
+                news_id:jq_id.html()
+              },
+              success:function(data){
+                  var obj=eval("("+data+")");
+				  $('#news_op').val('edit_news');
+				  $('#news_id').val(cnt);
+				  $('#NewsModal .modal-title').html('编辑新闻');
+		          $('#NewsModal').modal('show');  
+				  if(obj.importance=='1') document.getElementById("is_top").checked = true;
+				  else document.getElementById("is_top").checked = false;
+				  $('#btn_delnews').show();
+		          $('#input_newstitle').val(obj.title);
+				  $('#input_newscontent').val(obj.content);
+				  }
+            });
+		  }
+         return false;
+        });
 		$('#new_news').click(function(){
-			$('#NewsModalTitle').html('添加新闻').show();
-       $('#NewsModal').modal('show');
-			$('#input_newstitle').val("");
-		    $('#input_newscontent').val("");
-			$('#addnews_submit').show();
-		    $('#editnews_submit').hide();
+			$('#NewsModal .modal-title').html('添加新闻');
+			$('#news_op').val('add_news');
+			$('#input_newstitle').val('');
+		    $('#input_newscontent').val('');
 			$('#btn_delnews').hide();
-       document.getElementById("is_top").checked = false;
+			document.getElementById("is_top").checked = false;
+			$('#NewsModal').modal('show');
 		});
-        $('#ret_url').val("admin.php");
-		$('#btn_rejudge').click(function(){
-			$('#RejudgeModal').modal('show');
-		});
-		$('#btn_category').click(function(){
-			$('#CategoryModal').modal('show');
-		});
-		$('#addcategory_submit').click(function(){
+		$('#form_category').submit(function(){
 			$('#addcategory_res').hide();
 			$.ajax({
 					type:"POST",
@@ -337,14 +397,14 @@ $Title=$inTitle .' - '. $oj_name;
 					data:{"op":'update_category',"content":$.trim($('#input_category').val())},
 					success:function(msg){
 						if(msg=='success') $('#CategoryModal').modal('hide');
-						else $('#addcategory_res').show();
+						else $('#addcategory_res').slideDown();
 					}
 				});
 			return false;
 		});
-		$('#addnews_submit').click(function(){
-			var title,content;
-			$('#addnews_res').hide();
+		$('#form_news').submit(function(){
+		  var title,content;
+			$('#news_res').hide();
 			var a=false;
 			if(!$.trim($('#input_newstitle').val())) {
             $('#input_newstitle').addClass('error');
@@ -353,54 +413,52 @@ $Title=$inTitle .' - '. $oj_name;
             $('#input_newstitle').removeClass('error');
             }
 			if(!a){
-				var importance=0;
-				if (document.getElementById('is_top').checked) 
-                    importance=1;
 				$.ajax({
 					type:"POST",
 					url:"ajax_admin.php",
-					data:{"op":'add_news',"title":$.trim($('#input_newstitle').val()),"content":$.trim($('#input_newscontent').val()),"importance":importance},
+					data: $('#form_news').serialize(),
 					success:function(msg){
 						if(msg=='success') $('#NewsModal').modal('hide');
-						else $('#addnews_res').show();
+						else $('#news_res').html('<i class="fa fa-fw fa-remove"></i> 错误: '+msg).slideDown();
 					}
 					});
 			}
 			getnewslist();
 			return false;
-		});
-        $('#rejudge_submit').click(function(){
-          var obj=$('#rejudge_res').hide();
-          var id=$.trim($('#input_rejudge').val());
-          if(id!=null){
-            id=$.trim(id);
-            if(id){
-              $.get("rejudge.php?problem_id="+id,function(msg){
-				  if(msg=='success'){
-					  $('#RejudgeModal').modal('hide');
-				  }else{
-					  obj.addClass('alert-error');
-					  obj.html(msg).slideDown();
-				  }
-              });
-            }
-          }
-		  return false;
         });
-        $('#nav_tab').click(function(E){
-          var jq=$(E.target);
-          if(jq.is('a')){
-            if(E.target.innerHTML.search(/新闻/i)!=-1)
-              getnewslist();
-            else if(E.target.innerHTML.search(/用户/i)!=-1){
-              getusrlist();
-		      getprivlist();
-			}
-            else if(E.target.innerHTML.search(/经验/i)!=-1){
-              getlevellist();
-              gettitlelist();
-            }
-          }
+		$('#btn_delnews').click(function(){
+			$.ajax({
+              type:"POST",
+              url:"ajax_admin.php",
+              data:{
+                "op":'del_news',
+                "news_id":cnt
+              },
+              success:function(msg){
+				  if(msg=='success') $('#NewsModal').modal('hide');
+				  else $('#news_res').html('<i class="fa fa-fw fa-remove"></i> 错误: 删除失败...').show();
+			  }
+            });
+			getnewslist();
+			return false;
+		});
+        $('#form_rejudge').submit(function(){
+          $('#rejudge_res').hide();
+          if($.trim($('#input_rejudge').val())){
+			$('#input_rejudge').removeClass('error');   
+			  $.ajax({
+				type:"POST",
+				url:"submit.php",
+				data: $('#form_rejudge').serialize(),
+				success:function(msg){
+					if(msg=='success') $('#RejudgeModal').modal('hide');
+					else $('#rejudge_res').html('<i class="fa fa-fw fa-remove"></i> 错误: '+msg).slideDown();
+				}
+			  });
+          }else{
+			$('#input_rejudge').addClass('error');  
+		  }
+		  return false;
         });
         $('#table_experience_title').click(function(E){
           E.preventDefault()
@@ -433,140 +491,62 @@ $Title=$inTitle .' - '. $oj_name;
         $('#table_usr').click(function(E){
           E.preventDefault();
           var jq=$(E.target);
-          if(jq.is('i')){
-            var oper;
-            var str_id=jq.parents('tr').first().children().first().contents()
-              .filter(function(){return this.nodeType == 3;})
-              .text();
-            if(jq.hasClass('fa-remove')){
-              oper='del_usr';
-            }else{
-              oper='en_usr';
+          if(jq.is('a')){
+             var uid=jq.parents('tr').first().children().first().next().children().children().contents().text();
+            switch($(jq).attr('href')){
+                case '#email':
+                $('#email_touser').val(uid);
+                $('#EmailModal .modal-title').html('发送邮件: '+uid);
+                $('#email_res').hide();
+                $('#EmailModal').modal('show');
+                break;
+                case '#priv':
+                $('#priv_uid').val(uid);
+                $('#PrivModal .modal-title').html('更改权限: '+uid);
+                $('#priv_res').hide();
+                var p=jq.parents('tr').first().children().first().next().next().children('span').contents().text();
+                $('#chk_insider').prop('checked', p&<?php echo PRIV_INSIDER?>);
+                $('#chk_source').prop('checked', p&<?php echo PRIV_SOURCE?>);
+                $('#chk_problem').prop('checked', p&<?php echo PRIV_PROBLEM?>);
+                $('#chk_system').prop('checked', p&<?php echo PRIV_SYSTEM?>);
+                $('#PrivModal').modal('show');
+                break;
+                case '#del':
+                $.ajax({
+                  type:"POST",
+                  url:"ajax_admin.php",
+                  data:{op:'toggle_usr',user_id:uid},
+                  success:getusrlist(upid,kw)
+                });
+                break;
+                case '#linkU':
+                $('#user_status').html("<p>正在加载...</p>").load("ajax_user.php?user_id="+uid).scrollTop(0);
+                $('#input_touser').val(uid);
+                $('#UserModal').modal('show');
+                break;
             }
-            $.ajax({
-              type:"POST",
-              url:"ajax_admin.php",
-              data:{
-                op:oper,
-                user_id:str_id
-              },
-              success:getusrlist
-            });
           }
           return false;
         });
-        $('#table_priv').click(function(E){
-          E.preventDefault();
-          var jq=$(E.target);
-          if(jq.is('i')){
-            var jq_pri=jq.parent().parent().prev();
-            var jq_uid=jq_pri.prev();
-            $.ajax({
-              type:"POST",
-              url:"ajax_admin.php",
-              data:{
-                op:'del_priv',
-                user_id:jq_uid.html(),
-                right:jq_pri.html()
-              },
-              success:getprivlist
-            });
-          }
-          return false;
-        });
-        $('#form_usr').submit(function(E){
-          E.preventDefault();
-          $.ajax({
-            type:"POST",
-            url:"ajax_admin.php",
-            data:$('#form_usr').serialize(),
-            success:getusrlist
-          });
-          return false;
-        });
-        $('#form_priv').submit(function(E){
-          E.preventDefault();
-          $.ajax({
-            type:"POST",
-            url:"ajax_admin.php",
-            data:$('#form_priv').serialize(),
-            success:getprivlist
-          });
-          return false;
-        });
-		$('#table_news').click(function(E){
-		 var news_title,news_content;
-		 E.preventDefault();
-		 var jq=$(E.target);
-          if(jq.is('i')){
-            var jq_id=jq.parent().parent().prev().prev().prev();
-			cnt = jq_id.html();
-			$.ajax({
-              type:"POST",
-              url:"ajax_admin.php",
-              data:{
-                op:'get_news',
-                news_id:jq_id.html()
-              },
-              success:function(data){
-                  var obj=eval("("+data+")");
-				  $('#NewsModalTitle').html('编辑新闻').show();
-		          $('#NewsModal').modal('show');  
-				  if(obj.importance=='1') document.getElementById("is_top").checked = true;
-				else document.getElementById("is_top").checked = false;
-				  $('#addnews_submit').hide();
-				  $('#editnews_submit').show();
-				  $('#btn_delnews').show();
-		          $('#input_newstitle').val(obj.title);
-				  $('#input_newscontent').val(obj.content);
-				  }
-            });
-		  }
-         return false;
-        });
-        $('#editnews_submit').click(function(){
-		  var title,content;
-			$('#addnews_res').hide();
-			var a=false;
-			if(!$.trim($('#input_newstitle').val())) {
-            $('#input_newstitle').addClass('error');
-            a=true;
-            }else{
-            $('#input_newstitle').removeClass('error');
+        $('#usr_pre').click(function(){
+            if(upid>1){
+                upid--;
+                getusrlist(upid,kw);
             }
-			if(!a){
-				var importance=0;
-				if (document.getElementById('is_top').checked) 
-                    importance=1;
-				$.ajax({
-					type:"POST",
-					url:"ajax_admin.php",
-					data:{"op":'edit_news',"news_id":cnt,"title":$.trim($('#input_newstitle').val()),"content":$.trim($('#input_newscontent').val()),"importance":importance},
-					success:function(msg){
-						if(msg=='success') $('#NewsModal').modal('hide');
-						else $('#addnews_res').show();
-					}
-					});
-			}
-			getnewslist();
-			return false;
+            return false;
         });
-		$('#btn_delnews').click(function(){
-			$.ajax({
-              type:"POST",
-              url:"ajax_admin.php",
-              data:{
-                "op":'del_news',
-                "news_id":cnt
-              },
-              success:function(msg){
-				  if(msg=='success') $('#NewsModal').modal('hide');
-				  else $('#addnews_res').show();
-			  }
-            });
-			getnewslist();
-			return false;
-		});
+        $('#usr_nxt').click(function(){
+            if($('#table_usr').children('table').length){
+                upid++;
+                getusrlist(upid,kw);
+            }
+            return false;
+        });
+        $('#user_q').on("change keyup paste",function(){
+            kw=$('#user_q').val();
+            upid=1;
+            getusrlist(upid,kw);
+        });
 		$('#btn_upload').click(function(){
 			window.open("upload.php",'upload_win2','left='+loffset+',top='+toffset+',width=400,height=300,toolbar=no,resizable=no,menubar=no,location=no,status=no');
 			return false;
@@ -582,144 +562,81 @@ $Title=$inTitle .' - '. $oj_name;
               if(/success/.test(msg)){
 				$('#alert_result').removeClass("alert-danger");
                 $('#alert_result').addClass("alert-success");
-				$('#alert_result').html('<i class="fa fa-fw fa-check"></i> 主页更新成功!').show();
+				$('#alert_result').html('<i class="fa fa-fw fa-check"></i> 主页更新成功!').slideDown();
 			  }
               else{
                 $('#alert_result').removeClass("alert-success");
                 $('#alert_result').addClass("alert-danger");
-                $('#alert_result').html('<i class="fa fa-fw fa-remove"></i> 主页更新失败...').show();
+                $('#alert_result').html('<i class="fa fa-fw fa-remove"></i> 主页更新失败...').slideDown();
                }
             }
           });
           return false;
         });
-        $('#input_adminpass').focus();
+        $('#form_email').submit(function(E){
+          E.preventDefault();
+          $('#email_res').hide();
+          $.ajax({
+            type:"POST",
+            url:"ajax_admin.php",
+            data:$('#form_email').serialize(),
+            success:function(msg){
+              if(/success/.test(msg)) $('#EmailModal').modal('hide');
+              else $('#email_res').html('<i class="fa fa-fw fa-remove"></i> 错误: '+msg).slideDown();
+            }
+          });
+          return false;
+        });
+        $('#form_priv').submit(function(E){
+          E.preventDefault();
+          $('#priv_res').hide();
+          $.ajax({
+            type:"POST",
+            url:"ajax_admin.php",
+            data:$('#form_priv').serialize(),
+           success:function(msg){
+              if(/success/.test(msg)){
+                $('#PrivModal').modal('hide');
+                getusrlist(upid,kw);
+              }
+              else $('#priv_res').html('<i class="fa fa-fw fa-remove"></i> 错误: '+msg).slideDown();
+            }
+          });
+          return false;
+        });
       });
 
       function update_chart(){
         $.getJSON('ajax_usage.php',function(data){
-          // console.log(data);
           if(data&&"number"==typeof(data.cpu)){
-            if(!window.cpuChart){
-              window.cpuChart = new Highcharts.Chart({
-                chart: {
-                  renderTo: 'cpumeter'
-                },        
-                yAxis: [{
-                  title: {
-                    text: 'CPU'
-                  }
-                }],
-                series: [{
-                  data: [0],
-                  yAxis: 0
-                }]
-              });
-            }
-            cpuChart.series[0].points[0].update(data.cpu,true);
-          }
-          if(data&&"number"==typeof(data.mem)){
-            if(!window.memChart){
-              window.memChart = new Highcharts.Chart({
-                chart: {
-                  renderTo: 'memmeter'
-                },        
-                yAxis: [{
-                  title: {
-                    text: 'RAM'
-                  }
-                }],
-                series: [{
-                  data: [0],
-                  yAxis: 0
-                }]
-              });
-
-              $('#meter_title').show();
-            }
-            memChart.series[0].points[0].update(data.mem,true);
-          }
-
+            $('#pg_cpu').css('width',data.cpu+'%');
+			$('#pg_cpu').html(data.cpu+'%');
+			if(data.cpu<=80) {
+			  $('#pg_cpu').removeClass('progress-bar-danger');
+			  $('#pg_cpu').addClass('progress-bar-success');
+			}else{
+			  $('#pg_cpu').removeClass('progress-bar-success');
+			  $('#pg_cpu').addClass('progress-bar-danger');  
+			}
+		  }
+		  if(data&&"number"==typeof(data.mem)){
+			$('#pg_mem').css('width',data.mem+'%');
+			$('#pg_mem').html(data.mem+'%')
+			if(data.mem<=80) {
+			  $('#pg_mem').removeClass('progress-bar-danger');
+			  $('#pg_mem').addClass('progress-bar-success');
+			}else{
+			  $('#pg_mem').removeClass('progress-bar-success');
+			  $('#pg_mem').addClass('progress-bar-danger');  
+			}
+		  }
+		  if(data&&"number"==typeof(data.daemon)){
+			if(data.daemon==1) $('#pg_daemon').html('<font color=green>正在运行...</font>');
+			else $('#pg_daemon').html('<font color=red>尚未运行...</font>');
+		  }
           setTimeout('update_chart()',3000);
         });
       }
-      $(function () {
-        Highcharts.setOptions({
-          chart: {
-            type: 'gauge',
-            plotBorderWidth: 1,
-            plotBackgroundColor: {
-              linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
-              stops: [
-                [0, '#FFF9D9'],
-                [0.2, '#FFFFFF'],
-                [1, '#FFF4C6']
-              ]
-            },
-            plotBackgroundImage: null,
-            height: 150
-          },
-          credits: {
-            enabled: false
-          },
-
-          title: {
-            text: null//'VU meter'
-          },
-          
-          pane: [{
-            startAngle: -45,
-            endAngle: 45,
-            background: null,
-            center: ['50%', '145%'],
-            size: 260
-          }],                 
-        
-          yAxis: [{
-            min: 0,
-            max: 100,
-            tickInterval: 25,
-            minorTickPosition: 'outside',
-            tickPosition: 'outside',
-            labels: {
-              rotation: 'auto',
-              distance: 20,
-              formatter: function() {
-                return this.value + '%';
-              }
-            },
-            plotBands: [{
-              from: 70,
-              to: 100,
-              color: '#C02316',
-              innerRadius: '100%',
-              outerRadius: '105%'
-            }],
-            pane: 0,
-            title: {
-              // text: 'Memory',
-              y: -40
-            }
-          }],
-          plotOptions: {
-            gauge: {
-              animation: false,
-              dataLabels: {
-                enabled: false
-              },
-              dial: {
-                radius: '100%'
-              }
-            }
-          },
-          series: [{
-            data: [0],
-            yAxis: 0
-          }]
-        });
-
-        update_chart();
-      });
     </script>
   </body>
 </html>

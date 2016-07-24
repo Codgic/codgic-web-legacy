@@ -233,7 +233,7 @@ void solution::judge() throw (const char *)
 						status = RES_WA;
 						get_score = 0;
 						if(s == 1) {
-							tips = "Output mismatch.\n  Your: ";
+							tips = "Output mismatch.\nYours: ";
 							tips += info.user_mismatch;
 							tips += "\nAnswer: ";
 							tips += info.std_mismatch;

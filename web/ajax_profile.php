@@ -2,25 +2,27 @@
 require 'inc/ojsettings.php';
 if(!isset($_POST['type'],$_POST['nick'],$_POST['email'],$_POST['school']))
 	die('Invalid argument.');
-if(strlen($_POST['nick'])>190)
+if(strlen($_POST['nick'])>40)
 	die('昵称太长');
 if(strlen($_POST['school'])>60)
 	die('学校名太长');
 if(strlen($_POST['email'])>60)
 	die('邮箱太长');
 if($_POST['type']=='profile'){
-	if(!isset($_POST['oldpwd']))
+	if(!isset($_POST['oldpwd'],$_POST['motto']))
 		die('Invalid argument.');
+       if(strlen($_POST['motto'])>200)
+	       die('签名太长');
 	session_start();
 	if(!isset($_SESSION['user']))
-		die('Not logged in.');
+		die('你尚未登录...');
 	$user=$_SESSION['user'];
-	require('inc/database.php');
-    require_once('inc/checkpwd.php');
+	require 'inc/database.php';
+    require_once 'inc/checkpwd.php';
     if(!password_right($user, $_POST['oldpwd']))
 		die('旧密码不正确');
 	
-	$query='update users set email=\''.mysqli_real_escape_string($con,$_POST['email']).'\',school=\''.mysqli_real_escape_string($con,$_POST['school']).'\',nick=\''.mysqli_real_escape_string($con,$_POST['nick']).'\'';
+	$query='update users set email=\''.mysqli_real_escape_string($con,$_POST['email']).'\',school=\''.mysqli_real_escape_string($con,$_POST['school']).'\',nick=\''.mysqli_real_escape_string($con,$_POST['nick']).'\',motto=\''.mysqli_real_escape_string($con,$_POST['motto']).'\'';
 	if(isset($_POST['newpwd']) && $_POST['newpwd']!=''){
 		$len=strlen($_POST['newpwd']);
 		if($len<6||$len>50)
@@ -29,11 +31,13 @@ if($_POST['type']=='profile'){
 	}
 	$query.=" where user_id='$user'";
 	mysqli_query($con,$query);
-	echo "用户信息更新成功";
+	echo "success";
 }else if($_POST['type']=='reg'){
 	if(!isset($_POST['userid'],$_POST['newpwd']))
 		die('Invalid argument.');
-	require('inc/database.php');
+    if(!isset($_POST['lic']))
+        die('您必须同意服务条款方可注册本站...');
+	require 'inc/database.php';
 	$user=mysqli_real_escape_string($con,trim($_POST['userid']));
 	$len=strlen($user);
 	if($len==0)
@@ -48,8 +52,8 @@ if($_POST['type']=='profile'){
 		die('密码不符合要求(至少6位)');
 	$pwd=mysqli_real_escape_string($con,$_POST['newpwd']);
 
-	if($require_confirm) mysqli_query($con,"insert into users (user_id,email,password,reg_time,nick,school,defunct) values ('$user','".mysqli_real_escape_string($con,$_POST['email'])."','$pwd',NOW(),'".mysqli_real_escape_string($con,$_POST['nick'])."','".mysqli_real_escape_string($con,$_POST['school'])."','Y')");
-	else mysqli_query($con,"insert into users (user_id,email,password,reg_time,nick,school,defunct) values ('$user','".mysqli_real_escape_string($con,$_POST['email'])."','$pwd',NOW(),'".mysqli_real_escape_string($con,$_POST['nick'])."','".mysqli_real_escape_string($con,$_POST['school'])."','N')");
+	if($require_confirm) mysqli_query($con,"insert into users (user_id,email,password,reg_time,nick,school,defunct,motto) values ('$user','".mysqli_real_escape_string($con,$_POST['email'])."','$pwd',NOW(),'".mysqli_real_escape_string($con,$_POST['nick'])."','".mysqli_real_escape_string($con,$_POST['school'])."','Y','')");
+	else mysqli_query($con,"insert into users (user_id,email,password,reg_time,nick,school,defunct,motto) values ('$user','".mysqli_real_escape_string($con,$_POST['email'])."','$pwd',NOW(),'".mysqli_real_escape_string($con,$_POST['nick'])."','".mysqli_real_escape_string($con,$_POST['school'])."','N','')");
 	$code=mysqli_errno($con);
 	if($code==0)
 		echo 'success';

@@ -1,5 +1,5 @@
 <?php
-require('inc/mutex.php');
+require 'inc/mutex.php';
 require 'inc/ojsettings.php';
 require 'inc/database.php';
 function getNextMsgID(){
@@ -13,7 +13,7 @@ function getNextMsgID(){
 	return $ID;
 }
 session_start();
-if(!isset($_SESSION['user']))
+if($require_auth&&!isset($_SESSION['user']))
 	die('没有登录...');
 if(!isset($_POST['op']))
   die('Wrong Argument');

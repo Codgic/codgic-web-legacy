@@ -1,7 +1,7 @@
 <?php
 session_start();
-require('inc/database.php');
-require('inc/preferences.php');
+require 'inc/database.php';
+require 'inc/preferences.php';
 if(!isset($_SESSION['user']))
 	exit();
 $user=$_SESSION['user'];
@@ -9,10 +9,10 @@ $pref=unserialize($_SESSION['pref']);
 
 function processOption($name)
 {
-   require('inc/database.php');
+   require 'inc/database.php';
 	global $pref,$user;
 	if(isset($_POST[$name])){
-		$tmp='on';
+		$tmp=$_POST[$name];
 	}else{
 		$tmp='off';
 	}
@@ -20,12 +20,10 @@ function processOption($name)
 	mysqli_query($con,"insert into preferences(user_id,property,value) values ('$user','$name','$tmp') ON DUPLICATE KEY UPDATE value='$tmp'");
 
 }
-
-processOption('sharecode');
-processOption('hidehotkey');
 processOption('night');
-processOption('autonight');
+processOption('edrmode');
+processOption('sharecode');
 
 $_SESSION['pref']=serialize($pref);
 
-
+?>

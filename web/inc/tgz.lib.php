@@ -62,7 +62,7 @@ class TGZfile{
 
 		fwrite($this->file, $buf);
 		hash_update($this->hctx, $buf);
-
+http://www.jb51.net/article/37929.htm
 		$this->tar_size += strlen($buf);
 
 		return TRUE;

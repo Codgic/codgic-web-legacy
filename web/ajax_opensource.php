@@ -5,7 +5,7 @@ session_start();
 if(!isset($_SESSION['user']))
 	die('您尚未登录...');
 
-require('inc/database.php');
+require 'inc/database.php';
 
 $uid=($_SESSION['user']);
 if('all'==$_POST['id']){
@@ -16,6 +16,6 @@ if('all'==$_POST['id']){
 	if(1==mysqli_affected_rows($con))
 		echo "success";
 	else
-		echo "failed";
+		echo "fail";
 }
 ?>

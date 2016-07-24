@@ -1,7 +1,7 @@
 <?php
-if(!isset($_SESSION)) session_start(); 
+if(!isset($_SESSION)) session_start();
 if(!isset($_SESSION['user'])){
-	require 'inc/cookie.php';
+	require_once 'inc/cookie.php';
 	if(!check_cookie()) {
 		if($require_auth) {
 		  header("location: /login.php");

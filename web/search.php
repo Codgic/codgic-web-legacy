@@ -1,141 +1,265 @@
 <?php
 require 'inc/ojsettings.php';
-function check_problemid(&$str)
+require 'inc/privilege.php';
+
+function check_id(&$str,&$t)
 {
+  if($t==1) $type='problem';
+  else if($t==2) $type='contest';
+  else return;
   require 'inc/database.php';
   if(preg_match('/\D/',$str))
     return;
   $num=intval($str);
-  if(isset($_SESSION['administrator']))
+  if(check_priv(PRIV_PROBLEM))
 	  $addt_cond='';
   else
       $addt_cond="defunct='N' and ";
-  if(mysqli_num_rows(mysqli_query($con,'select problem_id from problem where '.$addt_cond.'problem_id='.$num))){
-      header('location: problempage.php?problem_id='.$num);
+  if(mysqli_num_rows(mysqli_query($con,'select '.$type.'_id from '.$type.' where '.$addt_cond.$type.'_id='.$num))){
+      header('location: '.$type.'page.php?'.$type.'_id='.$num);
       exit();
   }
 }
-
-if(!isset($_GET['q']))
-  die('没有输入关键字...');
-else
-  $req=($_GET['q']);
+if(!isset($_GET['q'])||empty($_GET['q']))
+  $req='';
+else{
+  $req=urlencode($_GET['q']);
+}
+if(!isset($_GET['t'])){
+  header("Location:search.php?t=1&q=$req");
+  exit();
+}else $type=intval($_GET['t']);
+if($type<1||$type>3){
+  header("Location:search.php?t=1&q=$req");
+  exit();
+}
 if(isset($_GET['page_id']))
   $page_id=intval($_GET['page_id']);
 else
-  $page_id=0;
+  $page_id=1;
 if(strlen($req)>600)
   die('关键字太长...');
-require ('inc/checklogin.php');
-require('inc/database.php');
-check_problemid($req);
-$keyword=mysqli_real_escape_string($con,trim($req));
-if(isset($_SESSION['administrator']))
+require 'inc/checklogin.php';
+require 'inc/database.php';
+$keyword=mysqli_real_escape_string($con,trim(urldecode($req)));
+if(check_priv(PRIV_PROBLEM))
 	$addt_cond='';
 else
     $addt_cond="defunct='N' and ";
-if(isset($_SESSION['user'])){
-  $user_id=$_SESSION['user'];
-  $result=mysqli_query($con,"SELECT problem_id,title,source,res,tags from
+    
+switch($type){
+  case 1:
+  check_id($req,$type);
+  if(isset($_SESSION['user'])){
+    $user_id=$_SESSION['user'];
+    $result=mysqli_query($con,"SELECT problem_id,title,source,res,tags from
     (select problem.problem_id,title,source,tags,defunct from problem left join user_notes on (user_id='$user_id' and user_notes.problem_id=problem.problem_id)  )pt
     LEFT JOIN (select problem_id as pid,MIN(result) as res from solution where user_id='$user_id' and problem_id group by problem_id) as temp on(pid=problem_id)
     where ".$addt_cond."(title like '%$keyword%' or source like '%$keyword%' or tags like '%$keyword%')
-    order by problem_id limit $page_id,100");
-}else{
-  $result=mysqli_query($con,"SELECT problem_id,title,source,defunct from
+    order by problem_id limit ".(($page_id-1)*20).",20");
+  }else{
+    $result=mysqli_query($con,"SELECT problem_id,title,source,defunct from
     problem
     where defunct='N' and (title like '%$keyword%' or source like '%$keyword%')
-    order by problem_id limit $page_id,100");
+    order by problem_id limit ".(($page_id-1)*20).",20");
+  }
+  break;
+  case 2:
+  check_id($req,$type);
+  if(isset($_SESSION['user'])){
+    $user_id=$_SESSION['user'];
+    $result=mysqli_query($con,"SELECT contest_id,title,source,res,start_time,end_time,defunct from contest
+    LEFT JOIN (select contest_id as cid,1 as res from contest_status where user_id='$user_id') as fuckzk on (cid=contest_id)
+    where ".$addt_cond."(title like '%$keyword%' or source like '%$keyword%')
+    order by contest_id limit ".(($page_id-1)*20).",20");
+  }else{
+    $result=mysqli_query($con,"SELECT contest_id,title,source,defunct,start_time,end_time from contest
+    where ".$addt_cond."(title like '%$keyword%' or source like '%$keyword%')
+    order by contest_id limit ".(($page_id-1)*20).",20");
+  }
+  break;
+  case 3:
+    $result=mysqli_query($con,"select user_id,nick,solved,submit,accesstime from users 
+    where user_id like '%$keyword%' or nick like '%$keyword%'
+    order by solved desc limit ".(($page_id-1)*20).",20");
+  break;
 }
-if(mysqli_num_rows($result)==1){
-  $row=mysqli_fetch_row($result);
-  header('location: problempage.php?problem_id='.$row[0]);
-  exit();
-}
+$nowtime=date('Y-m-d h:i:s',time());
 $inTitle='搜索结果';
 $Title=$inTitle .' - '. $oj_name;
-//$Title="搜索结果 $page_id";
 ?>
 <!DOCTYPE html>
 <html>
-  <?php require('head.php'); ?>
-
+  <?php require 'head.php'; ?>
   <body>
-    <?php require('page_header.php'); ?>      
-    <div class="container-fluid">
-      <div class="row-fluid">
-        <div class="span10 offset1" style="text-align: center;">
-          <h2>搜索结果</h2><br />
+    <?php require 'page_header.php'; ?>      
+    <div class="container">
+      <div class="row">
+        <div class="col-xs-12 text-center">
+		  <ul class="pagination">
+			<li <?php if($type==1) echo 'class="active"'?>><a href="search.php?t=1&q=<?php echo $req?>"><i class="fa fa-fw fa-coffee"></i> 题目</a></li>
+			<li <?php if($type==2) echo 'class="active"'?>><a href="search.php?t=2&q=<?php echo $req?>"><i class="fa fa-fw fa-compass"></i> 比赛</a></li>
+			<li <?php if($type==3) echo 'class="active"'?>><a href="search.php?t=3&q=<?php echo $req?>"><i class="fa fa-fw fa-user"></i> 用户</a></li>
+		  </ul>
         </div>
       </div>
-      <div class="row-fluid">
-        <div class="span10 offset1">
-
-            <table class="table table-hover table-bordered table-left-aligned table-first-center-aligned table-condensed" style="margin-bottom:0">
+      <div class="row">
+        <?php if(!isset($_GET['q'])||empty($_GET['q'])){?>
+        <div class="text-center none-text none-center">
+            <p><i class="fa fa-meh-o fa-4x"></i></p>
+            <p><b>ERROR 250</b><br>
+            你并没有输入关键字</p>
+          </div>
+        <?php }else if(mysqli_num_rows($result)==0){ ?>
+        <div class="text-center none-text none-center">
+            <p><i class="fa fa-meh-o fa-4x"></i></p>
+            <p><b>Whoops</b><br>
+            看起来我们并没有找到你想要的东西</p>
+          </div>
+        <?php }else{?>
+        <div class="col-xs-12 table-responsive">
+			<?php if($type==3){?>
+			<table class="table table-hover table-bordered" style="margin-bottom:0">
               <thead><tr>
-                <th style="width:7%">ID</th>
-                <?php
-                 if(isset($_SESSION['user'])) 
-                     echo '<th colspan="2">标题</th>', 
-                     '<th style="width:20%">用户备注</th>'; 
-                     else echo '<th>标题</th>'; 
-                 ?>
-                <th style="width:30%">标签</th>
+                <th style="width:25%">用户名</th>
+                <th style="width:51%">昵称</th>
+                <th style="width:8%">状态</th>
+                <th style="width:8%">AC量</th>
+                <th style="width:8%">提交量</th>
               </tr></thead>
-              <tbody>
+
+              <tbody id="userlist">
                 <?php 
                   while($row=mysqli_fetch_row($result)){
                 echo '<tr>';
-                echo '<td>',$row[0],'</td>';
-                if(isset($_SESSION['user'])){
-                  echo '<td style="width:36px;text-align:center;"><i class=', is_null($row[3]) ? '"fa fa-fw fa-remove fa-2x" style="visibility:hidden"' : ($row[3]? '"fa fa-fw fa-remove fa-2x" style="color:red"' : '"fa fa-fw fa-2x fa-check" style="color:green"'), '></i>', '</td>';
-                  echo '<td style="border-left:0;">';
-                }else{
-                  echo '<td>';
-                }
-                echo '<a href="problempage.php?problem_id=',$row[0],'">',$row[1],'</a></td>';
-                if(isset($_SESSION['user']))
-                  echo '<td>',htmlspecialchars($row[4]),'</td>';
-                echo '<td>',$row[2],'</td>';
+                echo '<td><a href="#linkU">',$row[0],'</a></td>';
+                echo '<td>',htmlspecialchars($row[1]),'</td>';
+                if(time()-strtotime($row[4])<=300) echo '<td><label class="label label-success">在线</label></td>';
+                else echo '<td><label class="label label-danger">离线</label></td>';
+                echo '<td><a href="record.php?user_id=',$row[0],'&amp;result=0">',$row[2],'</a></td>';
+                echo '<td><a href="record.php?user_id=',$row[0],'">',$row[3],'</a></td>';
                 echo "</tr>\n";
                   }
                 ?>
               </tbody>
             </table>
-
+			<?php }else{?>
+            <table class="table table-hover table-bordered table-left-aligned table-first-center-aligned" style="margin-bottom:0">
+              <thead><tr>
+                <th style="width:7%">ID</th>
+                <?php
+				if(isset($_SESSION['user'])){
+				  echo '<th colspan="2">标题</th>'; 
+				  if($type==1) echo '<th style="width:20%">备注</th>';
+				  }else echo '<th>标题</th>';
+				  if($type==2) echo '<th style="width:20%">状态</th>';  
+                 ?>
+                <th style="width:30%">标签</th>
+              </tr></thead>
+              <tbody>
+                <?php 
+                if($type==1){
+                    while($row=mysqli_fetch_row($result)){
+                    echo '<tr><td>',$row[0],'</td>';
+                    if(isset($_SESSION['user'])){
+                      echo '<td class="text-center" style="width:36px"><i class=', is_null($row[3]) ? '"fa fa-fw fa-remove fa-2x" style="visibility:hidden"' : (($type==1&&$row[3])? '"fa fa-fw fa-remove fa-2x" style="color:red"' : '"fa fa-fw fa-2x fa-check" style="color:green"'), '></i>', '</td>';
+                      echo '<td style="border-left:0;">';
+                    }else{
+                      echo '<td>';
+                    }
+                    echo '<a href="problempage.php?problem_id=',$row[0],'">',$row[1],'</a></td>';
+                    if(isset($_SESSION['user']))
+                      echo '<td>',htmlspecialchars($row[4]),'</td>';
+                      echo '<td>',$row[2],'</td>';
+                      echo "</tr>\n";
+                    }
+                }else{  
+                  while($row=mysqli_fetch_row($result)){
+                    if($nowtime>$row[5]) $cont_status='<span class="label label-ac">已经结束</span>';
+                    else if($nowtime<$row[4]) $cont_status='<span class="label label-wa">尚未开始</span>';
+                    else $cont_status='<span class="label label-re">正在进行</span>';
+                    echo '<tr><td>',$row[0],'</td>';
+                    if(isset($_SESSION['user'])){
+                      echo '<td class="text-center" style="width:36px"><i class=', is_null($row[3]) ? '"fa fa-fw fa-remove fa-2x" style="visibility:hidden"' : (($type==1&&$row[3])? '"fa fa-fw fa-remove fa-2x" style="color:red"' : '"fa fa-fw fa-2x fa-check" style="color:green"'), '></i>', '</td>';
+                      echo '<td style="border-left:0;">';
+                    }else{
+                      echo '<td>';
+                    }
+                    echo '<a href="contestpage.php?contest_id=',$row[0],'">',$row[1],'</a></td>';
+                    if(isset($_SESSION['user']))
+                      echo '<td>',htmlspecialchars($row[4]),'</td>';
+                      echo '<td>',$cont_status.'</td>';
+                      echo '<td>',$row[2],'</td>';
+                      echo "</tr>\n";
+                    }
+                }
+                ?>
+              </tbody>
+            </table>
+			<?php }}?>
         </div>  
       </div>
-      <div class="row-fluid">
+      <div class="row">
         <ul class="pager">
           <li>
-            <a class="pager-pre-link shortcut-hint" title="Alt+A" href="#" id="btn-pre">&larr; 上一页</a>
+            <a class="pager-pre-link shortcut-hint" title="Alt+A" <?php
+              if($page_id>1) echo 'href="search.php?t='.$type.'&q='.$req.'&page_id='.($page_id-1).'"';
+            ?>><i class="fa fa-fw fa-angle-left"></i> 上一页</a>
           </li>
           <li>
-            <a class="pager-next-link shortcut-hint" title="Alt+D" href="#" id="btn-next">下一页 &rarr;</a>
+            <a class="pager-next-link shortcut-hint" title="Alt+D" <?php
+              if(mysqli_num_rows($result)==20) echo 'href="search.php?t='.$type.'&q='.$req.'&page_id='.($page_id+1).'"';
+            ?>>下一页 <i class="fa fa-fw fa-angle-right"></i></a>
           </li>
         </ul>
-      </div> 
+      </div>
+	  <?php if($type==3){?>
+	  <div class="modal fade" id="UserModal">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+              <h4 class="modal-title">用户信息</h4>
+            </div>
+            <div class="modal-body" id="user_status">
+              <p>信息不可用……</p>
+            </div>
+            <div class="modal-footer">
+              <form action="mail.php" method="post">
+                <input type="hidden" name="touser" id="um_touser">
+                <?php if(isset($_SESSION['user'])){?>
+                <button type="submit" class="btn btn-default pull-left"><i class="fa fa-fw fa-envelope-o"></i> 发私信</button>
+                <?php }?>
+              </form>
+              <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+            </div>
+          </div>
+        </div>
+      </div>
+	  <?php }?>  
       <hr>
       <footer>
        <p>&copy; <?php echo"{$year} {$oj_copy}";?></p>
       </footer>
     </div>
-    <script src="/assets/js/common.js"></script>
+    <script src="/assets/js/common.js?v=<?php echo $web_ver?>"></script>
     <script type="text/javascript"> 
       $(document).ready(function(){
-        var thispage=<?php echo $page_id?>;
-        var u=new String("search.php?q=<?php echo urlencode($_GET['q']);?>");
-        $('#ret_url').val(u+"&page_id="+thispage);
-        $('#btn-next').click(function(){
-          location.href=u+"&page_id="+(thispage+100);
-          return false;
-        })
-        $('#btn-pre').click(function(){
-          if(thispage-100>=0)
-            location.href=u+"&page_id="+(thispage-100);
-          return false;
-        })
-
+        change_type(<?php echo $type?>);
+		$('#search_input').val("<?php echo urldecode($req)?>");
+        $('#search_type').val("<?php echo $type?>");
+	  <?php if($type==3){?>
+		$('#userlist').click(function(Event){
+          var $target=$(Event.target);
+          if($target.is('a') && $target.attr('href')=='#linkU'){
+            $('#user_status').html("<p>正在加载...</p>").load("ajax_user.php?user_id="+Event.target.innerHTML).scrollTop(0);
+            $('#um_touser').val(Event.target.innerHTML);
+            $('#UserModal').children('.modal-header').children('h4').html('用户信息');
+            $('#UserModal').modal('show');
+            return false;
+          }
+        });
+	  <?php }?>
       });
     </script>
   </body>

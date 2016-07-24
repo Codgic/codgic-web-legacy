@@ -247,7 +247,7 @@ void refresh_users_problem(int problem_id) throw (const char *)
 	sprintf(statements,"update solution set valid=0 where problem_id=%d", problem_id);
 	if(mysql_query(hMySQL, statements))
 		throw "set valid=0";
-	sprintf(statements,"update solution,(select solution_id from(select solution_id,user_id from solution where problem_id=%d and result=0 order by solution_id) as t group by user_id)as s SET valid=1 where solution.solution_id=s.solution_id", problem_id);
+	sprintf(statements,"update solution,(select solution_id from(select solution_id,user_id from solution where problem_id=%d and result=0 order by solution_id) as t group by user_id)as s set valid=1 where solution.solution_id=s.solution_id", problem_id);
 	if(mysql_query(hMySQL, statements))
 		throw "maintain valid field";
 }

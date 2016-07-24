@@ -1,15 +1,3 @@
-function menu_expand(){
-    $("#nav_user").hide();
-    $(".main_menu").addClass("visible-desktop");
-    $(".user_menu").show();
-    return;
-}   
-function menu_back(){
-    $("#nav_user").show();
-    $(".main_menu").removeClass("visible-desktop");
-    $(".user_menu").hide();
-    return;
-}
 function htmlEncode(str) {
 	var s = "";
 	if (str.length == 0) return "";
@@ -56,7 +44,6 @@ function InsertString(tb, str){
     }
 }
 function GetSelection(tb){
-
     var sel = '';
     if (document.all){
         var r = document.selection.createRange();
@@ -107,10 +94,11 @@ shortcuts={
 			}catch(exp){}
 		} , //alt+D
 	"66": function(){location.href=$('#nav_bbs').attr('href');} , //alt+B
-	"80": function(){location.href=$('#nav_prob').attr('href');} , //alt+P
+	"67": function(){location.href=$('#nav_cont').attr('href');} , //alt+C
+	"80": function(){location.href=$('#nav_set').attr('href');} , //alt+P
 	"82": function(){location.href=$('#nav_record').attr('href');} , //alt+R
-	"73": function(){$("#search_input").focus();} , //alt+I
-	"76": function(){$("#login_btn").click();} , //alt+L
+	"73": function(){$('#nav_searchbtn').click();} , //alt+I
+	"76": function(){$("#nav_login").click();} , //alt+L
 	"77": function(){
 			var obj=$('#nav_mail');
 			if(obj.length) //if logged in
@@ -118,9 +106,9 @@ shortcuts={
 		}   //Alt+M
 
 };
-shortcuts[49]=shortcuts[66]; //Alt+1
+shortcuts[49]=shortcuts[67]; //Alt+1
 shortcuts[50]=function(){location.href=$('#nav_set').attr('href');} //Alt+2
-shortcuts[51]=shortcuts[80]; //Alt+3
+shortcuts[51]=shortcuts[66]; //Alt+3
 shortcuts[52]=shortcuts[82]; //Alt+4
 shortcuts[53]=function(){location.href=$('#nav_rank').attr('href');} //Alt+5
 shortcuts[54]=function(){location.href=$('#nav_about').attr('href');} //Alt+6
@@ -136,71 +124,19 @@ function hotkey_hint_dismiss (E) {
 }
 function reg_hotkey (key, fun) {
 	shortcuts[key] = fun; }
+function change_type(e){
+    $('#search_type').val(e);
+    $('#search_select').html($('#type'+e).html());
+    $('#search_input').focus();
+}
 $(document).ready(function(){
-	var $nav=$('#navbar_top'),navFixed=false,$win=$(window),$container=$('body>.container-fluid'),$notifier=$('.notifier');
-	function processScroll () {
-		var now = $win.scrollTop(),
-			navTop = $('header').height(),
-			$navbar_pseude = $('#navbar_pseude');
-		if(now>navTop && !navFixed){
-			navFixed = true;
-			$navbar_pseude.removeClass('hide');
-			$nav.addClass('navbar-fixed-top');
-		}else if(now<=navTop && navFixed){
-			navFixed = false;
-			//use class instead of style, so it can be overridden by @media{...}
-			$navbar_pseude.addClass('hide');
-			$nav.removeClass('navbar-fixed-top');
-		}
-	}
-	if($nav.length && $('header').length){
-		processScroll();
-		$win.on('scroll', processScroll);
-	}else if($nav.length){
-		navFixed = true;
-	}
-	$('#LoginModal').on('shown',function(){
-		$('#uid').focus();
-	});
-	$('#logoff_btn').click(function(){$.ajax({url:"logoff.php",dataType:"html",success:function(){location.reload();}});});
-	var $search_input=$('#search_input');
-	if($search_input.length)
-	{
-		$search_input.typeahead({
-			source:function(query, update){
-				var typeahead = this;
-				$.getJSON("ajax_search.php?q="+encodeURIComponent(query),function (r){
-					  update(r.arr);
-					  typeahead.$menu.find('.active').removeClass('active');
-					}
-				);
-			}
-		});
-		$search_input.keydown(function(E){
-			if(E.keyCode == 13){
-				var selected = $search_input.parent().find('.typeahead:visible>.active');
-				if(!selected.length)
-					$('#search_form').submit();
-			}
-		})
-	}
-	$('#form_login').submit(function(E){
-		var b=false;
-		if($('#uid').val()==''){
-			$('#uid_ctl').addClass('error');
-			b=true;
-		}else{
-			$('#uid_ctl').removeClass('error');
-		}
-		if($('#pwd').val()==''){
-			b=true;
-			$('#pwd_ctl').addClass('error');
-		}else
-			$('#pwd_ctl').removeClass('error');
-		if(b){
-			return false;
-		}
-	});
+	var $notifier=$('.notifier'),msgnum=0;
+	$('#nav_logoff').click(function(){$.ajax({url:"logoff.php",dataType:"html",success:function(){location.reload();}});});
+       $('#search_span').hover(function(){ 
+            $(this).addClass('open'); 
+       },function(){
+            $(this).removeClass('open'); 
+        });
 	$('#search_form').submit(function(){
 		if($.trim($('#search_input').val()).length==0)
 			return false;
@@ -211,14 +147,18 @@ $(document).ready(function(){
 		$.get("/ajax_mailfunc.php?op=check",function(data){
 			if(isNaN(data)||data=='0')
 				return;
-			$notifier.html(data);
-			var $alert=$('<div class="alert alert-success center alert-popup"> 你有未读私信...</div>').appendTo('body');
-			setTimeout(function(){$alert.fadeOut(400);},1000);
+                      $notifier.html(data);
+                      if(data>msgnum){
+                      msgnum=data;
+			var $alert=$('<div class="alert alert-success text-center alert-popup collapse" id="alert_newmsg"><i class="fa fa-fw fa-info"></i> 你收到了新私信...</div>').appendTo('body');
+                      setTimeout(function(){$alert.fadeIn()},1000);  
+			setTimeout(function(){$alert.fadeOut()},3000);  
+                    }           
 		});
 	}
-	if($notifier.length) {
-		setTimeout(checkMail,3000);
-	}
+        checkMail();
+        setInterval(checkMail,120000);
+
 }).keydown(function(E){
 	if(window.hidehotkey)
 		return;
@@ -235,39 +175,16 @@ $(document).ready(function(){
 		return false;
 	}
 }).keyup(hotkey_hint_dismiss);
-$('#search_input').focus(function(){
-    if($("#nav_user").is(":visible")) {
-        $("#nav_user").addClass("recover");
-        $("#nav_user").hide();
-    }
-    if($(".user_menu").is(":visible")) {
-        $(".user_menu").addClass("recover");
-        $(".user_menu").hide();
-    }
-    else if($(".login_menu").is(":visible")) {
-        $(".login_menu").addClass("recover");
-        $(".login_menu").hide();
-    }
-    $(".main_menu").addClass("visible-desktop");
-	$("#search_input").css("width","");
-}); 
-$('#search_input').focusout(function(){
-if($('#search_input').val()==''){
-    if($("#nav_user").hasClass("recover")) {
-        $("#nav_user").removeClass("recover");
-        $(".main_menu").removeClass("visible-desktop");
-        $("#nav_user").show();
-    }
-   if($(".user_menu").hasClass("recover")) {
-        $(".user_menu").removeClass("recover");
-        $(".user_menu").show();
-    }
-    else if($(".login_menu").hasClass("recover")) {
-        $(".login_menu").removeClass("recover");
-        $(".main_menu").removeClass("visible-desktop");
-        $(".login_menu").show();
-    }
-    $("#search_input").css("width","135px");
-}
-}); 
 $('#search_input').keyup(hotkey_hint_dismiss);
+$('#nav_searchbtn').click(function(){
+	$('#search_form').addClass("visible-xs-inline-block visible-sm-inline-block");
+       $('#nav_back').removeClass("hidden-xs hidden-sm");
+	$('#nav_left').addClass('hidden-xs hidden-sm');
+	$('#search_input').focus();
+});
+$('#btn_clrsearch').click(function(){
+	$('#search_input').val('');
+       $('#nav_back').addClass("hidden-xs hidden-sm");
+	$('#search_form').removeClass("visible-xs-inline-block visible-sm-inline-block");
+	$('#nav_left').removeClass('hidden-xs hidden-sm');
+});

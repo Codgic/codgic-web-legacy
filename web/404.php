@@ -1,31 +1,30 @@
 <?php
 require 'inc/ojsettings.php';
-require ('inc/checklogin.php');
+require 'inc/checklogin.php';
 $inTitle='ERROR 404';
 $Title=$inTitle .' - '. $oj_name;
-$img_id=mt_rand(1,intval($num_404));
+//$img_id=mt_rand(1,intval($num_404));
 ?>
 <!DOCTYPE html>
 <html>
   <?php require('head.php');?>
   <body>
     <?php require('page_header.php') ?>  
-    <div class="container-fluid">
-      <div class="row-fluid">
-        <div class="offset2 span8" style="font-size:16px">
-          <div class="page-header">
-            <h2>ERROR 404: 你要访问的页面不存在</h2>
+    <div class="container">
+      <div class="row">
+        <div class="col-xs-12">
+		  <div class="text-center none-text none-center">
+            <p><i class="fa fa-meh-o fa-4x"></i></p>
+            <p><b>ERROR 404</b><br>
+            看起来我们找不到您请求的页面</p>
           </div>
-		  <div>
-		  <center><p><a href="/index.php"><img src="/assets/res/404_<?php echo $img_id?>.png"></a></p></center>
         </div>
-      </div>
       </div>
 	  <hr>
       <footer>
         <p>&copy; <?php echo"{$year} {$oj_copy}";?></p>
       </footer>
-      </div>
-    <script src="/assets/js/common.js"></script>
+    </div>
+    <script src="/assets/js/common.js?v=<?php echo $web_ver?>"></script>
   </body>
 </html>

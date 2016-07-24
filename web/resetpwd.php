@@ -1,5 +1,5 @@
 <?php 
-require ('inc/ojsettings.php');
+require 'inc/ojsettings.php';
 session_start(); 
 $_SESSION['resetpwd_flag']=0;
 $_SESSION['resetpwd_wrongnum']=0;
@@ -10,71 +10,53 @@ $_SESSION['resetpwd_code']=rand(10000000,99999999);
 <?php 
 $inTitle='忘记密码';
 $Title=$inTitle .' - '. $oj_name;
-require ('head.php');
-echo "<body style=\"background-image: url({$loginimg})\">";
+require 'head.php';
 ?>
-    <div class="container-fluid">
-      <div class="row-fluid">
-        <div class="span center" style="padding:20px">
-          <h1 id="top_title"></h1>
-        </div>
-      </div>
-	</div>
-    <div id="emailpage" class="hide row-fluid">
-      <div style="display:table;margin:auto;white-space:nowrap;">
-		<form class="form-vertical well" id="form_email" action="#" method="post">
-          <h1 class="center"> 重置密码</h1>
-          <hr style="border-bottom-color: #E5E5E5;">
-            <div id="email_ctl" class="control-group">
-            <fieldset>
-              <div class="control-group" id="userid_ctl">
-                <div class="controls">
-                  <input class="input-xlarge" type="text" name="userid" id="input_userid" placeholder="用户名">
-				  <span class="fa fa-fw fa-user" style="margin-left:-25px;margin-top:7px;position:absolute"></span>
-                </div>
+  <body style="background-image: url(<?php echo $loginimg?>)">
+    <div class="row collapse" id="emailpage" style="margin-top:50px">
+      <div class="panel panel-default panel-login">
+		<div class="panel-body">
+		<form id="form_email" action="#" method="post">
+          <h1 class="text-center"> 重置密码</h1>
+          <hr>
+            <div id="email_ctl" class="form-group has-feedback">
+              <div class="form-group has-feedback" id="userid_ctl">
+                  <input class="form-control" type="text" name="userid" id="input_userid" placeholder="用户名">
+				  <span class="form-control-feedback"><i class="fa fa-fw fa-user"></i></span>
               </div>
-			  <div class="control-group" id="email_ctl">
-                <div class="controls">
-                  <input class="input-xlarge" type="text" name="email" id="input_email" placeholder="邮箱">
-				  <span class="fa fa-fw fa-envelope" style="margin-left:-25px;margin-top:7px;position:absolute"></span>
-                </div>
+			  <div class="form-group has-feedback" id="email_ctl">
+                  <input class="form-control" type="text" name="email" id="input_email" placeholder="邮箱">
+				  <span class="form-control-feedback"><i class="fa fa-fw fa-envelope"></i></span>
               </div>
-              <div class="center">
+              <div id="ajax_emailresult" class="collapse alert alert-danger"></div>
+              <div class="form-group text-center">
 			    <input type="button" id="email_nxt" class="btn btn-primary" value="下一步"/>&nbsp;&nbsp;&nbsp;
-				<a href="auth.php" style="line-height:40px">返回登录页</a>
+				<a href="login.php">返回登录页</a>
               </div>
-              <div class="center" style="margin-top:20px">
-                <span id="ajax_emailresult" class="hide alert alert-error"></span>
-              </div>
-            </fieldset>
 			</div>
-         </form> 
+         </form>
+		 </div>
        </div>
     </div>
 	 
-	<div id="verifypage" class="hide row-fluid">
-        <div style="display:table;margin:auto;white-space:nowrap">
-          <form class="form-vertical well" id="form_verify" action="#" method="post">
-            <h1 class="center">重置密码</h1>
+	<div id="verifypage" class="row collapse" style="margin-top:50px">
+        <div class="panel panel-default panel-login">
+          <form id="form_verify" action="#" method="post">
+            <h1 class="text-center">重置密码</h1>
             <hr style="border-bottom-color: #E5E5E5;">
-            <div id="verify_ctl" class="control-group">
-			<center><p>我们发送了一封包含验证码的邮件，请查收...</p></center><br />
-            <fieldset>
-              <div class="control-group" id="verify_ctl">
-                <div class="controls">
-                  <input class="input-xlarge" type="text" name="verifyid" id="input_verifyid" placeholder="验证码">
-				  <span class="fa fa-fw fa-key" style="margin-left:-25px;margin-top:7px;position:absolute"></span>
-                </div>
+            <div id="verify_ctl" class="form-group has-feedback">
+			<p class="text-center">我们发送了一封包含验证码的邮件，请查收...</p>
+              <div class="form-group has-feedback" id="verify_ctl">
+                  <input class="form-control" type="text" name="verifyid" id="input_verifyid" placeholder="验证码">
+				  <span class="form-control-feedback"><i class="fa fa-fw fa-key"></i></span>
               </div>
-              <div class="center">
+              <div id="ajax_verifyresult" class="collapse alert alert-danger"></div>
+              <div class="form-group text-center">
 				<input type="button" id="verify_nxt" class="btn btn-primary" value="下一步"/>&nbsp;&nbsp;&nbsp;
 				<input type="button" id="resend_btn" class="btn btn-danger" value="重新发送"/>&nbsp;&nbsp;&nbsp;
-				<a href="#" onclick="return show_tip();" style="line-height:40px">无法收到?</a>
+				<a href="javascript:void(0)" onclick="return show_tip();" style="line-height:40px">无法收到?</a>
               </div>
-              <div class="center" style="margin-top:20px;white-space:normal">
-                <span id="ajax_verifyresult" class="hide alert alert-error"></span>
-              </div>
-              <div class="hide" id="emailtip" style="text-align:left">
+              <div class="collapse" id="emailtip" style="text-align:left">
 				<br>
 				<p>在某些情况下邮件可能需要几分钟才能到达。<br>
                 若您仍未收到，请尝试以下步骤：</p>
@@ -82,38 +64,29 @@ echo "<body style=\"background-image: url({$loginimg})\">";
 				<p>2. 去您邮箱的垃圾邮件栏里看一看</p>
 				<p>3. 联系管理员</p>
 			  </div>
-            </fieldset>
 		    </div>
           </form> 
          </div>
       </div>
       
-    <div id="pwdpage" class="hide row-fluid">
-      <div style="display:table;margin:auto;white-space:nowrap">
-		<form class="form-vertical well" id="form_pwd" action="#" method="post">
-          <h1 class="center">重置密码</h1>
+    <div id="pwdpage" class="row collapse" style="margin-top:50px">
+      <div class="panel panel-default panel-login">
+		<form id="form_pwd" action="#" method="post">
+          <h1 class="text-center">重置密码</h1>
           <hr style="border-bottom-color: #E5E5E5;">
-          <div id="pwd_ctl" class="control-group">
-          <fieldset>
-            <div class="control-group" id="newpwd_ctl">
-              <div class="controls">
-                <input class="input-xlarge" type="password" id="input_newpwd" name="newpwd" placeholder="新密码">
-				<span class="fa fa-fw fa-key" style="margin-left:-25px;margin-top:7px;position:absolute"></span>
-              </div>
+          <div id="pwd_ctl" class="form-group has-feedback">
+            <div class="form-group has-feedback" id="newpwd_ctl">
+                <input class="form-control" type="password" id="input_newpwd" name="newpwd" placeholder="新密码">
+				<span class="form-control-feedback"><i class="fa fa-fw fa-key"></i></span>
             </div>
-            <div class="control-group" id="reppwd_ctl">
-              <div class="controls">
-                <input class="input-xlarge" type="password" id="input_reppwd" placeholder="重复密码">
-				<span class="fa fa-fw fa-refresh" style="margin-left:-25px;margin-top:7px;position:absolute"></span>
-              </div>
+            <div class="form-group has-feedback" id="reppwd_ctl">
+                <input class="form-control" type="password" id="input_reppwd" placeholder="重复密码">
+				<span class="form-control-feedback"><i class="fa fa-fw fa-refresh"></i></span>
             </div>
-            <div class="center">
+            <div id="ajax_pwdresult" class="collapse alert alert-danger"></div>
+            <div class="form-group text-center">
               <span id="pwd_save" class="btn btn-primary">下一步</span>&nbsp;&nbsp;&nbsp;
             </div>
-            <div class="center" style="margin-top:20px">
-              <span id="ajax_pwdresult" class="hide alert alert-error"></span>
-            </div>
-          </fieldset>
 		  </div>
         </form> 
        </div>
@@ -153,7 +126,7 @@ echo "<body style=\"background-image: url({$loginimg})\">";
         return false;
 	}
 	  $(document).ready(function() {
-		  $('#emailpage').fadeIn('slow');
+		  $('#emailpage').fadeIn();
 		  var error = 0;
 		  $('#email_nxt').click(function(){
 			$('#ajax_emailresult').hide();
@@ -178,13 +151,13 @@ echo "<body style=\"background-image: url({$loginimg})\">";
               url:'ajax_resetpwd.php',
               data:{"type":'verify',"user":$.trim($('#input_userid').val()),"email":$.trim($('#input_email').val())},
               success:function(msg){
-				   email_nxt.removeAttribute("disabled");
+                  email_nxt.removeAttribute("disabled");
 			      email_nxt.value = "下一步";
                   if(msg == 'success') {
 					  switch_verify();
 					  settime(resend_btn);
 				  }
-				  else $('#ajax_emailresult').html('<i class="fa fa-fw fa-remove"></i> '+msg).show();
+				  else $('#ajax_emailresult').html('<i class="fa fa-fw fa-remove"></i> '+msg).slideDown();
               }
             });
 			};
@@ -225,30 +198,30 @@ echo "<body style=\"background-image: url({$loginimg})\">";
             };
 			if(!a){
 				verify_nxt.setAttribute("disabled", true);
-				verify_nxt.value = '<i class="fa fa-fw fa-circle-o-notch fa-spin"></i> 请稍后...';
+				verify_nxt.value = '请稍后...';
 				$.ajax({
                   type:"POST",
                   url:'ajax_resetpwd.php',
                   data:{"type":'match',"usercode":$.trim($('#input_verifyid').val())},
                   success:function(msg){
 					  if (msg=='success'){
-						   switch_pwd();
+                        switch_pwd();
 					  } 
 					  else if(msg=='timeout'){
-						  $('#ajax_verifyresult').html('<i class="fa fa-fw fa-remove"></i> 身份验证过期，请重新开始...').show();
-						  window.setTimeout("window.location='resetpwd.php'",2000); 
+                        $('#ajax_verifyresult').html('<i class="fa fa-fw fa-remove"></i> 身份验证过期，请重新开始...').slideDown();
+                        window.setTimeout("window.location='resetpwd.php'",2000); 
 					  }
 					  else if(msg=='fail'){
-					   $('#ajax_verifyresult').html('<i class="fa fa-fw fa-remove"></i> 验证码错误...').show();
-			    		 verify_nxt.removeAttribute("disabled");
+					   $('#ajax_verifyresult').html('<i class="fa fa-fw fa-remove"></i> 验证码错误...').slideDown();
+                        verify_nxt.removeAttribute("disabled");
 			        verify_nxt.value = "下一步";
 					  }
 					  else if(msg=='fuckyou') {
-							$('#ajax_verifyresult').html('<i class="fa fa-fw fa-remove"></i> 错误次数过多，请重新开始...').show();
-						  window.setTimeout("window.location='resetpwd.php'",2000); 
+                        $('#ajax_verifyresult').html('<i class="fa fa-fw fa-remove"></i> 错误次数过多，请重新开始...').slideDown();
+                        window.setTimeout("window.location='resetpwd.php'",2000); 
 				     }
                else {
-                 $('#ajax_verifyresult').html('<i class="fa fa-fw fa-remove"></i> 未知错误...').show();
+                 $('#ajax_verifyresult').html('<i class="fa fa-fw fa-remove"></i> 未知错误...').slideDown();
                  verify_nxt.removeAttribute("disabled");
                  verify_nxt.value = "下一步";
                }
@@ -286,12 +259,12 @@ echo "<body style=\"background-image: url({$loginimg})\">";
               data:{"type":'update',"newpwd":$.trim($('#input_newpwd').val())},
               success:function(msg){
                   if(msg == 'success'){
-				  $('#ajax_pwdresult').removeClass('alert-danger');
-				  $('#ajax_pwdresult').addClass('alert-success');
-	              $('#ajax_pwdresult').html('<i class="fa fa-fw fa-check"></i> 密码重置成功，即将跳转至首页...').show();
-	              window.setTimeout("window.location='index.php'",2000); 
+                    $('#ajax_pwdresult').removeClass('alert-danger').addClass('alert-success');
+                    $('#ajax_pwdresult').html('<i class="fa fa-fw fa-check"></i> 密码重置成功，即将跳转至首页...').slideDown();
+                    window.setTimeout("window.location='index.php'",2000); 
                 }else{
-                  $('#ajax_pwdresult').html('<i class="fa fa-fw fa-remove"></i> '+msg).show();
+                  $('#ajax_pwdresult').removeClass('alert-success').addClass('alert-danger');
+                  $('#ajax_pwdresult').html('<i class="fa fa-fw fa-remove"></i> '+msg).slideDown();
               }
             }
         });

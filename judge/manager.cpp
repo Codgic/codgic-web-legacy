@@ -43,7 +43,7 @@ static volatile bool rejudging, filled;
 static std::vector<int> rejudge_list;
 static solution rejudge_init;
 
-const float build_version=1.01;
+const float build_version=1.02;
 
 #ifdef USE_DLL_ON_WINDOWS
 run_compiler_def run_compiler;
@@ -244,6 +244,7 @@ void thread_rejudge()
 		try {
 			refresh_users_problem(rejudge_init.problem);
 		}catch(const char *e) {
+			if(e!="maintain valid field")
 			applog("Error: Exception occur when refreshing user info", e);
 		}
 		applog("Info: Rejudge thread finished");

@@ -1,0 +1,5 @@
+User-agent: *
+Disallow: /inc/
+Disallow: /fuckdb/
+Disallow: /assets/
+Disallow: /admin.php

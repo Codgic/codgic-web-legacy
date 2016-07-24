@@ -11,8 +11,15 @@ function get_ip(){
 	}
 }
 
+function get_gravatar($email, $s=80, $d='mm'){
+    $email = md5($email); 
+    //$avatar = "https://secure.gravatar.com/avatar/$email?s=$s&d=$d&r=g"; 
+    $avatar = "//sdn.geekzu.org/avatar/$email?s=$s&d=$d&r=g";
+    return $avatar; 
+}
+
 function get_ipgeo($ip = ''){
-	if(preg_match("/^((192\.168|172\.([1][6-9]|[2]\d|3[01]))(\.([2][0-4]\d|[2][5][0-5]|[01]?\d?\d)){2}|10(\.([2][0-4]\d|[2][5][0-5]|[01]?\d?\d)){3})$/",$ip)) return '内网';
+	if(preg_match("/^((192\.168|172\.([1][6-9]|[2]\d|3[01]))(\.([2][0-4]\d|[2][5][0-5]|[01]?\d?\d)){2}|10(\.([2][0-4]\d|[2][5][0-5]|[01]?\d?\d)){3})$/",$ip)) return '局域网';
     $res = @file_get_contents('http://int.dpool.sina.com.cn/iplookup/iplookup.php?format=js&ip=' . $ip);
     if(empty($res)){ return '未知'; }
     $jsonMatches = array();
@@ -29,7 +36,7 @@ function get_ipgeo($ip = ''){
 }
 
 function resetpwd_mail(){
-    require('inc/ojsettings.php');
+    require 'inc/ojsettings.php';
     if(!isset($_SESSION['resetpwd_user']) || !isset($_SESSION['resetpwd_email']) || !isset($_SESSION['resetpwd_code'])) return 'timeout';
     $user = $_SESSION['resetpwd_user'];
     $email = $_SESSION['resetpwd_email'];
@@ -44,8 +51,8 @@ function resetpwd_mail(){
 function postmail($to,$subject = '',$body = ''){
     //error_reporting(E_STRICT);
     date_default_timezone_set('Asia/Shanghai');
-    require('inc/class.phpmailer.php');
-    include('inc/class.smtp.php');
+	if(!class_exists("phpmailer")) require 'inc/class.phpmailer.php';
+	if(!class_exists("SMTP")) include 'inc/class.smtp.php';
     $mail = new PHPMailer(); 
     $mail->CharSet ="UTF-8";
     $mail->Encoding ="base64";
@@ -62,7 +69,7 @@ function postmail($to,$subject = '',$body = ''){
     $mail->Subject    = $subject;
 	$mail->WordWrap = 60;
     //$mail->AltBody    = 'To view the message, please use an HTML compatible email viewer!'; // optional, comment out and test
-    $mail->MsgHTML($body);
+    $mail->MsgHTML($body);http://www.jb51.net/article/37929.htm
     $address = $to;
     $mail->AddAddress($address, '');
     $mail->IsHTML(true); 
@@ -71,42 +78,4 @@ function postmail($to,$subject = '',$body = ''){
     } else {
         return 'success';
     }
-}
-
-function posttodaemon($data){
-   if(!isset($_SESSION['user'])) return ("您并没有登录...");
-	$encoded="";
-	while(list($k,$v) = each($data)){
-		$encoded.=($encoded ? "&" : "");
-		$encoded.=rawurlencode($k)."=".rawurlencode($v);
-	}
-	if(!($fp=fsockopen('127.0.0.1', 8881)))
-		return ("错误: 无法连接至评测服务...\n");
-
-	fputs($fp, "POST /submit_prob HTTP/1.0\r\n");
-	fputs($fp, "Host: 127.0.0.1\r\n");
-	fputs($fp, "Content-type: application/x-www-form-urlencoded\r\n");
-	fputs($fp, "Content-length: " . strlen($encoded) . "\r\n");
-	fputs($fp, "Connection: close\r\n\r\n");
-
-	fputs($fp, "$encoded\r\n");
-
-	$line = fgets($fp,128);
-	if(!strstr($line,"HTTP/1.0 200"))
-		return ("错误: 无法提交，服务器内部错误...\n");
-
-	$results="";
-	while(!feof($fp))
-		$results.=fgets($fp,128);
-	/*$inheader=true;
-	while(!feof($fp)) {
-		$line=fgets($fp,128);
-		if($inheader && $line=="\r\n")
-			$inheader=false;
-		else if(!$inheader)
-			$results.=$line;
-	}*/
-	fclose($fp);
-
-	return $results;
 }

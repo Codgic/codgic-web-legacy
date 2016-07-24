@@ -1,18 +1,20 @@
 <?php
+require 'inc/privilege.php';
 session_start();
-if(!isset($_SESSION['user'])||!isset($_SESSION['administrator']))
-	die('You are not administrator');
+if(!check_priv(PRIV_PROBLEM))
+	die('你没有权限...');
 if(!isset($_GET['problem_id']))
-	die('No such problem');
+	die('问题不存在...');
 
-require('inc/database.php');
+require 'inc/database.php';
 $id=intval($_GET['problem_id']);
 $result=mysqli_query($con,"select defunct from problem where problem_id=$id");
 if($row=mysqli_fetch_row($result)){
-	if($row[0]=='N')
-		mysqli_query($con,"update problem set defunct='Y' where problem_id=$id");
-	else
-		mysqli_query($con,"update problem set defunct='N' where problem_id=$id");
-	echo('OK');
+	if($row[0]=='N') $opr='Y';
+    else $opr='N';
+    if(mysqli_query($con,"update problem set defunct='$opr' where problem_id=$id"))
+        echo 'success';
+    else
+        echo '系统错误...';
 }
 ?>

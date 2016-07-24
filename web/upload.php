@@ -1,7 +1,8 @@
 <?php 
 require 'inc/ojsettings.php';
+require 'inc/privilege.php';
 session_start();
-if(!isset($_SESSION['administrator']))
+if(!check_priv(PRIV_PROBLEM))
 	include '403.php';
 else{
 if(isset($_FILES['file'])){
@@ -41,10 +42,11 @@ $Title=$inTitle .' - '. $oj_name;
 ?>
 <!DOCTYPE html>
 <html>
-	<?php require('head.php'); ?>
+	<?php require 'head.php'; ?>
 	<body>
-	<div class="container-fluid">
-	  <div class="row-fluid">
+	<div class="container">
+	  <div class="row">
+		<div class="col-xs-12">
 		<?php if(isset($imgtag)){ ?>
 			<h2 style="margin:10px auto">上传成功</h2>
 			<hr>
@@ -64,15 +66,22 @@ $Title=$inTitle .' - '. $oj_name;
 		<?php }else{ ?>
 			<h2 style="margin:10px auto">上传图片</h2>
 			<hr>
-			<form class="form-horizontal" action="upload.php" method="post" enctype="multipart/form-data" onsubmit="return check_upload();">
-				<div><p><span>选择图片:<br></span><input type="file" name="file" id="file"></p></div>
-				<div><p><span>文件名(不含后缀):<br></span><input type="text" name="savename" value="<?php echo htmlspecialchars($filename);?>" style="width:233px;"></p></div>
-				<div>
-					<div class="alert alert-danger hide" id="info"></div>
-					<input class="btn btn-primary" type="submit" value="上传"> 
-				</div>
+			<form action="upload.php" method="post" enctype="multipart/form-data" onsubmit="return check_upload();">
+			  <div class="form-group">
+				<label>选择图片:</label>
+				<input type="file" name="file" id="file">
+			  </div>
+			  <div class="form-group">
+				<label>文件名(不含后缀):</label>
+				<input class="form-control" type="text" name="savename" value="<?php echo htmlspecialchars($filename);?>">  
+			  </div>
+			  <div class="form-group">
+				<div class="alert alert-danger collapse" id="info"></div>
+				<input class="btn btn-primary" type="submit" value="上传"> 
+			  </div>
 			</form>
 		<?php } ?>
+		</div>
 	  </div>
 	</div>
 	</body>

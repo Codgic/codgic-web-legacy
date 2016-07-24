@@ -44,7 +44,7 @@
 var browser=navigator.appName 
 var b_version=navigator.appVersion 
 var version=b_version.split(";"); 
-var trim_Version=version[1].replace(/[ ]/g,""); 
+var trim_Version=version[0].replace(/[ ]/g,""); 
 if(browser!="Microsoft Internet Explorer") { 
 window.location = "index.php"; 
 } else {

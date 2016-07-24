@@ -1,9 +1,9 @@
 <?php
 require 'inc/ojsettings.php';
-require('inc/result_type.php');
-require('inc/lang_conf.php');
-require ('inc/checklogin.php');
-require('inc/database.php');
+require 'inc/result_type.php';
+require 'inc/lang_conf.php';
+require 'inc/checklogin.php';
+require 'inc/database.php';
 
 $cond="";
 $user_id="";
@@ -50,8 +50,11 @@ if(isset($_GET['public'])){
 }
 if(!$rank_mode){
   $filter=$cond;
-  if(isset($_GET['solution_id']))
-    $cond=" and solution_id<=".intval($_GET['solution_id']).$cond;
+  if(isset($_GET['solution_id'])){
+    $solution_id=intval($_GET['solution_id']);
+    $cond=" and solution_id<=".$solution_id.$cond;
+}
+  else $solution_id=2100000000;
 }
 $sql="";
 if(strlen($cond))
@@ -73,6 +76,8 @@ if(!$rank_mode){
       $start_id=0;
   }else
     $start_id=0;
+  $row=mysqli_fetch_row(mysqli_query($con,"select count(1) from solution $sql"));
+  $maxpage=$row[0];
   $res=mysqli_query($con,"select solution_id,problem_id,user_id,result,score,time,memory,code_length,language,in_date,public_code from solution $sql limit $start_id,20");
 }
 if($problem_id==0)
@@ -97,7 +102,7 @@ function get_next_link()
 }
 function get_pre_link()
 {
-  require('inc/database.php');
+  require 'inc/database.php';
   global $rank_mode,$max_solution;
   parse_str($_SERVER["QUERY_STRING"],$arr); 
   if($rank_mode){
@@ -124,49 +129,63 @@ $Title=$inTitle .' - '. $oj_name;
 ?>
 <!DOCTYPE html>
 <html>
-  <?php require('head.php'); ?>
+  <?php require 'head.php'; ?>
   <body style="margin-left:0; margin-right:0">
-    <?php require('page_header.php'); ?>
-    <div class="container-fluid">
-      <div class="row-fluid">
-        <div class="span10 offset1">
-          <form action="record.php" method="get" class="form-inline" id="form_filter">
-            <label>题目:</label>
-            <input type="text" class="input-mini" name="problem_id" id="ipt_problem_id" value="<?php echo $problem_id?>">
-            <label>用户:</label>
-            <?php if(isset($_SESSION['user'])) echo'<div class="input-append">' ?>
-            <input type="text" class="input-small" name="user_id" id="ipt_user_id" value="<?php echo $user_id?>">
-            <?php if(isset($_SESSION['user'])) echo'<button class="btn" id="filter_me" data-myuid="',$_SESSION['user'],'" type="button">自己</button></div>' ?>
-            <label>结果:</label>
-            <select class="input-small" name="result" id="slt_result">
-              <option value="-1">所有</option>
-              <?php foreach ($RESULT_TYPE as $type => $str)
-                echo '<option value="',$type,'">',$str,'</option>';
-              ?>
-            </select>
-            <label>语言:</label>
-            <select class="input-small" name="lang" id="slt_lang">
-              <option value="-1">所有</option>
-              <?php foreach ($LANG_NAME as $langid => $lang_name)
+    <?php require 'page_header.php'; ?>
+    <div class="container">
+      <div class="row">
+          <form action="record.php" method="get" id="form_filter">
+			<div class="form-group col-xs-6 col-md-3 col-lg-2">
+			<label>题目:</label>
+			  <div class="input-group">
+				<span class="input-group-addon">
+                  <input <?php if($public_code)echo 'checked'?> id="chk_public" type="checkbox" name="public"> 开源
+				</span>
+				<input type="number" class="form-control" name="problem_id" id="ipt_problem_id" value="<?php echo $problem_id?>">
+			  </div>  
+			</div>
+			<div class="form-group col-xs-6 col-md-2 col-lg-2">
+			  <label>用户:</label>
+			  <div class="input-group">
+                <input type="text" class="form-control" name="user_id" id="ipt_user_id" value="<?php echo $user_id?>">
+                <?php if(isset($_SESSION['user'])) echo'<span class="input-group-addon btn btn-default" id="filter_me" data-myuid="',$_SESSION['user'],'">自己</span>' ?>
+			  </div>  
+			</div>
+			<div class="form-group col-xs-4 col-sm-4 col-md-2 col-lg-2">
+			  <label>结果:</label>
+              <select class="form-control" name="result" id="slt_result">
+                <option value="-1">所有</option>
+                <?php foreach ($RESULT_TYPE as $type => $str)
+                  echo '<option value="',$type,'">',$str,'</option>';
+                ?>
+              </select>
+			</div>
+			<div class="form-group col-xs-4 col-sm-3 col-md-2 col-lg-2">
+              <label>语言:</label>
+              <select class="form-control" name="lang" id="slt_lang">
+                <option value="-1">所有</option>
+                <?php foreach ($LANG_NAME as $langid => $lang_name)
                 echo '<option value="',$langid,'">',$lang_name,'</option>';
-              ?>
-            </select>
-            <label>排序方式:</label>
-            <select class="input-medium" name="way" id="slt_way">
-              <option value="none">提交时间</option>
-              <option value="time">运行时间</option>
-              <option value="memory">运行内存</option>
-            </select>
-            <label class="checkbox">
-              <input <?php if($public_code)echo 'checked'?> id="chk_public" type="checkbox" name="public">开源程序
-            </label>
-            <span style="margin-left:5px" class="btn" id="btn_reset">重置筛选</span>
-          </form>
-        </div>
+                ?>
+              </select>
+			</div>
+			<div class="form-group col-xs-4 col-sm-3 col-md-2 col-lg-2">
+              <label>排序:</label>
+              <select class="form-control" name="way" id="slt_way">
+                <option value="none">提交时间</option>
+                <option value="time">运行时间</option>
+                <option value="memory">运行内存</option>
+              </select>
+			</div>
+			<div class="form-group col-xs-12 col-sm-2 col-md-1 col-lg-2" style="max-width:200px">
+			  <label class="hidden-xs">操作:</label>
+			  <input class="form-control btn btn-danger" id="btn_reset" type="button" value="重置">
+			</div>  
+		  </form>
       </div>
-      <div class="row-fluid">
-        <div class="span10 offset1">
-
+	  <br>  
+      <div class="row">
+        <div class="col-xs-12 table-responsive">
             <table class=" table table-hover table-bordered">
               <thead><tr>
                 <th style="width:6%">ID</th>
@@ -206,46 +225,54 @@ $Title=$inTitle .' - '. $oj_name;
                 }
               ?>
               </tbody>
-            </table>
+            </table
         </div>  
       </div>
-      <div class="row-fluid">
+      <div class="row">
         <ul class="pager">
           <li>
-            <a class="pager-pre-link shortcut-hint" title="Alt+A" href="record.php?<?php echo htmlspecialchars(get_pre_link())?>" id="btn-pre"><i class="fa fa-angle-left"></i> 上一页</a>
+            <a class="pager-pre-link shortcut-hint" title="Alt+A" <?php if($_SERVER['QUERY_STRING']!=htmlspecialchars(get_pre_link())) echo 'href="record.php?'.htmlspecialchars(get_pre_link()).'"'?>><i class="fa fa-angle-left"></i> 上一页</a>
           </li>
           <li>
-            <a class="pager-next-link shortcut-hint" title="Alt+D" href="record.php?<?php echo htmlspecialchars(get_next_link())?>" id="btn-next">下一页 <i class="fa fa-angle-right"></i></a>
+            <a class="pager-next-link shortcut-hint" title="Alt+D" <?php if((!$rank_mode&&$solution_id>1020)||($rank_mode&&intval($start_id/20)<intval($maxpage/20))) echo 'href="record.php?'.htmlspecialchars(get_next_link()).'"'?>>下一页 <i class="fa fa-angle-right"></i></a>
           </li>
         </ul>
       </div>
-       
-      <div class="modal fade hide" id="UserModal">
-        <div class="modal-header">
-          <a class="close" data-dismiss="modal">×</a>
-          <h4>用户信息</h4>
-        </div>
-        <div class="modal-body" id="user_status" style="max-height:350px">
-          <p>信息不可用……</p>
-        </div>
-        <div class="modal-footer">
-          <a href="#" class="btn" data-dismiss="modal">关闭</a>
+      <div class="modal fade" id="UserModal">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+              <h4 class="modal-title">用户信息</h4>
+            </div>
+            <div class="modal-body" id="user_status">
+              <p>信息不可用……</p>
+            </div>
+            <div class="modal-footer">
+              <form action="mail.php" method="post">
+                <input type="hidden" name="touser" id="input_touser">
+                <?php if(isset($_SESSION['user'])){?>
+                <button type="submit" class="btn btn-default pull-left"><i class="fa fa-fw fa-envelope-o"></i> 发私信</button>
+                <?php }?>
+              </form>
+              <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+            </div>
+          </div>
         </div>
       </div>
-      <hr>
-      <footer>
-       <p>&copy; <?php echo"{$year} {$oj_copy}";?></p>
+	  <hr>
+	  <footer>
+        <p>&copy; <?php echo"{$year} {$oj_copy}";?></p>
       </footer>
-
-    </div><!--/.container-->
-    <script src="/assets/js/common.js"></script>
+    </div>
+    <script src="/assets/js/common.js?v=<?php echo $web_ver?>"></script>
     <script type="text/javascript"> 
       $(document).ready(function(){
         $('#slt_lang>option[value=<?php echo $lang;?>]').prop('selected',true);
         $('#slt_result>option[value=<?php echo $result?>]').prop('selected',true);
         $('#slt_way>option[value="<?php echo $way?>"]').prop('selected',true);
         $('#nav_record').parent().addClass('active');
-        $('#ret_url').val("record.php"+window.location.search);
+        $('#nav_record_text').removeClass('hidden-sm');
 
         function toggle_s(obj){
           if(obj.hasClass('fa-eye-slash')){
@@ -277,10 +304,9 @@ $Title=$inTitle .' - '. $oj_name;
             });
             return false;
           }else if(h=='#uid'){
-            $('#user_status').html("<p>Loading...</p>").load("ajax_user.php?user_id="+E.target.innerHTML).scrollTop(0);
-            var win=$('#UserModal');
-            win.children('.modal-header').children('h4').html('用户信息');
-            win.modal('show');
+            $('#user_status').html("<p>正在加载...</p>").load("ajax_user.php?user_id="+E.target.innerHTML).scrollTop(0);
+            $('#input_touser').val(E.target.innerHTML);
+            $('#UserModal').modal('show');
             return false;
           }
         });

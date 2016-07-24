@@ -1,13 +1,11 @@
 <?php
-
 require_once 'inc/checkpwd.php';
-header("Content-type:text/html;charset=utf-8"); 
 function login($user, $is_cookie, $pwd='')
 {
 	require 'inc/functions.php';
 	require 'inc/database.php';
 	$user=mysqli_real_escape_string($con,$user);
-	$res=mysqli_query($con,"select password,user_id,language,defunct from users where user_id='$user'");
+	$res=mysqli_query($con,"select password,user_id,language,defunct,email,privilege from users where user_id='$user'");
 	$r=mysqli_fetch_row($res);
 	if(!$r)
 		return ("用户不存在!");
@@ -21,12 +19,13 @@ function login($user, $is_cookie, $pwd='')
 	setcookie('SID', '', 31415926);
 	$_SESSION['user']=$r[1];
 	$_SESSION['lang']=$r[2];
-	
-	$res=mysqli_query($con,"select rightstr from privilege where user_id='$user'");
-	while($r=mysqli_fetch_row($res)){
-		if($r[0]=='administrator' || $r[0]=='source_browser' || $r[0]=='insider')
-			$_SESSION[$r[0]]=true;
-	}
+    $_SESSION['email']=$r[4];
+	$_SESSION['priv']=$r[5];
+	//$res=mysqli_query($con,"select rightstr from privilege where user_id='$user'");
+	//while($r=mysqli_fetch_row($res)){
+		//if($r[0]=='administrator' || $r[0]=='source_browser' || $r[0]=='insider')
+			//$_SESSION[$r[0]]=true;
+	//}
 	
 	require_once 'inc/preferences.php';
 	$pref=new preferences();

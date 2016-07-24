@@ -10,5 +10,5 @@ MathJax.Hub.Config({
 	"HTML-CSS": { availableFonts: ["TeX"], webFont: "TeX", imageFont: null }
 });
 </script>
-<script type="text/javascript"  src="//cdn.bootcss.com/mathjax/2.6.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-<!--<script async type="text/javascript" src="../assets/Mathjax/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>-->
+<!--<script type="text/javascript"  src="//cdn.bootcss.com/mathjax/2.6.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>-->
+<script async type="text/javascript" src="../assets/Mathjax/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>

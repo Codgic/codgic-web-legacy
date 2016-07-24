@@ -1,7 +1,7 @@
 <?php
-require('inc/database.php');
-require('inc/ojsettings.php');
-require('inc/functions.php');
+require 'inc/database.php';
+require 'inc/ojsettings.php';
+require 'inc/functions.php';
 session_start(); 
 
 if(!isset($_POST['type']))
@@ -59,14 +59,18 @@ else if($_POST['type'] == 'update'){
 		die('密码不符合要求(至少6位)');
 	$query='update users set password=\''.mysqli_real_escape_string($con,my_rsa($_POST['newpwd'])).'\'';
 	$query.=" where user_id='$user'";
-	$_SESSION['resetpwd_flag']=0;
+	unset($_SESSION['resetpwd_code']);
+	unset($_SESSION['resetpwd_user']);
+	unset($_SESSION['resetpwd_email']);
+	unset($_SESSION['resetpwd_wrongnum']);
+	unset($_SESSION['resetpwd_flag']);
+	session_destroy();
 	if(mysqli_query($con,$query)){
 		echo 'success';
-     session_destroy();
-  }
+	}
 	else
-		echo '未知错误 =.=';
-}
+		echo '未知错误，请刷新重试...';
+	}
 
 else die('Invalid argument.');
 ?>

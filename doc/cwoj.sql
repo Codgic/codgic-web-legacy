@@ -1,11 +1,6 @@
--- phpMyAdmin SQL Dump
--- version 4.5.4.1deb2ubuntu1
--- http://www.phpmyadmin.net
---
--- Host: localhost
--- Generation Time: Jun 03, 2016 at 09:31 PM
--- Server version: 5.7.12-0ubuntu1.1
--- PHP Version: 7.0.4-7ubuntu2.1
+-- CWOJ SQL Initializion 1.0-milestone-1
+-- Dumped by phpMyAdmin
+
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -16,20 +11,20 @@ SET time_zone = "+00:00";
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
 /*!40101 SET NAMES utf8mb4 */;
 
---
--- Database: `cwoj`
---
+
+CREATE DATABASE cwoj CHARACTER SET utf8mb4;
+use cwoj;
 
 DELIMITER $$
 --
 -- Functions
 --
-CREATE DEFINER=`root`@`localhost` FUNCTION `get_problem_level` (`pid` INT) RETURNS INT(11) READS SQL DATA
+CREATE FUNCTION `get_problem_level` (`pid` INT) RETURNS INT(11) READS SQL DATA
 BEGIN
 RETURN IFNULL((SELECT (has_tex>>3)&7 FROM problem WHERE problem_id = pid),0);
 END$$
 
-CREATE DEFINER=`root`@`localhost` FUNCTION `problem_flag_to_level` (`flag` INT) RETURNS INT(11) NO SQL
+CREATE FUNCTION `problem_flag_to_level` (`flag` INT) RETURNS INT(11) NO SQL
 BEGIN
 RETURN (flag>>3)&7;
 END$$
@@ -103,21 +98,33 @@ CREATE TABLE `contest` (
   `start_time` datetime DEFAULT NULL,
   `end_time` datetime DEFAULT NULL,
   `defunct` char(1) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'N',
+  `num` int(11) NOT NULL DEFAULT '0',
+  `problems` varchar(200) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `description` longtext COLLATE utf8mb4_unicode_ci,
-  `private` tinyint(4) NOT NULL DEFAULT '0'
+  `source` varchar(200) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `has_tex` tinyint(4) NOT NULL DEFAULT '0',
+  `judge_way` int(11) NOT NULL DEFAULT '0'
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `contest`
+--
+
+INSERT INTO `contest` (`contest_id`, `title`, `start_time`, `end_time`, `defunct`, `num`, `problems`, `description`, `source`, `has_tex`, `judge_way`) VALUES
+(1000, '水王大战', '2016-06-12 00:00:00', '2016-08-01 00:00:00', 'N', 2, '1000,1001', '水王开始水啦 大家快跑！！！', '水 水 还是水', 8, 0);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `contest_problem`
+-- Table structure for table `contest_status`
 --
 
-CREATE TABLE `contest_problem` (
-  `problem_id` int(11) NOT NULL DEFAULT '0',
+CREATE TABLE `contest_status` (
+  `id` int(11) NOT NULL,
+  `user_id` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
   `contest_id` int(11) DEFAULT NULL,
-  `title` varchar(200) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `num` int(11) NOT NULL DEFAULT '0'
+  `scores` varchar(200) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `tot_scores` int(11) NOT NULL DEFAULT '0'
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -136,7 +143,7 @@ CREATE TABLE `experience_titles` (
 --
 
 INSERT INTO `experience_titles` (`experience`, `title`) VALUES
-(0, '张柯'),
+(-9999, '张柯'),
 (10, '蒟蒻'),
 (40, '学民'),
 (500, '神犇'),
@@ -230,8 +237,8 @@ CREATE TABLE `news` (
 --
 
 INSERT INTO `news` (`news_id`, `user_id`, `title`, `content`, `time`, `importance`, `defunct`) VALUES
-(0, 'root', '', '<div style="text-align:center"><p><b><font size=6>Welcome to CWOJ</font></b></p><font size=4>Built for you to code your future</font></b></div>', '2016-06-02 22:39:49', 0, 'N'),
-(1, '', '欢迎来到CWOJ', '<b>CWOJ - 一个开源且毫无特色并且随时收到水王洪水威胁的信息竞赛刷题系统，现已向校内外同学开放~~~ 祝大家在这里玩得愉快！</b><hr>CWOJ Team:<br>jimmy19990: CWOJ前/后端<br>Void: CWOJ题库管理<br>Michale: 服务器运维<br>dreamfly: 前CWOJ题库管理之一', '2015-12-12 18:45:21', 1, 'N');
+(0, '', NULL, '<div class="text-center"><p><b><font size=6>Welcome to CWOJ</font></b></p><font size=4>Built for you to code your future</font></div>', '2016-07-24 17:11:52', 0, 'N'),
+(1, '', 'Welcome to CWOJ', 'Built for you to code your future...', '2016-07-24 17:11:45', 1, 'N');
 
 -- --------------------------------------------------------
 
@@ -245,25 +252,6 @@ CREATE TABLE `preferences` (
   `property` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
   `value` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `privilege`
---
-
-CREATE TABLE `privilege` (
-  `user_id` char(20) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
-  `rightstr` char(30) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
-  `defunct` char(1) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'N'
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Dumping data for table `privilege`
---
-
-INSERT INTO `privilege` (`user_id`, `rightstr`, `defunct`) VALUES
-('root', 'administrator', 'N');
 
 -- --------------------------------------------------------
 
@@ -302,7 +290,20 @@ CREATE TABLE `problem` (
 --
 
 INSERT INTO `problem` (`problem_id`, `title`, `description`, `input`, `output`, `sample_input`, `sample_output`, `hint`, `source`, `in_date`, `time_limit`, `memory_limit`, `case_score`, `defunct`, `contest_id`, `accepted`, `submit`, `ratio`, `compare_way`, `has_tex`, `submit_user`, `solved`, `case_time_limit`) VALUES
-(1000, 'A+B 问题', '计算 a+b', '两个整数 a,b (保证a+b在int范围内)', '输出 a+b', '1 2', '3', '请使用标准输入输出~\r\n\r\n', '基础语法', '2016-05-26 08:30:00', 1000, 30000, 10, 'N', NULL, 0, 0, 0, 0, 8, 0, 0, 1000);
+(1000, 'A+B 问题', '计算 a+b', '两个整数 a,b (保证a+b在int范围内)', '输出 a+b', '1 2', '3', '请使用标准输入输出~\r\n', '基础语法', '2016-07-24 17:13:09', 0, 65536, 10, 'N', NULL, 0, 0, 0, 0, 0, 0, 0, 1000);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `saved_contest`
+--
+
+CREATE TABLE `saved_contest` (
+  `id` int(11) NOT NULL,
+  `contest_id` int(11) NOT NULL DEFAULT '0',
+  `user_id` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  `savetime` datetime DEFAULT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -316,13 +317,6 @@ CREATE TABLE `saved_problem` (
   `user_id` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
   `savetime` datetime DEFAULT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Dumping data for table `saved_problem`
---
-
-INSERT INTO `saved_problem` (`id`, `problem_id`, `user_id`, `savetime`) VALUES
-(2, 1000, 'root', '2016-06-02 22:57:55');
 
 -- --------------------------------------------------------
 
@@ -380,15 +374,17 @@ CREATE TABLE `users` (
   `password` varchar(90) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `reg_time` datetime DEFAULT NULL,
   `nick` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `school` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL
+  `school` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `motto` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `privilege` tinyint(4) NOT NULL DEFAULT '0'
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`user_id`, `email`, `submit`, `solved`, `score`, `experience`, `defunct`, `ip`, `accesstime`, `volume`, `language`, `password`, `reg_time`, `nick`, `school`) VALUES
-('root', '', 0, 0, 0, 0, 'N', '127.0.0.1', '2016-06-02 22:19:34', 1, 0, '\0rv9bIihxwSmF0U0th5kFyEuzyrtwmIY47V4QD6k8H4R2mOU0irwlyl9ETv+U9Ga+6yGdy7H3KiblbgQQ5Y7vhA==', '2016-05-31 13:26:10', 'root', 'CFLS');
+INSERT INTO `users` (`user_id`, `email`, `submit`, `solved`, `score`, `experience`, `defunct`, `ip`, `accesstime`, `volume`, `language`, `password`, `reg_time`, `nick`, `school`, `motto`, `privilege`) VALUES
+('root', 'webmaster@localhost', 0, 0, 0, 0, 'N', '127.0.0.1', '2016-07-24 17:16:24', 1, 0, '\0PamJt0hVmS8+b7zS0PQ7yqe1TEfneEMyj+ZRluuv/2+aL/ayHnglr2hl63d+cj6ljnu/avxiBjIcrkBUaOM0Lw==', '2015-11-25 11:25:25', 'admin', 'CFLS', NULL, 15);
 
 -- --------------------------------------------------------
 
@@ -410,7 +406,7 @@ CREATE TABLE `user_notes` (
 --
 
 INSERT INTO `user_notes` (`id`, `problem_id`, `user_id`, `tags`, `content`, `edit_time`) VALUES
-(0, 0, 'root', '', '<div class="accordion-group" style="border:0px;margin-left:-15px;margin-top:-5px">\n<div class="accordion-heading">\n<a id="clickOne" class="accordion-toggle" data-toggle="collapse" data-parent="#index_category" href="#collapseOne"><h4>按算法分类</h4></a>\n</div>\n<div id="collapseOne" class="accordion-body in collapse" style="height: auto ">\n<div class="accordion-inner" style="border:0px">\n<p><a href="search.php?q=基础语法">基础语法</a>  \n<a href="search.php?q=数组">数组</a>  \n<a href="search.php?q=字符串">字符串</a>  \n<a href="search.php?q=数论">数论</a>  \n<a href="search.php?q=高精度">高精度</a>  \n<a href="search.php?q=模拟">模拟</a>  \n<a href="search.php?q=动态规划">动态规划</a>  \n<a href="search.php?q=贪心">贪心</a>  \n<a href="search.php?q=搜索">搜索</a>  \n<a href="search.php?q=二分查找">二分查找</a></p>\n<p><a href="search.php?q=数据结构">数据结构</a>  \n<a href="search.php?q=树结构">树结构</a>  \n<a href="search.php?q=图结构">图结构</a></p>\n</div>\n</div>\n</div>\n\n<div class="accordion-group" style="border:0px;margin-left:-15px;margin-top:-5px">\n<div class="accordion-heading">\n<a id="clickTwo" class="accordion-toggle" data-toggle="collapse" data-parent="#index_category" href="#collapseTwo"><h4>按难度分类</h4></a>\n</div>\n<div id="collapseTwo" class="accordion-body collapse" style="height: 0px; ">\n<div class="accordion-inner" style="border:0px">\n<a href="level.php?level=1">普及</a>  \n<a href="level.php?level=2">普及+</a>  \n<a href="level.php?level=3">提高</a>  \n<a href="level.php?level=4">提高+</a>  \n<a href="level.php?level=5">省选-</a>  \n<a href="level.php?level=6">省选</a>  \n<a href="level.php?level=7">省选+</a>  \n</div>\n</div>\n</div>\n\n<div class="accordion-group" style="border:0px;margin-left:-15px;margin-top:-5px">\n<div class="accordion-heading">\n<a id="clickThree" class="accordion-toggle" data-toggle="collapse" data-parent="#index_category" href="#collapseThree"><h4>按来源分类</h4>\n</div>\n<div id="collapseThree" class="accordion-body collapse" style="height: 0px; ">\n<div class="accordion-inner" style="border:0px">\n<a href="search.php?q=普及组">NOIP普及组</a>  \n<a href="search.php?q=提高组">NOIP提高组</a>  \n<a href="search.php?q=省选">省选</a>  \n<a href="search.php?q=NOI2">NOI</a>  <!--注释: 防止NOI与NOIP混淆-->		 \n<a href="search.php?q=IOI">IOI</a>  \n<a href="search.php?q=UESTC">UESTC</a>  \n<a href="search.php?q=USACO">USACO</a>  \n<a href="search.php?q=原创">原创</a>  \n</div>\n</div>\n</div>', '2016-05-28 09:31:21');
+(0, 0, 'root', '', '<div class="panel panel-success">\n    <div class="panel-heading">\n      <h4 class="panel-title">\n        <a data-toggle="collapse" data-parent="#accordion" \n          href="#algorithm">\n          按算法分类\n        </a>\n      </h4>\n    </div>\n    <div id="algorithm" class="panel-collapse collapse in">\n      <div class="panel-body">\n        <p><a href="search.php?q=基础语法">基础语法</a>  \n<a href="search.php?q=数组">数组</a>  \n<a href="search.php?q=字符串">字符串</a>  \n<a href="search.php?q=数论">数论</a>  \n<a href="search.php?q=高精度">高精度</a>  \n<a href="search.php?q=模拟">模拟</a>  \n<a href="search.php?q=动态规划">动态规划</a>  \n<a href="search.php?q=贪心">贪心</a>  \n<a href="search.php?q=搜索">搜索</a>  \n<a href="search.php?q=二分">二分查找</a></p>\n<p><a href="search.php?q=数据结构">数据结构</a>  \n<a href="search.php?q=树">树结构</a>  \n<a href="search.php?q=图">图结构</a></p>\n      </div>\n    </div>\n  </div>\n  <div class="panel panel-warning">\n    <div class="panel-heading">\n      <h4 class="panel-title">\n        <a data-toggle="collapse" data-parent="#accordion" \n          href="#difficulty">\n          按难度分类\n        </a>\n      </h4>\n    </div>\n    <div id="difficulty" class="panel-collapse collapse">\n      <div class="panel-body">\n        <a href="level.php?level=1">普及</a>  \n<a href="level.php?level=2">普及+</a>  \n<a href="level.php?level=3">提高</a>  \n<a href="level.php?level=4">提高+</a>  \n<a href="level.php?level=5">省选-</a>  \n<a href="level.php?level=6">省选</a>  \n<a href="level.php?level=7">省选+</a>  \n      </div>\n    </div>\n  </div>\n  <div class="panel panel-primary">\n    <div class="panel-heading">\n      <h4 class="panel-title">\n        <a data-toggle="collapse" data-parent="#accordion" \n          href="#source">\n          按来源分类\n        </a>\n      </h4>\n    </div>\n    <div id="source" class="panel-collapse collapse">\n      <div class="panel-body">\n        <a href="search.php?q=普及组">NOIP普及组</a>  \n<a href="search.php?q=提高组">NOIP提高组</a>  \n<a href="search.php?q=省选">省选</a>  \n<a href="search.php?q=NOI2">NOI</a>  <!--注释: 防止NOI与NOIP混淆-->		 \n<a href="search.php?q=IOI">IOI</a>  \n<a href="search.php?q=UESTC">UESTC</a>  \n<a href="search.php?q=USACO">USACO</a>  \n<a href="search.php?q=原创">原创</a>  \n      </div>\n    </div>\n  </div>', '2016-07-10 14:14:51');
 
 --
 -- Indexes for dumped tables
@@ -427,6 +423,12 @@ ALTER TABLE `compileinfo`
 --
 ALTER TABLE `contest`
   ADD PRIMARY KEY (`contest_id`);
+
+--
+-- Indexes for table `contest_status`
+--
+ALTER TABLE `contest_status`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `experience_titles`
@@ -473,6 +475,13 @@ ALTER TABLE `problem`
   ADD PRIMARY KEY (`problem_id`);
 
 --
+-- Indexes for table `saved_contest`
+--
+ALTER TABLE `saved_contest`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `u_p` (`user_id`,`contest_id`);
+
+--
 -- Indexes for table `saved_problem`
 --
 ALTER TABLE `saved_problem`
@@ -514,6 +523,11 @@ ALTER TABLE `user_notes`
 --
 
 --
+-- AUTO_INCREMENT for table `contest_status`
+--
+ALTER TABLE `contest_status`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+--
 -- AUTO_INCREMENT for table `mail`
 --
 ALTER TABLE `mail`
@@ -524,15 +538,20 @@ ALTER TABLE `mail`
 ALTER TABLE `preferences`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 --
+-- AUTO_INCREMENT for table `saved_contest`
+--
+ALTER TABLE `saved_contest`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+--
 -- AUTO_INCREMENT for table `saved_problem`
 --
 ALTER TABLE `saved_problem`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `user_notes`
 --
 ALTER TABLE `user_notes`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

@@ -1,6 +1,6 @@
 <?php
 require 'inc/ojsettings.php';
-require ('inc/checklogin.php');
+require 'inc/checklogin.php';
 $inTitle='关于';
 $Title=$inTitle .' - '. $oj_name;
 ?>
@@ -10,9 +10,9 @@ $Title=$inTitle .' - '. $oj_name;
   <body>
     <?php require('page_header.php') ?>  
           
-    <div class="container-fluid about-page">
-      <div class="row-fluid">
-        <div class="offset2 span8" style="font-size:16px">
+    <div class="container about-page">
+      <div class="row">
+        <div class="col-xs-12" style="font-size:16px">
           <div class="page-header">
             <h2>简介</h2>
           </div>
@@ -23,8 +23,8 @@ $Title=$inTitle .' - '. $oj_name;
 		  </div>
         </div>
 	  </div>
-	  <div class="row-fluid">
-        <div class="offset2 span8" style="font-size:16px">
+	  <div class="row">
+        <div class="col-xs-12" style="font-size:16px">
           <div class="page-header">
             <h2>关于</h2>
           </div>
@@ -36,13 +36,14 @@ $Title=$inTitle .' - '. $oj_name;
             <p><b>CWOJ Team：</b></p>
 		    <p>jimmy19990： 前端和后端。</p>
 		    <p>Void： 题库管理。</p>
-			<p>Michale： 服务器运维。</p>
-		    <p>dreamfly： 题库管理。</p>
+			<p>Michael： 服务器运维。</p>
+		    <p>t123yh： 反向代理。</p>
+            <p>dreamfly： 题库管理。</p>
           </div>
 		</div>
 	  </div>
-      <div class="row-fluid">
-        <div class="offset2 span8" style="font-size:16px">
+      <div class="row">
+        <div class="col-xs-12" style="font-size:16px">
           <div class="page-header">
             <h2>问&答</h2>
           </div>
@@ -84,31 +85,31 @@ $Title=$inTitle .' - '. $oj_name;
             <table class="table table-condensed table-last-left-aligned" id="about_msg">
               <tbody>
                 <tr>
-                  <td><span class="label label-success">Accepted</span></td>
+                  <td><span class="label label-ac">Accepted</span></td>
                   <td><p>AC了！恭喜你的程序通过了所有的测试点！</p></td>
                 </tr>
                 <tr>
-                  <td><span class="label">Compile Error</span></td>
+                  <td><span class="label label-ce">Compile Error</span></td>
                   <td><p>你的程序连编译都没通过，再去本地测试一下吧。当然，在线编译过程中Warning是被忽略掉了的。注意一下Linux保留字问题！</p></td>
                 </tr>
                 <tr>
-                  <td><span class="label label-warning">Memory Exceeded</span></td>
+                  <td><span class="label label-le">Memory Exceeded</span></td>
                   <td><p>你的程序爆内存限制啦，去优化一下你的算法吧。</p></td>
                 </tr>
                 <tr>
-                  <td><span class="label label-info">Runtime Error</span></td>
+                  <td><span class="label label-re">Runtime Error</span></td>
                   <td><p>你的程序在运行过程中出现了错误（如：不合法的文件操作、爆栈、指针溢出、浮点数异常、傻逼地除以0等）。</p></td>
                 </tr>
                 <tr>
-                  <td><span class="label label-warning">Time Out</span></td>
+                  <td><span class="label label-le">Time Out</span></td>
                   <td><p>你的程序运行慢如乌龟，去优化一下吧。</p></td>
                 </tr>
                 <tr>
-                  <td><span class="label label-important">Wrong Answer</span></td>
+                  <td><span class="label label-wa">Wrong Answer</span></td>
                   <td><p>你的程序输出了错误的答案。</p></td>
                 </tr>
                 <tr>
-                  <td><span class="label label-inverse">Validator Error</span></td>
+                  <td><span class="label label-ve">Validator Error</span></td>
                   <td><p>检查程序在验证你的答案时的输出时表现出异常行为，若非你图谋不轨，请向我们报告。</p></td>
                 </tr>
               </tbody>
@@ -130,11 +131,11 @@ $Title=$inTitle .' - '. $oj_name;
       </footer>
     </div>
     </div>
-    <script src="/assets/js/common.js"></script>
+    <script src="/assets/js/common.js?v=<?php echo $web_ver?>"></script>
     <script type="text/javascript"> 
       $(document).ready(function(){
-        $('#ret_url').val("about.php");
         $('#nav_about').parent().addClass('active');
+		$('#nav_about_text').removeClass('hidden-sm');
       });
     </script>
   </body>

@@ -8,14 +8,14 @@ function show_alert($str)
 session_start();
 
 if(!isset($_SESSION['user'])){
-	show_alert('Not logged in.');
+	show_alert('您尚未登录');
 	exit;
 }
 
-require('inc/database.php');
-require('inc/preferences.php');
-require('inc/lang_conf.php');
-require('inc/tgz.lib.php');
+require 'inc/database.php';
+require 'inc/preferences.php';
+require 'inc/lang_conf.php';
+require 'inc/tgz.lib.php';
 
 $pref=unserialize($_SESSION['pref']);
 $now=time();

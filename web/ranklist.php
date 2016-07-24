@@ -1,64 +1,108 @@
 <?php
 require 'inc/ojsettings.php';
-require ('inc/checklogin.php');
+require 'inc/checklogin.php';
 
-if(isset($_GET['start_id']))
-  $page_id=intval($_GET['start_id']);
+if(isset($_GET['page_id']))
+  $page_id=intval($_GET['page_id']);
 else
-  $page_id=0;
+  $page_id=1;
+  
+if(isset($_GET['online'])){
+  $online=intval($_GET['online']);
+  if($online<0||$online>1) $online=0;
+}else
+  $online=0;
 
 require_once 'inc/database.php';
 $row=mysqli_fetch_row(mysqli_query($con,'select count(*) from users'));
-$total=($row[0]);
-if($page_id<0 || $page_id>=$total)
-  die('Argument out of range.');
-$rank=$page_id;
-$result=mysqli_query($con,"SELECT user_id,nick,solved,submit,score,experience_titles.title FROM (SELECT user_id,nick,solved,submit,score,MAX(experience_titles.experience) AS m FROM (SELECT user_id,nick,solved,submit,score,experience from users order by score desc,experience desc,solved desc,submit desc limit $page_id,50)t,experience_titles where t.experience>=experience_titles.experience GROUP BY user_id)t1 LEFT JOIN experience_titles ON t1.m=experience_titles.experience order by score desc,experience desc,solved desc,submit desc");
+$maxpage=intval($row[0]/20)+1;
+if($page_id<1){
+  header("Location: ranklist.php");
+  exit();
+}
+else if($page_id>$maxpage){
+  header("Location: ranklist.php?page_id=$maxpage");
+  exit();
+}
+
+function get_next_link()
+{
+  global $online,$page_id;
+  parse_str($_SERVER["QUERY_STRING"],$arr); 
+  if($online){
+      $arr['online']=1;
+  }
+  $arr['page_id']=$page_id+1;
+  return http_build_query($arr);
+}
+
+function get_pre_link()
+{
+  global $online,$page_id;
+  parse_str($_SERVER["QUERY_STRING"],$arr); 
+  if($online){
+      $arr['online']=1;
+  }
+  $arr['page_id']=$page_id-1;
+  return http_build_query($arr); 
+}
+
+$rank=($page_id-1)*20;
+if($online==0) 
+  $result=mysqli_query($con,"SELECT user_id,nick,solved,submit,score,accesstime,experience_titles.title FROM (SELECT user_id,nick,solved,submit,score,accesstime,MAX(experience_titles.experience) AS m FROM (SELECT user_id,nick,solved,submit,score,accesstime,experience from users order by score desc,experience desc,solved desc,submit desc)t,experience_titles where t.experience>=experience_titles.experience GROUP BY user_id)t1 LEFT JOIN experience_titles ON t1.m=experience_titles.experience order by score desc,experience desc,solved desc,submit desc limit $rank,20");
+else
+  $result=mysqli_query($con,"SELECT user_id,nick,solved,submit,score,accesstime,experience_titles.title FROM (SELECT user_id,nick,solved,submit,score,accesstime,MAX(experience_titles.experience) AS m FROM (SELECT user_id,nick,solved,submit,score,accesstime,experience from users order by score desc,experience desc,solved desc,submit desc)t,experience_titles where t.experience>=experience_titles.experience and (NOW()-accesstime)<=300 GROUP BY user_id)t1 LEFT JOIN experience_titles ON t1.m=experience_titles.experience order by score desc,experience desc,solved desc,submit desc limit $rank,20");
+
+//time()-strtotime($row[5])>300
 $inTitle='排名';
 $Title=$inTitle .' - '. $oj_name;
 ?>
 <!DOCTYPE html>
 <html>
-  <?php require('head.php'); ?>
+  <?php require 'head.php'; ?>
 
   <body>
-    <?php require('page_header.php'); ?>      
-	<div class="alert hide center alert-popup alert-danger" id="alert_error"></div>
-    <div class="container-fluid">
-	<div class="row-fluid">
-      <div class="span10 offset1 form-inline" style="margin-bottom:10px">
-        <label for="user_page">页数: </label>
-        <select class="input-small" id="user_page"></select>
-        <div class="pull-right">
-          <form id="searchuser_form" action="searchuser.php" method="get" style="margin: 0 0">
-            <div class="input-append"><input id="searchuser_input" autofocus="autofocus" type="text" name="q" class="input-medium" style="width:95px" placeholder="搜索用户..."><a href="javascript:su_submit;"><span id="search_addon" class="add-on"><i class="fa fa-search" style="color:grey"></i></span></a></div>
-          </form>
-        </div>
-        <div class="btn-group pull-right" style="margin-right:9px">
-          <button class="btn btn-info dropdown-toggle" id="btn_usrcmp_menu">用户比较 <span class="caret"></span></button>
-          <ul class="dropdown-menu" id="usrcmp_menu">
-            <li><input type="text" id="ipt_user1" placeholder="用户1"></li>
-            <li><input type="text" id="ipt_user2" placeholder="用户2"></li>
+    <?php require 'page_header.php'; ?>      
+	<div class="alert collapse text-center alert-popup alert-danger" id="alert_error"></div>
+    <div class="container">
+	  <div class="row">
+        <div class="col-xs-12" style="margin-bottom:10px">
+        
+        <a href="solved.php" class="btn btn-success"><i class="fa fa-fw fa-clock-o"></i> 最近AC...</a>
+        <?php if($online==0){?>
+          <a href="ranklist.php?online=1" class="btn btn-primary" id="btn_online"><i class="fa fa-fw fa-car"></i> 在线用户</a>
+        <?php }else{?>
+          <a href="ranklist.php" class="btn btn-primary" id="btn_online"><i class="fa fa-fw fa-gamepad"></i> 所有用户</a>
+        <?php }?>
+        <div class="btn-group dropdown">
+          <button class="btn btn-primary dropdown-toggle" id="btn_usrcmp_menu"><i class="fa fa-fw fa-users"></i> 用户比较 <span class="caret"></span></button>
+          <ul class="dropdown-menu dropdown-menu-right" id="usrcmp_menu">
+            <li><input type="text" id="ipt_user1" class="form-control" placeholder="用户1"></li>
+            <li><input type="text" id="ipt_user2" class="form-control" placeholder="用户2"></li>
             <li class="divider"></li>
             <li>
               <button id="btn_usrcmp" class="btn btn-small btn-primary pull-right" style="margin-right:9px;">比较</button>
             </li>
           </ul>
         </div>
-        <div class="pull-right" style="margin-right:9px">
-          <a href="solved.php" class="btn btn-success">最近AC...</a>
-        </div>
-        <div class="clearfix"></div>
       </div>
 	  </div>
-      <div class="row-fluid">
-        <div class="span10 offset1">
-		
+      <br>
+      <div class="row">
+        <?php if(mysqli_num_rows($result)==0){?>
+          <div class="text-center none-text none-center">
+            <p><i class="fa fa-meh-o fa-4x"></i></p>
+            <p><b>Whoops</b><br>
+            看起来这里什么也没有</p>
+          </div>
+        <?php }else{?>
+        <div class="col-xs-12 table-responsive">
             <table class="table table-hover table-bordered " style="margin-bottom:0 margin-right:10px">
               <thead><tr>
                 <th style="width:5%">No.</th>
                 <th style="width:15%">用户名</th>
-                <th style="width:40%">昵称</th>
+                <th style="width:32%">昵称</th>
+                <th style="width:8%">状态</th>
                 <th style="width:8%">头衔</th>
                 <th style="width:8%">分数</th>
                 <th style="width:8%">AC</th>
@@ -68,51 +112,62 @@ $Title=$inTitle .' - '. $oj_name;
               <tbody id="userlist">
                 <?php 
                   while($row=mysqli_fetch_row($result)){
-                echo '<tr><td>',(++$rank),'</td>';
-                echo '<td><a href="#linkU">',$row[0],'</a></td>';
-                echo '<td>',htmlspecialchars($row[1]),'</td>';
-                echo '<td>',htmlspecialchars($row[5]),'</td>';
-                echo '<td>',$row[4],'</td>';
-                echo '<td><a href="record.php?user_id=',$row[0],'&amp;result=0">',$row[2],'</a></td>';
-                echo '<td><a href="record.php?user_id=',$row[0],'">',$row[3],'</a></td>';
-                echo '<td>',$row[3] ? intval($row[2]/$row[3]*100) : 0,'%</td>';
-                echo "</tr>\n";
+                    echo '<tr><td>',(++$rank),'</td>';
+                    echo '<td><a href="#linkU">',$row[0],'</a></td>';
+                    echo '<td>',htmlspecialchars($row[1]),'</td>';
+                    if(time()-strtotime($row[5])<=300) echo '<td><label class="label label-success">在线</label></td>';
+                    else echo '<td><label class="label label-danger">离线</label></td>';
+                    echo '<td>',htmlspecialchars($row[6]),'</td>';
+                    echo '<td>',$row[4],'</td>';
+                    echo '<td><a href="record.php?user_id=',$row[0],'&amp;result=0">',$row[2],'</a></td>';
+                    echo '<td><a href="record.php?user_id=',$row[0],'">',$row[3],'</a></td>';
+                    echo '<td>',$row[3] ? intval($row[2]/$row[3]*100) : 0,'%</td>';
+                    echo "</tr>\n";
                   }
                 ?>
               </tbody>
             </table>
-        </div>  
+        </div>
+        <?php }?>
       </div>
-      <div class="row-fluid">
+      <div class="row">
         <ul class="pager">
           <li>
-            <a class="pager-pre-link shortcut-hint" title="Alt+A" href="ranklist.php?start_id=<?php echo $page_id-50 ?>" id="btn-pre">&larr; 上一页</a>
+            <a class="pager-pre-link shortcut-hint" title="Alt+A" <?php if($page_id>1) echo 'href="ranklist.php?'.htmlspecialchars(get_pre_link()).'"'?>><i class="fa fa-fw fa-angle-left"></i>上一页</a>
           </li>
           <li>
-            <a class="pager-next-link shortcut-hint" title="Alt+D" href="ranklist.php?start_id=<?php echo $page_id+50 ?>" id="btn-next">下一页 &rarr;</a>
+            <a class="pager-next-link shortcut-hint" title="Alt+D" <?php if($page_id<$maxpage) echo'href="ranklist.php?'.htmlspecialchars(get_next_link()).'"'?>>下一页<i class="fa fa-fw fa-angle-right"></i></a>
           </li>
         </ul>
       </div>  
-      <div class="modal  fade hide" id="UserModal">
-        <div class="modal-header">
-          <a class="close" data-dismiss="modal">×</a>
-          <h4>用户信息</h4>
-        </div>
-        <div class="modal-body" id="user_status" style="max-height:350px">
-          <p>信息不可用……</p>
-        </div>
-        <div class="modal-footer">
-          <a href="#" class="btn" data-dismiss="modal">关闭</a>
+      <div class="modal fade" id="UserModal">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+              <h4 class="modal-title">用户信息</h4>
+            </div>
+            <div class="modal-body" id="user_status">
+              <p>信息不可用……</p>
+            </div>
+            <div class="modal-footer">
+              <form action="mail.php" method="post">
+                <input type="hidden" name="touser" id="um_touser">
+                <?php if(isset($_SESSION['user'])){?>
+                <button type="submit" class="btn btn-default pull-left"><i class="fa fa-fw fa-envelope-o"></i> 发私信</button>
+                <?php }?>
+              </form>
+              <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+            </div>
+		  </div>
         </div>
       </div>
-      
       <hr>
       <footer>
        <p>&copy; <?php echo"{$year} {$oj_copy}";?></p>
       </footer>
-
-    </div><!--/.container-->
-    <script src="/assets/js/common.js"></script>
+    </div>
+    <script src="/assets/js/common.js?v=<?php echo $web_ver?>"></script>
     <script type="text/javascript">
       function intersection(obj1,obj2,arr1,arr2,ist){
         for(var k in obj1){
@@ -137,7 +192,7 @@ $Title=$inTitle .' - '. $oj_name;
       function user_diff(id1,info1,id2,info2)
 	  {
         var arr1=[],arr2=[],ist=[];
-        content='<table class="table table-condensed" style="margin-bottom:0px;">';
+        content='<table class="table table-condensed table-left-aligned" style="margin-bottom:0px;">';
         intersection(info1.solved,info2.solved,arr1,arr2,ist);
         content+='<tr class="success"><td>只有'+id1;
         content+='才AC的题目:</td></tr><tr><td><samp>';output(arr1);
@@ -148,52 +203,26 @@ $Title=$inTitle .' - '. $oj_name;
         content+='</samp></td></tr>';
         arr1=[];arr2=[];ist=[];
         intersection(info1.failed,info2.failed,arr1,arr2,ist);
-        content+='<tr class="error"><td>只有'+id1;
+        content+='<tr class="danger"><td>只有'+id1;
         content+='提交过但没AC的题目:</td></tr><tr><td><samp>';output(arr1);
-        content+='</samp></td></tr><tr class="error"><td>只有'+id2;
+        content+='</samp></td></tr><tr class="danger"><td>只有'+id2;
         content+='提交过但没AC的题目:</td></tr><tr><td><samp>';output(arr2);
-        content+='</samp></td></tr><tr class="error"><td>'+id1+'与'+id2;
+        content+='</samp></td></tr><tr class="danger"><td>'+id1+'与'+id2;
         content+='提交过但没AC的题目:</td></tr><tr><td><samp>';output(ist);
         content+='</samp></td></tr></table>';
       }
       $(document).ready(function(){
-        var i,o=$('#user_page'),cur=<?php echo $page_id?>;
-        for(i=1;i<=<?php echo $total?>;i+=50){
-          if(i-50<=cur && cur<i)
-            o.append('<option id="page_selected" selected="selected">'+i+'</option>');
-          else
-            o.append('<option>'+i+'</option>');
-        }
-        $('#user_page').change(function(){
-          var num=parseInt($(this).find("option:selected").text())-1;
-          location.href='ranklist.php?start_id='+num;
-        });
+        change_type(3);
         $('#userlist').click(function(Event){
           var $target=$(Event.target);
           if($target.is('a') && $target.attr('href')=='#linkU'){
             $('#user_status').html("<p>正在加载...</p>").load("ajax_user.php?user_id="+Event.target.innerHTML).scrollTop(0);
-            var win=$('#UserModal');
-            win.children('.modal-header').children('h4').html('用户信息');
-            win.modal('show');
+            $('#um_touser').val(Event.target.innerHTML);
+            $('#UserModal').children('.modal-header').children('h4').html('用户信息');
+            $('#UserModal').modal('show');
             return false;
           }
         });
-        $('#btn-next').click(function(){
-          if(cur+1+50<=<?php echo $total?>)
-            return true;
-          return false;
-        });
-        $('#btn-pre').click(function(){
-          if(cur+1-50>=1)
-            return true;
-          return false;
-        });
-        $('#searchuser_form').submit(function su_submit(){
-          if($.trim($('#searchuser_input').val()).length==0)
-            return false;
-          return true;
-        });
-        $('#search_addon').click(function(){$('#searchuser_form').submit();});
         $('#btn_usrcmp_menu').click(function(E){
           $(E.target).parent().toggleClass('open');
         });
@@ -225,15 +254,14 @@ $Title=$inTitle .' - '. $oj_name;
               $('#usrcmp_menu').parent().removeClass('open');
               user_diff(user1,info1,user2,info2);
               $('#user_status').html(content).scrollTop(0);
-              var win=$('#UserModal');
-              win.children('.modal-header').children('h4').html(user1+' vs '+user2);
-              win.modal('show');
+              $('#UserModal').children('.modal-header').children('h4').html(user1+' vs '+user2);
+              $('#UserModal').modal('show');
               return false;
             });
           });
         });
         $('#nav_rank').parent().addClass('active');
-        $('#ret_url').val("ranklist.php?start_id=<?php echo $page_id?>");
+        $('#nav_rank_text').removeClass('hidden-sm');
       }); 
     </script>
   </body>

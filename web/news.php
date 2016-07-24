@@ -1,30 +1,43 @@
 <?php
 require 'inc/ojsettings.php';
-require ('inc/checklogin.php');
-require('inc/database.php');
-$page_id=0;
-if(isset($_GET['start_id']))
-  $page_id=intval($_GET['start_id']);
-$row=mysqli_fetch_row(mysqli_query($con,'select count(*) from news'));
-$total=($row[0]);
-$total-=1;
-if($page_id<0 || $page_id>=$total)
-  die('Argument out of range.');
+require 'inc/checklogin.php';
+require 'inc/database.php';
+require 'inc/privilege.php';
 
+$page_id=1;
+if(isset($_GET['page_id']))
+  $page_id=intval($_GET['page_id']);
+
+if($page_id>0){
+require 'inc/database.php';
+if($row=mysqli_fetch_row(mysqli_query($con,'select max(news_id) from news')))
+  $maxpage=intval($row[0]/20);
+else
+  $maxpage=1;
+$res=mysqli_query($con,"select news_id,title,time,importance from news where news_id>0 order by importance desc, news_id desc limit ".(($page_id-1)*20).",20");
+}else{
+header("Location: news.php");
+exit();
+}
 $inTitle='新闻';
 $Title=$inTitle .' - '. $oj_name;
-require('inc/database.php');
-$res=mysqli_query($con,"select news_id,title,time,importance from news where news_id>0 order by importance desc, news_id desc limit $page_id,50");
 ?>
 <!DOCTYPE html>
 <html>
-  <?php require('head.php'); ?>
+  <?php require 'head.php';?>
   <body>
-    <?php require('page_header.php') ?>
-	<div class="container-fluid">
-	  <div class="row-fluid">
-        <div class="span10 offset1">
-            <table class="table table-striped table-bordered">
+    <?php require 'page_header.php';?>
+	<div class="container">
+	  <div class="row">
+        <div class="col-xs-12">
+          <?php if(mysqli_num_rows($res)==0){?>
+            <div class="text-center none-text none-center">
+              <p><i class="fa fa-meh-o fa-4x"></i></p>
+              <p><b>Whoops</b><br>
+              看起来这里什么也没有</p>
+            </div>
+          <?php }else{?>
+            <table class="table table-responsive table-striped table-bordered">
               <thead><tr>
                 <th style="width:6%">No.</th>
                 <th>标题</th>
@@ -41,79 +54,75 @@ $res=mysqli_query($con,"select news_id,title,time,importance from news where new
                  $addt2='</b>';
             }
 					echo '<td><font size=3>',htmlspecialchars($row[0]),'</font></td>';
-					echo '<td><font size=3><a href="javascript:void(0);" onclick="click_news(',$row[0],')">',$addt1.htmlspecialchars($row[1]).$addt2,'</a></font></td>';
+					echo '<td style="text-align:left"><font size=3><a href="javascript:void(0)" onclick="return click_news(',$row[0],')">',$addt1.htmlspecialchars($row[1]).$addt2,'</a></font></td>';
 					echo '<td><font size=3>',htmlspecialchars($row[2]),'</font></td></tr>';
 					echo "\n";
                 }
               ?>
               </tbody>
             </table>
+          <?php }?>
         </div>  
       </div>
-	<div class="row-fluid">
+	<div class="row">
         <ul class="pager">
           <li>
-            <a class="pager-pre-link shortcut-hint" title="Alt+A" href="news.php?start_id=<?php echo $page_id-50 ?>" id="btn-pre">&larr; 上一页</a>
+            <a class="pager-pre-link shortcut-hint" title="Alt+A" <?php
+              if($page_id>1) echo 'href="news.php?page_id='.($page_id-1).'"';
+            ?>><i class="fa fa-fw fa-angle-left"></i>上一页</a>
           </li>
           <li>
-            <a class="pager-next-link shortcut-hint" title="Alt+D" href="news.php?start_id=<?php echo $page_id+50 ?>" id="btn-next">下一页 &rarr;</a>
+            <a class="pager-next-link shortcut-hint" title="Alt+D" <?php
+              if(mysqli_num_rows($res)==20&&$page_id<$maxpage) echo 'href="news.php?page_id='.($page_id+1).'"';
+            ?>>下一页<i class="fa fa-fw fa-angle-right"></i></a>
           </li>
         </ul>
       </div> 
 	</div>
-	<div class="modal fade hide" id="NewsModal">
-      <div class="modal-header">
-        <a class="close" data-dismiss="modal">&times;</a>
-        <h4><span class="hide" id="ajax_newstitle"></span></h4>
-      </div>
-      <form class="margin-0" action="#" method="post" id="news_content">
-        <div class="modal-body">
-	        <span class="hide" id="ajax_newscontent"></span>
-        </div>
-        <div class="modal-footer form-inline">
-          <div class="pull-left">
-          </div>
-		  <span class="pull-left hide" id="ajax_newstime"></span>
-		  <?php if($_SESSION['administrator']) echo '<a class="pull-left" href="admin.php?page=news">编辑</a>'?>
-          <a href="#" class="btn" data-dismiss="modal">关闭</a>
-        </div>
-      </form>
-    </div>
+	<div class="modal fade" id="NewsModal">
+	  <div class="modal-dialog">
+		<div class="modal-content">
+         <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title" id="newstitle"></h4>
+         </div>
+         <div class="modal-body" id="newscontent"></div>
+         <div class="modal-footer">
+			<text class="pull-left" id="newstime"></text>
+			<?php if(check_priv(PRIV_SYSTEM))
+		     echo '<a class="pull-left" href="admin.php#news">编辑</a>';
+			 ?> 
+            <button type="button" class="btn btn-default" 
+               data-dismiss="modal">关闭
+            </button>
+         </div>
+		</div>
+	  </div>
+	</div>
 	<hr>
 	<footer>
        <p>&copy; <?php echo"{$year} {$oj_copy}";?></p>
     </footer>
-    <script src="/assets/js/common.js"></script>
+    <script src="/assets/js/common.js?v=<?php echo $web_ver?>"></script>
     <script type="text/javascript"> 
 	function click_news(newsid){
 		  if(newsid){
-          $.ajax({
+            $.ajax({
               type:"POST",
               url:"ajax_getnews.php",
               data:{"newsid":newsid},
               success:function(data){
                       var obj=eval("("+data+")");
-	           			  $('#ajax_newstitle').html(obj.title).show();
-                      if($.trim(obj.content)=='') $('#ajax_newscontent').html('本条新闻内容为空...').show();
-          				  $('#ajax_newscontent').html(obj.content).show();
-           				  $('#ajax_newstime').html('发布时间：'+obj.time+'&nbsp;&nbsp;').show();
                       $('#NewsModal').modal('show');
+	           			  $('#newstitle').html(obj.title).show();
+                      if($.trim(obj.content)=='') $('#newscontent').html('本条新闻内容为空...').show();
+          				  $('#newscontent').html(obj.content).show();
+           				  $('#newstime').html('发布时间：'+obj.time+'&nbsp;&nbsp;').show();
                    }
               });
             };
         };
 	$(document).ready(function(){
-		var cur=<?php echo $page_id?>;
-		$('#btn-next').click(function(){
-          if(cur+1+50<=<?php echo $total?>)
-            return true;
-          return false;
-        });
-        $('#btn-pre').click(function(){
-          if(cur+1-50>=1)
-            return true;
-          return false;
-        });
 	});
     </script>
   </body>
