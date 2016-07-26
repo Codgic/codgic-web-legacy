@@ -245,7 +245,6 @@ if(!isset($_POST['news_id'])||!isset($_POST['title']))
 		echo 'fail';
 }else if($op=='sendemail'){
     if(isset($_POST['to_user'])) $uid=mysqli_real_escape_string($con,trim($_POST['to_user']));
-	else die('收件人不能为空...');
     if(isset($_POST['title'])) $title=mysqli_real_escape_string($con,trim($_POST['title']));
     else die('标题/内容不能为空...');
     if(isset($_POST['content'])) $content=mysqli_real_escape_string($con,trim($_POST['content']));

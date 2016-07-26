@@ -112,6 +112,11 @@ $Title=$inTitle .' - '. $oj_name;
               </div>
               <div class="tab-pane fade" id="user">
 				<div class="row">
+                  <div class="col-xs-4 pull-left">
+                    <div class="btn-group">
+                      <a class="btn btn-default disabled"><i class="fa fa-fw fa-envelope"></i> 群发邮件</a>
+                    </div>
+                  </div>
                   <div class="col-xs-8 col-sm-5 col-md-3 pull-right">
                     <div class="form-group has-feedback">
                       <input class="form-control" id="user_q" name="q" type="text" placeholder="搜索用户...">
@@ -448,7 +453,7 @@ $Title=$inTitle .' - '. $oj_name;
 			$('#input_rejudge').removeClass('error');   
 			  $.ajax({
 				type:"POST",
-				url:"submit.php",
+				url:"ajax_submit.php",
 				data: $('#form_rejudge').serialize(),
 				success:function(msg){
 					if(msg=='success') $('#RejudgeModal').modal('hide');

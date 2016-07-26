@@ -129,7 +129,7 @@ $Title=$inTitle .' - '. $oj_name;
     <?php if($pref->edrmode!='off'){
       echo '<link rel="stylesheet" href="/assets/css/codemirror.css" type="text/css" />';
       echo '<link rel="stylesheet" href="/assets/css/codemirror.fullscreen.css" type="text/css" />';
-      if($t_night=='on') echo '<link rel="stylesheet" href="/assets/css/codemirror.eclipse.css" type="text/css" />';
+      if($t_night=='off') echo '<link rel="stylesheet" href="/assets/css/codemirror.eclipse.css" type="text/css" />';
       else echo '<link rel="stylesheet" href="/assets/css/codemirror.midnight.css" type="text/css" />';
       }
       require 'inc/mathjax_head.php';
@@ -376,7 +376,7 @@ $Title=$inTitle .' - '. $oj_name;
             <button type="button" class="close" data-dismiss="modal">&times;</button>
             <h4 class="modal-title">代码提交: #<?php echo $prob_id?></h4>
 		</div>
-		<form action="submit.php" method="post" id="form_submit">
+		<form method="post" id="form_submit">
 		<input type="hidden" name="op" value="judge">
 		<input type="hidden" id="prob_input" name="problem">
 		<div class="modal-body">
@@ -384,7 +384,7 @@ $Title=$inTitle .' - '. $oj_name;
 		    <textarea spellcheck="false" class="form-control" style="resize:none" id="detail_input" rows="14" name="source" placeholder="在这里敲出你的代码..."></textarea>
 		  </div>
 		  <?php if($pref->edrmode=='vim') echo '<samp>指令: <span id="vim_cmd"></span></samp>'?>
-          <div class="alert alert-danger collapse" id="submit_result"></div>
+          <div class="alert alert-danger collapse" id="submit_res"></div>
 		</div>
 		<div class="modal-footer form-inline">
 		  <div class="row">
@@ -422,14 +422,14 @@ $Title=$inTitle .' - '. $oj_name;
 		  <button type="button" class="close" data-dismiss="modal">&times;</button>
 		  <h4 class="modal-title">笔记 - <?php echo $prob_id?></h4>
 		</div>
-		<form action="#" method="post" id="form_note"> 
+		<form method="post" id="form_note"> 
 		<div class="modal-body">
 		  <div class="form-group">
 		    <textarea class="form-control" style="resize:none" rows="14" placeholder="在这里写点什么吧..." name="content"><?php echo $note_content?></textarea>
 		    <span class="help-block">这份笔记只能被你自己看见~</span>
 		    <input type="hidden" name="problem_id" value="<?php echo $prob_id?>">
 		  </div>
-          <div class="alert alert-danger collapse" id="notes_result"></div>
+          <div class="alert alert-danger collapse" id="notes_res"></div>
 		</div>
 		<div class="modal-footer form-inline">
 		  <div class="row">
@@ -570,12 +570,22 @@ $Title=$inTitle .' - '. $oj_name;
         $('#form_submit').submit(function(){
           var code = $('#detail_input').val();
           if($.trim(code) == '' || code.length > 30000){
-            $('#submit_result').html('<i class="fa fa-fw fa-remove"></i> 代码太短或太长...').slideDown();
-            return false;
+            $('#submit_res').html('<i class="fa fa-fw fa-remove"></i> 代码太短或太长...').slideDown();
           }else{
-            $('#submit_result').slideUp();
-            return true;
+            $.ajax({
+              type:"POST",
+              url:"ajax_submit.php",
+              data:$('#form_submit').serialize(),
+              success:function(msg){
+                if(msg.indexOf('success')!=-1){
+                    $('#submit_res').slideUp();
+                    window.location.href='wait.php?key='+msg.substring(7,msg.length);
+                }
+                else $('#submit_res').html('<i class="fa fa-fw fa-remove"></i> '+msg).slideDown();
+              }
+            });
           }
+          return false;
         });
         $('#form_note').submit(function(){
           var data = $(this).serializeArray();
@@ -592,7 +602,7 @@ $Title=$inTitle .' - '. $oj_name;
               $('#note_panel').show();
               $('#NoteModal').modal('hide');
             }else{
-              $('#notes_result').html('<i class="fa fa-fw fa-remove"></i> '+res).slideDown();
+              $('#notes_res').html('<i class="fa fa-fw fa-remove"></i> '+res).slideDown();
             }
           });
           return false;

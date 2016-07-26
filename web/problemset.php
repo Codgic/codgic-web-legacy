@@ -40,7 +40,7 @@ if($page_id<10){
   exit();
 }
 else if($page_id>$maxpage){
-  if($maxpage==0) die '题库中还没有题目哦...';
+  if($maxpage==0) die('题库中还没有题目哦...');
   else {
     header("Location: problemset.php?page_id=$maxpage");
     exit();

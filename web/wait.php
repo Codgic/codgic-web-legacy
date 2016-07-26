@@ -13,7 +13,7 @@ $Title=$inTitle .' - '. $oj_name;
   <?php require 'head.php'; ?>
 
   <body>
-    <div class="container text-center" style="margin-top:20px">
+    <div class="container text-center">
     	<div class="row">
         <div class="col-xs-12">
           <h1 class="text-center">评测结果</h1>

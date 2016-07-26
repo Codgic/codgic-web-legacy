@@ -106,24 +106,22 @@ $Title=$inTitle .' - '. $oj_name;
     <script src="/assets/js/common.js?v=<?php echo $web_ver?>"></script>
     <script type="text/javascript"> 
 	function click_news(newsid){
-		  if(newsid){
-            $.ajax({
-              type:"POST",
-              url:"ajax_getnews.php",
-              data:{"newsid":newsid},
-              success:function(data){
-                      var obj=eval("("+data+")");
-                      $('#NewsModal').modal('show');
-	           			  $('#newstitle').html(obj.title).show();
-                      if($.trim(obj.content)=='') $('#newscontent').html('本条新闻内容为空...').show();
-          				  $('#newscontent').html(obj.content).show();
-           				  $('#newstime').html('发布时间：'+obj.time+'&nbsp;&nbsp;').show();
-                   }
-              });
-            };
-        };
-	$(document).ready(function(){
-	});
+      if(newsid){
+        $.ajax({
+          type:"POST",
+          url:"ajax_getnews.php",
+          data:{"newsid":newsid},
+          success:function(data){
+            var obj=eval("("+data+")");
+            $('#NewsModal').modal('show');
+            $('#newstitle').html(obj.title).show();
+            if($.trim(obj.content)=='') $('#newscontent').html('本条新闻内容为空...').show();
+            $('#newscontent').html(obj.content).show();
+            $('#newstime').html('发布时间：'+obj.time+'&nbsp;&nbsp;').show();
+          }
+        });
+      };
+    };
     </script>
   </body>
 </html>
