@@ -53,5 +53,5 @@ $nightstart = 21;
 $news_num=6; 
 
 //2.5 Contact email
-//Contact email that is shown in auth.php.
+//Contact email that is shown in login.php.
 $contact_email = 'info@cwoj.tk';

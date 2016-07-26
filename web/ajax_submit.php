@@ -95,7 +95,7 @@ if($_POST['op']=='judge'){
 	ignore_user_abort(TRUE);
 	$result = posttodaemon($data);
 	if(strstr($result,"OK"))
-	  echo 'success'.$key;
+	  echo 'success_'.$key;
 	else
 	  die($result);
 }else if($_POST['op']=='rejudge'){
