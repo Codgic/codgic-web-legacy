@@ -10,7 +10,7 @@ function posttodaemon($data){
 		$encoded.=rawurlencode($k)."=".rawurlencode($v);
 	}
 	if(!($fp=@fsockopen('127.0.0.1', 8881)))
-		die ("错误: 无法连接至评测服务...");
+		die ("无法连接至评测服务...");
 
 	fputs($fp, "POST /submit_prob HTTP/1.0\r\n");
 	fputs($fp, "Host: 127.0.0.1\r\n");
@@ -22,7 +22,7 @@ function posttodaemon($data){
 
 	$line = fgets($fp,128);
 	if(!strstr($line,"HTTP/1.0 200"))
-		return ("错误: 无法提交，服务器内部错误...\n");
+		return ("无法提交，服务器内部错误...\n");
 
 	$results="";
 	while(!feof($fp))

@@ -25,7 +25,9 @@ $num=0;
 <html>
 <?php require 'head.php';?>
   <body>
-    <?php require 'page_header.php';?>  
+    <?php require 'page_header.php';?> 
+    
+    <div class="alert alert-danger collapse text-center alert-popup" id="alert_error"></div>
     <div class="container">
       <div class="row">
         <div class="col-xs-12">
@@ -118,12 +120,16 @@ $num=0;
               data:{"newsid":newsid},
               success:function(data){
                 var obj=eval("("+data+")");
-                $('#NewsModal').modal('show');
-                $('#newstitle').html(obj.title).show();
-                if($.trim(obj.content)=='') $('#newscontent').html('本条新闻内容为空...').show();
-                  $('#newscontent').html(obj.content).show();
-                  $('#newstime').html('发布时间：'+obj.time+'&nbsp;&nbsp;').show();
+                if(obj.type=='success'){
+                  $('#newstitle').html(obj.title);
+                  $('#newscontent').html(obj.content);
+                  $('#newstime').html('发布时间：'+obj.time+'&nbsp;&nbsp;');
+                  $('#NewsModal').modal('show');
+                }else{
+                  $('#alert_error').html('<i class="fa fa-fw fa-remove"></i> '+obj.content).fadeIn();
+                  setTimeout(function(){$('#alert_error').fadeOut();},2000);
                 }
+              }
             });
           };
       };

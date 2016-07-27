@@ -2,7 +2,7 @@
 require 'inc/ojsettings.php';
 require 'inc/checklogin.php';
 require 'inc/privilege.php';
-if(!check_priv(PRIV_PROBLEM) && !check_priv(PRIV_PROBLEM)){
+if(!check_priv(PRIV_PROBLEM) && !check_priv(PRIV_SYSTEM)){
   include '403.php';
 }else if(!isset($_SESSION['admin_tfa']) || !$_SESSION['admin_tfa']){
   $_SESSION['admin_retpage'] = $_SERVER['PHP_SELF'];
@@ -424,7 +424,7 @@ $Title=$inTitle .' - '. $oj_name;
 					data: $('#form_news').serialize(),
 					success:function(msg){
 						if(msg=='success') $('#NewsModal').modal('hide');
-						else $('#news_res').html('<i class="fa fa-fw fa-remove"></i> 错误: '+msg).slideDown();
+						else $('#news_res').html('<i class="fa fa-fw fa-remove"></i> '+msg).slideDown();
 					}
 					});
 			}
@@ -441,7 +441,7 @@ $Title=$inTitle .' - '. $oj_name;
               },
               success:function(msg){
 				  if(msg=='success') $('#NewsModal').modal('hide');
-				  else $('#news_res').html('<i class="fa fa-fw fa-remove"></i> 错误: 删除失败...').show();
+				  else $('#news_res').html('<i class="fa fa-fw fa-remove"></i> 删除失败...').show();
 			  }
             });
 			getnewslist();
@@ -457,7 +457,7 @@ $Title=$inTitle .' - '. $oj_name;
 				data: $('#form_rejudge').serialize(),
 				success:function(msg){
 					if(msg=='success') $('#RejudgeModal').modal('hide');
-					else $('#rejudge_res').html('<i class="fa fa-fw fa-remove"></i> 错误: '+msg).slideDown();
+					else $('#rejudge_res').html('<i class="fa fa-fw fa-remove"></i> '+msg).slideDown();
 				}
 			  });
           }else{
@@ -587,7 +587,7 @@ $Title=$inTitle .' - '. $oj_name;
             data:$('#form_email').serialize(),
             success:function(msg){
               if(/success/.test(msg)) $('#EmailModal').modal('hide');
-              else $('#email_res').html('<i class="fa fa-fw fa-remove"></i> 错误: '+msg).slideDown();
+              else $('#email_res').html('<i class="fa fa-fw fa-remove"></i> '+msg).slideDown();
             }
           });
           return false;
@@ -604,7 +604,7 @@ $Title=$inTitle .' - '. $oj_name;
                 $('#PrivModal').modal('hide');
                 getusrlist(upid,kw);
               }
-              else $('#priv_res').html('<i class="fa fa-fw fa-remove"></i> 错误: '+msg).slideDown();
+              else $('#priv_res').html('<i class="fa fa-fw fa-remove"></i> '+msg).slideDown();
             }
           });
           return false;

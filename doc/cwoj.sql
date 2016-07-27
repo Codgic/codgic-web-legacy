@@ -229,7 +229,9 @@ CREATE TABLE `news` (
   `content` longtext COLLATE utf8mb4_unicode_ci,
   `time` datetime DEFAULT NULL,
   `importance` tinyint(4) NOT NULL DEFAULT '0',
+  `privilege` tinyint(4) NOT NULL DEFAULT '0',
   `defunct` char(1) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'N'
+  
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --

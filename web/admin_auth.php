@@ -3,7 +3,7 @@ require 'inc/ojsettings.php';
 require 'inc/checklogin.php';
 require 'inc/privilege.php';
 
-if(!check_priv(PRIV_PROBLEM) && !check_priv(PRIV_PROBLEM))
+if(!check_priv(PRIV_PROBLEM) && !check_priv(PRIV_SYSTEM))
   include '403.php';
 else{
 require 'inc/database.php';
