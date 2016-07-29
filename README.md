@@ -3,6 +3,8 @@
 CWOJ基于Bashu Onilnejudge二次开发，这个项目也可以在github上被找到。我们很感谢Bashu Onlinejudge的开发者让我们得以快速地为学校定制一个在线评测系统。
 另外，我们也很感谢那些开源的网页框架。他们美妙的作品让开发过程轻松了许多。
 
+0.97 Demo: http://cwoj.byethost18.com
+
 # 分支
 - master: 当前开发版本分支。
 - stable: 稳定版本分支。
