@@ -80,9 +80,7 @@ $Title=$inTitle .' - '. $oj_name;
             <li><input type="text" id="ipt_user1" class="form-control" placeholder="用户1"></li>
             <li><input type="text" id="ipt_user2" class="form-control" placeholder="用户2"></li>
             <li class="divider"></li>
-            <li>
-              <button id="btn_usrcmp" class="btn btn-small btn-primary pull-right" style="margin-right:9px;">比较</button>
-            </li>
+            <li><button id="btn_usrcmp" class="btn btn-small btn-primary pull-right" style="margin-right:9px;">比较</button></li>
           </ul>
         </div>
       </div>

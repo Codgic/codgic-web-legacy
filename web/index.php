@@ -14,7 +14,12 @@ require 'inc/checklogin.php';
 require 'inc/database.php';
 $res=mysqli_query($con,"select content from news where news_id=0 limit 1");
 $index_text=($row=mysqli_fetch_row($res)) ? $row[0] : '';
-$res=mysqli_query($con,"select news_id,title,importance from news where news_id>0 order by importance desc, news_id desc limit 0,$news_num");
+if(!isset($_SESSION['user']))
+  $res=mysqli_query($con,"select news_id,title,importance,privilege from news where news_id>0 and privilege=0 order by importance desc, news_id desc limit 0,$news_num");
+else{
+  $i=$_SESSION['priv'];
+  $res=mysqli_query($con,"select news_id,title,importance,privilege from news where news_id>0 and ((privilege & $i)<>0 or privilege=0) order by importance desc, news_id desc limit 0,$news_num");
+}
 $row=mysqli_fetch_row(mysqli_query($con,"select content from user_notes where id=0 limit 1"));
 $category=$row[0];
 $inTitle='主页';
@@ -123,7 +128,7 @@ $num=0;
                 if(obj.type=='success'){
                   $('#newstitle').html(obj.title);
                   $('#newscontent').html(obj.content);
-                  $('#newstime').html('发布时间：'+obj.time+'&nbsp;&nbsp;');
+                  $('#newstime').html('发布时间: '+obj.time+'&nbsp;&nbsp;权限: '+obj.priv+'&nbsp;&nbsp;');
                   $('#NewsModal').modal('show');
                 }else{
                   $('#alert_error').html('<i class="fa fa-fw fa-remove"></i> '+obj.content).fadeIn();

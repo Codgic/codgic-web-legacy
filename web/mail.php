@@ -256,8 +256,8 @@ $Title=$inTitle .' - '. $oj_name;
 					else
 						return;
 					var j=$a.attr('href'),k,content;
-					switch(j.substr(j.lastIndexOf('#')+1)){
-						case 'title':
+					switch(j){
+						case '#title':
 							k=$a.parents('.mail-container'); 
 							mailid=k.parent().css('background-color','').attr('id').substr(4);
 							content=k.children('.mail-content');
@@ -272,12 +272,12 @@ $Title=$inTitle .' - '. $oj_name;
 								content.hide();
 							}
 							break;
-						case 'del':
+						case '#del':
 							k=$a.parents('li');
 							$.ajax('ajax_mailfunc.php?op=delete&mail_id='+k.attr('id').substr(4));
 							k.remove();
 							break;
-						case 'rep':
+						case '#rep':
                             op='send';
 							k=$a.parents('.mail-container');
 							$('#input_to').val(k.children('.mail-info').find('a').html()).prop('disabled',true);
@@ -285,12 +285,12 @@ $Title=$inTitle .' - '. $oj_name;
 							$('#send_result').hide();
 							$('#MailModal').modal('show');
 							break;
-						case 'star':
+						case '#star':
 							k=$a.parents('li');
 							$.ajax('ajax_mailfunc.php?op=star&mail_id='+k.attr('id').substr(4));
 							$a.find('i').toggleClass('fa-star').toggleClass('fa-star-o');
 							break;
-                        case 'edit':
+                        case '#edit':
                             op='edit';
                             $('#send_title').html('编辑私信');
                             k=$a.parents('.mail-container'); 

@@ -1,8 +1,9 @@
 <?php
 require 'inc/database.php';
 require 'inc/ojsettings.php';
+require 'inc/privilege.php';
 session_start();
-$arr=array('type'=>'fail','title'=>'','content'=>'','time'=>'');
+$arr=array('type'=>'fail','title'=>'','content'=>'','time'=>'','priv'=>'');
 
 if(!isset($_POST['newsid'])){
     $arr['content']='参数无效...';
@@ -31,6 +32,7 @@ $arr['type']='success';
 $arr['title']=$row[0];
 $arr['content']=$row[1];
 $arr['time']=$row[2];
+$arr['priv']=list_priv($row[3]);
 
 echo json_encode($arr);
 ?>

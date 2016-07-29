@@ -7,17 +7,25 @@ require 'inc/privilege.php';
 $page_id=1;
 if(isset($_GET['page_id']))
   $page_id=intval($_GET['page_id']);
+  
+if($page_id<1){
+  header("Location: news.php");
+  exit();
+}else{
+  require 'inc/database.php';
+  if(!isset($_SESSION['user'])){
+    $maxq="select count(news_id) from news where news_id>0 and privilege=0";
+    $newsq="select news_id,title,importance,privilege from news where news_id>0 and privilege=0 order by importance desc, news_id desc limit ".(($page_id-1)*20).",20";
+  }else{
+    $maxq="select count(news_id) from news where news_id>0 and ((privilege & ".$_SESSION['priv'].")<>0 or privilege=0)";
+    $newsq="select news_id,title,importance,privilege from news where news_id>0 and ((privilege & ".$_SESSION['priv'].")<>0 or privilege=0) order by importance desc, news_id desc limit ".(($page_id-1)*20).",20";
+}
 
-if($page_id>0){
-require 'inc/database.php';
-if($row=mysqli_fetch_row(mysqli_query($con,'select max(news_id) from news')))
+if($row=mysqli_fetch_row(mysqli_query($con,$maxq)))
   $maxpage=intval($row[0]/20);
 else
   $maxpage=1;
-$res=mysqli_query($con,"select news_id,title,time,importance from news where news_id>0 order by importance desc, news_id desc limit ".(($page_id-1)*20).",20");
-}else{
-header("Location: news.php");
-exit();
+  $res=mysqli_query($con,$newsq);
 }
 $inTitle='新闻';
 $Title=$inTitle .' - '. $oj_name;
@@ -118,7 +126,7 @@ $Title=$inTitle .' - '. $oj_name;
             if(obj.type=='success'){
               $('#newstitle').html(obj.title);
               $('#newscontent').html(obj.content);
-              $('#newstime').html('发布时间：'+obj.time+'&nbsp;&nbsp;');
+              $('#newstime').html('发布时间: '+obj.time+'&nbsp;&nbsp;权限: '+obj.priv+'&nbsp;&nbsp;');
               $('#NewsModal').modal('show');
             }else{
               $('#alert_error').html('<i class="fa fa-fw fa-remove"></i> '+obj.content).fadeIn();

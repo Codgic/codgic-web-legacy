@@ -218,9 +218,17 @@ $Title=$inTitle .' - '. $oj_name;
               <div class="checkbox" style="display:inline-block">
                 <label><input type="checkbox" name="importance" id="is_top">顶置</label>
               </div>
+              <div class="btn-group pull-left">
+                <button class="pull-left btn btn-danger collapse" id="btn_delnews">删除</button>
+                <button class="pull-left btn btn-default" id="btn_upload">上传图片</button>
+                <button class="pull-left btn btn-default dropdown-toggle" id="btn_newspriv" data-toggle="dropdown">需要权限 <span class="caret"></span></button>
+                <ul class="dropdown-menu dropdown-menu-right">
+                  <li><a href="#0"><input type="checkbox" id="news_0" name="0"> 校内</a></li>
+                  <li><a href="#1"><input type="checkbox" id="news_1" name="1"> 源码</a></li>
+                  <li><a href="#2"><input type="checkbox" id="news_2" name="2"> 题库</a></li>
+                </ul>
+              </div>
               <button class="btn btn-primary" type="submit">提交</button>
-              <button class="pull-left btn btn-danger collapse" id="btn_delnews">删除</button>
-              <button class="pull-left btn btn-primary" id="btn_upload">上传图片...</button>  
               <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
             </div>
             </form> 
@@ -268,16 +276,16 @@ $Title=$inTitle .' - '. $oj_name;
             <input type="hidden" id="priv_uid" name="user_id" value="">  
             <div class="modal-body">
               <div class="checkbox">
-                <label><input type="checkbox" name="0" id="chk_insider">校内(<?php echo PRIV_INSIDER?>)</label>
+                <label><input type="checkbox" name="0" id="chk_insider"> 校内(<?php echo PRIV_INSIDER?>)</label>
               </div>
               <div class="checkbox">
-                <label><input type="checkbox" name="1" id="chk_source">源码(<?php echo PRIV_SOURCE?>)</label>
+                <label><input type="checkbox" name="1" id="chk_source"> 源码(<?php echo PRIV_SOURCE?>)</label>
               </div>
               <div class="checkbox">
-                <label><input type="checkbox" name="2" id="chk_problem">题库(<?php echo PRIV_PROBLEM?>)</label>
+                <label><input type="checkbox" name="2" id="chk_problem"> 题库(<?php echo PRIV_PROBLEM?>)</label>
               </div>
               <div class="checkbox">
-                <label><input type="checkbox" name="3" id="chk_system">系统(<?php echo PRIV_SYSTEM?>)</label>
+                <label><input type="checkbox" name="3" id="chk_system"> 系统(<?php echo PRIV_SYSTEM?>)</label>
               </div>
               <div class="alert alert-danger collapse" id="priv_res"></div>
             </div>
@@ -320,13 +328,44 @@ $Title=$inTitle .' - '. $oj_name;
     </div>
     <script src="/assets/js/common.js?v=<?php echo $web_ver?>"></script>
     <script type="text/javascript">
-	var loffset=window.screenLeft+200;
-    var toffset=window.screenTop+200;
+    <?php if(check_priv(PRIV_SYSTEM)){?>
 	var getlevellist=function(){$('#table_level_experience').load('ajax_admin.php',{op:'list_level_experience'});};
     var gettitlelist=function(){$('#table_experience_title').load('ajax_admin.php',{op:'list_experience_title'});};
     var getnewslist=function(){$('#table_news').load('ajax_admin.php',{op:'list_news'});};
     var getusrlist=function(e=1,q=''){$('#table_usr').load('ajax_admin.php',{op:'list_usr',page_id:e,q:q});};
 	var cnt=-1,kw='',upid=1;
+    <?php }?>
+    function update_chart(){
+        $.getJSON('ajax_usage.php',function(data){
+          if(data&&"number"==typeof(data.cpu)){
+            $('#pg_cpu').css('width',data.cpu+'%');
+			$('#pg_cpu').html(data.cpu+'%');
+			if(data.cpu<=80) {
+			  $('#pg_cpu').removeClass('progress-bar-danger');
+			  $('#pg_cpu').addClass('progress-bar-success');
+			}else{
+			  $('#pg_cpu').removeClass('progress-bar-success');
+			  $('#pg_cpu').addClass('progress-bar-danger');  
+			}
+		  }
+		  if(data&&"number"==typeof(data.mem)){
+			$('#pg_mem').css('width',data.mem+'%');
+			$('#pg_mem').html(data.mem+'%')
+			if(data.mem<=80) {
+			  $('#pg_mem').removeClass('progress-bar-danger');
+			  $('#pg_mem').addClass('progress-bar-success');
+			}else{
+			  $('#pg_mem').removeClass('progress-bar-success');
+			  $('#pg_mem').addClass('progress-bar-danger');  
+			}
+		  }
+		  if(data&&"number"==typeof(data.daemon)){
+			if(data.daemon==1) $('#pg_daemon').html('<font color=green>正在运行...</font>');
+			else $('#pg_daemon').html('<font color=red>尚未运行...</font>');
+		  }
+          setTimeout('update_chart()',3000);
+        });
+      }
       $(document).ready(function(){
 		$(function(){
 			var hash = window.location.hash;
@@ -355,6 +394,38 @@ $Title=$inTitle .' - '. $oj_name;
 			});
 		});
 		update_chart();
+        $('#form_rejudge').submit(function(){
+          $('#rejudge_res').hide();
+          if($.trim($('#input_rejudge').val())){
+			$('#input_rejudge').removeClass('error');   
+			  $.ajax({
+				type:"POST",
+				url:"ajax_submit.php",
+				data: $('#form_rejudge').serialize(),
+				success:function(msg){
+					if(msg=='success') $('#RejudgeModal').modal('hide');
+					else $('#rejudge_res').html('<i class="fa fa-fw fa-remove"></i> '+msg).slideDown();
+				}
+			  });
+          }else{
+			$('#input_rejudge').addClass('error');  
+		  }
+		  return false;
+        });
+        <?php if(check_priv(PRIV_SYSTEM)){?>
+        $('#form_category').submit(function(){
+			$('#addcategory_res').hide();
+			$.ajax({
+					type:"POST",
+					url:"ajax_admin.php",
+					data:{"op":'update_category',"content":$.trim($('#input_category').val())},
+					success:function(msg){
+						if(msg=='success') $('#CategoryModal').modal('hide');
+						else $('#addcategory_res').slideDown();
+					}
+				});
+			return false;
+		});
 		$('#table_news').click(function(E){
 		 var news_title,news_content;
 		 E.preventDefault();
@@ -375,8 +446,10 @@ $Title=$inTitle .' - '. $oj_name;
 				  $('#news_id').val(cnt);
 				  $('#NewsModal .modal-title').html('编辑新闻');
 		          $('#NewsModal').modal('show');  
-				  if(obj.importance=='1') document.getElementById("is_top").checked = true;
-				  else document.getElementById("is_top").checked = false;
+				  $('#is_top').prop('checked',obj.importance);
+                  $('#news_0').prop('checked', obj.priv&<?php echo PRIV_INSIDER?>);
+                  $('#news_1').prop('checked', obj.priv&<?php echo PRIV_SOURCE?>);
+                  $('#news_2').prop('checked', obj.priv&<?php echo PRIV_PROBLEM?>);
 				  $('#btn_delnews').show();
 		          $('#input_newstitle').val(obj.title);
 				  $('#input_newscontent').val(obj.content);
@@ -385,27 +458,21 @@ $Title=$inTitle .' - '. $oj_name;
 		  }
          return false;
         });
+        $('#NewsModal .dropdown-menu a').click(function(E){
+            E.preventDefault();
+            var jq=$('#news_'+$(E.target).attr('href').substring(1,2));
+            if(jq.prop('checked')) jq.prop('checked',false);
+            else jq.prop('checked',true);
+            return false;
+        });
 		$('#new_news').click(function(){
 			$('#NewsModal .modal-title').html('添加新闻');
 			$('#news_op').val('add_news');
 			$('#input_newstitle').val('');
 		    $('#input_newscontent').val('');
 			$('#btn_delnews').hide();
-			document.getElementById("is_top").checked = false;
+			$('#is_top').prop('checked',false);
 			$('#NewsModal').modal('show');
-		});
-		$('#form_category').submit(function(){
-			$('#addcategory_res').hide();
-			$.ajax({
-					type:"POST",
-					url:"ajax_admin.php",
-					data:{"op":'update_category',"content":$.trim($('#input_category').val())},
-					success:function(msg){
-						if(msg=='success') $('#CategoryModal').modal('hide');
-						else $('#addcategory_res').slideDown();
-					}
-				});
-			return false;
 		});
 		$('#form_news').submit(function(){
 		  var title,content;
@@ -447,24 +514,6 @@ $Title=$inTitle .' - '. $oj_name;
 			getnewslist();
 			return false;
 		});
-        $('#form_rejudge').submit(function(){
-          $('#rejudge_res').hide();
-          if($.trim($('#input_rejudge').val())){
-			$('#input_rejudge').removeClass('error');   
-			  $.ajax({
-				type:"POST",
-				url:"ajax_submit.php",
-				data: $('#form_rejudge').serialize(),
-				success:function(msg){
-					if(msg=='success') $('#RejudgeModal').modal('hide');
-					else $('#rejudge_res').html('<i class="fa fa-fw fa-remove"></i> '+msg).slideDown();
-				}
-			  });
-          }else{
-			$('#input_rejudge').addClass('error');  
-		  }
-		  return false;
-        });
         $('#table_experience_title').click(function(E){
           E.preventDefault()
           var $i=$(E.target);
@@ -553,6 +602,8 @@ $Title=$inTitle .' - '. $oj_name;
             getusrlist(upid,kw);
         });
 		$('#btn_upload').click(function(){
+            var loffset=window.screenLeft+200;
+            var toffset=window.screenTop+200;
 			window.open("upload.php",'upload_win2','left='+loffset+',top='+toffset+',width=400,height=300,toolbar=no,resizable=no,menubar=no,location=no,status=no');
 			return false;
 		});
@@ -609,39 +660,8 @@ $Title=$inTitle .' - '. $oj_name;
           });
           return false;
         });
+        <?php }?>
       });
-
-      function update_chart(){
-        $.getJSON('ajax_usage.php',function(data){
-          if(data&&"number"==typeof(data.cpu)){
-            $('#pg_cpu').css('width',data.cpu+'%');
-			$('#pg_cpu').html(data.cpu+'%');
-			if(data.cpu<=80) {
-			  $('#pg_cpu').removeClass('progress-bar-danger');
-			  $('#pg_cpu').addClass('progress-bar-success');
-			}else{
-			  $('#pg_cpu').removeClass('progress-bar-success');
-			  $('#pg_cpu').addClass('progress-bar-danger');  
-			}
-		  }
-		  if(data&&"number"==typeof(data.mem)){
-			$('#pg_mem').css('width',data.mem+'%');
-			$('#pg_mem').html(data.mem+'%')
-			if(data.mem<=80) {
-			  $('#pg_mem').removeClass('progress-bar-danger');
-			  $('#pg_mem').addClass('progress-bar-success');
-			}else{
-			  $('#pg_mem').removeClass('progress-bar-success');
-			  $('#pg_mem').addClass('progress-bar-danger');  
-			}
-		  }
-		  if(data&&"number"==typeof(data.daemon)){
-			if(data.daemon==1) $('#pg_daemon').html('<font color=green>正在运行...</font>');
-			else $('#pg_daemon').html('<font color=red>尚未运行...</font>');
-		  }
-          setTimeout('update_chart()',3000);
-        });
-      }
     </script>
   </body>
 </html>

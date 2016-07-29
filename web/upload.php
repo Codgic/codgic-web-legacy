@@ -43,7 +43,7 @@ $Title=$inTitle .' - '. $oj_name;
 <!DOCTYPE html>
 <html>
 	<?php require 'head.php'; ?>
-	<body>
+	<body style="margin:0">
 	<div class="container">
 	  <div class="row">
 		<div class="col-xs-12">

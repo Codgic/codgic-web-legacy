@@ -180,30 +180,38 @@ if(!isset($_POST['title'])||!isset($_POST['content']))
 	if(!isset($_POST['news_id']))
 		die('error');
 	$newsid=intval($_POST['news_id']);
-	$res=mysqli_query($con,"select title,content,time,importance from news where news_id=$newsid");
+	$res=mysqli_query($con,"select title,content,time,importance,privilege from news where news_id=$newsid");
     $row=mysqli_fetch_row($res);
     $row[1]=($res && ($row)) ? str_replace('<br>', "\n", $row[1]) : '';
-    $arr=array('title'=>$row[0],'content'=>$row[1],'time'=>$row[2],'importance'=>$row[3]);
+    $arr=array('title'=>$row[0],'content'=>$row[1],'time'=>$row[2],'importance'=>$row[3],'priv'=>$row[4]);
     echo json_encode($arr);
 }else if($op=="edit_news"){
-if(!isset($_POST['news_id'])||!isset($_POST['title']))
+    if(!isset($_POST['news_id'])||!isset($_POST['title']))
 		die('error');
+        
 	if(!isset($_POST['importance'])) $importance=0;
 	else $importance=1;
+    
+    $new_priv=0;
+    for($i=0;$i<3;$i++)
+        if(isset($_POST["$i"])) $new_priv+=pow(2,$i);
+    if($new_priv!=0) $new_priv+=PRIV_SYSTEM; //System always has the privilege.
+    
 	$news_id=intval($_POST['news_id']);
 	$title=mysqli_real_escape_string($con,trim($_POST['title']));
 	$content=isset($_POST['content']) ? mysqli_real_escape_string($con,str_replace("\n", "<br>", $_POST['content'])) : '';
-	if(mysqli_query($con,"update news set title='$title',content='$content',importance='$importance' where news_id=$news_id"))
+	if(mysqli_query($con,"update news set title='$title',content='$content',importance='$importance',privilege='$new_priv' where news_id=$news_id"))
 		echo 'success';
 	else
 		echo 'error';
 }else if($op=="update_priv"){
 	isset($_POST['user_id']) ? $uid=mysqli_real_escape_string($con,trim($_POST['user_id'])) : die('');
 	if(empty($uid)) die('');
+    
     $new_priv=0;
-    for($i=0;$i<4;$i++){
-      if(isset($_POST["$i"])) $new_priv+=pow(2,$i);
-    }
+    for($i=0;$i<4;$i++)
+        if(isset($_POST["$i"])) $new_priv+=pow(2,$i);
+      
     if(mysqli_query($con,"update users set privilege='$new_priv' where user_id='$uid'"))
         echo 'success';
     else
