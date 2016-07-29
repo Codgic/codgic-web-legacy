@@ -31,7 +31,7 @@ if(!isset($_GET['contest_id'])){
   if(!$row)
     $info = '看起来该比赛不存在';
   else { 
-    switch ($row[5] >> 4) {
+    switch ($row[5]) {
       case 0:
         $way='train';
         break;
@@ -41,11 +41,6 @@ if(!isset($_GET['contest_id'])){
     }
   }
 
-  //$option_opensource=0;
-  //if($row[12]&PROB_DISABLE_OPENSOURCE)
-  //  $option_opensource=2;
-  //else if($row[12]&PROB_SOLVED_OPENSOURCE)
-  //  $option_opensource=1;
   $option_level=($row[7]&PROB_LEVEL_MASK)>>PROB_LEVEL_SHIFT;
   $option_hide=(($row[7]&PROB_IS_HIDE)?'checked':'');
 }
@@ -72,11 +67,11 @@ $Title=$inTitle .' - '. $oj_name;
 	  </div>
       <form action="#" method="post" id="edit_form" style="padding-top:10px">
         <input type="hidden" name="op" value="<?php echo $p_type?>">
-		<input type="hidden" name="problem_id" value="<?php echo $cont_id?>">
+		<input type="hidden" name="contest_id" value="<?php echo $cont_id?>">
         <div class="row">
           <div class="form-group col-xs-12 col-sm-9">
             <label>比赛标题: </label>
-			<input type="text" class="form-control" name="title" value="<?php if($p_type=='edit') echo $row[0]?>">
+			<input type="text" class="form-control" name="title" id="input_title" value="<?php if($p_type=='edit') echo $row[0]?>">
           </div>
         </div>
         <div class="row">
@@ -88,17 +83,17 @@ $Title=$inTitle .' - '. $oj_name;
         <div class="row">
           <div class="form-group col-xs-6 col-sm-4">
             <label>开始时间 (yyyy-mm-dd hh:mm:ss): </label>
-			<input id="input_time" name="time" class="form-control" type="text" value="<?php if($p_type=='edit') echo $row[1]; else echo date("Y-m-d H:i:s",time())?>">
+			<input id="input_time" name="start_time" class="form-control" type="text" value="<?php if($p_type=='edit') echo $row[1]; else echo date("Y-m-d H:i:s",time())?>">
           </div>
 		  <div class="form-group col-xs-6 col-sm-4">
             <label>结束时间 (yyyy-mm-dd hh:mm:ss): </label>
-			<input id="input_memory" name="memory" class="form-control" type="text" value="<?php if($p_type=='edit') echo $row[2]; else echo date("Y-m-d H:i:s",time()+10800)?>">
+			<input id="input_memory" name="end_time" class="form-control" type="text" value="<?php if($p_type=='edit') echo $row[2]; else echo date("Y-m-d H:i:s",time()+10800)?>">
           </div> 
         </div>
         <div class="row">
           <div class="form-group col-xs-12 col-sm-6">
             <label>计分方式: </label>
-              <select class="form-control" name="compare" id="input_cmp">
+              <select class="form-control" name="judge" id="input_cmp">
                 <option value="train">训练模式</option>
                 <option value="contest">比赛模式</option>
               </select>
@@ -246,13 +241,18 @@ $Title=$inTitle .' - '. $oj_name;
             o.removeClass('error');
         });
         $('#edit_form').submit(function(){
+          var str=$('#input_title').val();
+          if(!str||str==''){
+            $('html, body').animate({scrollTop:0}, '200');
+            return false;
+          }
 		  $.ajax({
             type:"POST",
             url:"ajax_editcontest.php",
             data:$('#edit_form').serialize(),
             success:function(msg){
               if(/success/.test(msg))
-                window.location="contestpage.php?problem_id=<?php echo $cont_id?>";
+                window.location="contestpage.php?contest_id=<?php echo $cont_id?>";
               else{
 				$('#alert_error').addClass('alert-danger');  
                 $('#alert_error').html('<i class="fa fa-fw fa-remove"></i> 错误: '+msg).fadeIn();

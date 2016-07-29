@@ -7,7 +7,7 @@ require 'inc/checklogin.php';
 require 'inc/database.php';
 require 'inc/privilege.php';
 
-if($_GET['contest_id'])
+if(isset($_GET['contest_id']))
   $cont_id=intval($_GET['contest_id']);
 else if(isset($_SESSION['view']))
   $cont_id=$_SESSION['view'];

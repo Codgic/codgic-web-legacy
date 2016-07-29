@@ -83,7 +83,7 @@ $Title=$inTitle .' - '. $oj_name;
         <div class="row">
           <div class="form-group col-xs-12 col-sm-9">
             <label>题目标题: </label>
-			<input type="text" class="form-control" name="title" value="<?php if($p_type=='edit') echo $row[0]?>">
+			<input type="text" class="form-control" name="title" id="input_title" value="<?php if($p_type=='edit') echo $row[0]?>">
           </div>
         </div>
         <div class="row">
@@ -313,19 +313,24 @@ $Title=$inTitle .' - '. $oj_name;
             o.removeClass('error');
         });
         $('#edit_form').submit(function(){
-          var str=$('#input_memory').val();
-          if(!str||(/\D/.test(str))){
-            window.location.hash='#edit_form';
+          var str=$('#input_title').val();
+            if(!str||str==''){
+            $('html, body').animate({scrollTop:0}, '200');
+            return false;
+          }
+          str=$('#input_memory').val();
+          if(!str||str==''){
+            $('html, body').animate({scrollTop:0}, '200');
             return false;
           }
           str=$('#input_time').val();
-          if(!str||(/\D/.test(str))){
-            window.location.hash='#edit_form';
+          if(!str||str==''){
+            $('html, body').animate({scrollTop:0}, '200');
             return false;
           }
           str=$('#input_score').val();
-          if(!str||(/\D/.test(str))){
-            window.location.hash='#edit_form';
+          if(!str||str==''){
+            $('html, body').animate({scrollTop:0}, '200');
             return false;
 		  }
 		  $.ajax({
