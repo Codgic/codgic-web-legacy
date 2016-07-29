@@ -18,9 +18,11 @@ else{
   if($type=='problem'){
     $result=mysqli_query($con,"SELECT saved_problem.problem_id,title,savetime,problem_flag_to_level(has_tex) from saved_problem inner join problem using (problem_id) where user_id='$user_id' order by savetime desc");
     if(mysqli_num_rows($result)==0) $info='你还没收藏过题目哦';
+    $t=1;
   }else{
     $result=mysqli_query($con,"SELECT saved_contest.contest_id,title,savetime,problem_flag_to_level(has_tex) from saved_contest inner join contest using (contest_id) where user_id='$user_id' order by savetime desc");
     if(mysqli_num_rows($result)==0) $info='你还没收藏过比赛哦';
+    $t=2;
   }
 }
 $inTitle='收藏';
@@ -84,7 +86,7 @@ $Title=$inTitle .' - '. $oj_name;
             var $target = $(E.target);
               if($target.is('i')){
                 var pid = $target.attr('data-pid');
-                  $.get('ajax_mark.php?prob='+pid+'&op=rm_saved&type='+'<?php echo $type?>',function(result){
+                  $.get('ajax_mark.php?prob='+pid+'&op=rm_saved&type='+'<?php echo $t?>',function(result){
                     if(/success/.test(result)){
                       $target.parents('tr').remove();
                       del++;

@@ -100,6 +100,7 @@ CREATE TABLE `contest` (
   `defunct` char(1) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'N',
   `num` int(11) NOT NULL DEFAULT '0',
   `problems` varchar(200) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `in_date` datetime DEFAULT NULL,
   `description` longtext COLLATE utf8mb4_unicode_ci,
   `source` varchar(200) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `has_tex` tinyint(4) NOT NULL DEFAULT '0',

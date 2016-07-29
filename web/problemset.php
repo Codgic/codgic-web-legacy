@@ -16,16 +16,16 @@ if(isset($_GET['level'])){
 	header("Location: problemset.php");
     exit();
   }
-  $cond=" (has_tex&".PROB_LEVEL_MASK.")=".($level<<PROB_LEVEL_SHIFT);
+  $addt_cond=" (has_tex&".PROB_LEVEL_MASK.")=".($level<<PROB_LEVEL_SHIFT);
   if(check_priv(PRIV_PROBLEM))
-	$cond.=" and defunct='N' ";
+	$addt_cond.=" and defunct='N' ";
   $range="limit ".(($page_id-1)*100).",100";
   if(isset($_SESSION['user'])){
 	$user_id=$_SESSION['user'];
-	$result=mysqli_query($con,"SELECT problem_id,title,accepted,submit,source,defunct,res,saved.pid from problem LEFT JOIN (select problem_id as pid,MIN(result) as res from solution where user_id='$user_id' group by problem_id) as solved on(solved.pid=problem_id) left join (select problem_id as pid from saved_problem where user_id='$user_id') as saved on(saved.pid=problem_id) where $cond order by problem_id $range");
+	$result=mysqli_query($con,"SELECT problem_id,title,accepted,submit,source,defunct,res,saved.pid from problem LEFT JOIN (select problem_id as pid,MIN(result) as res from solution where user_id='$user_id' group by problem_id) as solved on(solved.pid=problem_id) left join (select problem_id as pid from saved_problem where user_id='$user_id') as saved on(saved.pid=problem_id) where $addt_cond order by problem_id $range");
   }else{
-	$result=mysqli_query($con,"select problem_id,title,accepted,submit,source,defunct from problem where $cond order by problem_id $range");
-}
+	$result=mysqli_query($con,"select problem_id,title,accepted,submit,source,defunct from problem where $addt_cond order by problem_id $range");
+  }
 }else{
 if(isset($_GET['page_id']))
   $page_id=intval($_GET['page_id']);

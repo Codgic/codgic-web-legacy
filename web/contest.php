@@ -5,7 +5,6 @@ require 'inc/database.php';
 require 'inc/privilege.php';
 
 if(isset($_GET['level'])){
-  die('Not ready...');
   require 'inc/problem_flags.php';
   $level_max=(PROB_LEVEL_MASK>>PROB_LEVEL_SHIFT);
   if(isset($_GET['page_id']))
@@ -17,16 +16,16 @@ if(isset($_GET['level'])){
 	header("Location: contest.php");
     exit();
   }
-  $cond=" (has_tex&".PROB_LEVEL_MASK.")=".($level<<PROB_LEVEL_SHIFT);
+  $addt_cond=" (has_tex&".PROB_LEVEL_MASK.")=".($level<<PROB_LEVEL_SHIFT);
   if(!check_priv(PRIV_PROBLEM))
-	$cond.=" and defunct='N' ";
+	$addt_cond.=" and defunct='N' ";
   $range="limit ".(($page_id-1)*100).",100";
   if(isset($_SESSION['user'])){
 	$user_id=$_SESSION['user'];
-    $result=mysqli_query($con,"SELECT contest_id,title,start_time,end_time,defunct,num,source,has_tex,res from contest LEFT JOIN (select contest_id as cid,1 as res from contest_status where user_id='$user_id') as fuckzk on (cid=contest_id) where $addt_cond contest_id $range order by contest_id");
+	$result=mysqli_query($con,"SELECT contest_id,title,start_time,end_time,defunct,num,source,has_tex,joined.res,saved.cid from contest LEFT JOIN (select contest_id as cid,1 as res from contest_status where user_id='$user_id' group by contest_id) as joined on(joined.cid=contest_id) left join (select contest_id as cid from saved_contest where user_id='$user_id') as saved on(saved.cid=contest_id) where $addt_cond order by contest_id $range");
   }else{
-    $result=mysqli_query($con,"select contest_id,title,start_time,end_time,defunct,num,source,has_tex from contest where $addt_cond contest_id $range order by contest_id");
-}
+	$result=mysqli_query($con,"select contest_id,title,start_time,end_time,defunct,num,source from contest where $addt_cond order by contest_id $range");
+  }
 }else{
 if(isset($_GET['page_id']))
   $page_id=intval($_GET['page_id']);
@@ -52,9 +51,9 @@ else
 $range="between $page_id"."00 and $page_id".'99';
 if(isset($_SESSION['user'])){
   $user_id=$_SESSION['user'];
-  $result=mysqli_query($con,"SELECT contest_id,title,start_time,end_time,defunct,num,source,has_tex,res from contest LEFT JOIN (select contest_id as cid,1 as res from contest_status where user_id='$user_id') as fuckzk on (cid=contest_id) where $addt_cond contest_id $range order by contest_id");
+  $result=mysqli_query($con,"SELECT contest_id,title,start_time,end_time,defunct,num,source,has_tex,joined.res,saved.cid from contest LEFT JOIN (select contest_id as cid,1 as res from contest_status where user_id='$user_id' group by contest_id) as joined on (joined.cid=contest_id) left join (select contest_id as cid from saved_contest where user_id='$user_id') as saved on(saved.cid=contest_id) where $addt_cond contest_id $range order by contest_id");
 }else{
-  $result=mysqli_query($con,"select contest_id,title,start_time,end_time,defunct,num,source,has_tex from contest where $addt_cond contest_id $range order by contest_id");
+  $result=mysqli_query($con,"select contest_id,title,start_time,end_time,defunct,num,source from contest where $addt_cond contest_id $range order by contest_id");
 }
 }
 $inTitle='比赛';
@@ -107,7 +106,7 @@ $Title=$inTitle .' - '. $oj_name;
 				<th style="width:6%">ID</th>
 				<?php 
 				if(isset($_SESSION['user']))
-				  echo '<th colspan="2">标题</th>';
+				  echo '<th colspan="3">标题</th>';
 				else
 				  echo '<th>标题</th>';?>
 				<th style="width:15%">开始时间</th>  
@@ -132,7 +131,11 @@ $Title=$inTitle .' - '. $oj_name;
 			  }
 			  echo '<a href="contestpage.php?contest_id=',$row[0],'">',$row[1];
 			  if($row[4]=='Y')echo '&nbsp;&nbsp;<span class="label label-danger">已删除</span>';
-			  echo '</a></td><td>',$row[2],'</a></td>';
+			  echo '</a>';
+              if(isset($_SESSION['user'])){
+				echo '<td class="width-for-2x-icon" style="border-left:0;"><i data-pid="',$row[0],'" class="', is_null($row[9]) ? 'fa fa-star-o' : 'fa fa-star', ' fa-2x text-warning save_problem" style="cursor:pointer;"></i></td>';
+              }
+              echo'</td><td>',$row[2],'</a></td>';
 			  echo '<td>',$cont_status,'</td>';
 			  echo '<td>',$row[5],'</td>';
 			  echo '<td>',$row[6],'</td></tr>';
@@ -180,6 +183,23 @@ $Title=$inTitle .' - '. $oj_name;
         var cur_page=<?php echo $page_id ?>;
         $('#nav_cont').parent().addClass('active');
 		$('#nav_cont_text').removeClass("hidden-sm");
+        $('#contest_table').click(function(E){
+          var $target = $(E.target);
+          if($target.is('i.save_problem')){
+            var pid = $target.attr('data-pid');
+            var op;
+            if($target.hasClass('fa-star'))
+              op='rm_saved';
+            else
+              op='add_saved';
+            $.get('ajax_mark.php?type=2&prob='+pid+'&op='+op,function(result){
+              if(/success/.test(result)){
+                $target.toggleClass('fa-star-o')
+                $target.toggleClass('fa-star')
+              }
+            });
+          }
+        });
       });
     </script>
   </body>

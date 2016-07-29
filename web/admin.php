@@ -42,6 +42,7 @@ $Title=$inTitle .' - '. $oj_name;
 				<div class="col-xs-12 col-sm-3 operations">
 				  <h3 class="text-center">题目</h3>
 				  <a href="editproblem.php" class="btn btn-primary">添加题目</a>
+                  <a href="editcontest.php" class="btn btn-primary">添加比赛</a>
 				  <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#CategoryModal">题目分类</a>
                   <a href="#" class="btn btn-warning" data-toggle="modal" data-target="#RejudgeModal">重新评测</a>
                 </div>

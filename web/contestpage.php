@@ -209,7 +209,7 @@ $Title=$inTitle .' - '. $oj_name;
             <div class="col-xs-12 text-center">
               <div class="panel panel-default problem-operation" style="margin-top:10px">
 				<div class="panel-body">
-                  <a href="editproblem.php?problem_id=<?php echo $cont_id?>" class="btn btn-primary">编辑题目</a>
+                  <a href="editcontest.php?contest_id=<?php echo $cont_id?>" class="btn btn-primary">编辑比赛</a>
                   <span id="action_delete" class="btn btn-danger"><?php echo $row[7]=='N' ? '删除比赛' : '恢复比赛';?></span>
                 </div>
 			  </div>
