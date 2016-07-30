@@ -6,7 +6,7 @@ if(!check_priv(PRIV_SYSTEM))
 if(!isset($_SESSION['admin_tfa']) || !$_SESSION['admin_tfa'])
 	die('No TFA');
 if(!isset($_POST['op']))
-	die('error');
+	die('参数无效...');
 $op=$_POST['op'];
 require 'inc/database.php';
 require 'inc/problem_flags.php';
@@ -161,7 +161,7 @@ EOF;
 		$value=intval($value);
 		mysqli_query($con,"INSERT INTO level_experience VALUES ($key,$value) ON DUPLICATE KEY UPDATE experience=$value");
 	}
-}else if($op=="add_news"){
+}else if($op=='add_news'){
 if(!isset($_POST['title'])||!isset($_POST['content']))
 		die('error');
 	if(!isset($_POST['importance'])) $importance=0;
@@ -176,7 +176,7 @@ if(!isset($_POST['title'])||!isset($_POST['content']))
 		echo 'success';
 	else
 		echo 'error';
-}else if($op=="get_news"){
+}else if($op=='get_news'){
 	if(!isset($_POST['news_id']))
 		die('error');
 	$newsid=intval($_POST['news_id']);
@@ -185,7 +185,7 @@ if(!isset($_POST['title'])||!isset($_POST['content']))
     $row[1]=($res && ($row)) ? str_replace('<br>', "\n", $row[1]) : '';
     $arr=array('title'=>$row[0],'content'=>$row[1],'time'=>$row[2],'importance'=>$row[3],'priv'=>$row[4]);
     echo json_encode($arr);
-}else if($op=="edit_news"){
+}else if($op=='edit_news'){
     if(!isset($_POST['news_id'])||!isset($_POST['title']))
 		die('error');
         
@@ -204,7 +204,7 @@ if(!isset($_POST['title'])||!isset($_POST['content']))
 		echo 'success';
 	else
 		echo 'error';
-}else if($op=="update_priv"){
+}else if($op=='update_priv'){
 	isset($_POST['user_id']) ? $uid=mysqli_real_escape_string($con,trim($_POST['user_id'])) : die('');
 	if(empty($uid)) die('');
     
@@ -216,11 +216,11 @@ if(!isset($_POST['title'])||!isset($_POST['content']))
         echo 'success';
     else
         echo '系统错误...';
-}else if($op=="del_usr"){
+}else if($op=='del_usr'){
 	isset($_POST['user_id']) ? $uid=mysqli_real_escape_string($con,trim($_POST['user_id'])) : die('');
    if(!strcasecmp($uid,$_SESSION['user'])) die('');
 	mysqli_query($con,"delete from users where user_id='$uid' and (accesstime IS NULL)");
-}else if($op=="del_news"){
+}else if($op=='del_news'){
 	isset($_POST['news_id']) ? $news_id=intval($_POST['news_id']) : die('');
 	if(mysqli_query($con,"delete from news where $news_id>0 and news_id=$news_id")){
 		$row=mysqli_fetch_row(mysqli_query($con,"select max(news_id) from news"));
@@ -233,7 +233,7 @@ if(!isset($_POST['title'])||!isset($_POST['content']))
     }
 	else
 		echo 'error';
-}else if($op=="toggle_usr"){
+}else if($op=='toggle_usr'){
 	isset($_POST['user_id']) ?  $uid=mysqli_real_escape_string($con,trim($_POST['user_id'])) : die('');
     $row=mysqli_fetch_row(mysqli_query($con,"select defunct,privilege from users where user_id='$uid'"));
     if($row[1]&PRIV_SYSTEM) die('');
@@ -242,10 +242,10 @@ if(!isset($_POST['title'])||!isset($_POST['content']))
 }else if($op=='update_index'){
 	$index_text=isset($_POST['text']) ? mysqli_real_escape_string($con,str_replace("\n", "<br>", $_POST['text'])) : '';
 	if(mysqli_query($con,"insert into news (news_id,content,time) VALUES (0,'$index_text',NOW()) ON DUPLICATE KEY UPDATE content='$index_text', time=NOW()"))
-		echo "success";
+		echo 'success';
 	else
-		echo "fail";
-}else if($op=="update_category"){
+		echo 'fail';
+}else if($op=='update_category'){
 	$category=isset($_POST['content']) ? mysqli_real_escape_string($con,trim($_POST['content'])) : '';
 	if(mysqli_query($con,"insert into user_notes (id,problem_id,tags,user_id,content,edit_time) VALUES (0,0,'','root','$category',NOW()) ON DUPLICATE KEY UPDATE content='$category', edit_time=NOW()")) 
 		echo 'success';

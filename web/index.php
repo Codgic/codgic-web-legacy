@@ -20,7 +20,7 @@ else{
   $i=$_SESSION['priv'];
   $res=mysqli_query($con,"select news_id,title,importance,privilege from news where news_id>0 and ((privilege & $i)<>0 or privilege=0) order by importance desc, news_id desc limit 0,$news_num");
 }
-$row=mysqli_fetch_row(mysqli_query($con,"select content from user_notes where id=0 limit 1"));
+$row=mysqli_fetch_row(mysqli_query($con,"select content from user_notes where problem_id=0 limit 1"));
 $category=$row[0];
 $inTitle='主页';
 $Title=$inTitle .' - '. $oj_name;

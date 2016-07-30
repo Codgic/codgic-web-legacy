@@ -19,19 +19,14 @@ $result=mysqli_query($con,$query);
 $row=mysqli_fetch_row($result);
 if(!$row)
   die('Wrong Problem ID.');
-switch ($row[8] >> 16) {
+switch ($row[8]) {
   case 0:
-    $comparison='Traditional';
+    $judge_way='训练';
     break;
   case 1:
-    $comparison='Real, precision: '.($row[13] & 65535);
+    $judge_way='比赛';
     break;
-  case 2:
-    $comparison='Integer';
-    break;
-  case 3:
-    $comparison='Special Judge';
-    break;
+
 }
 
 if($row[7]=='Y' && !check_priv(PRIV_PROBLEM))
@@ -63,7 +58,7 @@ else{
   $submit_user=$statis[0];
   $solved_user=$statis[1];
   $total_submit=$statis[2];
-  $prob_level=($row[6]&PROB_LEVEL_MASK)>>PROB_LEVEL_SHIFT;
+  $cont_level=($row[6]&PROB_LEVEL_MASK)>>PROB_LEVEL_SHIFT;
 
   $result=mysqli_query($con,"select result,count(*) as sum from solution where problem_id=$cont_id group by result");
   $arr=array();
@@ -149,6 +144,18 @@ $Title=$inTitle .' - '. $oj_name;
 			  </div>
             </div>
           </div>
+          <div class="row">
+            <div class="col-xs-12">
+			  <div class="panel panel-default">
+				<div class="panel-heading">
+				  <h5 class="panel-title">比赛排名</h5>
+				</div>
+				<div class="panel-body">
+				  <?php echo 'Coming Not Soon...';?>
+				</div>
+			  </div>
+            </div>
+          </div> 
         </div>
         <div class="col-xs-12 col-sm-3" id="rightside">
           <div class="row">
@@ -163,14 +170,10 @@ $Title=$inTitle .' - '. $oj_name;
 				<div class="panel-body">
                   <table class="table table-condensed table-striped" style="margin-bottom:0px">
 					<tbody>
-                      <tr><td style="text-align:left">比赛等级:</td><td><?php echo '1'?> ms</td></tr>
 					  <tr><td style="text-align:left">剩余时间:</td><td><?php echo 'Unknown'?> ms</td></tr>
                       <tr><td style="text-align:left">每题分值:</td><td><?php echo '100'?></td></tr>
-                      <tr><td style="text-align:left">评分方式:</td><td><?php echo $comparison?></td></tr>
-                      <?php
-                      if($prob_level)
-                        echo '<tr><td style="text-align:left">等级:</td><td>',$prob_level,'</td></tr>';
-                      ?>
+                      <tr><td style="text-align:left">评分方式:</td><td><?php echo $judge_way?></td></tr>
+                      <tr><td style="text-align:left">比赛等级:</td><td><?php echo $cont_level?></td></tr>
                     </tbody>
                   </table>
 				</div>
@@ -226,35 +229,49 @@ $Title=$inTitle .' - '. $oj_name;
     </div>
 	
     <div id="show_tool" class="bottom-right collapse">
-	<span id="btn_submit2" title="Alt+S" class="btn btn-primary shortcut-hint">参赛</span>
-	<span id="btn_show" title="Alt+H" class="btn btn btn-primary shortcut-hint"><i class="fa fa-fw fa-toggle-off"></i> 显示详情</span>
-  </div>
+	  <span id="btn_submit2" title="Alt+S" class="btn btn-primary shortcut-hint">参赛</span>
+	  <span id="btn_show" title="Alt+H" class="btn btn btn-primary shortcut-hint"><i class="fa fa-fw fa-toggle-off"></i> 显示详情</span>
+    </div>
+    
     <script src="/assets/js/common.js?v=<?php echo $web_ver?>"></script>
     <script type="text/javascript">
+    var cont=<?php echo $cont_id?>;
     change_type(2);
       var hide_info = 0;
       $(document).ready(function(){
-        var prob=<?php echo $cont_id?>;
         $('#action_delete').click(function(){
           $.ajax({
-            url:"ajax_deleteprob.php?problem_id="+prob,
-            dataType:"html",
-            success:function(){location.reload();}
+            type:"POST",
+            url:"ajax_editcontest.php",
+            data:{op:'del',contest_id:cont},
+            success:function(msg){
+              if(/success/.test(msg)){
+                location.reload();
+              }else{
+                $('#alert_error').html('<i class="fa fa-fw fa-remove"></i> '+msg).fadeIn();
+                setTimeout(function(){$('#alert_error').fadeOut();},2000);
+              }
+            }
           });
         });
-        function click_submit(){
+        function join_cont(){
           <?php if(!isset($_SESSION['user'])){?>
             $('#alert_error').html('<i class="fa fa-fw fa-remove"></i> 您尚未登录...').fadeIn();
 			setTimeout(function(){$('#alert_error').fadeOut();},2000);
           <?php }else{?>
-            $('#prob_input').val(''+prob);
-            $('#SubmitModal').modal('show');
-			setTimeout("editor.refresh();editor.focus();", 200);
+            $.post('ajax_contest.php', {op:'enroll',contest_id:cont}, function(msg){
+              if(/success/.test(msg)){
+                window.location.href='problempage.php?contest_id='+cont;
+              }else{
+                $('#alert_error').html('<i class="fa fa-fw fa-remove"></i> '+msg).fadeIn();
+                setTimeout(function(){$('#alert_error').fadeOut();},2000);
+              }
+            });
           <?php }?>
           return false;
         }
-        $('#btn_submit').click(function(){alert('Coming Soon...')});
-        $('#btn_submit2').click(function(){alert('Coming Soon...')});
+        $('#btn_submit').click(function(){join_cont()});
+        $('#btn_submit2').click(function(){join_cont()});
         function toggle_info(){
           if(hide_info) {
 			$('#leftside').addClass('col-sm-9');
@@ -271,10 +288,7 @@ $Title=$inTitle .' - '. $oj_name;
         $('#btn_hide').click(toggle_info);
         $('#btn_show').click(toggle_info);
         reg_hotkey(83, function(){ //Alt+S
-          if($('#SubmitModal').is(":visible"))
-            $('#form_submit').submit();
-          else
-            click_submit();
+            alert('Coming Soon...');
         });
         reg_hotkey(72, toggle_info); //Alt+H
       });

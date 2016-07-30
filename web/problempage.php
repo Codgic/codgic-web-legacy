@@ -18,8 +18,8 @@ if(isset($_GET['contest_id'])){
 	$rem_time=$row_cont[2]-$row_cont[1];
 	$prob_arr=explode(',',$row_cont[5]);
 	$prob_num=0;
-	if(isset($_GET['problem'])){
-		$prob_num=intval($_GET['problem']);
+	if(isset($_GET['prob'])){
+		$prob_num=intval($_GET['prob']);
 		if($prob_num<1||$prob_num>$row_cont[4]){
             header("Location: problempage.php?contest_id=".$cont_id);
             exit();
@@ -139,11 +139,11 @@ $Title=$inTitle .' - '. $oj_name;
 	<?php if($is_contest==true){?>
 	<div class="alert alert-danger text-center" style="top:50px;height:50px;width:100%;position:fixed;z-index:100;border-radius:0">
 	  <?php if($prob_num>1){?>
-	  <a href="problempage.php?contest_id=<?php echo $cont_id?>&problem=<?php echo ($prob_num-1)?>" class="pull-left"><i class="fa fa-fw fa-angle-left"></i>上一题</a>
+	  <a href="problempage.php?contest_id=<?php echo $cont_id?>&prob=<?php echo ($prob_num-1)?>" class="pull-left"><i class="fa fa-fw fa-angle-left"></i>上一题</a>
 	  <?php }?>
 	  <span id="cont_status">题目: <?php echo $prob_num.' / '.$row_cont[4]?>, 离比赛结束还有: 0天0小时0分0秒</span>
 	  <?php if($prob_num<$row_cont[4]){?>
-	  <a href="problempage.php?contest_id=<?php echo $cont_id?>&problem=<?php echo ($prob_num+1)?>" class="pull-right">下一题<i class="fa fa-fw fa-angle-right"></i></a>
+	  <a href="problempage.php?contest_id=<?php echo $cont_id?>&prob=<?php echo ($prob_num+1)?>" class="pull-right">下一题<i class="fa fa-fw fa-angle-right"></i></a>
 	  <?php }?>
 	</div>
 	<div style="height:50px"></div>
@@ -269,10 +269,7 @@ $Title=$inTitle .' - '. $oj_name;
                       <tr><td style="text-align:left">内存限制:</td><td><?php echo $row_prob[9]?> KB</td></tr>
                       <tr><td style="text-align:left">每点分值:</td><td><?php echo $row_prob[10]?></td></tr>
                       <tr><td style="text-align:left">评判方式:</td><td><?php echo $comparison?></td></tr>
-                      <?php
-                      if($prob_level)
-                        echo '<tr><td style="text-align:left">等级:</td><td>',$prob_level,'</td></tr>';
-                      ?>
+                      <tr><td style="text-align:left">题目等级:</td><td><?php echo $prob_level?></td></tr>
                     </tbody>
                   </table>
 				</div>

@@ -12,7 +12,7 @@ if(isset($_GET['level'])){
   else
 	$page_id=1;
   $level=intval($_GET['level']);
-  if($level<=0 || $level>$level_max){
+  if($level<0 || $level>$level_max){
 	header("Location: problemset.php");
     exit();
   }
@@ -82,13 +82,13 @@ $Title=$inTitle .' - '. $oj_name;
 				else
 				  echo '<li class="active"><a href="problemset.php?page_id=',$i,'">',$i,'</a></li>';
 			}?>
-			<li><a href="problemset.php?level=1"><i class="fa fa-fw fa-list-ul"></i> 按等级分类 &raquo;</a></li>
+			<li><a href="problemset.php?level=0"><i class="fa fa-fw fa-list-ul"></i> 按等级分类 &raquo;</a></li>
 		  </ul>
 		  <?php }else{?>  
 		  <ul class="pagination">
 			<li><a href="problemset.php">&laquo; <i class="fa fa-fw fa-th-list"></i> 所有等级</a></li>
             <?php
-              for($i=1;$i<=$level_max;++$i){
+              for($i=0;$i<=$level_max;++$i){
                 if($i!=$level)
                   echo '<li>';
                 else

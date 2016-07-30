@@ -69,7 +69,7 @@ function postmail($to,$subject = '',$body = ''){
     $mail->Subject    = $subject;
 	$mail->WordWrap = 60;
     //$mail->AltBody    = 'To view the message, please use an HTML compatible email viewer!'; // optional, comment out and test
-    $mail->MsgHTML($body);http://www.jb51.net/article/37929.htm
+    $mail->MsgHTML($body);
     $address = $to;
     $mail->AddAddress($address, '');
     $mail->IsHTML(true); 

@@ -109,13 +109,13 @@ $Title=$inTitle .' - '. $oj_name;
             <p><i class="fa fa-meh-o fa-4x"></i></p>
             <p><b>ERROR 250</b><br>
             你并没有输入关键字</p>
-          </div>
+        </div>
         <?php }else if(mysqli_num_rows($result)==0){ ?>
         <div class="text-center none-text none-center">
             <p><i class="fa fa-meh-o fa-4x"></i></p>
             <p><b>Whoops</b><br>
             看起来我们并没有找到你想要的东西</p>
-          </div>
+        </div>
         <?php }else{?>
         <div class="col-xs-12 table-responsive">
 			<?php if($type==3){?>
@@ -196,8 +196,9 @@ $Title=$inTitle .' - '. $oj_name;
                 ?>
               </tbody>
             </table>
-			<?php }}?>
-        </div>  
+			<?php }?>
+		  </div>
+		<?php }?>
       </div>
       <div class="row">
         <ul class="pager">

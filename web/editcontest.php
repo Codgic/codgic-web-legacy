@@ -76,7 +76,7 @@ $Title=$inTitle .' - '. $oj_name;
         </div>
         <div class="row">
           <div class="form-group col-xs-12 col-sm-9">
-            <label>比赛题目: </label>
+            <label>比赛题目 (逗号隔开，如:1000,1001): </label>
 			<input type="text" class="form-control" name="problems" value="<?php if($p_type=='edit') echo $row[3]?>">
           </div>
         </div>
@@ -101,25 +101,16 @@ $Title=$inTitle .' - '. $oj_name;
           </div>
         </div>      
         <div class="row">
-		  <div class="form-group col-xs-12">
-			<label>比赛选项: </label>
-			<div class="checkbox">
-			  <label>
-				<input <?php if($p_type=='edit') echo $option_hide?> type="checkbox" name="hide_cont">隐藏比赛
-			  </label>
-			</div>  
-		  </div>
           <div class="form-group col-xs-4 col-sm-3">
-            <span>比赛等级: </span>
+            <label>比赛等级: </label>
             <select class="form-control" name="option_level" id="option_level">
-              <option value="0">无难度</option>
               <script>
               <?php if($p_type=='add'){?>
-                for (var i = 1; i <= <?php echo $level_max?>; i++) {
+                for (var i = 0; i <= <?php echo $level_max?>; i++) {
                   document.write('<option value="'+i+'">'+i+'</option>')
                 };
               <?php }else{?>
-                for (var i = 1; i <= <?php echo $level_max?>; i++) {
+                for (var i = 0; i <= <?php echo $level_max?>; i++) {
                   if(i==<?php echo $option_level?>)
                     document.write('<option selected value="'+i+'">'+i+'</option>')
                   else
@@ -129,6 +120,14 @@ $Title=$inTitle .' - '. $oj_name;
               </script>
             </select>
           </div>
+          <div class="form-group col-xs-4 col-sm-3">
+			<label>比赛选项: </label>
+			<div class="checkbox">
+			  <label>
+				<input <?php if($p_type=='edit') echo $option_hide?> type="checkbox" name="hide_cont">隐藏比赛
+			  </label>
+			</div>  
+		  </div>
         </div>
         <div class="row">
           <div class="form-group col-xs-12 col-sm-9">

@@ -117,16 +117,8 @@ $Title=$inTitle .' - '. $oj_name;
           </div>
         </div>      
         <div class="row">
-		  <div class="form-group col-xs-12">
-			<label>题目选项: </label>
-			<div class="checkbox">
-			  <label>
-				<input <?php if($p_type=='edit') echo $option_hide?> type="checkbox" name="hide_prob">隐藏题目
-			  </label>
-			</div>  
-		  </div>
           <div class="form-group col-xs-4 col-sm-3"> 
-			<span>开源代码可见: </span>
+			<label>开源代码可见: </label>
                 <select class="form-control" name="option_open_source" id="option_open_source">
                   <option value="0">所有人</option>
                   <option value="1">AC了的人</option>
@@ -139,25 +131,30 @@ $Title=$inTitle .' - '. $oj_name;
 				<?php }?>
 			</div>
 			<div class="form-group col-xs-4 col-sm-3">
-                <span>题目等级 </span>
-                <select class="form-control" name="option_level" id="option_level">
-                  <option value="0">无难度</option>
-                  <script>
-				  <?php if($p_type=='add'){?>
-                  for (var i = 1; i <= <?php echo $level_max?>; i++) {
+              <label>题目等级 </label>
+              <select class="form-control" name="option_level" id="option_level">
+                <script>
+                <?php if($p_type=='add'){?>
+                  for (var i = 0; i <= <?php echo $level_max?>; i++) {
                     document.write('<option value="'+i+'">'+i+'</option>')
                   };
 				  <?php }else{?>
-				  for (var i = 1; i <= <?php echo $level_max?>; i++) {
+				  for (var i = 0; i <= <?php echo $level_max?>; i++) {
                     if(i==<?php echo $option_level?>)
                       document.write('<option selected value="'+i+'">'+i+'</option>')
                     else
                       document.write('<option value="'+i+'">'+i+'</option>')
                   };  
-				  <?php }?>
-                  </script>
-                </select>
+                <?php }?>
+                </script>
+              </select>
 			</div>
+            <div class="form-group col-xs-4 col-sm-3">
+			  <label>题目选项: </label>
+              <div class="checkbox">
+                <label><input <?php if($p_type=='edit') echo $option_hide?> type="checkbox" name="hide_prob">隐藏题目</label>
+              </div>  
+		    </div>
         </div>
         <div class="row">
           <div class="form-group col-xs-12 col-sm-9">
