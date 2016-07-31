@@ -115,7 +115,7 @@ $Title=$inTitle .' - '. $oj_name;
 				<div class="row">
                   <div class="col-xs-4 pull-left">
                     <div class="btn-group">
-                      <a class="btn btn-default disabled"><i class="fa fa-fw fa-envelope"></i> 群发邮件</a>
+                      <a class="btn btn-default" id="btn_emailall"><i class="fa fa-fw fa-envelope"></i> 群发邮件</a>
                     </div>
                   </div>
                   <div class="col-xs-8 col-sm-5 col-md-3 pull-right">
@@ -245,7 +245,7 @@ $Title=$inTitle .' - '. $oj_name;
               <h4 class="modal-title"></h4>
             </div>
             <form action="#" method="post" id="form_email">
-            <input type="hidden" name="op" value="sendemail">
+            <input type="hidden" name="op" id="email_op" value="sendemail">
             <input type="hidden" id="email_touser" name="to_user" value="">  
             <div class="modal-body">
               <div class="form-group">
@@ -509,7 +509,7 @@ $Title=$inTitle .' - '. $oj_name;
               },
               success:function(msg){
 				  if(msg=='success') $('#NewsModal').modal('hide');
-				  else $('#news_res').html('<i class="fa fa-fw fa-remove"></i> 删除失败...').show();
+				  else $('#news_res').html('<i class="fa fa-fw fa-remove"></i> '+msg).show();
 			  }
             });
 			getnewslist();
@@ -543,6 +543,12 @@ $Title=$inTitle .' - '. $oj_name;
             success:getlevellist
           });
         });
+        $('#btn_emailall').click(function(){
+            $('#email_op').val('sendemail_all');
+            $('#EmailModal .modal-title').html('发送邮件: 全体用户');
+            $('#email_res').hide();
+            $('#EmailModal').modal('show');
+        });
         $('#table_usr').click(function(E){
           E.preventDefault();
           var jq=$(E.target);
@@ -550,6 +556,7 @@ $Title=$inTitle .' - '. $oj_name;
              var uid=jq.parents('tr').first().children().first().next().children().children().contents().text();
             switch($(jq).attr('href')){
                 case '#email':
+                $('#email_op').val('sendemail');
                 $('#email_touser').val(uid);
                 $('#EmailModal .modal-title').html('发送邮件: '+uid);
                 $('#email_res').hide();
@@ -632,14 +639,14 @@ $Title=$inTitle .' - '. $oj_name;
         });
         $('#form_email').submit(function(E){
           E.preventDefault();
-          $('#email_res').hide();
+          $('#email_res').removeClass('alert-danger').addClass('alert-info').html('<i class="fa fa-circle-o-notch fa-fw fa-spin"></i> 正在发送...').slideDown();
           $.ajax({
             type:"POST",
             url:"ajax_admin.php",
             data:$('#form_email').serialize(),
             success:function(msg){
               if(/success/.test(msg)) $('#EmailModal').modal('hide');
-              else $('#email_res').html('<i class="fa fa-fw fa-remove"></i> '+msg).slideDown();
+              else $('#email_res').addClass('alert-danger').removeClass('alert-info').html('<i class="fa fa-fw fa-remove"></i> '+msg).slideDown();
             }
           });
           return false;

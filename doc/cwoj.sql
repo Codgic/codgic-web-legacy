@@ -1,6 +1,11 @@
--- CWOJ SQL Initializion 1.0-milestone-1
--- Dumped by phpMyAdmin
-
+-- phpMyAdmin SQL Dump
+-- version 4.5.4.1deb2ubuntu2
+-- http://www.phpmyadmin.net
+--
+-- Host: localhost
+-- Generation Time: Jul 31, 2016 at 03:46 PM
+-- Server version: 5.7.13-0ubuntu0.16.04.2
+-- PHP Version: 7.0.8-0ubuntu0.16.04.1
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -11,9 +16,9 @@ SET time_zone = "+00:00";
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
 /*!40101 SET NAMES utf8mb4 */;
 
-
-CREATE DATABASE cwoj CHARACTER SET utf8mb4;
-use cwoj;
+--
+-- Database: `cwoj`
+--
 
 DELIMITER $$
 --
@@ -100,19 +105,20 @@ CREATE TABLE `contest` (
   `defunct` char(1) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'N',
   `num` int(11) NOT NULL DEFAULT '0',
   `problems` varchar(200) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `in_date` datetime DEFAULT NULL,
   `description` longtext COLLATE utf8mb4_unicode_ci,
+  `in_date` datetime DEFAULT NULL,
   `source` varchar(200) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `has_tex` tinyint(4) NOT NULL DEFAULT '0',
-  `judge_way` int(11) NOT NULL DEFAULT '0'
+  `judge_way` int(11) NOT NULL DEFAULT '0',
+  `enroll_user` int(11) NOT NULL DEFAULT '0'
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `contest`
 --
 
-INSERT INTO `contest` (`contest_id`, `title`, `start_time`, `end_time`, `defunct`, `num`, `problems`, `description`, `source`, `has_tex`, `judge_way`) VALUES
-(1000, '水王大战', '2016-06-12 00:00:00', '2016-08-01 00:00:00', 'N', 2, '1000,1001', '水王开始水啦 大家快跑！！！', '水 水 还是水', 8, 0);
+INSERT INTO `contest` (`contest_id`, `title`, `start_time`, `end_time`, `defunct`, `num`, `problems`, `description`, `in_date`, `source`, `has_tex`, `judge_way`, `enroll_user`) VALUES
+(1000, 'Fuck ZK', '2016-07-31 12:57:57', '2016-07-31 15:57:57', 'N', 2, 'a:2:{i:0;s:4:"1000";i:1;s:4:"1001";}', 'test', '2016-07-31 12:58:13', 'test', 0, 0, 0);
 
 -- --------------------------------------------------------
 
@@ -121,9 +127,8 @@ INSERT INTO `contest` (`contest_id`, `title`, `start_time`, `end_time`, `defunct
 --
 
 CREATE TABLE `contest_status` (
-  `id` int(11) NOT NULL,
-  `user_id` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `contest_id` int(11) DEFAULT NULL,
+  `contest_id` int(11) NOT NULL DEFAULT '0',
+  `user_id` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
   `scores` varchar(200) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `tot_scores` int(11) NOT NULL DEFAULT '0'
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -232,16 +237,15 @@ CREATE TABLE `news` (
   `importance` tinyint(4) NOT NULL DEFAULT '0',
   `privilege` tinyint(4) NOT NULL DEFAULT '0',
   `defunct` char(1) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'N'
-  
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `news`
 --
 
-INSERT INTO `news` (`news_id`, `user_id`, `title`, `content`, `time`, `importance`, `defunct`) VALUES
-(0, '', NULL, '<div class="text-center"><p><b><font size=6>Welcome to CWOJ</font></b></p><font size=4>Built for you to code your future</font></div>', '2016-07-24 17:11:52', 0, 'N'),
-(1, '', 'Welcome to CWOJ', 'Built for you to code your future...', '2016-07-24 17:11:45', 1, 'N');
+INSERT INTO `news` (`news_id`, `user_id`, `title`, `content`, `time`, `importance`, `privilege`, `defunct`) VALUES
+(0, '', NULL, '<div class="text-center"><p><b><font size=6>Welcome to CWOJ</font></b></p><font size=4>Built for you to code your future</font></div>', '2016-07-24 17:11:52', 0, 0, 'N'),
+(1, '', 'Welcome to CWOJ', 'Built for you to code your future...', '2016-07-24 17:11:45', 1, 0, 'N');
 
 -- --------------------------------------------------------
 
@@ -387,7 +391,7 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`user_id`, `email`, `submit`, `solved`, `score`, `experience`, `defunct`, `ip`, `accesstime`, `volume`, `language`, `password`, `reg_time`, `nick`, `school`, `motto`, `privilege`) VALUES
-('root', 'webmaster@localhost', 0, 0, 0, 0, 'N', '127.0.0.1', '2016-07-24 17:16:24', 1, 0, '\0PamJt0hVmS8+b7zS0PQ7yqe1TEfneEMyj+ZRluuv/2+aL/ayHnglr2hl63d+cj6ljnu/avxiBjIcrkBUaOM0Lw==', '2015-11-25 11:25:25', 'admin', 'CFLS', NULL, 15);
+('root', 'webmaster@localhost', 0, 0, 0, 0, 'N', '127.0.0.1', '2016-07-24 17:16:24', 1, 0, 'CWOJUser125', '2015-11-25 11:25:25', 'admin', 'CFLS', NULL, 15);
 
 -- --------------------------------------------------------
 
@@ -431,7 +435,7 @@ ALTER TABLE `contest`
 -- Indexes for table `contest_status`
 --
 ALTER TABLE `contest_status`
-  ADD PRIMARY KEY (`id`);
+  ADD UNIQUE KEY `u_p` (`user_id`,`contest_id`);
 
 --
 -- Indexes for table `experience_titles`
@@ -525,11 +529,6 @@ ALTER TABLE `user_notes`
 -- AUTO_INCREMENT for dumped tables
 --
 
---
--- AUTO_INCREMENT for table `contest_status`
---
-ALTER TABLE `contest_status`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 --
 -- AUTO_INCREMENT for table `mail`
 --

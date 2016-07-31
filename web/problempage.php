@@ -16,7 +16,7 @@ if(isset($_GET['contest_id'])){
     if(!$row_cont)
         die('Wrong Contest ID.');
 	$rem_time=$row_cont[2]-$row_cont[1];
-	$prob_arr=explode(',',$row_cont[5]);
+	$prob_arr=unserialize($row_cont[5]);
 	$prob_num=0;
 	if(isset($_GET['prob'])){
 		$prob_num=intval($_GET['prob']);
@@ -72,9 +72,9 @@ else{
     else{
       $statis=mysqli_fetch_row($user_status);
       if($statis[0]==0){
-        $info = '<tr><td colspan="2" class="gradient-green text-center"><i class="fa fa-check"></i> 恭喜AC!</td></tr>';
+        $info = '<tr><td colspan="2" class="gradient-green text-center"><i class="fa fa-fw fa-check"></i> 恭喜AC!</td></tr>';
       }else{
-        $info = '<tr><td colspan="2" class="gradient-red text-center"><i class="fa fa-remove"></i> 再试一次吧!</td></tr>';
+        $info = '<tr><td colspan="2" class="gradient-red text-center"><i class="fa fa-fw fa-remove"></i> 再试一次吧!</td></tr>';
       }
     }
     $current_user=$_SESSION['user'];

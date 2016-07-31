@@ -13,12 +13,15 @@ else if(isset($_SESSION['view']))
   $cont_id=$_SESSION['view'];
 else
   $cont_id=1000;
-  
-$query="select title,description,problems,start_time,end_time,source,has_tex,defunct,judge_way,num from contest where contest_id=$cont_id";
+if(isset($_SESSION['user'])){
+    $user_id=$_SESSION['user'];
+    $query="select title,description,problems,start_time,end_time,source,has_tex,defunct,judge_way,num,enroll_user,result.scr from contest LEFT JOIN (select contest_id as cid, scores as scr from contest_status where user_id='$user_id' group by contest_id) as result on (result.cid=contest_id) where contest_id=$cont_id";
+}else
+    $query="select title,description,problems,start_time,end_time,source,has_tex,defunct,judge_way,num,enroll_user from contest where contest_id=$cont_id";
 $result=mysqli_query($con,$query);
 $row=mysqli_fetch_row($result);
 if(!$row)
-  die('Wrong Problem ID.');
+  die('Wrong Contest ID.');
 switch ($row[8]) {
   case 0:
     $judge_way='训练';
@@ -36,35 +39,44 @@ else if($row[6]&PROB_IS_HIDE && !check_priv(PRIV_INSIDER))
 else{
   $forbidden=false;
   $_SESSION['view']=$cont_id;
-
+  $prob_arr=unserialize($row[2]);
+  
   if(isset($_SESSION['user'])){
-    $query='select min(result) from solution where user_id=\''.$_SESSION['user']."' and problem_id=$cont_id group by problem_id";
-    $user_status=mysqli_query($con,$query);
-    if(mysqli_num_rows($user_status)==0)
-      $info = '<tr><td colspan="2" class="text-center muted" >您尚未参赛...</td></tr>';
-    else{
-      $statis=mysqli_fetch_row($user_status);
-      if($statis[0]==0){
-        $info = '<tr><td colspan="2" class="gradient-green text-center"><i class="fa fa-check"></i> 比赛已经结束</td></tr>';
-      }else{
-        $info = '<tr><td colspan="2" class="gradient-red text-center"><i class="fa fa-remove"></i> 比赛尚未开始</td></tr>';
-      }
+    if(time()<strtotime($row[3])){
+        $info = '<tr><td colspan="2" class="gradient-red text-center"><i class="fa fa-fw fa-remove"></i> 比赛尚未开始</td></tr>';
+        $tot_score=0;
+    }else if(time()>strtotime($row[4])){
+        $info = '<tr><td colspan="2" class="gradient-green text-center"><i class="fa fa-fw fa-check"></i> 比赛已经结束</td></tr>';
+        $score_arr=unserialize($row[11]);
+        $tot_score=array_sum($score_arr);
+    }else{
+        $info = '<tr><td colspan="2" class="gradient-green text-center"><i class="fa fa-fw fa-cog fa-spin"></i> 比赛正在进行</td></tr>';
+        $q="select score from solution where user_id='$user_id' and in_date>'".$row[3]."' and in_date<'".$row[4]."' and (";
+        for($i=0;$i<$row[9];$i++){
+            $q.=' problem_id='.$prob_arr[$i].' or';
+        }
+        $q=substr($q,0,strlen($q)-3);
+        $q.=' )';
+        $tot_score=0;
+        $rq=mysqli_query($con,$q);
+        while($scr_row=mysqli_fetch_row($rq))
+            $tot_score+=$scr_row[0];
     }
   }else{
     $info = '<tr><td colspan="2" class="text-center muted" >您尚未登录...</td></tr>';
   } 
-  $result=mysqli_query($con,"select submit_user,solved,submit from problem where problem_id=$cont_id");
-  $statis=mysqli_fetch_row($result);
-  $submit_user=$statis[0];
-  $solved_user=$statis[1];
-  $total_submit=$statis[2];
+  //$result=mysqli_query($con,"select submit_user,solved,submit from problem where problem_id=$cont_id");
+  //$statis=mysqli_fetch_row($result);
+  //$submit_user=$statis[0];
+  //$solved_user=$statis[1];
+  //$total_submit=$statis[2];
   $cont_level=($row[6]&PROB_LEVEL_MASK)>>PROB_LEVEL_SHIFT;
 
-  $result=mysqli_query($con,"select result,count(*) as sum from solution where problem_id=$cont_id group by result");
-  $arr=array();
-  while($statis=mysqli_fetch_row($result))
-    $arr[$statis[0]]=$statis[1];
-  ksort($arr);  
+  //$result=mysqli_query($con,"select result,count(*) as sum from solution where problem_id=$cont_id group by result");
+  //$arr=array();
+  //while($statis=mysqli_fetch_row($result))
+    //$arr[$statis[0]]=$statis[1];
+  //ksort($arr);  
 }
 $inTitle="比赛#$cont_id";
 $Title=$inTitle .' - '. $oj_name;
@@ -111,11 +123,15 @@ $Title=$inTitle .' - '. $oj_name;
 				  <h5 class="panel-title">比赛题目</h5>
 				</div>
 				<div class="panel-body">
-				  <?php //echo mb_ereg_replace('\r?\n','<br>',$row[2]);
-                  $prob_arr=explode(',',$row[2]);
-                  for($i=0;$i<$row[9];$i++)
+				  <?php
+                  if(strtotime($row[3])-time()>=300){
+                      echo '比赛开始前5分钟才可看到题目...';
+                  }else if(!isset($row[11])){
+                      echo '请您先<a href="javascript:void(0)" onclick="return join_cont();">参加比赛</a>...';
+                  }else{
+                    for($i=0;$i<$row[9];$i++)
                       echo '<a href="problempage.php?contest_id='.$cont_id.'&problem='.($i+1).'">'.$prob_arr[$i].'</a>&nbsp;';
-                  ?>
+                  }?>
 				</div>
 			  </div>
             </div>
@@ -151,7 +167,8 @@ $Title=$inTitle .' - '. $oj_name;
 				  <h5 class="panel-title">比赛排名</h5>
 				</div>
 				<div class="panel-body">
-				  <?php echo 'Coming Not Soon...';?>
+				  <?php if(strtotime($row[4])>time()) echo '比赛结束后再来看吧~';
+                  else echo 'Coming Not Soon...';?>
 				</div>
 			  </div>
             </div>
@@ -170,8 +187,8 @@ $Title=$inTitle .' - '. $oj_name;
 				<div class="panel-body">
                   <table class="table table-condensed table-striped" style="margin-bottom:0px">
 					<tbody>
-					  <tr><td style="text-align:left">剩余时间:</td><td><?php echo 'Unknown'?> ms</td></tr>
-                      <tr><td style="text-align:left">每题分值:</td><td><?php echo '100'?></td></tr>
+					  <tr><td style="text-align:left">剩余时间:</td><td><?php echo 'tUnknown'?> ms</td></tr>
+                      <tr><td style="text-align:left">每题分值:</td><td><?php echo 't100'?></td></tr>
                       <tr><td style="text-align:left">评分方式:</td><td><?php echo $judge_way?></td></tr>
                       <tr><td style="text-align:left">比赛等级:</td><td><?php echo $cont_level?></td></tr>
                     </tbody>
@@ -187,9 +204,12 @@ $Title=$inTitle .' - '. $oj_name;
                   <table class="table table-condensed table-striped" style="margin-bottom:0px">
                     <tbody>
                     <?php echo $info ?>
-                    <tr><td style="text-align:left">你的分数:</td><td><?php echo $solved_user?></td></tr>
-                    <tr><td style="text-align:left">你的排名:</td><td><?php echo $total_submit?></td></tr>
-                    <tr><td style="text-align:left">参赛人数:</td><td><?php echo $submit_user?></td></tr>
+                    <?php if(isset($_SESSION['user'])&&isset($row[11])){?>
+                    <tr><td style="text-align:left">你的分数:</td><td><?php echo $tot_score?></td></tr>
+                    <?php if(time()>strtotime($row[4])){?>
+                    <tr><td style="text-align:left">你的排名:</td><td><?php echo 'tUnknown'?></td></tr>
+                    <?php }}?>
+                    <tr><td style="text-align:left">参赛人数:</td><td><?php echo $row[10]?></td></tr>
                     </tbody>
                   </table>
 			    </div>
@@ -201,8 +221,8 @@ $Title=$inTitle .' - '. $oj_name;
 		      <div id="function" class="panel panel-default problem-operation" style="margin-top:10px">
 			    <div class="panel-body">
 			      <a href="#" title="Alt+S" class="btn btn-primary shortcut-hint" id="btn_submit">参赛</a>
-                  <a href="record.php?way=time&amp;problem_id=<?php echo $cont_id?>" class="btn btn-success">状态</a>
-                  <a href="board.php?problem_id=<?php echo $cont_id;?>" class="btn btn-warning">讨论</a>
+                  <a href="record.php?way=time&amp;problem_id=<?php echo $cont_id?>" class="btn btn-success disabled">状态</a>
+                  <a href="board.php?problem_id=<?php echo $cont_id;?>" class="btn btn-warning disabled">讨论</a>
                 </div>
               </div>
 		    </div>
@@ -238,6 +258,22 @@ $Title=$inTitle .' - '. $oj_name;
     var cont=<?php echo $cont_id?>;
     change_type(2);
       var hide_info = 0;
+      function join_cont(){
+        <?php if(!isset($_SESSION['user'])){?>
+          $('#alert_error').html('<i class="fa fa-fw fa-remove"></i> 您尚未登录...').fadeIn();
+          setTimeout(function(){$('#alert_error').fadeOut();},2000);
+        <?php }else{?>
+          $.post('ajax_contest.php', {op:'enroll',contest_id:cont}, function(msg){
+            if(/success/.test(msg)){
+              window.location.href='problempage.php?contest_id='+cont;
+            }else{
+              $('#alert_error').html('<i class="fa fa-fw fa-remove"></i> '+msg).fadeIn();
+              setTimeout(function(){$('#alert_error').fadeOut();},2000);
+            }
+          });
+        <?php }?>
+        return false;
+      }
       $(document).ready(function(){
         $('#action_delete').click(function(){
           $.ajax({
@@ -254,22 +290,6 @@ $Title=$inTitle .' - '. $oj_name;
             }
           });
         });
-        function join_cont(){
-          <?php if(!isset($_SESSION['user'])){?>
-            $('#alert_error').html('<i class="fa fa-fw fa-remove"></i> 您尚未登录...').fadeIn();
-			setTimeout(function(){$('#alert_error').fadeOut();},2000);
-          <?php }else{?>
-            $.post('ajax_contest.php', {op:'enroll',contest_id:cont}, function(msg){
-              if(/success/.test(msg)){
-                window.location.href='problempage.php?contest_id='+cont;
-              }else{
-                $('#alert_error').html('<i class="fa fa-fw fa-remove"></i> '+msg).fadeIn();
-                setTimeout(function(){$('#alert_error').fadeOut();},2000);
-              }
-            });
-          <?php }?>
-          return false;
-        }
         $('#btn_submit').click(function(){join_cont()});
         $('#btn_submit2').click(function(){join_cont()});
         function toggle_info(){

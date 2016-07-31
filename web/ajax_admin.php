@@ -4,7 +4,7 @@ require 'inc/privilege.php';
 if(!check_priv(PRIV_SYSTEM))
 	die('你没有权限...');
 if(!isset($_SESSION['admin_tfa']) || !$_SESSION['admin_tfa'])
-	die('No TFA');
+	die('你没有验证身份...');
 if(!isset($_POST['op']))
 	die('参数无效...');
 $op=$_POST['op'];
@@ -167,7 +167,7 @@ if(!isset($_POST['title'])||!isset($_POST['content']))
 	if(!isset($_POST['importance'])) $importance=0;
 	else $importance=1;
 	$title=mysqli_real_escape_string($con,trim($_POST['title']));
-	$content=isset($_POST['content']) ? mysqli_real_escape_string($con,str_replace("\n", "<br>", $_POST['content'])) : '';
+	$content=isset($_POST['content']) ? mysqli_real_escape_string($con,str_replace(PHP_EOL, "<br>", $_POST['content'])) : '';
 	$row=mysqli_fetch_row(mysqli_query($con,"select max(news_id) from news"));
 	$id=1;
 	if($row[0])
@@ -199,7 +199,7 @@ if(!isset($_POST['title'])||!isset($_POST['content']))
     
 	$news_id=intval($_POST['news_id']);
 	$title=mysqli_real_escape_string($con,trim($_POST['title']));
-	$content=isset($_POST['content']) ? mysqli_real_escape_string($con,str_replace("\n", "<br>", $_POST['content'])) : '';
+	$content=isset($_POST['content']) ? mysqli_real_escape_string($con,str_replace(PHP_EOL, "<br>", $_POST['content'])) : '';
 	if(mysqli_query($con,"update news set title='$title',content='$content',importance='$importance',privilege='$new_priv' where news_id=$news_id"))
 		echo 'success';
 	else
@@ -240,7 +240,7 @@ if(!isset($_POST['title'])||!isset($_POST['content']))
 	if($row[0]=='Y') mysqli_query($con,"update users set defunct='N' where user_id='$uid'");
     else if($row[0]=='N') mysqli_query($con,"update users set defunct='Y' where user_id='$uid'");
 }else if($op=='update_index'){
-	$index_text=isset($_POST['text']) ? mysqli_real_escape_string($con,str_replace("\n", "<br>", $_POST['text'])) : '';
+	$index_text=isset($_POST['text']) ? mysqli_real_escape_string($con,str_replace(PHP_EOL, "<br>", $_POST['text'])) : '';
 	if(mysqli_query($con,"insert into news (news_id,content,time) VALUES (0,'$index_text',NOW()) ON DUPLICATE KEY UPDATE content='$index_text', time=NOW()"))
 		echo 'success';
 	else
@@ -252,13 +252,29 @@ if(!isset($_POST['title'])||!isset($_POST['content']))
 	else
 		echo 'fail';
 }else if($op=='sendemail'){
-    if(isset($_POST['to_user'])) $uid=mysqli_real_escape_string($con,trim($_POST['to_user']));
+    if(isset($_POST['to_user'])&&!empty($_POST['to_user'])) $uid=mysqli_real_escape_string($con,trim($_POST['to_user']));
 	else die('收件人不能为空...');
-    if(isset($_POST['title'])) $title=mysqli_real_escape_string($con,trim($_POST['title']));
+    if(isset($_POST['title'])&&!empty($_POST['title'])) $title=mysqli_real_escape_string($con,trim($_POST['title']));
     else die('标题/内容不能为空...');
-    if(isset($_POST['content'])) $content=mysqli_real_escape_string($con,trim($_POST['content']));
+    if(isset($_POST['content'])&&!empty($_POST['content'])) $content=mysqli_real_escape_string($con,trim(str_replace(array("\r\n", "\r", "\n"), "<br>", $_POST['content'])));
     else die('内容不能为空...');
     $row=mysqli_fetch_row(mysqli_query($con,"select email from users where user_id='$uid'"));
     echo postmail($row[0],$title,$content);
+}else if($op=='sendemail_all'){
+    ignore_user_abort(true);
+    if(isset($_POST['to_user'])&&!empty($_POST['to_user'])) $uid=mysqli_real_escape_string($con,trim($_POST['to_user']));
+	else die('收件人不能为空...');
+    if(isset($_POST['title'])&&!empty($_POST['title'])) $title=mysqli_real_escape_string($con,trim($_POST['title']));
+    else die('标题/内容不能为空...');
+    if(isset($_POST['content'])&&!empty($_POST['content'])) $content=mysqli_real_escape_string($con,trim(str_replace(array("\r\n", "\r", "\n"), "<br>", $_POST['text'])));
+    else die('内容不能为空...');
+    $res=mysqli_query($con,"select email from users");
+    while($row=mysqli_fetch_row($res)){
+      $re='';
+      $r=postmail($row[0],$title,$content);
+      if($r!='success') $re.=$r;
+    }
+    if($re=='') $re='success';
+    echo $re;
 }
 ?>

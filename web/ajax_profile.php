@@ -8,6 +8,8 @@ if(strlen($_POST['school'])>60)
 	die('学校名太长');
 if(strlen($_POST['email'])>60)
 	die('邮箱太长');
+if(!preg_match("/^([0-9A-Za-z\\-_\\.]+)@([0-9a-z]+\\.[a-z]{2,3}(\\.[a-z]{2})?)$/i",$_POST['email']))
+    die('邮箱无效');
 if($_POST['type']=='profile'){
 	if(!isset($_POST['oldpwd'],$_POST['motto']))
 		die('Invalid argument.');

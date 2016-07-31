@@ -40,8 +40,11 @@ if($page_id<10){
   exit();
 }
 else if($page_id>$maxpage){
-  header("Location: contest.php?page_id=$maxpage");
-  exit();
+  if($maxpage==0) die('赛场上还没有比赛哦...');
+  else{
+    header("Location: contest.php?page_id=$maxpage");
+    exit();
+  }
 }
 
 if(isset($_SESSION['administrator']))

@@ -77,7 +77,7 @@ $Title=$inTitle .' - '. $oj_name;
         <div class="row">
           <div class="form-group col-xs-12 col-sm-9">
             <label>比赛题目 (逗号隔开，如:1000,1001): </label>
-			<input type="text" class="form-control" name="problems" value="<?php if($p_type=='edit') echo $row[3]?>">
+			<input type="text" class="form-control" name="problems" value="<?php if($p_type=='edit'){ $prob_arr=unserialize($row[3]);echo implode(',', $row[3]);}?>">
           </div>
         </div>
         <div class="row">

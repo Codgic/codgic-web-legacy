@@ -33,10 +33,13 @@ isset($_POST['start_time'])&&!empty($_POST['start_time']) ? $start_time=mysqli_r
 if($start_time<0) die('请输入有效时间...');
 isset($_POST['end_time'])&&!empty($_POST['end_time']) ? $end_time=mysqli_real_escape_string($con,$_POST['end_time']) : die('请输入时间...');
 if($end_time<0) die('请输入有效时间...');
+if(strtotime($start_time)>strtotime($end_time)) die('开始时间不能大于结束时间...');
 $judge_way=isset($_POST['judge']) ? JUDGE_TYPE($_POST['judge']) : 0;
 isset($_POST['title'])&&!empty($_POST['title']) ? $title=mysqli_real_escape_string($con,$_POST['title']) : die('请输入标题...');
 isset($_POST['problems'])&&!empty($_POST['problems']) ? $problems=mysqli_real_escape_string($con,$_POST['problems']) : die('请输入题目列表...');
 $num=substr_count($problems,',')+1;
+$prob_arr=explode(',',$problems);
+$problems=serialize($prob_arr);
 $des=isset($_POST['description']) ? mysqli_real_escape_string($con,$_POST['description']) : '';
 $source=isset($_POST['source']) ? mysqli_real_escape_string($con,$_POST['source']) : '';
 
@@ -75,7 +78,7 @@ if($_POST['op']=='edit'){
 	$result=mysqli_query($con,'select max(contest_id) from contest');
 	if(($row=mysqli_fetch_row($result)) && intval($row[0]))
 		$id=intval($row[0])+1;
-	$result=mysqli_query($con,"insert into contest (contest_id,title,start_time,end_time,description,problems,num,source,in_date,has_tex,judge_way) values ($id,'$title','$start_time','$end_time','$des','$problems','$num','$source',NOW(),$has_tex,$judge_way)");
+	$result=mysqli_query($con,"insert into contest (contest_id,title,start_time,end_time,description,problems,num,source,in_date,has_tex,judge_way,enroll_user) values ($id,'$title','$start_time','$end_time','$des','$problems','$num','$source',NOW(),$has_tex,$judge_way,0)");
 	if(!$result)
 		die('数据库操作失败...');
 	else
