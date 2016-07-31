@@ -144,7 +144,7 @@ $Title=$inTitle .' - '. $oj_name;
               </tbody>
             </table>
 			<?php }else{?>
-            <table class="table table-hover table-bordered table-left-aligned table-first-center-aligned" style="margin-bottom:0">
+            <table class="table table-hover table-bordered" style="margin-bottom:0">
               <thead><tr>
                 <th style="width:7%">ID</th>
                 <?php
@@ -152,7 +152,7 @@ $Title=$inTitle .' - '. $oj_name;
 				  echo '<th colspan="2">标题</th>'; 
 				  if($type==1) echo '<th style="width:20%">备注</th>';
 				  }else echo '<th>标题</th>';
-				  if($type==2) echo '<th style="width:20%">状态</th>';  
+				  if($type==2) echo '<th style="width:20%">开始时间</th><th style="width:5%">状态</th>';  
                  ?>
                 <th style="width:30%">标签</th>
               </tr></thead>
@@ -162,10 +162,10 @@ $Title=$inTitle .' - '. $oj_name;
                     while($row=mysqli_fetch_row($result)){
                     echo '<tr><td>',$row[0],'</td>';
                     if(isset($_SESSION['user'])){
-                      echo '<td class="text-center" style="width:36px"><i class=', is_null($row[3]) ? '"fa fa-fw fa-remove fa-2x" style="visibility:hidden"' : (($type==1&&$row[3])? '"fa fa-fw fa-remove fa-2x" style="color:red"' : '"fa fa-fw fa-2x fa-check" style="color:green"'), '></i>', '</td>';
-                      echo '<td style="border-left:0;">';
+                      echo '<td style="width:36px"><i class=', is_null($row[3]) ? '"fa fa-fw fa-remove fa-2x" style="visibility:hidden"' : (($type==1&&$row[3])? '"fa fa-fw fa-remove fa-2x" style="color:red"' : '"fa fa-fw fa-2x fa-check" style="color:green"'), '></i>', '</td>';
+                      echo '<td style="text-align:left;border-left:0;">';
                     }else{
-                      echo '<td>';
+                      echo '<td style="text-align:left;">';
                     }
                     echo '<a href="problempage.php?problem_id=',$row[0],'">',$row[1],'</a></td>';
                     if(isset($_SESSION['user']))
@@ -180,10 +180,10 @@ $Title=$inTitle .' - '. $oj_name;
                     else $cont_status='<span class="label label-re">正在进行</span>';
                     echo '<tr><td>',$row[0],'</td>';
                     if(isset($_SESSION['user'])){
-                      echo '<td class="text-center" style="width:36px"><i class=', is_null($row[3]) ? '"fa fa-fw fa-remove fa-2x" style="visibility:hidden"' : (($type==1&&$row[3])? '"fa fa-fw fa-remove fa-2x" style="color:red"' : '"fa fa-fw fa-2x fa-check" style="color:green"'), '></i>', '</td>';
-                      echo '<td style="border-left:0;">';
+                      echo '<td style="width:36px"><i class=', is_null($row[3]) ? '"fa fa-fw fa-remove fa-2x" style="visibility:hidden"' : (($type==1&&$row[3])? '"fa fa-fw fa-remove fa-2x" style="color:red"' : '"fa fa-fw fa-2x fa-check" style="color:green"'), '></i>', '</td>';
+                      echo '<td style="text-align:left;border-left:0;">';
                     }else{
-                      echo '<td>';
+                      echo '<td style="text-align:left;">';
                     }
                     echo '<a href="contestpage.php?contest_id=',$row[0],'">',$row[1],'</a></td>';
                     if(isset($_SESSION['user']))

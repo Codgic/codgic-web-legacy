@@ -509,7 +509,7 @@ $Title=$inTitle .' - '. $oj_name;
               },
               success:function(msg){
 				  if(msg=='success') $('#NewsModal').modal('hide');
-				  else $('#news_res').html('<i class="fa fa-fw fa-remove"></i> '+msg).show();
+				  else $('#news_res').html('<i class="fa fa-fw fa-remove"></i> 删除失败...').show();
 			  }
             });
 			getnewslist();

@@ -42,41 +42,27 @@ else{
   $prob_arr=unserialize($row[2]);
   
   if(isset($_SESSION['user'])){
+      $tot_score=0;
     if(time()<strtotime($row[3])){
         $info = '<tr><td colspan="2" class="gradient-red text-center"><i class="fa fa-fw fa-remove"></i> 比赛尚未开始</td></tr>';
-        $tot_score=0;
     }else if(time()>strtotime($row[4])){
         $info = '<tr><td colspan="2" class="gradient-green text-center"><i class="fa fa-fw fa-check"></i> 比赛已经结束</td></tr>';
-        $score_arr=unserialize($row[11]);
-        $tot_score=array_sum($score_arr);
+        if(isset($row[11])){
+            $score_arr=unserialize($row[11]);
+            $tot_score=array_sum($score_arr);
+        }
     }else{
         $info = '<tr><td colspan="2" class="gradient-green text-center"><i class="fa fa-fw fa-cog fa-spin"></i> 比赛正在进行</td></tr>';
-        $q="select score from solution where user_id='$user_id' and in_date>'".$row[3]."' and in_date<'".$row[4]."' and (";
         for($i=0;$i<$row[9];$i++){
-            $q.=' problem_id='.$prob_arr[$i].' or';
+            $scr_row=mysqli_fetch_row(mysqli_query($con,"select max(score),count(score) from solution where user_id='$user_id' and in_date>'".$row[3]."' and in_date<'".$row[4]."' and problem_id=".$prob_arr[$i]));
+            if($row[8]==0) $tot_score+=$scr_row[0];
+            else $tot_score+=$scr_row[0]*pow(0.9,$scr_row[1]-1);
         }
-        $q=substr($q,0,strlen($q)-3);
-        $q.=' )';
-        $tot_score=0;
-        $rq=mysqli_query($con,$q);
-        while($scr_row=mysqli_fetch_row($rq))
-            $tot_score+=$scr_row[0];
     }
   }else{
     $info = '<tr><td colspan="2" class="text-center muted" >您尚未登录...</td></tr>';
   } 
-  //$result=mysqli_query($con,"select submit_user,solved,submit from problem where problem_id=$cont_id");
-  //$statis=mysqli_fetch_row($result);
-  //$submit_user=$statis[0];
-  //$solved_user=$statis[1];
-  //$total_submit=$statis[2];
   $cont_level=($row[6]&PROB_LEVEL_MASK)>>PROB_LEVEL_SHIFT;
-
-  //$result=mysqli_query($con,"select result,count(*) as sum from solution where problem_id=$cont_id group by result");
-  //$arr=array();
-  //while($statis=mysqli_fetch_row($result))
-    //$arr[$statis[0]]=$statis[1];
-  //ksort($arr);  
 }
 $inTitle="比赛#$cont_id";
 $Title=$inTitle .' - '. $oj_name;
@@ -123,14 +109,15 @@ $Title=$inTitle .' - '. $oj_name;
 				  <h5 class="panel-title">比赛题目</h5>
 				</div>
 				<div class="panel-body">
-				  <?php
+				 <?php
                   if(strtotime($row[3])-time()>=300){
                       echo '比赛开始前5分钟才可看到题目...';
-                  }else if(!isset($row[11])){
+                  }else if(!isset($row[11]) && time()<strtotime($row[4])){
                       echo '请您先<a href="javascript:void(0)" onclick="return join_cont();">参加比赛</a>...';
                   }else{
+                    $prob_arr=unserialize($row[2]);
                     for($i=0;$i<$row[9];$i++)
-                      echo '<a href="problempage.php?contest_id='.$cont_id.'&problem='.($i+1).'">'.$prob_arr[$i].'</a>&nbsp;';
+                      echo '<a href="problempage.php?contest_id='.$cont_id.'&prob='.($i+1).'">'.$prob_arr[$i].'</a>&nbsp;';
                   }?>
 				</div>
 			  </div>
