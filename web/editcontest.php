@@ -101,8 +101,8 @@ $Title=$inTitle .' - '. $oj_name;
           </div>
         </div>      
         <div class="row">
-          <div class="form-group col-xs-4 col-sm-3">
-            <label>比赛等级: </label>
+          <div class="form-group col-xs-6 col-sm-3">
+            <label>比赛难度: </label>
             <select class="form-control" name="option_level" id="option_level">
               <script>
               <?php if($p_type=='add'){?>
@@ -120,7 +120,7 @@ $Title=$inTitle .' - '. $oj_name;
               </script>
             </select>
           </div>
-          <div class="form-group col-xs-4 col-sm-3">
+          <div class="form-group col-xs-6 col-sm-4">
 			<label>比赛选项: </label>
 			<div class="checkbox">
 			  <label>
@@ -136,13 +136,13 @@ $Title=$inTitle .' - '. $oj_name;
           </div>
         </div>       
         <div class="row">
-          <div class="form-group col-xs-12 col-md-9">
+          <div class="form-group col-xs-12 col-sm-9">
               <label>比赛标签:</label>
               <input class="form-control col-xs-12" type="text" name="source" value="<?php if($p_type=='edit') echo htmlspecialchars($row[5])?>">
           </div>
         </div>
         <div class="row">
-          <div class="form-group col-xs-12 col-md-9 text-center">
+          <div class="form-group col-xs-12 col-sm-9 text-center">
             <input type="submit" class="btn btn-primary" value="提交">
           </div>
         </div>
