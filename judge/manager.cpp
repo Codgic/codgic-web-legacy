@@ -43,7 +43,7 @@ static volatile bool rejudging, filled;
 static std::vector<int> rejudge_list;
 static solution rejudge_init;
 
-const float build_version=1.02;
+const float build_version=1.03;
 
 #ifdef USE_DLL_ON_WINDOWS
 run_compiler_def run_compiler;
@@ -242,6 +242,7 @@ void thread_rejudge()
 			delete sol;
 		}
 		try {
+			update_problem_rejudged_status(rejudge_init.problem);
 			refresh_users_problem(rejudge_init.problem);
 		}catch(const char *e) {
 			if(e!="maintain valid field")

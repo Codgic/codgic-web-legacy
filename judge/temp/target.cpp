@@ -1,9 +1,22 @@
 #include <iostream>
+#include <cstdio>
+#include <cstring>
 using namespace std;
-int main(){
-  int a,b;
-  cin>>a>>b;
-  if(a<100) cout<<'0';
-  else cout<<a+b;
-  return 0;
-}
+int main()
+{
+	int k,sum=0,i=1,n=1,flag=0;
+	scanf("%d",&k); 
+	while(i<=k)
+	{
+		sum+=n;
+		flag++;
+		if(flag==n)
+		{
+			flag=0;
+			n++;
+		}
+		i++;
+	}
+	printf("%d",sum);
+	return 0;
+} 

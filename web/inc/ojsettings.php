@@ -24,8 +24,8 @@ $temp_dir="/tmp/cwoj_postmessage.lock";
 $year=date('Y');
 $oj_name = 'CWOJ'; 
 $oj_copy = 'CWOJ Team'; 
-$web_ver = '1.00.alpha-milestone-1.160724-1757';
-$daemon_ver = '1.02.160612-1153';
+$web_ver = '1.00.alpha-milestone-2';
+$daemon_ver = '1.03.160801-2101';
 
 //2.2 User policy settings
 //"require_auth" determines whether log in is needed to access CWOJ.

@@ -63,6 +63,7 @@ int get_next_solution_id() throw (const char *);
 void write_result_to_database(int, solution*) throw (const char *);
 void get_exist_solution_info(int solution_id, solution* sol) throw (const char *);
 void update_exist_solution_info(int solution_id, solution* sol) throw (const char *);
+void update_problem_rejudged_status(int problem_id) throw (const char *);
 void refresh_users_problem(int problem_id) throw (const char *);
 void get_solution_list(std::vector<int> &rejudge_list, int problem_id) throw (const char *);
 

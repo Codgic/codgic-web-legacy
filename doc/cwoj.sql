@@ -1,11 +1,7 @@
 -- phpMyAdmin SQL Dump
 -- version 4.5.4.1deb2ubuntu2
 -- http://www.phpmyadmin.net
---
--- Host: localhost
--- Generation Time: Jul 31, 2016 at 03:46 PM
--- Server version: 5.7.13-0ubuntu0.16.04.2
--- PHP Version: 7.0.8-0ubuntu0.16.04.1
+
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -16,6 +12,8 @@ SET time_zone = "+00:00";
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
 /*!40101 SET NAMES utf8mb4 */;
 
+CREATE DATABASE 1cwoj CHARACTER SET utf8mb4;
+use 1cwoj;
 --
 -- Database: `cwoj`
 --
@@ -129,7 +127,8 @@ INSERT INTO `contest` (`contest_id`, `title`, `start_time`, `end_time`, `defunct
 CREATE TABLE `contest_status` (
   `contest_id` int(11) NOT NULL DEFAULT '0',
   `user_id` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
-  `scores` varchar(200) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `scores` varchar(400) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `results` varchar(400) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `tot_scores` int(11) NOT NULL DEFAULT '0'
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -289,15 +288,16 @@ CREATE TABLE `problem` (
   `has_tex` tinyint(4) NOT NULL DEFAULT '0',
   `submit_user` int(11) DEFAULT '0',
   `solved` int(11) DEFAULT '0',
-  `case_time_limit` int(11) NOT NULL DEFAULT '0'
+  `case_time_limit` int(11) NOT NULL DEFAULT '0',
+  `rejudged` char(1) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'N'
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `problem`
 --
 
-INSERT INTO `problem` (`problem_id`, `title`, `description`, `input`, `output`, `sample_input`, `sample_output`, `hint`, `source`, `in_date`, `time_limit`, `memory_limit`, `case_score`, `defunct`, `contest_id`, `accepted`, `submit`, `ratio`, `compare_way`, `has_tex`, `submit_user`, `solved`, `case_time_limit`) VALUES
-(1000, 'A+B 问题', '计算 a+b', '两个整数 a,b (保证a+b在int范围内)', '输出 a+b', '1 2', '3', '请使用标准输入输出~\r\n', '基础语法', '2016-07-24 17:13:09', 0, 65536, 10, 'N', NULL, 0, 0, 0, 0, 0, 0, 0, 1000);
+INSERT INTO `problem` (`problem_id`, `title`, `description`, `input`, `output`, `sample_input`, `sample_output`, `hint`, `source`, `in_date`, `time_limit`, `memory_limit`, `case_score`, `defunct`, `contest_id`, `accepted`, `submit`, `ratio`, `compare_way`, `has_tex`, `submit_user`, `solved`, `case_time_limit`, `rejudged`) VALUES
+(1000, 'A+B 问题', '计算 a+b', '两个整数 a,b (保证a+b在int范围内)', '输出 a+b', '1 2', '3', '请使用标准输入输出~\r\n', '基础语法', '2016-07-24 17:13:09', 0, 65536, 10, 'N', NULL, 0, 0, 0, 0, 0, 0, 0, 1000, 'N');
 
 -- --------------------------------------------------------
 

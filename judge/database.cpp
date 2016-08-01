@@ -218,6 +218,16 @@ void update_exist_solution_info(int solution_id, solution* data) throw (const ch
 	if(mysql_query(hMySQL, statements))
 		throw "update solution";
 }
+void update_problem_rejudged_status(int problem_id) throw (const char *)
+{
+	std::unique_lock<std::mutex> Lock(database_mutex);
+	Check_mysql_connection();
+
+	puts("update_problem_rejudged_status");
+	sprintf(statements, "update problem set rejudged='Y' where problem_id=%d", problem_id);
+	if(mysql_query(hMySQL, statements))
+		throw "update problem rejudged status";
+}
 void refresh_users_problem(int problem_id) throw (const char *)
 {
 	std::unique_lock<std::mutex> Lock(database_mutex);

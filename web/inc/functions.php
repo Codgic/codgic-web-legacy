@@ -1,4 +1,30 @@
 <?php
+function update_cont_rank($cont_id){
+    require 'inc/database.php';
+    $row=mysqli_fetch_row(mysqli_query($con,"select problems,num,start_time,end_time from contest where contest_id=$cont_id"));
+    $prob_arr=unserialize($row[0]);
+    $cont_num=$row[1];
+    $cont_start=$row[2];
+    $cont_end=$row[3];
+    $q=mysqli_query($con,"select user_id from contest_status where contest_id=$cont_id");
+    while($row=mysqli_fetch_row($q)){
+        $user_id=$row[0];
+        for($i=0;$i<$cont_num;$i++){
+            $s_row=mysqli_fetch_row(mysqli_query($con,"select max(score),count(score),min(result) from solution where user_id='$user_id' and in_date>'$cont_start' and in_date<'$cont_end' and problem_id=".$prob_arr[$i]));
+            if(isset($s_row[0])) $s_row[0]=0;
+            if(isset($s_row[2])) $s_row[2]=NULL;
+            $score_arr["$prob_arr[$i]"]=$s_row[0];
+            $res_arr["$prob_arr[$i]"]=$s_row[2];
+        }
+        $tot_scores=array_sum($score_arr);
+        $scores=serialize($score_arr);
+        $results=serialize($res_arr);
+        unset($score_arr);
+        unset($res_arr);
+        mysqli_query($con,"update contest_status set scores='$scores', results='$results', tot_scores=$tot_scores where contest_id=$cont_id and user_id='$user_id'");
+    }
+}
+
 function get_ip(){
    if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
       return $_SERVER['HTTP_CLIENT_IP'];
@@ -69,7 +95,7 @@ function postmail($to,$subject = '',$body = ''){
     $mail->Subject    = $subject;
 	$mail->WordWrap = 60;
     //$mail->AltBody    = 'To view the message, please use an HTML compatible email viewer!'; // optional, comment out and test
-    $mail->MsgHTML($body);
+    $mail->MsgHTML($body);http://www.jb51.net/article/37929.htm
     $address = $to;
     $mail->AddAddress($address, '');
     $mail->IsHTML(true); 

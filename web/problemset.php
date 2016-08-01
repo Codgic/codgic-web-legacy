@@ -122,7 +122,7 @@ $Title=$inTitle .' - '. $oj_name;
 			while($row=mysqli_fetch_row($result)){
 			  echo '<tr><td>',$row[0],'</td>';
 			  if(isset($_SESSION['user'])){
-				echo '<td class="width-for-2x-icon"><i class=', is_null($row[6]) ? '"fa fa-remove fa-2x" style="visibility:hidden"' : ($row[6]? '"fa fa-remove fa-2x" style="color:red"' : '"fa fa-2x fa-check" style="color:green"'), '></i>', '</td>';
+				echo '<td class="width-for-2x-icon"><i class=', is_null($row[6]) ? '"fa fa-fw fa-2x fa-remove" style="visibility:hidden"' : ($row[6]? '"fa fa-fw fa-2x fa-remove" style="color:red"' : '"fa fa-fw fa-2x fa-check" style="color:green"'), '></i>', '</td>';
 				echo '<td style="text-align:left;border-left:0;">';
 			  }else{
 				echo '<td style="text-align:left">';

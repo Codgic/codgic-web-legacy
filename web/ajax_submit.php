@@ -111,8 +111,9 @@ if($_POST['op']=='judge'){
 	ignore_user_abort(TRUE);
 	$result = posttodaemon($data);
 	
-	if(strstr($result,"OK"))
+	if(strstr($result,"OK")){
 	  echo 'success';
+    }
 	else if(strstr($result,"another"))
 	  echo "目前正在执行另一评测任务，请稍后再试...";
 	else
