@@ -12,8 +12,8 @@ SET time_zone = "+00:00";
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
 /*!40101 SET NAMES utf8mb4 */;
 
-CREATE DATABASE 1cwoj CHARACTER SET utf8mb4;
-use 1cwoj;
+CREATE DATABASE cwoj CHARACTER SET utf8mb4;
+use cwoj;
 --
 -- Database: `cwoj`
 --
