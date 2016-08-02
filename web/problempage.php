@@ -15,7 +15,11 @@ if(isset($_GET['contest_id'])){
 	$row_cont=mysqli_fetch_row($result);
     if(!$row_cont)
         die('Wrong Contest ID.');
-	$rem_time=$row_cont[2]-$row_cont[1];
+    if(time()<strtotime($row_cont[1])){
+        header("Location: contestpage.php?contest_id=$cont_id");
+        exit();
+    }
+	$rem_time=strtotime($row_cont[2])-time();
 	$prob_arr=unserialize($row_cont[5]);
 	$prob_num=0;
 	if(isset($_GET['prob'])){
@@ -136,15 +140,17 @@ $Title=$inTitle .' - '. $oj_name;
 	  require 'page_header.php';
     ?>
     <div class="alert collapse text-center alert-popup alert-danger" id="alert_error"></div>
-	<?php if($is_contest==true){?>
+	<?php if($is_contest){?>
 	<div class="alert alert-danger text-center" style="top:50px;height:50px;width:100%;position:fixed;z-index:100;border-radius:0">
-	  <?php if($prob_num>1){?>
-	  <a href="problempage.php?contest_id=<?php echo $cont_id?>&prob=<?php echo ($prob_num-1)?>" class="pull-left"><i class="fa fa-fw fa-angle-left"></i>上一题</a>
-	  <?php }?>
-	  <span id="cont_status">题目: <?php echo $prob_num.' / '.$row_cont[4]?>, 离比赛结束还有: 0天0小时0分0秒</span>
-	  <?php if($prob_num<$row_cont[4]){?>
-	  <a href="problempage.php?contest_id=<?php echo $cont_id?>&prob=<?php echo ($prob_num+1)?>" class="pull-right">下一题<i class="fa fa-fw fa-angle-right"></i></a>
-	  <?php }?>
+    <?php
+        if($prob_num>1) echo '<a href="problempage.php?contest_id=',$cont_id,'&prob=',($prob_num-1),'" class="pull-left"><i class="fa fa-fw fa-angle-left"></i>上一题</a>';
+        else echo '<span class="pull-left"><i class="fa fa-fw fa-angle-left"></i>上一题</span>';
+        echo '题目: ',$prob_num,' / ',$row_cont[4],' &nbsp;&nbsp;';
+        if($rem_time<0) echo '比赛已经结束';
+        else echo '<span id="cont_st">剩余时间: <span id="tday"></span><span id="thour"></span><span id="tmin"></span><span id="tsec"></span></span>';
+        if($prob_num<$row_cont[4]) echo '<a href="problempage.php?contest_id=',$cont_id,'&prob=',($prob_num+1),'" class="pull-right">下一题<i class="fa fa-fw fa-angle-right"></i></a>';
+        else echo '<span class="pull-right">下一题<i class="fa fa-fw fa-angle-right"></i></span>';
+	  ?>
 	</div>
 	<div style="height:50px"></div>
 	<?php }?>
@@ -156,99 +162,70 @@ $Title=$inTitle .' - '. $oj_name;
       ?>
       <div class="row">
         <div class="col-xs-12 col-sm-9" id="leftside" style="font-size:16px">
-		  <div class="row">
-            <div class="text-center">
-              <h2><?php echo '#'.$prob_id,' ',$row_prob[0];
-                if($row_prob[11]=='Y')echo ' <span style="vertical-align:middle;font-size:12px" class="label label-danger">已删除</span>';?></h2>
+          <div class="text-center">
+            <h2><?php echo '#'.$prob_id,' ',$row_prob[0];
+              if($row_prob[11]=='Y')echo ' <span style="vertical-align:middle;font-size:12px" class="label label-danger">已删除</span>';
+              if($is_contest) echo '<a href="contestpage.php?contest_id=',$cont_id,'" class="btn btn-default pull-left"><i class="fa fa-fw fa-home"></i> 比赛主页</a>';?></h2>
+          </div>
+          <br>
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h5 class="panel-title">题目描述</h5>
             </div>
-		  </div>
-		  <br>
-          <div class="row">
-            <div class="col-xs-12">
-			  <div class="panel panel-default">
-				<div class="panel-heading">
-				  <h5 class="panel-title">题目描述</h5>
-				</div>
-				<div class="panel-body">
-				  <?php echo mb_ereg_replace('\r?\n','<br>',$row_prob[1]);?>
-				</div>
-			  </div>
+            <div class="panel-body">
+              <?php echo mb_ereg_replace('\r?\n','<br>',$row_prob[1]);?>
             </div>
           </div>
-		  <div class="row">
-            <div class="col-xs-12">
-			  <div class="panel panel-default">
-				<div class="panel-heading">
-				  <h5 class="panel-title">输入格式</h5>
-				</div>
-				<div class="panel-body">
-				  <?php echo mb_ereg_replace('\r?\n','<br>',$row_prob[2]);?>
-				</div>
-			  </div>
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h5 class="panel-title">输入格式</h5>
+            </div>
+            <div class="panel-body">
+              <?php echo mb_ereg_replace('\r?\n','<br>',$row_prob[2]);?>
             </div>
           </div>
-		  <div class="row">
-            <div class="col-xs-12">
-			  <div class="panel panel-default">
-				<div class="panel-heading">
-				  <h5 class="panel-title">输出格式</h5>
-				</div>
-				<div class="panel-body">
-				  <?php echo mb_ereg_replace('\r?\n','<br>',$row_prob[3]);?>
-				</div>
-			  </div>
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h5 class="panel-title">输出格式</h5>
             </div>
-          </div>  
-          <div class="row">
-            <div class="col-xs-12">
-			  <div class="panel panel-default">
-				<div class="panel-heading">
-				  <h5 class="panel-title">样例输入
-				  <a herf="#" class="pull-right" id="copy_in" style="cursor:pointer" data-toggle="tooltip" data-trigger="manual" data-clipboard-action="copy" data-clipboard-target="#sample_input">[复制]</a></h5>
-				</div>
-				<div class="panel-body problem-sample" id="sample_input">
-				  <?php echo mb_ereg_replace('\r?\n','<br>',$row_prob[4]);?>
-				</div>
-			  </div>
+            <div class="panel-body">
+              <?php echo mb_ereg_replace('\r?\n','<br>',$row_prob[3]);?>
             </div>
           </div>
-          <div class="row">
-            <div class="col-xs-12">
-			  <div class="panel panel-default">
-				<div class="panel-heading">
-				  <h5 class="panel-title">样例输出
-				  <a herf="#" class="pull-right" id="copy_out" style="cursor:pointer" data-toggle="tooltip" data-trigger="manual" data-clipboard-action="copy" data-clipboard-target="#sample_output">[复制]</a></h5>
-				</div>
-				<div class="panel-body problem-sample" id="sample_output">
-				  <?php echo mb_ereg_replace('\r?\n','<br>',$row_prob[5]);?>
-				</div>
-			  </div>
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h5 class="panel-title">样例输入
+              <a herf="#" class="pull-right" id="copy_in" style="cursor:pointer" data-toggle="tooltip" data-trigger="manual" data-clipboard-action="copy" data-clipboard-target="#sample_input">[复制]</a></h5>
+            </div>
+            <div class="panel-body problem-sample" id="sample_input">
+              <?php echo mb_ereg_replace('\r?\n','<br>',$row_prob[4]);?>
+            </div>
+          </div>
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h5 class="panel-title">样例输出
+              <a herf="#" class="pull-right" id="copy_out" style="cursor:pointer" data-toggle="tooltip" data-trigger="manual" data-clipboard-action="copy" data-clipboard-target="#sample_output">[复制]</a></h5>
+            </div>
+            <div class="panel-body problem-sample" id="sample_output">
+              <?php echo mb_ereg_replace('\r?\n','<br>',$row_prob[5]);?>
             </div>
           </div>
           <?php if(strlen($row_prob[6])){ ?>
-          <div class="row">
-            <div class="col-xs-12">
-			  <div class="panel panel-default">
-				<div class="panel-heading">
-				  <h5 class="panel-title">题目提示</h5>
-				</div>
-				<div class="panel-body">
-				  <?php echo mb_ereg_replace('\r?\n','<br>',$row_prob[6]);?>
-				</div>
-			  </div>
+            <div class="panel panel-default">
+              <div class="panel-heading">
+                <h5 class="panel-title">题目提示</h5>
+              </div>
+              <div class="panel-body">
+                <?php echo mb_ereg_replace('\r?\n','<br>',$row_prob[6]);?>
+              </div>
             </div>
-          </div>
           <?php } ?>
-          <div class="row">
-            <div class="col-xs-12">
-			  <div class="panel panel-default">
-				<div class="panel-heading">
-				  <h5 class="panel-title">题目标签</h5>
-				</div>
-				<div class="panel-body">
-				  <?php echo mb_ereg_replace('\r?\n','<br>',$row_prob[7]);?>
-				</div>
-			  </div>
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h5 class="panel-title">题目标签</h5>
+            </div>
+            <div class="panel-body">
+              <?php echo mb_ereg_replace('\r?\n','<br>',$row_prob[7]);?>
             </div>
           </div>
         </div>
@@ -462,9 +439,29 @@ $Title=$inTitle .' - '. $oj_name;
 	  if($pref->edrmode!='default') echo '<script src="/assets/js/codemirror.'.$pref->edrmode.'.js"></script>';}
 	?>
     <script type="text/javascript">
-    var prob=<?php echo $prob_id?>;
-	<?php if($is_contest==true){?>
-	//CountDown Function
+    var prob = <?php echo $prob_id?>;
+	<?php if($is_contest==true&&$rem_time>0){?> 
+      var t = new Date(<?php echo strtotime($row_cont[2])*1000?>);
+      var EndTime = t.getTime();
+      var t1 = new Date(), t2 = new Date(<?php echo time()*1000?>);
+      var SyncTime=t1.getTime()-t2.getTime();
+      function GetRTime(){
+        var NowTime = new Date();
+		var nMS = EndTime - NowTime.getTime() + SyncTime;
+		if (nMS < 0){
+            $('#cont_st').html('比赛已经结束');
+		}else{
+            var nD = Math.floor(nMS/(1000 * 60 * 60 * 24));
+            var nH = Math.floor(nMS/(1000*60*60)) % 24;
+            var nM = Math.floor(nMS/(1000*60)) % 60;
+            var nS = Math.floor(nMS/1000) % 60;
+            if(!nD) $("#tday").hide();
+            else $("#tday").text(nD+' 日 ');
+		   $("#thour").text(nH+' 时 ');
+		   $("#tmin").text(nM+ ' 分 ');
+		   $("#tsec").text(nS+' 秒 ');
+		}
+      }
 	<?php };if($pref->edrmode!='off'){?>
 	var editor = CodeMirror.fromTextArea(document.getElementById('detail_input'), {
 		theme: "<?php if($t_night=='on') echo 'midnight'; else echo 'eclipse'?>",
@@ -549,6 +546,7 @@ $Title=$inTitle .' - '. $oj_name;
     });
       var hide_info = 0;
       $(document).ready(function(){
+        var timer_rt = window.setInterval("GetRTime()", 1000);
         $('#action_delete').click(function(){
           $.ajax({
             type:"POST",

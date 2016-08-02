@@ -123,85 +123,61 @@ $Title=$inTitle .' - '. $oj_name;
       ?>
       <div class="row">
         <div class="col-xs-12 col-sm-9" id="leftside" style="font-size:16px">
-		  <div class="row">
-            <div class="text-center">
-              <h2><?php echo '#'.$cont_id,' ',$row[0];if($row[7]=='Y')echo ' <span style="vertical-align:middle;font-size:12px" class="label label-danger">已删除</span>';?></h2>
-            </div>
-		  </div>
+          <div class="text-center">
+            <h2><?php echo '#'.$cont_id,' ',$row[0];if($row[7]=='Y')echo ' <span style="vertical-align:middle;font-size:12px" class="label label-danger">已删除</span>';?></h2>
+          </div>
 		  <br>
-          <div class="row">
-            <div class="col-xs-12">
-			  <div class="panel panel-default">
-				<div class="panel-heading">
-				  <h5 class="panel-title">比赛简介</h5>
-				</div>
-				<div class="panel-body">
-				  <?php echo mb_ereg_replace('\r?\n','<br>',$row[1]);?>
-				</div>
-			  </div>
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h5 class="panel-title">比赛简介</h5>
+            </div>
+            <div class="panel-body">
+              <?php echo mb_ereg_replace('\r?\n','<br>',$row[1]);?>
             </div>
           </div>
-		  <div class="row">
-            <div class="col-xs-12">
-			  <div class="panel panel-default">
-				<div class="panel-heading">
-				  <h5 class="panel-title">比赛题目</h5>
-				</div>
-				 <?php
-                  if(!isset($_SESSION['user'])){
-                      echo '<div class="panel-body">请先<a href="login.php">登录</a>再查看比赛...</div>';
-                  }else if(strtotime($row[3])-time()>=300){
-                      echo '<div class="panel-body">比赛开始前5分钟才可看到题目...</div>';
-                  }else if(!isset($row[12]) && time()<strtotime($row[4])){
-                      echo '<div class="panel-body">请您先<a href="javascript:void(0)" onclick="return join_cont();">参加比赛</a>...</div>';
-                  }else{?>
-                  <ul class="list-group">
-                    <?php for($i=0;$i<$row[9];$i++){
-                        echo '<li class="list-group-item"><i class=', is_null($res_arr["$prob_arr[$i]"]) ? '"fa fa-fw fa-lg fa-question" style="color:grey"' : ($res_arr["$prob_arr[$i]"] ? '"fa fa-fw fa-lg fa-remove" style="color:red"' : '"fa fa-fw fa-lg fa-check" style="color:green"'), '></i>';
-                        echo ' <a href="problempage.php?contest_id='.$cont_id.'&prob='.($i+1).'">#'.$prob_arr[$i].' - '.$pname_arr[$i].'</a><span class="pull-right">'.$score_arr["$prob_arr[$i]"].'</span></li>';
-                    }?>
-                  </ul>
-                <?php }?>
-			  </div>
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h5 class="panel-title">比赛题目</h5>
+            </div>
+            <?php
+              if(!isset($_SESSION['user'])){
+                echo '<div class="panel-body">请先<a href="login.php">登录</a>再查看比赛...</div>';
+              }else if(strtotime($row[3])-time()>=300){
+                echo '<div class="panel-body">比赛开始前5分钟才可看到题目...</div>';
+              }else if(!isset($row[12]) && time()<strtotime($row[4])){
+                echo '<div class="panel-body">请您先<a href="javascript:void(0)" onclick="return join_cont();">参加比赛</a>...</div>';
+              }else{?>
+                <ul class="list-group">
+                  <?php for($i=0;$i<$row[9];$i++){
+                    echo '<li class="list-group-item"><i class=', is_null($res_arr["$prob_arr[$i]"]) ? '"fa fa-fw fa-lg fa-question" style="color:grey"' : ($res_arr["$prob_arr[$i]"] ? '"fa fa-fw fa-lg fa-remove" style="color:red"' : '"fa fa-fw fa-lg fa-check" style="color:green"'), '></i>';
+                    echo ' <a href="problempage.php?contest_id='.$cont_id.'&prob='.($i+1).'">#'.$prob_arr[$i].' - '.$pname_arr[$i].'</a><span class="pull-right">'.$score_arr["$prob_arr[$i]"].'</span></li>';
+                  }?>
+                </ul>
+              <?php }?>
+            </div>
+            <div class="panel panel-default">
+              <div class="panel-heading">
+                <h5 class="panel-title">比赛时间</h5>
+              </div>
+              <div class="panel-body">
+                <?php echo mb_ereg_replace('\r?\n','<br>',$row[3].' ~ '.$row[4]);?>
+              </div>
+            </div>
+            <div class="panel panel-default">
+              <div class="panel-heading">
+                <h5 class="panel-title">比赛标签</h5>
+              </div>
+              <div class="panel-body">
+                <?php echo mb_ereg_replace('\r?\n','<br>',$row[5]);?>
+              </div>
+            </div>
+            <div class="panel panel-default">
+              <div class="panel-heading">
+                <h5 class="panel-title">比赛排名</h5>
+              </div>
+              <div class="panel-body" id="cont_rank">
             </div>
           </div>
-		  <div class="row">
-            <div class="col-xs-12">
-			  <div class="panel panel-default">
-				<div class="panel-heading">
-				  <h5 class="panel-title">比赛时间</h5>
-				</div>
-				<div class="panel-body">
-				  <?php echo mb_ereg_replace('\r?\n','<br>',$row[3].' ~ '.$row[4]);?>
-				</div>
-			  </div>
-            </div>
-          </div>  
-          <div class="row">
-            <div class="col-xs-12">
-			  <div class="panel panel-default">
-				<div class="panel-heading">
-				  <h5 class="panel-title">比赛标签</h5>
-				</div>
-				<div class="panel-body">
-				  <?php echo mb_ereg_replace('\r?\n','<br>',$row[5]);?>
-				</div>
-			  </div>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-xs-12">
-			  <div class="panel panel-default">
-				<div class="panel-heading">
-				  <h5 class="panel-title">比赛排名
-                  <a herf="#" onclick="return get_cont_table();" class="pull-right" style="cursor:pointer">[刷新]</a>
-                  </h5>
-				</div>
-				<div class="panel-body" id="cont_rank">
-				</div>
-			  </div>
-            </div>
-          </div> 
         </div>
         <div class="col-xs-12 col-sm-3" id="rightside">
           <div class="row">
@@ -216,7 +192,6 @@ $Title=$inTitle .' - '. $oj_name;
 				<div class="panel-body">
                   <table class="table table-condensed table-striped" style="margin-bottom:0px">
 					<tbody>
-					  <tr><td style="text-align:left">剩余时间:</td><td><?php echo 'tUnknown'?> ms</td></tr>
                       <tr><td style="text-align:left">评分方式:</td><td><?php echo $judge_way?></td></tr>
                       <tr><td style="text-align:left">比赛等级:</td><td><?php echo $cont_level?></td></tr>
                     </tbody>
