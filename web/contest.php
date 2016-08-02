@@ -127,7 +127,7 @@ $Title=$inTitle .' - '. $oj_name;
 			  echo '<tr>';
 			  echo '<td>',$row[0],'</td>';
 			  if(isset($_SESSION['user'])){
-				echo '<td class="width-for-2x-icon"><i class=', is_null($row[8]) ? '"fa fa-remove fa-2x" style="visibility:hidden"' : '"fa fa-2x fa-check" style="color:green"', '></i>', '</td>';
+				echo '<td class="width-for-2x-icon"><i class=', is_null($row[8]) ? '"fa fa-fw fa-remove fa-2x" style="visibility:hidden"' : '"fa fa-fw fa-2x fa-check" style="color:green"', '></i>', '</td>';
 				echo '<td style="text-align:left;border-left:0;">';
 			  }else{
 				echo '<td style="text-align:left">';
@@ -136,7 +136,7 @@ $Title=$inTitle .' - '. $oj_name;
 			  if($row[4]=='Y')echo '&nbsp;&nbsp;<span class="label label-danger">已删除</span>';
 			  echo '</a>';
               if(isset($_SESSION['user'])){
-				echo '<td class="width-for-2x-icon" style="border-left:0;"><i data-pid="',$row[0],'" class="', is_null($row[9]) ? 'fa fa-star-o' : 'fa fa-star', ' fa-2x text-warning save_problem" style="cursor:pointer;"></i></td>';
+				echo '<td class="width-for-2x-icon" style="border-left:0;"><i data-pid="',$row[0],'" class="', is_null($row[9]) ? 'fa fa-star-o' : 'fa fa-star', ' fa-fw fa-2x text-warning save_problem" style="cursor:pointer;"></i></td>';
               }
               echo'</td><td>',$row[2],'</a></td>';
 			  echo '<td>',$cont_status,'</td>';

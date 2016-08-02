@@ -109,6 +109,9 @@ $Title=$inTitle .' - '. $oj_name;
                 <option value="float">Real Number</option>
                 <option value="spj">Special Judge</option>
               </select>
+              <script>
+                $('#input_cmp').val("<?php echo $way?>");
+              </script>
               <span id="input_cmp_help" class="help-block"></span>
           </div>
           <div class="form-group col-xs-6 col-sm-4 collapse" id="div_cmp_pre">

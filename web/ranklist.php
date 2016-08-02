@@ -98,7 +98,7 @@ $Title=$inTitle .' - '. $oj_name;
             <table class="table table-hover table-bordered " style="margin-bottom:0 margin-right:10px">
               <thead><tr>
                 <th style="width:5%">No.</th>
-                <th style="width:15%">用户名</th>
+                <th style="width:15%">用户</th>
                 <th style="width:32%">昵称</th>
                 <th style="width:8%">状态</th>
                 <th style="width:8%">头衔</th>

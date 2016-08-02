@@ -108,8 +108,9 @@ CREATE TABLE `contest` (
   `source` varchar(200) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `has_tex` tinyint(4) NOT NULL DEFAULT '0',
   `judge_way` int(11) NOT NULL DEFAULT '0',
-  `enroll_user` int(11) NOT NULL DEFAULT '0'
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `enroll_user` int(11) NOT NULL DEFAULT '0',
+  `ranked` char(1) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'N'
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;z
 
 --
 -- Dumping data for table `contest`

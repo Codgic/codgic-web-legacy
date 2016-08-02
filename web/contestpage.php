@@ -16,9 +16,9 @@ else
   $cont_id=1000;
 if(isset($_SESSION['user'])){
     $user_id=$_SESSION['user'];
-    $query="select title,description,problems,start_time,end_time,source,has_tex,defunct,judge_way,num,enroll_user,result.scr,result.res from contest LEFT JOIN (select contest_id as cid, scores as scr, results as res from contest_status where user_id='$user_id' group by contest_id) as result on (result.cid=contest_id) where contest_id=$cont_id";
+    $query="select title,description,problems,start_time,end_time,source,has_tex,defunct,judge_way,num,enroll_user,ranked,result.scr,result.res from contest LEFT JOIN (select contest_id as cid, scores as scr, results as res from contest_status where user_id='$user_id' group by contest_id) as result on (result.cid=contest_id) where contest_id=$cont_id";
 }else
-    $query="select title,description,problems,start_time,end_time,source,has_tex,defunct,judge_way,num,enroll_user from contest where contest_id=$cont_id";
+    $query="select title,description,problems,start_time,end_time,source,has_tex,defunct,judge_way,num,enroll_user,ranked from contest where contest_id=$cont_id";
 $result=mysqli_query($con,$query);
 $row=mysqli_fetch_row($result);
 if(!$row)
@@ -50,45 +50,50 @@ else{
       $prob_arr=unserialize($row[2]);
       if(time()<strtotime($row[3])){
         $info = '<tr><td colspan="2" class="gradient-red text-center"><i class="fa fa-fw fa-remove"></i> 比赛即将开始</td></tr>';
-        if(isset($row[11])){
+        if(isset($row[12])){
           for($i=0;$i<$row[9];$i++){
             $s_row=mysqli_fetch_row(mysqli_query($con,'select title from problem where problem_id='.$prob_arr[$i].' limit 1'));
             $pname_arr[$i]=$s_row[0];
-            $score_arr["$prob_arr[$i]"]='-';
+            $score_arr["$prob_arr[$i]"]=0;
             $res_arr["$prob_arr[$i]"]=NULL;
           }
         }
       }else if(time()>strtotime($row[4])){
         $info = '<tr><td colspan="2" class="gradient-green text-center"><i class="fa fa-fw fa-check"></i> 比赛已经结束</td></tr>';
-        for($i=0;$i<$row[9];$i++){
+        if($row[11]=='N'){
+            update_cont_rank($cont_id);
+            header("Location: contestpage.php?contest_id=$cont_id");
+            exit();
+        }else{
+          for($i=0;$i<$row[9];$i++){
             $s_row=mysqli_fetch_row(mysqli_query($con,'select title,rejudged from problem where problem_id='.$prob_arr[$i].' limit 1'));
             if($s_row[1]=='Y'){
                 update_cont_rank($cont_id);
-                mysqli_query($con,"update problem set rejudged='N' where problem_id=".$prob_arr[$i]); 
                 header("Location: contestpage.php?contest_id=$cont_id");
                 exit();
             }
             $pname_arr[$i]=$s_row[0];
-            $score_arr["$prob_arr[$i]"]='-';
+            $score_arr["$prob_arr[$i]"]=0;
             $res_arr["$prob_arr[$i]"]=NULL;
+          }
         }
-        if(isset($row[11])){
-            $score_arr=unserialize($row[11]);
-            $res_arr=unserialize($row[12]);
+        if(isset($row[12])){
+            $score_arr=unserialize($row[12]);
+            $res_arr=unserialize($row[13]);
             $tot_score=array_sum($score_arr);
         }
       }else{
         $info = '<tr><td colspan="2" class="gradient-green text-center"><i class="fa fa-fw fa-cog fa-spin"></i> 比赛正在进行</td></tr>';
-        if(isset($row[11])){
+        if(isset($row[12])){
           for($i=0;$i<$row[9];$i++){
             $s_row=mysqli_fetch_row(mysqli_query($con,'select title from problem where problem_id='.$prob_arr[$i].' limit 1'));
             $pname_arr[$i]=$s_row[0];
             $s_row=mysqli_fetch_row(mysqli_query($con,"select max(score),count(score),min(result) from solution where user_id='$user_id' and in_date>'".$row[3]."' and in_date<'".$row[4]."' and problem_id=".$prob_arr[$i]));
-            if(!isset($s_row[0])) $s_row[0]='-';
-            $score_arr["$prob_arr[$i]"]=$s_row[0];
+            if(!isset($s_row[0])) $s_row[0]=0;
+            if($row[8]==0) $score_arr["$prob_arr[$i]"]=$s_row[0];
+            else $score_arr["$prob_arr[$i]"]=intval($s_row[0]*pow(0.9,($s_row[1]-1)));
             $res_arr["$prob_arr[$i]"]=$s_row[2];
-            if($row[8]==0) $tot_score+=$s_row[0];
-            else $tot_score+=$s_row[0]*pow(0.9,$s_row[1]-1);
+            $tot_score+=$s_row[0];
           }
         }
       }
@@ -143,9 +148,11 @@ $Title=$inTitle .' - '. $oj_name;
 				  <h5 class="panel-title">比赛题目</h5>
 				</div>
 				 <?php
-                  if(strtotime($row[3])-time()>=300){
+                  if(!isset($_SESSION['user'])){
+                      echo '<div class="panel-body">请先<a href="login.php">登录</a>再查看比赛...</div>';
+                  }else if(strtotime($row[3])-time()>=300){
                       echo '<div class="panel-body">比赛开始前5分钟才可看到题目...</div>';
-                  }else if(!isset($row[11]) && time()<strtotime($row[4])){
+                  }else if(!isset($row[12]) && time()<strtotime($row[4])){
                       echo '<div class="panel-body">请您先<a href="javascript:void(0)" onclick="return join_cont();">参加比赛</a>...</div>';
                   }else{?>
                   <ul class="list-group">
@@ -186,11 +193,11 @@ $Title=$inTitle .' - '. $oj_name;
             <div class="col-xs-12">
 			  <div class="panel panel-default">
 				<div class="panel-heading">
-				  <h5 class="panel-title">比赛排名</h5>
+				  <h5 class="panel-title">比赛排名
+                  <a herf="#" onclick="return get_cont_table();" class="pull-right" style="cursor:pointer">[刷新]</a>
+                  </h5>
 				</div>
-				<div class="panel-body">
-				  <?php if(strtotime($row[4])>time()) echo '比赛结束后再来看吧~';
-                  else echo 'Coming Not Soon...';?>
+				<div class="panel-body" id="cont_rank">
 				</div>
 			  </div>
             </div>
@@ -225,7 +232,7 @@ $Title=$inTitle .' - '. $oj_name;
                   <table class="table table-condensed table-striped" style="margin-bottom:0px">
                     <tbody>
                     <?php echo $info ?>
-                    <?php if(isset($_SESSION['user'])&&isset($row[11])){?>
+                    <?php if(isset($_SESSION['user'])&&isset($row[12])){?>
                     <tr><td style="text-align:left">你的分数:</td><td><?php echo $tot_score?></td></tr>
                     <?php if(time()>strtotime($row[4])){?>
                     <tr><td style="text-align:left">你的排名:</td><td><?php echo 'tUnknown'?></td></tr>
@@ -242,7 +249,7 @@ $Title=$inTitle .' - '. $oj_name;
 		      <div id="function" class="panel panel-default problem-operation" style="margin-top:10px">
 			    <div class="panel-body">
 			      <a href="#" title="Alt+S" class="btn btn-primary shortcut-hint" id="btn_submit">参赛</a>
-                  <a href="record.php?way=time&amp;problem_id=<?php echo $cont_id?>" class="btn btn-success disabled">排名</a>
+                  <a href="#" class="btn btn-success" id="btn_rank">排名</a>
                   <a href="board.php?problem_id=<?php echo $cont_id;?>" class="btn btn-warning disabled">讨论</a>
                 </div>
               </div>
@@ -277,22 +284,27 @@ $Title=$inTitle .' - '. $oj_name;
     <script src="/assets/js/common.js?v=<?php echo $web_ver?>"></script>
     <script type="text/javascript">
     var cont=<?php echo $cont_id?>;
+    function get_cont_table(){
+        <?php if(strtotime($row[4])<time()) echo "$('#cont_rank').load('ajax_contest.php',{op:'get_rank_table',contest_id:$cont_id});";
+        else echo "$('#cont_rank').html('请在比赛结束后再查看排名...');";?>
+    }
+    get_cont_table();
     change_type(2);
-      var hide_info = 0;
-      function join_cont(){
-        <?php if(!isset($_SESSION['user'])){?>
-          $('#alert_error').html('<i class="fa fa-fw fa-remove"></i> 您尚未登录...').fadeIn();
-          setTimeout(function(){$('#alert_error').fadeOut();},2000);
-        <?php }else{?>
-          $.post('ajax_contest.php', {op:'enroll',contest_id:cont}, function(msg){
-            if(/success/.test(msg)){
-              window.location.href='problempage.php?contest_id='+cont;
-            }else{
-              $('#alert_error').html('<i class="fa fa-fw fa-remove"></i> '+msg).fadeIn();
-              setTimeout(function(){$('#alert_error').fadeOut();},2000);
-            }
-          });
-        <?php }?>
+    var hide_info = 0;
+    function join_cont(){
+      <?php if(!isset($_SESSION['user'])){?>
+        $('#alert_error').html('<i class="fa fa-fw fa-remove"></i> 您尚未登录...').fadeIn();
+        setTimeout(function(){$('#alert_error').fadeOut();},2000);
+      <?php }else{?>
+        $.post('ajax_contest.php', {op:'enroll',contest_id:cont}, function(msg){
+          if(/success/.test(msg)){
+            window.location.href='problempage.php?contest_id='+cont;
+          }else{
+            $('#alert_error').html('<i class="fa fa-fw fa-remove"></i> '+msg).fadeIn();
+            setTimeout(function(){$('#alert_error').fadeOut();},2000);
+          }
+        });
+      <?php }?>
         return false;
       }
       $(document).ready(function(){
@@ -313,6 +325,7 @@ $Title=$inTitle .' - '. $oj_name;
         });
         $('#btn_submit').click(function(){join_cont()});
         $('#btn_submit2').click(function(){join_cont()});
+        $('#btn_rank').click(function(){$("html,body").animate({scrollTop:$("#cont_rank").offset().top},200);});
         function toggle_info(){
           if(hide_info) {
 			$('#leftside').addClass('col-sm-9');

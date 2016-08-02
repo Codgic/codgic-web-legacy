@@ -31,7 +31,7 @@ if(!isset($_GET['contest_id'])){
   if(!$row)
     $info = '看起来该比赛不存在';
   else { 
-    switch ($row[5]) {
+    switch ($row[6]) {
       case 0:
         $way='train';
         break;
@@ -97,6 +97,9 @@ $Title=$inTitle .' - '. $oj_name;
                 <option value="train">训练模式</option>
                 <option value="contest">比赛模式</option>
               </select>
+              <script>
+                $('#input_cmp').val("<?php echo $way?>");
+              </script>
               <span id="input_cmp_help" class="help-block"></span>
           </div>
         </div>      
