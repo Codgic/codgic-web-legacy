@@ -53,7 +53,8 @@ if($_POST['type']=='profile'){
 	if($len<6||$len>50)
 		die('密码不符合要求(至少6位)');
 	$pwd=mysqli_real_escape_string($con,$_POST['newpwd']);
-
+    if(mysqli_num_rows(mysqli_query($con,'select 1 from users where email="'.mysqli_real_escape_string($con,$_POST['email']).'" limit 1'))>0)
+        die('该邮箱已被注册');
 	if($require_confirm) mysqli_query($con,"insert into users (user_id,email,password,reg_time,nick,school,defunct,motto) values ('$user','".mysqli_real_escape_string($con,$_POST['email'])."','$pwd',NOW(),'".mysqli_real_escape_string($con,$_POST['nick'])."','".mysqli_real_escape_string($con,$_POST['school'])."','Y','')");
 	else mysqli_query($con,"insert into users (user_id,email,password,reg_time,nick,school,defunct,motto) values ('$user','".mysqli_real_escape_string($con,$_POST['email'])."','$pwd',NOW(),'".mysqli_real_escape_string($con,$_POST['nick'])."','".mysqli_real_escape_string($con,$_POST['school'])."','N','')");
 	$code=mysqli_errno($con);
