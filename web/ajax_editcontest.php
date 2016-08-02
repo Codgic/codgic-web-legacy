@@ -1,5 +1,7 @@
 <?php
 require 'inc/privilege.php';
+require 'inc/problem_flags.php';
+
 function JUDGE_TYPE($way)
 {
 	if($way=='train')
@@ -43,7 +45,7 @@ $problems=serialize($prob_arr);
 $des=isset($_POST['description']) ? mysqli_real_escape_string($con,$_POST['description']) : '';
 $source=isset($_POST['source']) ? mysqli_real_escape_string($con,$_POST['source']) : '';
 
-require 'inc/problem_flags.php';
+
 $has_tex=0;
 if(isset($_POST['option_level'])){
 	$l=intval($_POST['option_level']);
@@ -52,6 +54,15 @@ if(isset($_POST['option_level'])){
 		$has_tex|=($l<<PROB_LEVEL_SHIFT);
 	}
 }
+
+for($i=0;$i<$num;$i++){
+  $r=mysqli_fetch_row(mysqli_query($con,'select has_tex from problem where problem_id='.$prob_arr[$i].' limit 1'));
+  if(!$r)
+    die('题目#'.$prob_arr[$i].'不存在...');
+  if($r[0] & PROB_IS_HIDE && !isset($_POST['hide_cont']))
+    die('题目#'.$prob_arr[$i].'为隐藏题目，需将比赛隐藏才可加入...');
+}
+
 if(isset($_POST['hide_cont'])){
 	$has_tex|=PROB_IS_HIDE;
 }

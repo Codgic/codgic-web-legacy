@@ -17,8 +17,8 @@ $Title=$inTitle .' - '. $oj_name;
             <h2>简介</h2>
           </div>
 		  <div>
-          <p>这是一个充斥着辣鸡代码的BugOJ，同时是成外第一个内部OJ。</p>
-          <p>本OJ基于GitHub上的开源项目Bashu OnlineJudge二次开发，原本优秀的代码风格被改得面目全非。&#x1F602;</p>
+          <p>这是一个充斥着辣鸡代码的BugOJ，同时是成外目前正在使用的OJ。</p>
+          <p>本OJ开源<a href="https://github.com/CDFLS/CWOJ">(地址)</a>，基于Bashu OnlineJudge二次开发，原本优秀的代码风格被改得面目全非，一片狼藉。&#x1F602;</p>
 		  <p>然而，对于成(shui)外(wang)并没有什么卵办法，还是得用这套OJ...</p>
 		  </div>
         </div>

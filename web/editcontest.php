@@ -61,7 +61,6 @@ $Title=$inTitle .' - '. $oj_name;
           <?php echo $info?></p>
         </div>
       <?php }else{?>
-	  <div class="alert collapse text-center alert-popup" id="alert_error"></div>  
 	  <div class="collapse" id="showtools">
 	    <p><button class="btn btn-primary" id="btn_show">显示工具栏<i class="fa fa-fw fa-angle-right"></i></button></p>
 	  </div>
@@ -97,9 +96,11 @@ $Title=$inTitle .' - '. $oj_name;
                 <option value="train">训练模式</option>
                 <option value="contest">比赛模式</option>
               </select>
+              <?php if($p_type=='edit'){?>
               <script>
                 $('#input_cmp').val("<?php echo $way?>");
               </script>
+              <?php }?>
               <span id="input_cmp_help" class="help-block"></span>
           </div>
         </div>      
@@ -145,8 +146,9 @@ $Title=$inTitle .' - '. $oj_name;
           </div>
         </div>
         <div class="row">
-          <div class="form-group col-xs-12 col-sm-9 text-center">
-            <input type="submit" class="btn btn-primary" value="提交">
+          <div class="form-group col-xs-12 col-sm-9">
+            <div class="alert alert-danger collapse" id="alert_error"></div>  
+            <button class="btn btn-primary" type="submit">提交</button>
           </div>
         </div>
       </form>
@@ -157,54 +159,58 @@ $Title=$inTitle .' - '. $oj_name;
       </footer>
     </div>
     <div class="html-tools">
-      <div class="well well-small margin-0" id="tools">
-        <table class="table table-responsive table-bordered table-condensed table-striped">
-          <caption><p>HTML代码工具</p></caption>
-          <thead>
+      <div class="panel panel-default" id="tools">
+        <div class="panel-heading">
+          <h3 class="panel-title"><i class="fa fa-fw fa-code"></i> HTML代码工具</h3>
+        </div>
+        <div class="panel-body">
+          <table class="table table-responsive table-bordered table-condensed table-striped">
+            <thead>
             <tr>
               <th>功能</th>
               <th>代码</th>
             </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td><button class="btn btn-default" id="tool_less">小于(&lt;)</button></td>
-              <td>&amp;lt;</td>
-            </tr>
-            <tr>
-              <td><button class="btn btn-default" id="tool_greater">大于(&gt;)</button></td>
-              <td>&amp;gt;</td>
-            </tr>
-            <tr>
-              <td><button class="btn btn-default" id="tool_img">图片</button></td>
-              <td>&lt;img src=&quot;...&quot;&gt;</td>
-            </tr>
-            <tr>
-              <td><button class="btn btn-default" id="tool_sup">上标</button></td>
-              <td>&lt;sup&gt;...&lt;/sup&gt;</td>
-            </tr>
-            <tr>
-              <td><button class="btn btn-default" id="tool_sub">下标</button></td>
-              <td>&lt;sub&gt;...&lt;/sub&gt;</td>
-            </tr>
-            <tr>
-              <td><button class="btn btn-default" id="tool_samp">单间隔</button></td>
-              <td>&lt;samp&gt;...&lt;/samp&gt;</td>
-            </tr>
-            <tr>
-              <td><button class="btn btn-default" id="tool_inline">公式</button></td>
-              <td>[inline]...[/inline]</td>
-            </tr>
-            <tr>
-              <td><button class="btn btn-default" id="tool_tex">居中公式</button></td>
-              <td>[tex]...[/tex]</td>
-            </tr>
-          </tbody>
-        </table>
-		  <div class="text-center" style="margin-top:10px">
+            </thead>
+            <tbody>
+              <tr>
+                <td><button class="btn btn-default" id="tool_less">小于(&lt;)</button></td>
+                <td>&amp;lt;</td>
+              </tr>
+              <tr>
+                <td><button class="btn btn-default" id="tool_greater">大于(&gt;)</button></td>
+                <td>&amp;gt;</td>
+              </tr>
+              <tr>
+                <td><button class="btn btn-default" id="tool_img">图片</button></td>
+                <td>&lt;img src=&quot;...&quot;&gt;</td>
+              </tr>
+              <tr>
+                <td><button class="btn btn-default" id="tool_sup">上标</button></td>
+                <td>&lt;sup&gt;...&lt;/sup&gt;</td>
+              </tr>
+              <tr>
+                <td><button class="btn btn-default" id="tool_sub">下标</button></td>
+                <td>&lt;sub&gt;...&lt;/sub&gt;</td>
+              </tr>
+              <tr>
+                <td><button class="btn btn-default" id="tool_samp">单间隔</button></td>
+                <td>&lt;samp&gt;...&lt;/samp&gt;</td>
+              </tr>
+              <tr>
+                <td><button class="btn btn-default" id="tool_inline">公式</button></td>
+                <td>[inline]...[/inline]</td>
+              </tr>
+              <tr>
+                <td><button class="btn btn-default" id="tool_tex">居中公式</button></td>
+                <td>[tex]...[/tex]</td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="text-center" style="margin-top:10px">
             <button class="btn btn-success" id="btn_upload">上传图片...</button>
-			<button class="btn btn-primary" id="btn_hide">隐藏工具栏<i class="fa fa-fw fa-angle-left"></i></button>
+            <button class="btn btn-primary" id="btn_hide">隐藏工具栏<i class="fa fa-fw fa-angle-left"></i></button>
           </div>
+        </div>
       </div>
     </div>
     <script src="/assets/js/common.js?v=<?php echo $web_ver?>"></script>
@@ -223,12 +229,12 @@ $Title=$inTitle .' - '. $oj_name;
         })();
         $('#input_cmp').change(function(E){show_help($(E.target).val());});
 		$('#btn_hide').click(function(){
-          $('#tools').hide();
-		  $('#showtools').show();
+          $('#tools').fadeOut();
+		  $('#showtools').fadeIn();
         });
 		$('#btn_show').click(function(){
-          $('#tools').show();
-		  $('#showtools').hide();
+          $('#tools').fadeIn();
+		  $('#showtools').fadeOut();
         });
         $('#btn_upload').click(function(){
           window.open("upload.php",'upload_win2','left='+loffset+',top='+toffset+',width=400,height=300,toolbar=no,resizable=no,menubar=no,location=no,status=no');
@@ -253,13 +259,8 @@ $Title=$inTitle .' - '. $oj_name;
             url:"ajax_editcontest.php",
             data:$('#edit_form').serialize(),
             success:function(msg){
-              if(/success/.test(msg))
-                window.location="contestpage.php?contest_id=<?php echo $cont_id?>";
-              else{
-				$('#alert_error').addClass('alert-danger');  
-                $('#alert_error').html('<i class="fa fa-fw fa-remove"></i> 错误: '+msg).fadeIn();
-				setTimeout(function(){$('#alert_error').fadeOut();},2000);
-               }
+              if(/success/.test(msg)) window.location="contestpage.php?contest_id=<?php echo $cont_id?>";
+              else $('#alert_error').html('<i class="fa fa-fw fa-remove"></i> 错误: '+msg).slideDown();
             }
           });
           return false;

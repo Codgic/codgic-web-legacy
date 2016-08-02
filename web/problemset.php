@@ -26,6 +26,7 @@ if(isset($_GET['level'])){
   }else{
 	$result=mysqli_query($con,"select problem_id,title,accepted,submit,source,defunct from problem where $addt_cond order by problem_id $range");
   }
+  if(mysqli_num_rows($result)==0) $info='该难度下还没有题目';
 }else{
 if(isset($_GET['page_id']))
   $page_id=intval($_GET['page_id']);
@@ -40,7 +41,7 @@ if($page_id<10){
   exit();
 }
 else if($page_id>$maxpage){
-  if($maxpage==0) die('题库中还没有题目哦...');
+  if($maxpage==0) $info='看起来这里还没有题目';
   else {
     header("Location: problemset.php?page_id=$maxpage");
     exit();
@@ -98,80 +99,87 @@ $Title=$inTitle .' - '. $oj_name;
             ?>
 		  </ul>
 		  <?php }?>
-		</div>
-      </div>
-      <div class="row">
-        <div class="col-xs-12">
-		  <div class="table-responsive">
-		    <table class="table table-striped table-bordered" id="problemset_table">
-			<thead>
-			  <tr>
-				<th style="width:6%">ID</th>
-				<?php 
-				if(isset($_SESSION['user']))
-				  echo '<th colspan="3">标题</th>';
-				else
-				  echo '<th>标题</th>';?>
-				<th style="width:10%">AC比例</th>
-				<th style="width:10%">通过率</th>
-				<th style="width:25%">题目标签</th>
-			  </tr>
-			</thead>
-		    <tbody>
-			<?php 
-			while($row=mysqli_fetch_row($result)){
-			  echo '<tr><td>',$row[0],'</td>';
-			  if(isset($_SESSION['user'])){
-				echo '<td class="width-for-2x-icon"><i class=', is_null($row[6]) ? '"fa fa-fw fa-2x fa-remove" style="visibility:hidden"' : ($row[6]? '"fa fa-fw fa-2x fa-remove" style="color:red"' : '"fa fa-fw fa-2x fa-check" style="color:green"'), '></i>', '</td>';
-				echo '<td style="text-align:left;border-left:0;">';
-			  }else{
-				echo '<td style="text-align:left">';
-			  }
-			  echo '<a href="problempage.php?problem_id=',$row[0],'">',$row[1];
-			  if($row[5]=='Y')echo '&nbsp;&nbsp;<span class="label label-danger">已删除</span>';
-			  echo '</a>';
-			  if(isset($_SESSION['user'])){
-				echo '<td class="width-for-2x-icon" style="border-left:0;"><i data-pid="',$row[0],'" class="', is_null($row[7]) ? 'fa fa-star-o' : 'fa fa-star', ' fa-2x text-warning save_problem" style="cursor:pointer;"></i></td>';
-			  }
-			  echo '</td><td><a href="record.php?result=0&amp;problem_id=',$row[0],'">',$row[2],'</a>/';
-			  echo '<a href="record.php?problem_id=',$row[0],'">',$row[3],'</a></td>';
-			  echo '<td>',$row[3] ? intval($row[2]/$row[3]*100) : 0,'%</td>';
-			  echo '<td style="text-align:left;">',$row[4],'</td></tr>';
-			}?>
-			</tbody>
-		  </table>
-		</div>
-	  </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-xs-12">
+            <?php if(isset($info)){?>
+            <div class="text-center none-text none-center">
+              <p><i class="fa fa-meh-o fa-4x"></i></p>
+              <p><b>Whoops</b><br>
+              <?php echo $info?></p>
+            </div>
+            <?php }else{?>
+            <div class="table-responsive">
+              <table class="table table-striped table-bordered" id="problemset_table">
+                <thead>
+                <tr>
+                  <th style="width:6%">ID</th>
+                  <?php 
+                  if(isset($_SESSION['user']))
+                    echo '<th colspan="3">标题</th>';
+                  else
+                    echo '<th>标题</th>';?>
+                  <th style="width:10%">AC比例</th>
+                  <th style="width:10%">通过率</th>
+                  <th style="width:25%">题目标签</th>
+                </tr>
+              </thead>
+              <tbody>
+                <?php while($row=mysqli_fetch_row($result)){
+                echo '<tr><td>',$row[0],'</td>';
+                if(isset($_SESSION['user'])){
+                  echo '<td class="width-for-2x-icon"><i class=', is_null($row[6]) ? '"fa fa-fw fa-2x fa-remove" style="visibility:hidden"' : ($row[6]? '"fa fa-fw fa-2x fa-remove" style="color:red"' : '"fa fa-fw fa-2x fa-check" style="color:green"'), '></i>', '</td>';
+				  echo '<td style="text-align:left;border-left:0;">';
+                }else{
+				  echo '<td style="text-align:left">';
+                }
+                echo '<a href="problempage.php?problem_id=',$row[0],'">',$row[1];
+                if($row[5]=='Y')echo '&nbsp;&nbsp;<span class="label label-danger">已删除</span>';
+                  echo '</a>';
+                if(isset($_SESSION['user'])){
+				  echo '<td class="width-for-2x-icon" style="border-left:0;"><i data-pid="',$row[0],'" class="', is_null($row[7]) ? 'fa fa-star-o' : 'fa fa-star', ' fa-2x text-warning save_problem" style="cursor:pointer;"></i></td>';
+                }
+                echo '</td><td><a href="record.php?result=0&amp;problem_id=',$row[0],'">',$row[2],'</a>/';
+                echo '<a href="record.php?problem_id=',$row[0],'">',$row[3],'</a></td>';
+                echo '<td>',$row[3] ? intval($row[2]/$row[3]*100) : 0,'%</td>';
+                echo '<td style="text-align:left;">',$row[4],'</td></tr>';
+                }?>
+              </tbody>
+            </table>
+          </div>
+          <?php }?>
+        </div>
       </div>
       <div class="row">
         <ul class="pager">
           <li>
             <?php if(!isset($_GET['level'])){?>
-            <a class="pager-pre-link shortcut-hint" title="Alt+A" <?php 
-              if($page_id>10) echo 'href="problemset.php?page_id='.($page_id-1).'"';
-            ?>><i class="fa fa-fw fa-angle-left"></i>上一页</a>
+              <a class="pager-pre-link shortcut-hint" title="Alt+A" <?php 
+                if($page_id>10) echo 'href="problemset.php?page_id='.($page_id-1).'"';
+              ?>><i class="fa fa-fw fa-angle-left"></i>上一页</a>
             <?php }else{?>
-            <a class="pager-pre-link shortcut-hint" title="Alt+A" <?php
-              if($page_id>1) echo 'href="problemset.php?level='.$level.'&page_id='.($page_id-1).'"';
-            ?>><i class="fa fa-fw fa-angle-left"></i>上一页</a>
+              <a class="pager-pre-link shortcut-hint" title="Alt+A" <?php
+                if($page_id>1) echo 'href="problemset.php?level='.$level.'&page_id='.($page_id-1).'"';
+              ?>><i class="fa fa-fw fa-angle-left"></i>上一页</a>
             <?php }?>
           </li>
           <li>
-             <?php if(!isset($_GET['level'])){?>
-            <a class="pager-next-link shortcut-hint" title="Alt+D" <?php 
-              if($page_id<$maxpage) echo 'href="problemset.php?page_id='.($page_id+1).'"';
-            ?>>下一页<i class="fa fa-fw fa-angle-right"></i></a>
+            <?php if(!isset($_GET['level'])){?>
+              <a class="pager-next-link shortcut-hint" title="Alt+D" <?php 
+                if($page_id<$maxpage) echo 'href="problemset.php?page_id='.($page_id+1).'"';
+              ?>>下一页<i class="fa fa-fw fa-angle-right"></i></a>
             <?php }else{?>
-            <a class="pager-pre-link shortcut-hint" title="Alt+D" <?php
-              if(mysqli_num_rows($result)==100) echo 'href="problemset.php?level='.$level.'&page_id='.($page_id+1).'"';
-            ?>>下一页<i class="fa fa-fw fa-angle-right"></i></a>
+              <a class="pager-pre-link shortcut-hint" title="Alt+D" <?php
+                if(mysqli_num_rows($result)==100) echo 'href="problemset.php?level='.$level.'&page_id='.($page_id+1).'"';
+              ?>>下一页<i class="fa fa-fw fa-angle-right"></i></a>
             <?php }?>
           </li>
         </ul>
       </div>
       <hr>
       <footer>
-      <p>&copy; <?php echo"{$year} {$oj_copy}";?></p>
+        <p>&copy; <?php echo"{$year} {$oj_copy}";?></p>
       </footer>
     </div>
     <script src="/assets/js/common.js?v=<?php echo $web_ver?>"></script>

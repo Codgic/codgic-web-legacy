@@ -14,7 +14,7 @@ if(isset($_GET['contest_id'])){
 	$result=mysqli_query($con,$query);
 	$row_cont=mysqli_fetch_row($result);
     if(!$row_cont)
-        die('Wrong Contest ID.');
+        $info='看起来这场比赛不存在';
     if(time()<strtotime($row_cont[1])){
         header("Location: contestpage.php?contest_id=$cont_id");
         exit();
@@ -44,7 +44,7 @@ $query="select title,description,input,output,sample_input,sample_output,hint,so
 $result=mysqli_query($con,$query);
 $row_prob=mysqli_fetch_row($result);
 if(!$row_prob)
-  die('Wrong Problem ID.');
+  $info='看起来这道题目不存在';
 switch ($row_prob[13] >> 16) {
   case 0:
     $comparison='Traditional';
@@ -72,13 +72,13 @@ else{
     $query='select min(result) from solution where user_id=\''.$_SESSION['user']."' and problem_id=$prob_id group by problem_id";
     $user_status=mysqli_query($con,$query);
     if(mysqli_num_rows($user_status)==0)
-      $info = '<tr><td colspan="2" class="text-center muted" >你还没提交过哦...</td></tr>';
+      $s_info = '<tr><td colspan="2" class="text-center muted" >你还没提交过哦...</td></tr>';
     else{
       $statis=mysqli_fetch_row($user_status);
       if($statis[0]==0){
-        $info = '<tr><td colspan="2" class="gradient-green text-center"><i class="fa fa-fw fa-check"></i> 恭喜AC!</td></tr>';
+        $s_info = '<tr><td colspan="2" class="gradient-green text-center"><i class="fa fa-fw fa-check"></i> 恭喜AC!</td></tr>';
       }else{
-        $info = '<tr><td colspan="2" class="gradient-red text-center"><i class="fa fa-fw fa-remove"></i> 再试一次吧!</td></tr>';
+        $s_info = '<tr><td colspan="2" class="gradient-red text-center"><i class="fa fa-fw fa-remove"></i> 再试一次吧!</td></tr>';
       }
     }
     $current_user=$_SESSION['user'];
@@ -106,7 +106,7 @@ else{
     }
 
   }else{
-    $info = '<tr><td colspan="2" class="text-center muted" >您尚未登录...</td></tr>';
+    $s_info = '<tr><td colspan="2" class="text-center muted" >你还没有登录</td></tr>';
   } 
   $result=mysqli_query($con,"select submit_user,solved,submit from problem where problem_id=$prob_id");
   $statis=mysqli_fetch_row($result);
@@ -121,7 +121,7 @@ else{
     $arr[$statis[0]]=$statis[1];
   ksort($arr);  
 }
-
+if($forbidden) $info='看起来你无法访问该题目';
 $inTitle="题目#$prob_id";
 $Title=$inTitle .' - '. $oj_name;
 ?>
@@ -155,11 +155,16 @@ $Title=$inTitle .' - '. $oj_name;
 	<div style="height:50px"></div>
 	<?php }?>
     <div id="probdisp" class="container">
-      <?php 
-      if($forbidden){
-        echo '<div class="text-center none-text none-center"><p><i class="fa fa-meh-o fa-4x"></i></p><p><b>Whoops</b><br>看起来你无法访问该题目</p></div>';
-      }else{ 
-      ?>
+      <?php if(isset($info)){?>
+        <div class="row">
+          <div class="col-xs-12">
+            <div class="text-center none-text none-center">
+              <p><i class="fa fa-meh-o fa-4x"></i></p><p><b>Whoops</b><br>
+              <?php echo $info?></p>
+            </div>
+          </div>
+        </div>
+      <?php }else{?>
       <div class="row">
         <div class="col-xs-12 col-sm-9" id="leftside" style="font-size:16px">
           <div class="text-center">
@@ -259,7 +264,7 @@ $Title=$inTitle .' - '. $oj_name;
 			    <div class="panel-body">
                   <table class="table table-condensed table-striped" style="margin-bottom:0px">
                     <tbody>
-                    <?php echo $info ?>
+                    <?php echo $s_info ?>
                     <tr><td style="text-align:left">提交人数:</td><td><?php echo $submit_user?></td></tr>
                     <tr><td style="text-align:left">通过人数:</td><td><?php echo $solved_user?></td></tr>
                     <tr><td style="text-align:left">总提交数:</td><td><?php echo $total_submit?></td></tr>
@@ -632,7 +637,7 @@ $Title=$inTitle .' - '. $oj_name;
         });
         function click_submit(){
           <?php if(!isset($_SESSION['user'])){?>
-            $('#alert_error').html('<i class="fa fa-fw fa-remove"></i> 您尚未登录...').fadeIn();
+            $('#alert_error').html('<i class="fa fa-fw fa-remove"></i> 你还没有登录...').fadeIn();
 			setTimeout(function(){$('#alert_error').fadeOut();},2000);
           <?php }else{?>
             $('#prob_input').val(''+prob);

@@ -26,6 +26,7 @@ if(isset($_GET['level'])){
   }else{
 	$result=mysqli_query($con,"select contest_id,title,start_time,end_time,defunct,num,source from contest where $addt_cond order by contest_id $range");
   }
+  if(mysqli_num_rows($result)==0) $info='该难度下还没有比赛';
 }else{
 if(isset($_GET['page_id']))
   $page_id=intval($_GET['page_id']);
@@ -40,7 +41,7 @@ if($page_id<10){
   exit();
 }
 else if($page_id>$maxpage){
-  if($maxpage==0) die('赛场上还没有比赛哦...');
+  if($maxpage==0) $info='看起来这里还没有比赛';
   else{
     header("Location: contest.php?page_id=$maxpage");
     exit();
@@ -102,9 +103,16 @@ $Title=$inTitle .' - '. $oj_name;
       </div>
       <div class="row">
         <div class="col-xs-12">
+          <?php if(isset($info)){?>
+            <div class="text-center none-text none-center">
+              <p><i class="fa fa-meh-o fa-4x"></i></p>
+              <p><b>Whoops</b><br>
+              <?php echo $info?></p>
+            </div>
+          <?php }else{?>
 		  <div class="table-responsive">
 		    <table class="table table-striped table-bordered" id="contest_table">
-			<thead>
+			  <thead>
               <tr>
 				<th style="width:6%">ID</th>
 				<?php 
@@ -117,36 +125,34 @@ $Title=$inTitle .' - '. $oj_name;
 				<th style="width:5%">题量</th>
 				<th style="width:25%">比赛标签</th>
               </tr>
-            </thead>
-		    <tbody>
-			<?php 
-			while($row=mysqli_fetch_row($result)){
-			  if(time()>strtotime($row[3])) $cont_status='<span class="label label-ac">已经结束</span>';
-			  else if(time()<strtotime($row[2])) $cont_status='<span class="label label-wa">尚未开始</span>';
-			  else $cont_status='<span class="label label-re">正在进行</span>';
-			  echo '<tr>';
-			  echo '<td>',$row[0],'</td>';
-			  if(isset($_SESSION['user'])){
-				echo '<td class="width-for-2x-icon"><i class=', is_null($row[8]) ? '"fa fa-fw fa-remove fa-2x" style="visibility:hidden"' : '"fa fa-fw fa-2x fa-check" style="color:green"', '></i>', '</td>';
-				echo '<td style="text-align:left;border-left:0;">';
-			  }else{
-				echo '<td style="text-align:left">';
-			  }
-			  echo '<a href="contestpage.php?contest_id=',$row[0],'">',$row[1];
-			  if($row[4]=='Y')echo '&nbsp;&nbsp;<span class="label label-danger">已删除</span>';
-			  echo '</a>';
-              if(isset($_SESSION['user'])){
-				echo '<td class="width-for-2x-icon" style="border-left:0;"><i data-pid="',$row[0],'" class="', is_null($row[9]) ? 'fa fa-star-o' : 'fa fa-star', ' fa-fw fa-2x text-warning save_problem" style="cursor:pointer;"></i></td>';
-              }
-              echo'</td><td>',$row[2],'</a></td>';
-			  echo '<td>',$cont_status,'</td>';
-			  echo '<td>',$row[5],'</td>';
-			  echo '<td>',$row[6],'</td></tr>';
-			}?>
-			</tbody>
-		  </table>
-		</div>
-	  </div>
+              </thead>
+              <tbody>
+              <?php 
+              while($row=mysqli_fetch_row($result)){
+                if(time()>strtotime($row[3])) $cont_status='<span class="label label-ac">已经结束</span>';
+                else if(time()<strtotime($row[2])) $cont_status='<span class="label label-wa">尚未开始</span>';
+                else $cont_status='<span class="label label-re">正在进行</span>';
+                echo '<tr>';
+                echo '<td>',$row[0],'</td>';
+                if(isset($_SESSION['user'])){
+				  echo '<td class="width-for-2x-icon"><i class=', is_null($row[8]) ? '"fa fa-fw fa-remove fa-2x" style="visibility:hidden"' : '"fa fa-fw fa-2x fa-check" style="color:green"', '></i>', '</td>';
+				  echo '<td style="text-align:left;border-left:0;">';
+                }else echo '<td style="text-align:left">';
+                echo '<a href="contestpage.php?contest_id=',$row[0],'">',$row[1];
+                if($row[4]=='Y')echo '&nbsp;&nbsp;<span class="label label-danger">已删除</span>';
+                echo '</a>';
+                if(isset($_SESSION['user']))
+				  echo '<td class="width-for-2x-icon" style="border-left:0;"><i data-pid="',$row[0],'" class="', is_null($row[9]) ? 'fa fa-star-o' : 'fa fa-star', ' fa-fw fa-2x text-warning save_problem" style="cursor:pointer;"></i></td>';
+                echo'</td><td>',$row[2],'</a></td>';
+                echo '<td>',$cont_status,'</td>';
+                echo '<td>',$row[5],'</td>';
+                echo '<td>',$row[6],'</td></tr>';
+              }?>
+              </tbody>
+		    </table>
+          </div>
+          <?php }?>
+        </div>
       </div>
       <div class="row">
         <ul class="pager">
