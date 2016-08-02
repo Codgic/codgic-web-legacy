@@ -106,7 +106,7 @@ else{
     }
 
   }else{
-    $s_info = '<tr><td colspan="2" class="text-center muted" >你还没有登录</td></tr>';
+    $s_info = '您还没有登录';
   } 
   $result=mysqli_query($con,"select submit_user,solved,submit from problem where problem_id=$prob_id");
   $statis=mysqli_fetch_row($result);
@@ -551,7 +551,9 @@ $Title=$inTitle .' - '. $oj_name;
     });
       var hide_info = 0;
       $(document).ready(function(){
-        var timer_rt = window.setInterval("GetRTime()", 1000);
+        <?php if($is_contest==true&&$rem_time>0){?>
+		var timer_rt = window.setInterval("GetRTime()", 1000);
+		<?php }?>
         $('#action_delete').click(function(){
           $.ajax({
             type:"POST",
@@ -637,7 +639,7 @@ $Title=$inTitle .' - '. $oj_name;
         });
         function click_submit(){
           <?php if(!isset($_SESSION['user'])){?>
-            $('#alert_error').html('<i class="fa fa-fw fa-remove"></i> 你还没有登录...').fadeIn();
+            $('#alert_error').html('<i class="fa fa-fw fa-remove"></i> 您尚未登录...').fadeIn();
 			setTimeout(function(){$('#alert_error').fadeOut();},2000);
           <?php }else{?>
             $('#prob_input').val(''+prob);

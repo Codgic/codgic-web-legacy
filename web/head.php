@@ -32,14 +32,14 @@
 	};
   ?>
   <link href="/assets/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
-  <script src="/assets/js/jquery.min.js"></script>
-  <script src="/assets/js/bootstrap.min.js"></script>
-  <!--[if lt IE 8]>
+  <script src="/assets/js/jquery.min.js?v=310"></script>
+  <script src="/assets/js/bootstrap.min.js?v=337"></script>
+  <!--[if lt IE 9]>
   <script type="text/javascript">
   window.location = "fuckie.php"; 
   </script>
   <![endif]-->
-  <!--[if lt IE 9]>
+  <!--[if lt IE 10]>
     <script src="/assets/js/html5.min.js"></script>
    	<script src="/assets/js/respond.min.js"></script>
 	<script src="/assets/js/jquery.placeholder.min.js"></script>
