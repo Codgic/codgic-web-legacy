@@ -106,7 +106,7 @@ else{
     }
 
   }else{
-    $s_info = '您还没有登录';
+    $s_info = '<tr><td colspan="2" class="text-center muted" >你还没有登录</td></tr>';
   } 
   $result=mysqli_query($con,"select submit_user,solved,submit from problem where problem_id=$prob_id");
   $statis=mysqli_fetch_row($result);
