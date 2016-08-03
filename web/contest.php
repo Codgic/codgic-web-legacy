@@ -5,6 +5,7 @@ require 'inc/database.php';
 require 'inc/privilege.php';
 
 if(isset($_GET['level'])){
+  //If request level page
   require 'inc/problem_flags.php';
   $level_max=(PROB_LEVEL_MASK>>PROB_LEVEL_SHIFT);
   if(isset($_GET['page_id']))
@@ -27,38 +28,43 @@ if(isset($_GET['level'])){
 	$result=mysqli_query($con,"select contest_id,title,start_time,end_time,defunct,num,source from contest where $addt_cond order by contest_id $range");
   }
   if(mysqli_num_rows($result)==0) $info='该难度下还没有比赛';
+  
 }else{
-if(isset($_GET['page_id']))
-  $page_id=intval($_GET['page_id']);
-else if(isset($_SESSION['view']))
-  $page_id=intval($_SESSION['view']/100);
-else
-  $page_id=10;
-$row=mysqli_fetch_row(mysqli_query($con,'select max(contest_id) from contest'));
-$maxpage=intval($row[0]/100);
-if($page_id<10){
-  header("Location: contest.php");
-  exit();
-}
-else if($page_id>$maxpage){
-  if($maxpage==0) $info='看起来这里还没有比赛';
-  else{
-    header("Location: contest.php?page_id=$maxpage");
-    exit();
+  //If request contest page
+  if(isset($_GET['page_id']))
+    $page_id=intval($_GET['page_id']);
+  else if(isset($_SESSION['view']))
+    $page_id=intval($_SESSION['view']/100);
+  else
+    $page_id=10;
+    
+  if(check_priv(PRIV_PROBLEM)){
+    $addt_cond1='';
+    $addt_cond='';
+  }else{
+    $addt_cond1="where defunct='N'";
+    $addt_cond=" defunct='N' and ";
   }
-}
-
-if(isset($_SESSION['administrator']))
-  $addt_cond='';
-else
-  $addt_cond=" defunct='N' and ";
-$range="between $page_id"."00 and $page_id".'99';
-if(isset($_SESSION['user'])){
-  $user_id=$_SESSION['user'];
-  $result=mysqli_query($con,"SELECT contest_id,title,start_time,end_time,defunct,num,source,has_tex,joined.res,saved.cid from contest LEFT JOIN (select contest_id as cid,1 as res from contest_status where user_id='$user_id' group by contest_id) as joined on (joined.cid=contest_id) left join (select contest_id as cid from saved_contest where user_id='$user_id') as saved on(saved.cid=contest_id) where $addt_cond contest_id $range order by contest_id");
-}else{
-  $result=mysqli_query($con,"select contest_id,title,start_time,end_time,defunct,num,source from contest where $addt_cond contest_id $range order by contest_id");
-}
+  $row=mysqli_fetch_row(mysqli_query($con,"select max(contest_id) from contest $addt_cond1"));
+  
+  $maxpage=intval($row[0]/100);
+  if($page_id<10){
+    header("Location: contest.php");
+    exit();
+  }else if($page_id>$maxpage){
+    if($maxpage==0) $info='看起来这里还没有比赛';
+    else{
+      header("Location: contest.php?page_id=$maxpage");
+      exit();
+    }
+  }
+  $range="between $page_id"."00 and $page_id".'99';
+  if(isset($_SESSION['user'])){
+    $user_id=$_SESSION['user'];
+    $result=mysqli_query($con,"SELECT contest_id,title,start_time,end_time,defunct,num,source,has_tex,joined.res,saved.cid from contest LEFT JOIN (select contest_id as cid,1 as res from contest_status where user_id='$user_id' group by contest_id) as joined on (joined.cid=contest_id) left join (select contest_id as cid from saved_contest where user_id='$user_id') as saved on(saved.cid=contest_id) where $addt_cond contest_id $range order by contest_id");
+  }else{
+    $result=mysqli_query($con,"select contest_id,title,start_time,end_time,defunct,num,source from contest where $addt_cond contest_id $range order by contest_id");
+  }
 }
 $inTitle='比赛';
 $Title=$inTitle .' - '. $oj_name;

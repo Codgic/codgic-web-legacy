@@ -116,7 +116,7 @@ $Title=$inTitle .' - '. $oj_name;
 					echo '<li class="mail-item" ',(($row[3]&&$mailbox==1) ? 'style="background-color: #FCF8E3;"' : ''),' id="mail',$row[0],'">';?>
 					  <div class="mail-container">
 						<div class="mail-title">
-                          <a href="javascript:void(0)" onclick="return show_user('<?php echo $row[2]?>')"><img src="<?php echo get_gravatar($row[6],35)?>" class="img-circle"></a>
+                          <a href="javascript:void(0)" onclick="return show_user('<?php echo $row[2]?>')"><img src="<?php echo get_gravatar($row[6],40)?>" class="img-circle" width="40" height="40"></a>
 						  <?php echo ' <a href="#title" class="msg-title">',htmlspecialchars($row[1]),'</a>';?>
 					  </div>
 					  <div class="mail-info">
@@ -256,8 +256,8 @@ $Title=$inTitle .' - '. $oj_name;
 					else
 						return;
 					var j=$a.attr('href'),k,content;
-					switch(j){
-						case '#title':
+					switch(j.substr(j.lastIndexOf('#')+1)){
+						case 'title':
 							k=$a.parents('.mail-container'); 
 							mailid=k.parent().css('background-color','').attr('id').substr(4);
 							content=k.children('.mail-content');
@@ -272,30 +272,30 @@ $Title=$inTitle .' - '. $oj_name;
 								content.hide();
 							}
 							break;
-						case '#del':
+						case 'del':
 							k=$a.parents('li');
 							$.ajax('ajax_mailfunc.php?op=delete&mail_id='+k.attr('id').substr(4));
 							k.remove();
 							break;
-						case '#rep':
+						case 'rep':
                             op='send';
 							k=$a.parents('.mail-container');
-							$('#input_to').val(k.children('.mail-info').find('a').html()).prop('disabled',true);
+							$('#input_to').val(k.children('.mail-info').find('a').html());
 							$('#input_title').val('Re:'+k.find('a[href="#title"]').html());
 							$('#send_result').hide();
 							$('#MailModal').modal('show');
 							break;
-						case '#star':
+						case 'star':
 							k=$a.parents('li');
 							$.ajax('ajax_mailfunc.php?op=star&mail_id='+k.attr('id').substr(4));
 							$a.find('i').toggleClass('fa-star').toggleClass('fa-star-o');
 							break;
-                        case '#edit':
+                        case 'edit':
                             op='edit';
                             $('#send_title').html('编辑私信');
                             k=$a.parents('.mail-container'); 
 							mailid=k.parent().css('background-color','').attr('id').substr(4);
-							$('#input_to').val(k.children('.mail-info').find('a').html()).prop('disabled',true);
+							$('#input_to').val(k.children('.mail-info').find('a').html());
 							$('#input_title').val(k.find('a[href="#title"]').html());
                             $('#input_content').val(k.find('pre').html());
 							$('#send_result').hide();
@@ -326,7 +326,6 @@ $Title=$inTitle .' - '. $oj_name;
                 });
 				$('#btn_newmail').click(function(){
                     op='send';
-                    $('#input_to').prop('disabled',false);
                     $('#send_title').html('新建私信');
 					$('#send_result').slideUp();
 					$('#MailModal').modal('show');

@@ -38,7 +38,7 @@ if($op=="list_usr"){
 		<tbody>
 			<?php
 				while($row=mysqli_fetch_row($res)){
-					echo '<tr><td><img class="img-circle" src="'.get_gravatar($row[6],30).'"></td>';
+					echo '<tr><td><img class="img-circle" src="'.get_gravatar($row[6],30).'" width="30" height="30"></td>';
                     echo '<td style="text-align:left"><strong><a href="#linkU">'.$row[0].'</a></strong>';
 					if($row[5]=='Y'){
                       if(is_null($row[1])) echo '<span style="color:red"> 待审核</span>';

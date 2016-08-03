@@ -123,7 +123,7 @@ $Title=$inTitle .' - '. $oj_name;
                   echo '<hr><ul class="list-unstyled">';
                 echo '<li class="msg-item">';
                   echo '<div class="msg msg-box">';
-                echo '<div class="msg-container"><div class="media"><a class="msg-avatar pull-left" href="javascript:void(0)" onclick="return show_user(\''.$row[2].'\')"><img src="'.get_gravatar($row[8],40).'" class="img-circle media-object"></a><div class="media-body"><strong><a href="javascript:void(0)" onclick="return show_user(\''.$row[2].'\')">',$row[2],'</a></strong> ',$row[4];
+                echo '<div class="msg-container"><div class="media"><a class="msg-avatar pull-left" href="javascript:void(0)" onclick="return show_user(\''.$row[2].'\')"><img src="'.get_gravatar($row[8],40).'" class="img-circle media-object" width="40" height="40"></a><div class="media-body"><strong><a href="javascript:void(0)" onclick="return show_user(\''.$row[2].'\')">',$row[2],'</a></strong> ',$row[4];
                 if($row[3]==$row[5] && $deep>0)
                   echo '&nbsp;<span class="label label-warning" style="font-size:12px">最新消息</span>';
                 if($deep==0 && $row[6])

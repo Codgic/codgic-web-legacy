@@ -5,6 +5,7 @@ require 'inc/database.php';
 require 'inc/privilege.php';
 
 if(isset($_GET['level'])){
+  //If request level page
   require 'inc/problem_flags.php';
   $level_max=(PROB_LEVEL_MASK>>PROB_LEVEL_SHIFT);
   if(isset($_GET['page_id']))
@@ -27,38 +28,44 @@ if(isset($_GET['level'])){
 	$result=mysqli_query($con,"select problem_id,title,accepted,submit,source,defunct from problem where $addt_cond order by problem_id $range");
   }
   if(mysqli_num_rows($result)==0) $info='该难度下还没有题目';
+  
 }else{
-if(isset($_GET['page_id']))
-  $page_id=intval($_GET['page_id']);
-else if(isset($_SESSION['view']))
-  $page_id=intval($_SESSION['view']/100);
-else
-  $page_id=10;
-$row=mysqli_fetch_row(mysqli_query($con,'select max(problem_id) from problem'));
-$maxpage=intval($row[0]/100);
-if($page_id<10){
-  header("Location: problemset.php");
-  exit();
-}
-else if($page_id>$maxpage){
-  if($maxpage==0) $info='看起来这里还没有题目';
-  else {
-    header("Location: problemset.php?page_id=$maxpage");
-    exit();
+  //If request problemset page
+  if(isset($_GET['page_id']))
+    $page_id=intval($_GET['page_id']);
+  else if(isset($_SESSION['view']))
+    $page_id=intval($_SESSION['view']/100);
+  else
+    $page_id=10;
+    
+  if(check_priv(PRIV_PROBLEM)){
+    $addt_cond1='';
+    $addt_cond='';
+  }else{
+    $addt_cond1=" where defunct='N'";
+    $addt_cond=" defunct='N' and ";
   }
-}
+  $row=mysqli_fetch_row(mysqli_query($con,"select max(problem_id) from problem $addt_cond1"));
 
-if(check_priv(PRIV_PROBLEM))
-  $addt_cond='';
-else
-  $addt_cond=" defunct='N' and ";
-$range="between $page_id"."00 and $page_id".'99';
-if(isset($_SESSION['user'])){
-  $user_id=$_SESSION['user'];
-  $result=mysqli_query($con,"SELECT problem_id,title,accepted,submit,source,defunct,res,saved.pid from problem LEFT JOIN (select problem_id as pid,MIN(result) as res from solution where user_id='$user_id' and problem_id $range group by problem_id) as solved on(solved.pid=problem_id) left join (select problem_id as pid from saved_problem where user_id='$user_id') as saved on(saved.pid=problem_id) where $addt_cond problem_id $range order by problem_id");
-}else{
-  $result=mysqli_query($con,"select problem_id,title,accepted,submit,source,defunct from problem where $addt_cond problem_id $range order by problem_id");
-}
+  $maxpage=intval($row[0]/100);
+  if($page_id<10){
+    header("Location: problemset.php");
+    exit();
+  }else if($page_id>$maxpage){
+    if($maxpage==0) $info='看起来这里还没有题目';
+    else {
+      header("Location: problemset.php?page_id=$maxpage");
+      exit();
+    }
+  }
+
+  $range="between $page_id"."00 and $page_id".'99';
+  if(isset($_SESSION['user'])){
+    $user_id=$_SESSION['user'];
+    $result=mysqli_query($con,"SELECT problem_id,title,accepted,submit,source,defunct,res,saved.pid from problem LEFT JOIN (select problem_id as pid,MIN(result) as res from solution where user_id='$user_id' and problem_id $range group by problem_id) as solved on(solved.pid=problem_id) left join (select problem_id as pid from saved_problem where user_id='$user_id') as saved on(saved.pid=problem_id) where $addt_cond problem_id $range order by problem_id");
+  }else{
+    $result=mysqli_query($con,"select problem_id,title,accepted,submit,source,defunct from problem where $addt_cond problem_id $range order by problem_id");
+  }
 }
 $inTitle='题库';
 $Title=$inTitle .' - '. $oj_name;

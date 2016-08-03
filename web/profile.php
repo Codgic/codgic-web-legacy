@@ -30,7 +30,7 @@ $Title=$inTitle .' - '. $oj_name;
       <?php }else{?>
       <div class="media col-xs-12">
         <a class="pull-left">
-          <img src="<?php echo get_gravatar($_SESSION['email'],100)?>" class="media-object img-circle">
+          <img src="<?php echo get_gravatar($_SESSION['email'],100)?>" class="media-object img-circle" width="100" height="100">
         </a>
         <div class="media-body">
           <h1 class="media-heading">

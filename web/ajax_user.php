@@ -43,7 +43,7 @@ if(isset($_GET['type'])&&$_GET['type']=='json'){
 ?> 
 <div class="media">
   <a class="pull-left">
-    <img src="<?php echo get_gravatar($row[0],100)?>" class="media-object img-circle">
+    <img src="<?php echo get_gravatar($row[0],100)?>" class="media-object img-circle" width="100" height="100">
   </a>
   <div class="media-body">
     <h1 class="media-heading"><?php echo $user?></h1>

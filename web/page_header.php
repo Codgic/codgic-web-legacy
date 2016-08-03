@@ -54,7 +54,7 @@ if(!isset($_SESSION['user'])){
 	    <?php if(isset($_SESSION['user'])){?>
           <li class="dropdown">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-			  <?php echo '<img src='.get_gravatar($_SESSION['email'],40).' class="img-circle navbar-img"> '.$_SESSION['user']?> <strong class="notifier"></strong> <span class="caret"></span>
+			  <?php echo '<img src='.get_gravatar($_SESSION['email'],40).' class="img-circle navbar-img" width="40" height="40"> '.$_SESSION['user']?> <strong class="notifier"></strong> <span class="caret"></span>
 			</a>  
 			<ul class="dropdown-menu dropdown-menu-right" id="nav_right">
                 <li><a href="/mail.php" id="nav_mail"><i class="fa fa-fw fa-envelope"></i> 私信 <strong class="notifier"></strong></a></li>
