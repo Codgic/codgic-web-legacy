@@ -44,22 +44,14 @@ else{
 
   if(isset($_SESSION['user'])){
       $tot_score=0;
-    if(strtotime($row[3])-time()>=300){
+    if(strtotime($row[3])>time()){
       $s_info = '<tr><td colspan="2" class="gradient-red text-center"><i class="fa fa-fw fa-remove"></i> 比赛尚未开始</td></tr>';
+      $cont_status=0;
     }else{
       $prob_arr=unserialize($row[2]);
-      if(time()<strtotime($row[3])){
-        $s_info = '<tr><td colspan="2" class="gradient-red text-center"><i class="fa fa-fw fa-remove"></i> 比赛即将开始</td></tr>';
-        if(isset($row[12])){
-          for($i=0;$i<$row[9];$i++){
-            $s_row=mysqli_fetch_row(mysqli_query($con,'select title from problem where problem_id='.$prob_arr[$i].' limit 1'));
-            $pname_arr[$i]=$s_row[0];
-            $score_arr["$prob_arr[$i]"]=0;
-            $res_arr["$prob_arr[$i]"]=NULL;
-          }
-        }
-      }else if(time()>strtotime($row[4])){
+      if(time()>strtotime($row[4])){
         $s_info = '<tr><td colspan="2" class="gradient-green text-center"><i class="fa fa-fw fa-check"></i> 比赛已经结束</td></tr>';
+        $cont_status=2;
         if($row[11]=='N'){
             update_cont_rank($cont_id);
             header("Location: contestpage.php?contest_id=$cont_id");
@@ -84,6 +76,7 @@ else{
         }
       }else{
         $s_info = '<tr><td colspan="2" class="gradient-green text-center"><i class="fa fa-fw fa-cog fa-spin"></i> 比赛正在进行</td></tr>';
+        $cont_status=1;
         if(isset($row[12])){
           for($i=0;$i<$row[9];$i++){
             $s_row=mysqli_fetch_row(mysqli_query($con,'select title from problem where problem_id='.$prob_arr[$i].' limit 1'));
@@ -150,9 +143,9 @@ $Title=$inTitle .' - '. $oj_name;
             <?php
               if(!isset($_SESSION['user'])){
                 echo '<div class="panel-body">请先<a href="login.php">登录</a>再查看比赛...</div>';
-              }else if(strtotime($row[3])-time()>=300){
-                echo '<div class="panel-body">比赛开始前5分钟才可看到题目...</div>';
-              }else if(!isset($row[12]) && time()<strtotime($row[4])){
+              }else if($cont_status==0){
+                echo '<div class="panel-body">比赛开始后才可看到题目...</div>';
+              }else if(!isset($row[12]) && $cont_status!=2){
                 echo '<div class="panel-body">请你先<a href="javascript:void(0)" onclick="return join_cont();">参加比赛</a>...</div>';
               }else{?>
                 <ul class="list-group">
@@ -217,7 +210,7 @@ $Title=$inTitle .' - '. $oj_name;
                     <?php echo $s_info ?>
                     <?php if(isset($_SESSION['user'])&&isset($row[12])){?>
                     <tr><td style="text-align:left">你的分数:</td><td><?php echo $tot_score?></td></tr>
-                    <?php if(time()>strtotime($row[4])){?>
+                    <?php if($cont_status==2){?>
                     <tr><td style="text-align:left">你的排名:</td><td><?php echo 'tUnknown'?></td></tr>
                     <?php }}?>
                     <tr><td style="text-align:left">参赛人数:</td><td><?php echo $row[10]?></td></tr>
@@ -291,6 +284,11 @@ $Title=$inTitle .' - '. $oj_name;
         return false;
       }
       $(document).ready(function(){
+        <?php if($cont_status==0){?>
+            var t1=new Date(),t2=new Date(<?php echo time()*1000?>);
+            var t=<?php echo (strtotime($row[3])-time())*1000?>-t1.getTime()+t2.getTime();
+            setTimeout(function(){location.reload();},t);
+        <?php }?>
         $('#action_delete').click(function(){
           $.ajax({
             type:"POST",
