@@ -15,7 +15,12 @@ session_start();
 $ret=login($user, FALSE, $_POST['pwd']);
 
 if($ret !== TRUE) die($ret);
-if(isset($_POST['remember'])) write_cookie();
+
+if(isset($_POST['remember'])) $remember=1;
+else $remember=0;
+
+write_cookie($remember);
+
 if(isset($_SESSION['login_redirect'])) unset($_SESSION['login_redirect']);
 
 echo 'success';

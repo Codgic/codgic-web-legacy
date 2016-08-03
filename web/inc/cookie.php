@@ -21,13 +21,14 @@ function check_cookie()
 	$_SESSION['user'] = $user;
 	return true;
 }
-function write_cookie()
+function write_cookie($remember)
 {
 	$arr = array('magic'=>'cwoj');
 	$arr['user']=$_SESSION['user'];
 
 	$data = encrypt(cookie_key, serialize($arr));
-	setcookie('SID', $data, time()+cookie_expire);
+	if($remember==1) setcookie('SID', $data, time()+cookie_expire);
+	else setcookie('SID', $data);
 }
 
 function encrypt($key, $plain_text) {
