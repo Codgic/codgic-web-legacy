@@ -47,7 +47,7 @@ if($op=="list_usr"){
 					echo '</td>';
                     echo '<td>'.list_priv($row[7]).'(<span>'.$row[7].'</span>)</td>';
 					echo '<td>',$row[1],'</td>';
-					echo '<td>',$row[3],' / ',$row[2],'</td>';
+					echo '<td>',$row[2],' / ',$row[3],'</td>';
                     echo '<td><div class="btn-group"><a href="#email" class="btn btn-default">邮件</a><a href="#priv" class="btn btn-default">权限</a><a href="#del" class="btn btn-default';
                     if($row[7]&PRIV_SYSTEM) echo ' disabled';
                     if($row[5]=='Y') echo '">启用'; else echo '">禁用';

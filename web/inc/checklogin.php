@@ -11,7 +11,7 @@ if(!isset($_SESSION['user'])){
 		require_once 'inc/database.php';
 		require_once 'inc/userlogin.php';
 		if(TRUE===login($_SESSION['user'], TRUE))
-			write_cookie();
+			write_cookie(1);
 		mysqli_close($con);
 	}
 }
