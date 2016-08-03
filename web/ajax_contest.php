@@ -20,11 +20,14 @@ if($op=='enroll'){
   if(mysqli_num_rows(mysqli_query($con,"select 1 from contest_status where user_id='$uid' and contest_id=$cont_id limit 1")))
     die('success');
   $prob_arr=unserialize($row[1]);
-  $new_arr=array();
-  for($i=0;$i<$row[2];$i++)
-    $new_arr["$prob_arr[$i]"]=0;
-  $problems=serialize($new_arr);
-  if(mysqli_query($con,"insert into contest_status (user_id,contest_id,scores) VALUES ('$uid',$cont_id,'$problems')")){
+  $newp_arr=array();
+  for($i=0;$i<$row[2];$i++){
+    $newp_arr["$prob_arr[$i]"]=0;
+	$newr_arr["$prob_arr[$i]"]=NULL;
+  }
+  $problems=serialize($newp_arr);
+  $results=serialize($newr_arr);
+  if(mysqli_query($con,"insert into contest_status (user_id,contest_id,scores,results) VALUES ('$uid',$cont_id,'$problems','$results')")){
     if(mysqli_query($con,'update contest set enroll_user='.($row[3]+1)." where contest_id=$cont_id"))
       echo 'success';
     else

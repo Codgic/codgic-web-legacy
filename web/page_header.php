@@ -23,7 +23,7 @@ if(!isset($_SESSION['user'])){
    <div class="collapse navbar-collapse" id="nav_menus">
       <ul class="nav navbar-nav navbar-left" id="nav_left">
 		<li><a id="nav_cont" class="shortcut-hint" title="Alt+C" href="/contest.php"><i class="fa fa-fw fa-compass"></i><span id="nav_cont_text" class="hidden-sm"> 比赛</span></a></li>
-		<li><a id="nav_set" href="/problemset.php" class="shortcut-hint" title="Alt+S"><i class="fa fa-fw fa-th-list"></i><span id="nav_set_text" class="hidden-sm"> 题库</span></a></li>
+		<li><a id="nav_set" href="/problemset.php" class="shortcut-hint" title="Alt+P"><i class="fa fa-fw fa-th-list"></i><span id="nav_set_text" class="hidden-sm"> 题库</span></a></li>
 		<li><a id="nav_bbs" class="shortcut-hint" title="Alt+B" href="/board.php"><i class="fa fa-fw fa-comment"></i><span id="nav_bbs_text" class="hidden-sm"> 讨论</span></a></li>
 		<li><a id="nav_record" class="shortcut-hint" title="Alt+R" href="/record.php"><i class="fa fa-fw fa-university"></i><span id="nav_record_text" class="hidden-sm"> 记录</span></a></li>
 		<li><a id="nav_rank" href="/ranklist.php"><i class="fa fa-fw fa-leaf"></i><span id="nav_rank_text" class="hidden-sm"> 排名</span></a></li>
