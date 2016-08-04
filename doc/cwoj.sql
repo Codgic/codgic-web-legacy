@@ -110,7 +110,7 @@ CREATE TABLE `contest` (
   `judge_way` int(11) NOT NULL DEFAULT '0',
   `enroll_user` int(11) NOT NULL DEFAULT '0',
   `ranked` char(1) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'N'
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;z
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `contest`
@@ -130,7 +130,10 @@ CREATE TABLE `contest_status` (
   `user_id` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
   `scores` varchar(400) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `results` varchar(400) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `tot_scores` int(11) NOT NULL DEFAULT '0'
+  `times` varchar(400) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `tot_scores` int(11) NOT NULL DEFAULT '0',
+  `tot_times` int(32) NOT NULL DEFAULT '0',
+  `rank` int(11) NOT NULL DEFAULT '0'
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------

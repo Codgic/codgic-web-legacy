@@ -131,7 +131,7 @@ function change_type(e){
 }
 $(document).ready(function(){
 	var $notifier=$('.notifier'),msgnum=0;
-	$('#nav_logoff').click(function(){$.ajax({url:"logoff.php",dataType:"html",success:function(){location.reload();}});});
+	$('#nav_logoff').click(function(){$.ajax({url:"/ajax_logoff.php",dataType:"html",success:function(){location.reload();}});});
        $('#search_span').hover(function(){ 
             $(this).addClass('open'); 
        },function(){

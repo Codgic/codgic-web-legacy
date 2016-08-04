@@ -4,9 +4,9 @@ require 'inc/problem_flags.php';
 
 function JUDGE_TYPE($way)
 {
-	if($way=='train')
+	if($way=='cwoj')
       return 0;
-    else if($way=='contest')
+    else if($way=='acm-like')
       return 1;
 }
 session_start();

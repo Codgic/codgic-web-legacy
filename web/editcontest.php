@@ -2,6 +2,7 @@
 require 'inc/ojsettings.php';
 require 'inc/checklogin.php';
 require 'inc/privilege.php';
+require 'inc/functions.php';
 
 if(!check_priv(PRIV_PROBLEM))
   include '403.php';
@@ -33,10 +34,10 @@ if(!isset($_GET['contest_id'])){
   else { 
     switch ($row[6]) {
       case 0:
-        $way='train';
+        $way='cwoj';
         break;
       case 1:
-        $way='contest';
+        $way='acm-like';
         break;
     }
   }
@@ -90,11 +91,11 @@ $Title=$inTitle .' - '. $oj_name;
           </div> 
         </div>
         <div class="row">
-          <div class="form-group col-xs-12 col-sm-6">
+          <div class="form-group col-xs-12 col-sm-9">
             <label>计分方式: </label>
               <select class="form-control" name="judge" id="input_cmp">
-                <option value="train">训练模式</option>
-                <option value="contest">比赛模式</option>
+                <option value="cwoj">CWOJ赛制</option>
+                <option value="acm-like">类ACM赛制</option>
               </select>
               <?php if($p_type=='edit'){?>
               <script>
@@ -219,10 +220,10 @@ $Title=$inTitle .' - '. $oj_name;
         var loffset=window.screenLeft+200;
         var toffset=window.screenTop+200;
         function show_help(way){
-          if(way=='train')
-            $('#input_cmp_help').html('总分即时间内每道题得分之和。');
-          else if(way=='contest')
-            $('#input_cmp_help').html('每一次没有AC的提交会导致该题得分*90%。');
+          if(way=='cwoj')
+            $('#input_cmp_help').html('<?php echo get_judgeway_destext(0);?>');
+          else if(way=='acm-like')
+            $('#input_cmp_help').html('<?php echo get_judgeway_destext(1);?>');
         }
         (function(){
             show_help($('#input_cmp').val());

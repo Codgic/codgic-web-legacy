@@ -444,27 +444,28 @@ $Title=$inTitle .' - '. $oj_name;
 	  if($pref->edrmode!='default') echo '<script src="/assets/js/codemirror.'.$pref->edrmode.'.js"></script>';}
 	?>
     <script type="text/javascript">
-    var prob = <?php echo $prob_id?>;
+    var prob=<?php echo $prob_id?>;
 	<?php if($is_contest==true&&$rem_time>0){?> 
-      var t = new Date(<?php echo strtotime($row_cont[2])*1000?>);
-      var EndTime = t.getTime();
-      var t1 = new Date(), t2 = new Date(<?php echo time()*1000?>);
+      var t=new Date(<?php echo strtotime($row_cont[2])*1000?>);
+      var EndTime=t.getTime();
+      var t1=new Date(),t2=new Date(<?php echo time()*1000?>);
       var SyncTime=t1.getTime()-t2.getTime();
       function GetRTime(){
-        var NowTime = new Date();
-		var nMS = EndTime - NowTime.getTime() + SyncTime;
-		if (nMS < 0){
-            $('#cont_st').html('比赛已经结束');
+        var NowTime=new Date();
+		var nMS=EndTime-NowTime.getTime()+SyncTime;
+		if(nMS<0){
+          $('#cont_st').html('比赛已经结束');
 		}else{
-            var nD = Math.floor(nMS/(1000 * 60 * 60 * 24));
-            var nH = Math.floor(nMS/(1000*60*60)) % 24;
-            var nM = Math.floor(nMS/(1000*60)) % 60;
-            var nS = Math.floor(nMS/1000) % 60;
-            if(!nD) $("#tday").hide();
-            else $("#tday").text(nD+' 日 ');
-		   $("#thour").text(nH+' 时 ');
-		   $("#tmin").text(nM+ ' 分 ');
-		   $("#tsec").text(nS+' 秒 ');
+          var nD=Math.floor(nMS/86400000),nH=Math.floor(nMS/3600000)%24,nM=Math.floor(nMS/60000)%60,nS=Math.floor(nMS/1000)%60;
+          if(nD<10) nD='0'+nD;
+          if(nH<10) nH='0'+nH;
+          if(nM<10) nM='0'+nM;
+          if(nS<10) nS='0'+nS;
+          if(nD==0) $("#tday").hide();
+          else $("#tday").text(nD+' 日 ');
+          $("#thour").text(nH+' 时 ');
+          $("#tmin").text(nM+ ' 分 ');
+          $("#tsec").text(nS+' 秒 ');
 		}
       }
 	<?php };if($pref->edrmode!='off'){?>

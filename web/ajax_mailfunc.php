@@ -23,7 +23,7 @@ if($op=='check'){
    $uid=$_SESSION['user'];
    mysqli_query($con,"update users set accesstime=NOW() where user_id='$uid'");
    $row=mysqli_fetch_row(mysqli_query($con,"select defunct,privilege from users where user_id='$uid'"));
-   if($row[0]=='Y') require ('logoff.php'); 
+   if($row[0]=='Y') require ('ajax_logoff.php'); 
 	else {
     if($_SESSION['priv']!=$row[1]) $_SESSION['priv']=$row[1];
     $res=mysqli_query($con,"select sum(new_mail) from mail where UPPER(defunct)='N' and to_user='$uid'");

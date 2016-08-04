@@ -16,7 +16,7 @@ else
   $cont_id=1000;
 if(isset($_SESSION['user'])){
     $user_id=$_SESSION['user'];
-    $query="select title,description,problems,start_time,end_time,source,has_tex,defunct,judge_way,num,enroll_user,ranked,result.scr,result.res from contest LEFT JOIN (select contest_id as cid, scores as scr, results as res from contest_status where user_id='$user_id' group by contest_id) as result on (result.cid=contest_id) where contest_id=$cont_id";
+    $query="select title,description,problems,start_time,end_time,source,has_tex,defunct,judge_way,num,enroll_user,ranked,result.scr,result.res,result.rnk from contest LEFT JOIN (select contest_id as cid, scores as scr, results as res, rank as rnk from contest_status where user_id='$user_id' group by contest_id) as result on (result.cid=contest_id) where contest_id=$cont_id";
 }else
     $query="select title,description,problems,start_time,end_time,source,has_tex,defunct,judge_way,num,enroll_user,ranked from contest where contest_id=$cont_id";
 $result=mysqli_query($con,$query);
@@ -25,10 +25,10 @@ if(!$row)
   $info='看起来这场比赛不存在';
 switch ($row[8]) {
   case 0:
-    $judge_way='训练';
+    $judge_way='CWOJ赛制';
     break;
   case 1:
-    $judge_way='比赛';
+    $judge_way='类ACM赛制';
     break;
 
 }
@@ -148,36 +148,35 @@ $Title=$inTitle .' - '. $oj_name;
               }else if(!isset($row[12]) && $cont_status!=2){
                 echo '<div class="panel-body">请你先<a href="javascript:void(0)" onclick="return join_cont();">参加比赛</a>...</div>';
               }else{?>
-                <ul class="list-group">
-                  <?php for($i=0;$i<$row[9];$i++){
-                    echo '<li class="list-group-item"><i class=', is_null($res_arr["$prob_arr[$i]"]) ? '"fa fa-fw fa-lg fa-question" style="color:grey"' : ($res_arr["$prob_arr[$i]"] ? '"fa fa-fw fa-lg fa-remove" style="color:red"' : '"fa fa-fw fa-lg fa-check" style="color:green"'), '></i>';
-                    echo ' <a href="problempage.php?contest_id='.$cont_id.'&prob='.($i+1).'">#'.$prob_arr[$i].' - '.$pname_arr[$i].'</a><span class="pull-right">'.$score_arr["$prob_arr[$i]"].'</span></li>';
-                  }?>
-                </ul>
-              <?php }?>
+              <ul class="list-group">
+                <?php for($i=0;$i<$row[9];$i++){
+                  echo '<li class="list-group-item"><i class=', is_null($res_arr["$prob_arr[$i]"]) ? '"fa fa-fw fa-lg fa-question" style="color:grey"' : ($res_arr["$prob_arr[$i]"] ? '"fa fa-fw fa-lg fa-remove" style="color:red"' : '"fa fa-fw fa-lg fa-check" style="color:green"'), '></i>';
+                  echo ' <a href="problempage.php?contest_id='.$cont_id.'&prob='.($i+1).'">#'.$prob_arr[$i].' - '.$pname_arr[$i].'</a><span class="pull-right">'.$score_arr["$prob_arr[$i]"].'</span></li>';
+                }?>
+              </ul>
+            <?php }?>
+          </div>
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h5 class="panel-title"><?php echo $judge_way?></h5>
             </div>
-            <div class="panel panel-default">
-              <div class="panel-heading">
-                <h5 class="panel-title">比赛时间</h5>
-              </div>
-              <div class="panel-body">
-                <?php echo mb_ereg_replace('\r?\n','<br>',$row[3].' ~ '.$row[4]);?>
-              </div>
+            <div class="panel-body">
+              <?php echo get_judgeway_destext($row[8])?>
             </div>
-            <div class="panel panel-default">
-              <div class="panel-heading">
-                <h5 class="panel-title">比赛标签</h5>
-              </div>
-              <div class="panel-body">
-                <?php echo mb_ereg_replace('\r?\n','<br>',$row[5]);?>
-              </div>
+          </div>
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h5 class="panel-title">比赛标签</h5>
             </div>
-            <div class="panel panel-default">
-              <div class="panel-heading">
-                <h5 class="panel-title">比赛排名</h5>
-              </div>
-              <div class="panel-body" id="cont_rank">
+            <div class="panel-body">
+              <?php echo mb_ereg_replace('\r?\n','<br>',$row[5]);?>
             </div>
+          </div>
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h5 class="panel-title">比赛排名</h5>
+            </div>
+            <div class="panel-body" id="cont_rank"></div>
           </div>
         </div>
         <div class="col-xs-12 col-sm-3" id="rightside">
@@ -193,6 +192,9 @@ $Title=$inTitle .' - '. $oj_name;
 				<div class="panel-body">
                   <table class="table table-condensed table-striped" style="margin-bottom:0px">
 					<tbody>
+                      <tr><td style="text-align:left">开始时间:</td><td><?php echo $row[3]?></td></tr>
+                      <tr><td style="text-align:left">结束时间:</td><td><?php echo $row[4]?></td></tr>
+                      <tr><td style="text-align:left">持续时间:</td><td><?php echo get_time_text(strtotime($row[4])-strtotime($row[3]))?></td></tr>
                       <tr><td style="text-align:left">评分方式:</td><td><?php echo $judge_way?></td></tr>
                       <tr><td style="text-align:left">比赛等级:</td><td><?php echo $cont_level?></td></tr>
                     </tbody>
@@ -211,7 +213,7 @@ $Title=$inTitle .' - '. $oj_name;
                     <?php if(isset($_SESSION['user'])&&isset($row[12])){?>
                     <tr><td style="text-align:left">你的分数:</td><td><?php echo $tot_score?></td></tr>
                     <?php if($cont_status==2){?>
-                    <tr><td style="text-align:left">你的排名:</td><td><?php echo 'tUnknown'?></td></tr>
+                    <tr><td style="text-align:left">你的排名:</td><td><?php echo $row[14]?></td></tr>
                     <?php }}?>
                     <tr><td style="text-align:left">参赛人数:</td><td><?php echo $row[10]?></td></tr>
                     </tbody>

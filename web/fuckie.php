@@ -23,17 +23,17 @@
   <h1>是时候升级你的浏览器了</h1>
   <p>你正在使用不支持CWOJ的浏览器。这意味着在升级浏览器前，你将无法访问CWOJ。</p>
   <ul class="browser">
-    <li><a href="http://windows.microsoft.com/zh-cn/internet-explorer/download-ie"><img src="http://www.goody.com.cn/2014/updatebrowser/images/ie.jpg" alt="最新IE浏览器" /> 最新IE浏览器<span>Internet Explorer</span></a></li>
+    <li><a href="http://windows.microsoft.com/zh-cn/internet-explorer/download-ie"><img src="/assets/res/ie.png" alt="最新IE浏览器" /> 最新IE浏览器<span>Internet Explorer</span></a></li>
 	<div class="clean"></div>
   </ul>
   <div class="line"></div>
   <h2>更先进的浏览器</h2>
   <p>推荐使用以下浏览器的最新版本。如果你的电脑已有以下浏览器的最新版本则直接使用该浏览器访问<b id="referrer"></b>即可。</p>
   <ul class="browser">
-    <li><a href="https://www.microsoft.com/en-us/windows/microsoft-edge"><img src="assets/res/edge.png" alt="Edge浏览器" /> Edge浏览器<span>Microsoft Edge</span></a></li>
-	<li><a href="https://www.google.com/intl/zh-CN/chrome/browser/index.html"><img src="assets/res/chrome.png" alt="谷歌浏览器" /> 谷歌浏览器<span>Google Chrome</span></a></li>
-	<li><a href="http://www.firefox.com.cn/download"><img src="assets/res/firefox.png" alt="火狐浏览器" /> 火狐浏览器<span>Mozilla Firefox</span></a></li>
-	<li><a href="http://www.opera.com/download/get"><img src="assets/res/opera.png" alt="Opera浏览器" /> Opera浏览器<span>Opera Explorer</span></a></li>
+    <li><a href="https://www.microsoft.com/windows/microsoft-edge"><img src="/assets/res/edge.png" alt="Edge浏览器" /> Edge浏览器<span>Microsoft Edge</span></a></li>
+	<li><a href="https://www.google.com/chrome/browser"><img src="/assets/res/chrome.png" alt="谷歌浏览器" /> 谷歌浏览器<span>Google Chrome</span></a></li>
+	<li><a href="http://www.firefox.com/download"><img src="/assets/res/firefox.png" alt="火狐浏览器" /> 火狐浏览器<span>Mozilla Firefox</span></a></li>
+	<li><a href="http://www.opera.com/download/get"><img src="/assets/res/opera.png" alt="Opera浏览器" /> Opera浏览器<span>Opera Explorer</span></a></li>
 	<div class="clean"></div>
 	</ul>
    <div class="line"></div>
@@ -48,7 +48,7 @@ var trim_Version=version[0].replace(/[ ]/g,"");
 if(browser!="Microsoft Internet Explorer") { 
 window.location = "index.php"; 
 } else {
-	if(browser=="Microsoft Internet Explorer" && trim_Version=="MSIE11.0" || trim_Version=="MSIE10.0" || trim_Version=="MSIE9.0" || trim_Version=="MSIE8.0")
+	if(browser=="Microsoft Internet Explorer" && trim_Version=="MSIE11.0" || trim_Version=="MSIE10.0" || trim_Version=="MSIE9.0")
 		window.location = "index.php"; 
 }
 function Request(name){

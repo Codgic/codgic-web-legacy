@@ -27,7 +27,7 @@ if($op=='enroll'){
   }
   $problems=serialize($newp_arr);
   $results=serialize($newr_arr);
-  if(mysqli_query($con,"insert into contest_status (user_id,contest_id,scores,results) VALUES ('$uid',$cont_id,'$problems','$results')")){
+  if(mysqli_query($con,"insert into contest_status (user_id,contest_id,scores,results,times) VALUES ('$uid',$cont_id,'$problems','$results','$problems')")){
     if(mysqli_query($con,'update contest set enroll_user='.($row[3]+1)." where contest_id=$cont_id"))
       echo 'success';
     else
@@ -55,7 +55,7 @@ if($op=='enroll'){
         }
       }
     }
-    $q=mysqli_query($con,"select user_id,scores,results,tot_scores from contest_status where contest_id=$cont_id order by tot_scores desc");
+    $q=mysqli_query($con,"select user_id,scores,results,tot_scores,tot_times,rank from contest_status where contest_id=$cont_id order by rank");
     if(mysqli_num_rows($q)==0) die('看起来没有人参加过这场比赛...');
 ?>
     <table class="table table-condensed">
@@ -64,19 +64,22 @@ if($op=='enroll'){
           <th>No.</th>
           <th>用户</th>
           <th>总分</th>
+          <th>总时</th>
           <?php for($i=0;$i<$cont_num;$i++)
             echo "<th>$prob_arr[$i]</th>";?>
         </tr>
       </thead>
       <tbody>
         <?php
-          $cnt=1;
           while($row=mysqli_fetch_row($q)){
               $scr_arr=unserialize($row[1]);
               $res_arr=unserialize($row[2]);
-              echo '<tr><td>',($cnt++),'</td>';
+              echo '<tr><td>',$row[5],'</td>';
+              $pre_scores=$row[3];
+              $pre_times=$row[4];
               echo '<td>',$row[0],'</td>';
               echo '<td>',$row[3],'</td>';
+              echo '<td>',$row[4],'</td>';
               for($i=0;$i<$cont_num;$i++){
                   echo '<td><i class=', is_null($res_arr["$prob_arr[$i]"]) ? '"fa fa-fw fa-question" style="color:grey"' : ($res_arr["$prob_arr[$i]"] ? '"fa fa-fw fa-remove" style="color:red"' : '"fa fa-fw fa-check" style="color:green"'), '></i> ';
                   echo $scr_arr[$prob_arr[$i]],'</td>';

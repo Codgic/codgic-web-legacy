@@ -11,23 +11,54 @@ function update_cont_rank($cont_id){
     while($row=mysqli_fetch_row($q)){
         $user_id=$row[0];
         for($i=0;$i<$cont_num;$i++){
-            $s_row=mysqli_fetch_row(mysqli_query($con,"select max(score),count(score),min(result) from solution where user_id='$user_id' and in_date>'$cont_start' and in_date<'$cont_end' and problem_id=".$prob_arr[$i]));
+            $s_row=mysqli_fetch_row(mysqli_query($con,"select max(score),count(score),min(result),max(in_date) from solution where user_id='$user_id' and in_date>'$cont_start' and in_date<'$cont_end' and problem_id=".$prob_arr[$i]));
             if(!isset($s_row[0])) $s_row[0]=0;
             if(!isset($s_row[2])) $s_row[2]=NULL;
-            if($cont_judgeway==0) $score_arr["$prob_arr[$i]"]=$s_row[0];
-            else $score_arr["$prob_arr[$i]"]=intval($s_row[0]*pow(0.9,($s_row[1]-1)));
+            if(!isset($s_row[3])) $s_row[3]=$cont_end;
+            $score_arr["$prob_arr[$i]"]=$s_row[0];
             $res_arr["$prob_arr[$i]"]=$s_row[2];
+            $time_arr["$prob_arr[$i]"]=strtotime($s_row[3])-strtotime($cont_start);
+            if($cont_judgeway==1) $time_arr["$prob_arr[$i]"]+=1200*($s_row[1]-1);
         }
         $tot_scores=array_sum($score_arr);
+        $tot_times=array_sum($time_arr);
         $scores=serialize($score_arr);
         $results=serialize($res_arr);
+        $times=serialize($time_arr);
         unset($score_arr);
         unset($res_arr);
-        mysqli_query($con,"update contest_status set scores='$scores', results='$results', tot_scores=$tot_scores where contest_id=$cont_id and user_id='$user_id'");
+        mysqli_query($con,"update contest_status set scores='$scores', results='$results', times='$times', tot_scores=$tot_scores, tot_times=$tot_times where contest_id=$cont_id and user_id='$user_id'");
+    }
+    $q=mysqli_query($con,"select user_id,tot_scores,tot_times from contest_status order by tot_scores desc,tot_times");
+    $pre_score=-1;
+    $pre_time=-1;
+    $cnt=0;
+    while($row=mysqli_fetch_row($q)){
+        $user_id=$row[0];
+        if($pre_score!=$row[1] || $pre_time!=$row[2]) $cnt++;
+        $pre_score=$row[1];
+        $pre_time=$row[2];
+        mysqli_query($con, "update contest_status set rank=$cnt where user_id='$user_id'");
     }
     for($i=0;$i<$cont_num;$i++)
       mysqli_query($con, "update problem set rejudged='N' where problem_id=".$prob_arr[$i]);
     mysqli_query($con, "update contest set ranked='Y' where contest_id=$cont_id");
+}
+
+function get_judgeway_destext($judge_way){
+    if($judge_way==0) return '总分即时间内每题最高分之和，总时即时间内每题最后提交距比赛开始时间之和。<br><code>final_score = max_score;</code><br><code>final_time = end_time - last_submit_time; </code><br><code>(last_submit_time >= start_time)</code>';
+    else if($judge_way==1) return '总分即时间内每题最高分之和，总时即时间内每题最后提交距比赛开始时间之和加非第一次AC提交次数*1200s。<br><code>final_score = max_score;</code><br><code>final_time = end_time - last_submit_time + 1200 * ( submit_times - 1 ); </code><br><code>(last_submit_time >= start_time)</code>';
+}
+
+function get_time_text($time){
+    $hour=intval($time/3600);
+    if($hour<10) $hour='0'.$hour;
+    $min=intval(($time-3600*$hour)/60);
+    if($min<10) $min='0'.$min;
+    $sec=$time-3600*$hour-60*$min;
+    if($sec<10) $sec='0'.$sec;
+    $ret="$hour:$min:$sec";
+    return $ret;
 }
 
 function get_ip(){
