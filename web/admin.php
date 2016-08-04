@@ -2,6 +2,7 @@
 require 'inc/ojsettings.php';
 require 'inc/checklogin.php';
 require 'inc/privilege.php';
+
 if(!check_priv(PRIV_PROBLEM) && !check_priv(PRIV_SYSTEM)){
   include '403.php';
 }else if(!isset($_SESSION['admin_tfa']) || !$_SESSION['admin_tfa']){

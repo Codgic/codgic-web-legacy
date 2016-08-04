@@ -6,7 +6,6 @@ require 'inc/problem_flags.php';
 require 'inc/checklogin.php';
 require 'inc/database.php';
 require 'inc/privilege.php';
-require 'inc/functions.php';
 
 if(isset($_GET['contest_id']))
   $cont_id=intval($_GET['contest_id']);
@@ -121,7 +120,8 @@ $Title=$inTitle .' - '. $oj_name;
             </div>
           </div>
         </div>
-      <?php }else{?>
+      <?php }else{
+		if(!function_exists('get_time_text')) require 'inc/functions.php';?>
       <div class="row">
         <div class="col-xs-12 col-sm-9" id="leftside" style="font-size:16px">
           <div class="text-center">

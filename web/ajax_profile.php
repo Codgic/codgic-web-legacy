@@ -20,7 +20,8 @@ if($_POST['type']=='profile'){
 		die('你尚未登录...');
 	$user=$_SESSION['user'];
 	require 'inc/database.php';
-    require_once 'inc/checkpwd.php';
+    if(!function_exists('my_rsa'))
+		require 'inc/checkpwd.php';
     if(!password_right($user, $_POST['oldpwd']))
 		die('旧密码不正确');
 	

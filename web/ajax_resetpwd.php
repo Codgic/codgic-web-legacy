@@ -52,7 +52,8 @@ else if($_POST['type'] == 'update'){
 	    die('Invalid argument.');
 	if(!isset($_SESSION['resetpwd_user']) || empty($_SESSION['resetpwd_user']) || !isset($_SESSION['resetpwd_flag']) || $_SESSION['resetpwd_flag']!=1)
 		die('身份验证超时，请刷新页面重新开始...');
-	require_once('inc/checkpwd.php');
+	if(!function_exists('my_rsa'))
+		require 'inc/checkpwd.php';
 	$user = $_SESSION['resetpwd_user'];
 	$len=strlen($_POST['newpwd']);
 	if($len<6||$len>50)

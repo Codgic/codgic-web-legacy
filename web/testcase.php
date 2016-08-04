@@ -6,7 +6,7 @@ if(!isset($_GET['problem_id']))
     die('Wrong argument.');
 $prob_id=intval($_GET['problem_id']);
 
-require ('inc/checklogin.php');
+require 'inc/checklogin.php';
 
 if(!check_priv(PRIV_PROBLEM))
   require '403.php';

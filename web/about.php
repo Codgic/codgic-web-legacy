@@ -6,9 +6,9 @@ $Title=$inTitle .' - '. $oj_name;
 ?>
 <!DOCTYPE html>
 <html>
-  <?php require('head.php'); ?>
+  <?php require 'head.php';?>
   <body>
-    <?php require('page_header.php') ?>  
+    <?php require 'page_header.php';?>  
           
     <div class="container about-page">
       <div class="row">

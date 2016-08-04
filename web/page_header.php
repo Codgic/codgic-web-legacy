@@ -1,6 +1,6 @@
 <?php
-if(!function_exists("check_priv")) require 'inc/privilege.php';
-if(!function_exists("get_gravatar")) require 'inc/functions.php';
+if(!function_exists('check_priv')) require 'inc/privilege.php';
+if(!function_exists('get_gravatar')) require 'inc/functions.php';
 if(!isset($_SESSION['user'])){
 	$_SESSION['login_redirect']=$_SERVER['PHP_SELF'];
 	if(!empty($_SERVER['QUERY_STRING'])) $_SESSION['login_redirect']=$_SESSION['login_redirect'].'?'.$_SERVER['QUERY_STRING'];

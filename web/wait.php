@@ -18,8 +18,7 @@ $Title=$inTitle .' - '. $oj_name;
         <div class="col-xs-12">
           <h1 class="text-center">评测结果</h1>
 		  <hr>
-          <p class="help-block">评测机正在评测你提交的代码，请不要手动关闭或是刷新该页面。<br>
-          评测结束后，该页面会自动刷新。</p>
+          <p class="help-block">评测机正在评测你提交的代码，请不要手动关闭或是刷新该页面。<br>评测结束后，该页面会自动刷新。</p>
           <div class="row">
             <div class="col-xs-12">
               <div id="ele_queue" class="alert alert-info text-center"><strong><i class="fa fa-spinner fa-lg fa-spin"></i> 正在等待，请坐和放宽...</strong></div>

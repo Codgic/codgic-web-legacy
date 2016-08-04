@@ -5,7 +5,7 @@ require 'inc/checklogin.php';
 if(!isset($_SESSION['user'])){
   $info='你还没有登录';
 }else{
-  require_once 'inc/database.php';
+  if(!isset($con)) require 'inc/database.php';
   $user_id=$_SESSION['user'];
   $result=mysqli_query($con,'select email,nick,school,motto,user_id from users where user_id=\''.$user_id."'");
   $row=mysqli_fetch_row($result);

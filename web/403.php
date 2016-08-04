@@ -3,7 +3,6 @@ require 'inc/ojsettings.php';
 require 'inc/checklogin.php';
 $inTitle='ERROR 403';
 $Title=$inTitle .' - '. $oj_name;
-//$mg_id=mt_rand(1,intval($num_403));
 ?>
 <!DOCTYPE html>
 <html>

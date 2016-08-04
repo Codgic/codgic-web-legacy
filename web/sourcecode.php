@@ -1,6 +1,7 @@
 <?php 
 require 'inc/ojsettings.php';
 require 'inc/privilege.php';
+
 function check_permission($prob_id,$opened,$user)
 {
   if(!isset($_SESSION['user']))
@@ -51,7 +52,6 @@ else{
   $info=$ret;
 }
 
-
 if($allowed){
   $result=mysqli_query($con,"select source from source_code where solution_id=$sol_id");
   if($tmp=mysqli_fetch_row($result))
@@ -59,6 +59,7 @@ if($allowed){
   else
     $info = '源代码不可用';
 }
+
 if(isset($_GET['raw'])){
   if(isset($info)){
     echo $info;

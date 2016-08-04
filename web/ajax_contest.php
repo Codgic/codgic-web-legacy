@@ -75,8 +75,6 @@ if($op=='enroll'){
               $scr_arr=unserialize($row[1]);
               $res_arr=unserialize($row[2]);
               echo '<tr><td>',$row[5],'</td>';
-              $pre_scores=$row[3];
-              $pre_times=$row[4];
               echo '<td>',$row[0],'</td>';
               echo '<td>',$row[3],'</td>';
               echo '<td>',$row[4],'</td>';

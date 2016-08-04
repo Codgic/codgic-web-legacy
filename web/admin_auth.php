@@ -9,7 +9,8 @@ else{
 require 'inc/database.php';
 if(isset($_POST['paswd'])){
 
-  require_once('inc/checkpwd.php');
+  if(!function_exists('my_rsa'))
+	require 'inc/checkpwd.php';
   if(password_right($_SESSION['user'], $_POST['paswd'])){
     $_SESSION['admin_tfa']=1;
     if(isset($_SESSION['admin_retpage'])){

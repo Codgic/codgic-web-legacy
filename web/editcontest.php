@@ -2,7 +2,8 @@
 require 'inc/ojsettings.php';
 require 'inc/checklogin.php';
 require 'inc/privilege.php';
-require 'inc/functions.php';
+if(!function_exists('get_time_text')) 
+	require 'inc/functions.php';
 
 if(!check_priv(PRIV_PROBLEM))
   include '403.php';

@@ -2,7 +2,6 @@
 require 'inc/ojsettings.php';
 require 'inc/checklogin.php';
 require 'inc/mail_flags.php';
-require 'inc/functions.php';
 
 if(isset($_GET['page_id']))
 	$page_id=intval($_GET['page_id']);
@@ -113,6 +112,7 @@ $Title=$inTitle .' - '. $oj_name;
 				<?php
                 if(mysqli_num_rows($result)!=0){
 				  while($row=mysqli_fetch_row($result)){
+					if(!function_exists("get_gravatar")) require 'inc/functions.php';
 					echo '<li class="mail-item" ',(($row[3]&&$mailbox==1) ? 'style="background-color: #FCF8E3;"' : ''),' id="mail',$row[0],'">';?>
 					  <div class="mail-container">
 						<div class="mail-title">

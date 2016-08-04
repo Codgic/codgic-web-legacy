@@ -1,7 +1,6 @@
 <?php
 require 'inc/ojsettings.php';
 require 'inc/checklogin.php';
-require 'inc/functions.php';
 
 if(isset($_GET['start_id']))
   $query_id=intval($_GET['start_id']);
@@ -100,6 +99,7 @@ $Title=$inTitle .' - '. $oj_name;
 		  <?php
             $top=$query_id;
             if($range){
+			  if(!function_exists("get_gravatar")) require 'inc/functions.php';
               $res=mysqli_query($con,"select title,depth,user_id,message_id,in_date,thread_id,problem_id,ASCII(content),usremail from message LEFT JOIN (select user_id as uid,email as usremail from users) as fuckzk on (uid=user_id) where thread_id<$query_id and thread_id>=$range $cond_prob order by thread_id desc,orderNum");
               $deep=-1;
               $top=0;

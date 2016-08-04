@@ -9,7 +9,8 @@
   <title><?php echo $Title?></title>
   <?php 
     $hour = date('H',time());
-    require_once 'inc/preferences.php';
+    if(!class_exists('preferences')) 
+		require 'inc/preferences.php';
     if(isset($_SESSION['pref']))
 	    $pref=unserialize($_SESSION['pref']);
     else
