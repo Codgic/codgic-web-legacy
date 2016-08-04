@@ -287,10 +287,6 @@ $Title=$inTitle .' - '. $oj_name;
     <script src="/assets/js/common.js?v=<?php echo $web_ver?>"></script>
     <script type="text/javascript">
     var cont=<?php echo $cont_id?>;
-    function get_cont_table(){
-        $('#cont_rank').load('ajax_contest.php',{op:'get_rank_table',contest_id:<?php echo $cont_id?>});
-    }
-    get_cont_table();
     change_type(2);
     var hide_info = 0;
     function join_cont(){
@@ -310,6 +306,7 @@ $Title=$inTitle .' - '. $oj_name;
         return false;
       }
       $(document).ready(function(){
+		$('#cont_rank').load('ajax_contest.php',{op:'get_rank_table',contest_id:<?php echo $cont_id?>});
         <?php if($cont_status==0){?>
             var t1=new Date(),t2=new Date(<?php echo time()*1000?>);
             var t=<?php echo (strtotime($row[3])-time())*1000?>-t1.getTime()+t2.getTime();

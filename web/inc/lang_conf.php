@@ -1,9 +1,9 @@
 <?php
 static $LANG_NAME=array(
-    0 => 'G++',
-    1 => 'GCC',
+    0 => 'C++',
+    1 => 'C',
     2 => 'Pascal',
-    3 => 'G++(0x)',
+    3 => 'C++11',
   );
 
 static $LANG_EXT=array(

@@ -55,19 +55,19 @@ $Title=$inTitle .' - '. $oj_name;
               <tbody>
                 <tr>
                   <td><samp>C++</samp></td>
-                  <td><code>g++ -static -fno-asm -s -w -lm -O -DONLINE_JUDGE</code></td>
+                  <td><code>g++ -static -std=c++03 -fno-asm -s -Wall -O2 -lm -DONLINE_JUDGE</code></td>
                 </tr>
                 <tr>
                   <td><samp>C</samp></td>
-                  <td><code>gcc -static -fno-asm -s -w -lm -O -DONLINE_JUDGE</code></td>
+                  <td><code>gcc -static -std=c99 -fno-asm -s -Wall -O2 -lm -DONLINE_JUDGE</code></td>
                 </tr>
                 <tr>
                   <td><samp>Pascal</samp></td>
-                  <td><code>fpc -Xs -Sgic -dONLINE_JUDGE</code></td>
+                  <td><code>fpc -Xs -Sgic -O2 -dONLINE_JUDGE</code></td>
                 </tr>
                 <tr>
-                  <td><samp>C++ 11</samp></td>
-                  <td><code>g++ -static --std=gnu++0x -lm -O -DONLINE_JUDGE</code></td>
+                  <td><samp>C++11</samp></td>
+                  <td><code>g++ -static --std=c++11 -s -Wall -O2 -lm -DONLINE_JUDGE</code></td>
                 </tr>
               </tbody>
             </table>
