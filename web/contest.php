@@ -135,13 +135,13 @@ $Title=$inTitle .' - '. $oj_name;
               <tbody>
               <?php 
               while($row=mysqli_fetch_row($result)){
-                if(time()>strtotime($row[3])) $cont_status='<span class="label label-ac">已经结束</span>';
-                else if(time()<strtotime($row[2])) $cont_status='<span class="label label-wa">尚未开始</span>';
-                else $cont_status='<span class="label label-re">正在进行</span>';
+                if(time()>strtotime($row[3])) $cont_status='<span class="label label-wa">已经结束</span>';
+                else if(time()<strtotime($row[2])) $cont_status='<span class="label label-re">尚未开始</span>';
+                else $cont_status='<span class="label label-ac">正在进行</span>';
                 echo '<tr>';
                 echo '<td>',$row[0],'</td>';
                 if(isset($_SESSION['user'])){
-				  echo '<td class="width-for-2x-icon"><i class=', is_null($row[8]) ? '"fa fa-fw fa-remove fa-2x" style="visibility:hidden"' : '"fa fa-fw fa-2x fa-check" style="color:green"', '></i>', '</td>';
+				  echo '<td class="width-for-2x-icon"><i class=', is_null($row[8]) ? '"fa fa-fw fa-remove fa-2x" style="visibility:hidden"' : '"fa fa-fw fa-2x fa-paper-plane" style="color:steelblue"', '></i>', '</td>';
 				  echo '<td style="text-align:left;border-left:0;">';
                 }else echo '<td style="text-align:left">';
                 echo '<a href="contestpage.php?contest_id=',$row[0],'">',$row[1];

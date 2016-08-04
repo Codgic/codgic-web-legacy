@@ -41,11 +41,11 @@ if($op=='enroll'){
     $row=mysqli_fetch_row(mysqli_query($con, "select end_time,num,problems,ranked from contest where contest_id=$cont_id"));
     if(!$row)
       die('比赛不存在...');
-    if(strtotime($row[0]>time()))
-      die('请在比赛结束后查看排名...');
     $prob_arr=unserialize($row[2]);
     $cont_num=$row[1];
-    if($row[3]=='N') update_cont_rank($cont_id);
+    if(strtotime($row[0]>time()))
+      update_cont_rank($cont_id);
+    else if($row[3]=='N') update_cont_rank($cont_id);
     else{
       for($i=0;$i<$row[1];$i++){
         $s_row=mysqli_fetch_row(mysqli_query($con,'select rejudged from problem where problem_id='.$prob_arr[$i].' limit 1'));
@@ -64,7 +64,7 @@ if($op=='enroll'){
           <th>No.</th>
           <th>用户</th>
           <th>总分</th>
-          <th>总时</th>
+          <th>罚时</th>
           <?php for($i=0;$i<$cont_num;$i++)
             echo "<th>$prob_arr[$i]</th>";?>
         </tr>

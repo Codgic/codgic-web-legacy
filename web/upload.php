@@ -98,7 +98,7 @@ $Title=$inTitle .' - '. $oj_name;
 		}
 		var clipboard = new Clipboard('#btn_copy', {
         text: function() {
-            return '<<?php echo $imgtag?>>';
+            return '<<?php if(isset($imgtag)) echo $imgtag?>>';
         }
     });
     clipboard.on('error', function(e) {
