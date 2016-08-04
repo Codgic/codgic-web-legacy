@@ -55,7 +55,7 @@ if($op=='enroll'){
         }
       }
     }
-    $q=mysqli_query($con,"select user_id,scores,results,tot_scores,tot_times,rank from contest_status where contest_id=$cont_id order by rank");
+    $q=mysqli_query($con,"select user_id,scores,results,tot_scores,tot_times,rank from contest_status where contest_id=$cont_id order by rank,user_id");
     if(mysqli_num_rows($q)==0) die('看起来没有人参加过这场比赛...');
 ?>
     <table class="table table-condensed">

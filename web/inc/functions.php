@@ -46,8 +46,8 @@ function update_cont_rank($cont_id){
 }
 
 function get_judgeway_destext($judge_way){
-    if($judge_way==0) return '总分即时间内每题最高分之和，总时即时间内每题最后提交距比赛开始时间之和。<br><code>final_score = max_score;</code><br><code>final_time = end_time - last_submit_time; </code><br><code>(last_submit_time >= start_time)</code>';
-    else if($judge_way==1) return '总分即时间内每题最高分之和，总时即时间内每题最后提交距比赛开始时间之和加非第一次AC提交次数*1200s。<br><code>final_score = max_score;</code><br><code>final_time = end_time - last_submit_time + 1200 * ( submit_times - 1 ); </code><br><code>(last_submit_time >= start_time)</code>';
+    if($judge_way==0) return '总分即时间内每题最高分之和，总时即时间内每题最后提交距比赛开始时间之和。<br><code>final_score = max_score;</code><br><code>final_time = last_submit_time - start_time; </code><br><code>(last_submit_time >= start_time)</code>';
+    else if($judge_way==1) return '总分即时间内每题最高分之和，总时即时间内每题最后提交距比赛开始时间之和加非第一次AC提交次数*1200s。<br><code>final_score = max_score;</code><br><code>final_time = last_submit_time - start_time + 1200 * ( submit_times - 1 ); </code><br><code>(last_submit_time >= start_time)</code>';
 }
 
 function get_time_text($time){
