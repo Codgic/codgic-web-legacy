@@ -60,7 +60,7 @@ $Title=$inTitle .' - '. $oj_name;
       function disp_SE(){
         $("#ele_judge").hide();
         $('#ele_queue').hide();
-        $('#ele_table').removeClass().html('<div class="alert alert-danger text-center"><p>对不起，评测系统出了些问题，你的代码没有被记录。<br>请联系info@cwoj.tk。</p></div>').show();
+        $('#ele_table').removeClass().html('<div class="alert alert-danger text-center"><p>对不起，评测系统出了些问题，你的代码没有被记录。<br>请联系管理员。</p></div>').show();
         $("#ele_finish").show();
       }
       function htmlEncode(str) {

@@ -18,7 +18,8 @@ $Title='欢迎来到'.$oj_name;
 <html>
   <?php require 'head.php';?>
     <body style="background-image: url(<?php echo $loginimg?>)">
-      <div class="row collapse" style="margin-top:50px">
+	<div class="container">
+      <div class="row collapse">
         <div class="panel panel-default panel-login" style="display:table;margin:auto">
 		  <div class="panel-body">
             <form id="form_login" method="post">
@@ -54,7 +55,7 @@ $Title='欢迎来到'.$oj_name;
           </div>
 		</div>
       </div>
-
+	</div>
     <script type="text/javascript">
       $(document).ready(function(){
         var r="<?php if(isset($_SESSION['login_redirect'])) echo $_SESSION['login_redirect'];

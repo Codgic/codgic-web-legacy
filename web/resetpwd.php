@@ -13,7 +13,8 @@ $Title=$inTitle .' - '. $oj_name;
 require 'head.php';
 ?>
   <body style="background-image: url(<?php echo $loginimg?>)">
-    <div class="row collapse" id="emailpage" style="margin-top:50px">
+  <div class="container">
+    <div class="row collapse" id="emailpage">
       <div class="panel panel-default panel-login">
 		<div class="panel-body">
 		<form id="form_email" action="#" method="post">
@@ -37,7 +38,7 @@ require 'head.php';
          </form>
 		 </div>
        </div>
-    </div>
+	  </div>
 	 
 	<div id="verifypage" class="row collapse" style="margin-top:50px">
         <div class="panel panel-default panel-login">
@@ -90,6 +91,7 @@ require 'head.php';
 		  </div>
         </form> 
        </div>
+	</div>
 	</div>
     <script type="text/javascript">
 	function get_rand(begin, end) {

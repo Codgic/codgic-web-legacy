@@ -67,7 +67,7 @@ $Title=$inTitle .' - '. $oj_name;
                 </tr>
                 <tr>
                   <td><samp>C++11</samp></td>
-                  <td><code>g++ -static --std=c++11 -s -Wall -O2 -lm -DONLINE_JUDGE</code></td>
+                  <td><code>g++ -static -std=c++11 -s -Wall -O2 -lm -DONLINE_JUDGE</code></td>
                 </tr>
               </tbody>
             </table>

@@ -49,19 +49,20 @@ $Title=$inTitle .' - '. $oj_name;
           <div class="form-group col-xs-12 col-sm-6" id="oldpwd_ctl">
             <label>旧密码(*)</label>
             <input class="form-control" id="input_oldpwd" name="oldpwd" type="password">
+			<span class="help-block">你需要先输入你的密码才能修改资料。</span>
+          </div>
+		  <div class="form-group col-xs-12 col-sm-6" id="newpwd_ctl">
+            <label>新密码</label>
+            <input class="form-control" type="password" id="input_newpwd" name="newpwd">
+            <span class="help-block">若你不打算更改密码无需填写此栏。</span>
+          </div>
+		  <div class="form-group col-xs-12 col-sm-6">
+            <label>昵称</label>
+            <input class="form-control" type="text" name="nick" id="input_nick" value="<?php echo htmlspecialchars($row[1])?>">
           </div>
           <div class="form-group col-xs-12 col-sm-6">
             <label>签名</label>
             <input class="form-control" id="input_motto" name="motto" type="text" value="<?php echo htmlspecialchars($row[3])?>">
-          </div>
-          <div class="form-group col-xs-12 col-sm-6">
-            <label>昵称</label>
-            <input class="form-control" type="text" name="nick" id="input_nick" value="<?php echo htmlspecialchars($row[1])?>">
-          </div>
-          <div class="form-group col-xs-12 col-sm-6" id="newpwd_ctl">
-            <label>新密码</label>
-            <input class="form-control" type="password" id="input_newpwd" name="newpwd">
-            <span class="help-block">若你不打算更改密码无需填写此栏。</span>
           </div>
           <div class="form-group col-xs-12 col-sm-6" id="reppwd_ctl">
             <label>重复密码</label>

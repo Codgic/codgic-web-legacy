@@ -95,11 +95,11 @@ footer {
 .panel-login{
     display:table;
     margin:auto;
-        min-width:20%
+	min-width:25%
 }
 
 .table {
-        table-layout: auto;
+	table-layout: auto;
     word-break: break-all;
     word-wrap: break-word
 }

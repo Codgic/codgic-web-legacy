@@ -18,7 +18,8 @@ $Title='注册'.$oj_name;
 <html>
   <?php require 'head.php';?>
     <body style="background-image: url(<?php echo $loginimg?>)">
-      <div class="row collapse" style="margin-top:50px">
+	<div class="container">
+      <div class="row collapse">
         <div class="panel panel-default panel-login" style="display:table;margin:auto">
 		  <div class="panel-body">
             <form id="form_reg" method="post">
@@ -60,6 +61,7 @@ $Title='注册'.$oj_name;
           </form>
 		</div>
 	  </div>
+	</div>
 	</div>
     <div class="modal fade" id="EULAModal">
 	  <div class="modal-dialog">
