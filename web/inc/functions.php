@@ -15,7 +15,7 @@ function update_cont_rank($cont_id){
         for($i=0;$i<$cont_num;$i++){
           if($cont_judgeway==2){
             //For judge ways that only recognize the first submit
-            $s_row=mysqli_fetch_row(mysqli_query($con, "select score,result,in_date from solution where user_id='$user_id' and in_date>'".$row[3]."' and in_date<'".$row[4]."' and problem_id=".$prob_arr[$i].' order by in_date limit 1'));
+            $s_row=mysqli_fetch_row(mysqli_query($con, "select score,result,in_date from solution where user_id='$user_id' and in_date>'".$cont_start."' and in_date<'".$cont_end."' and problem_id=".$prob_arr[$i].' order by in_date limit 1'));
             //Process score
             if(!isset($s_row[0]))
               $s_row[0]=0;
