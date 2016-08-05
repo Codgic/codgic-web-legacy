@@ -31,7 +31,9 @@ switch ($row[8]) {
   case 1:
     $judge_way='类ACM赛制';
     break;
-
+  case 2:
+    $judge_way='类OI赛制';
+    break;
 }
 
 if($row[7]=='Y' && !check_priv(PRIV_PROBLEM))
@@ -42,75 +44,99 @@ else{
   $forbidden=false;
   $_SESSION['view']=$cont_id;
   $prob_arr=unserialize($row[2]);
-
-  if(isset($_SESSION['user'])){
-      $tot_scores=0;
-      $tot_times=0;
-    if(strtotime($row[3])>time()){
-      //Contest hasn't started
-      $s_info = '<tr><td colspan="2" class="gradient-red text-center"><i class="fa fa-fw fa-remove"></i> 比赛尚未开始</td></tr>';
-      $cont_status=0;
-    }else{
-      $prob_arr=unserialize($row[2]);
-      if(time()>strtotime($row[4])){
-        $s_info = '<tr><td colspan="2" class="gradient-green text-center"><i class="fa fa-fw fa-check"></i> 比赛已经结束</td></tr>';
-        $cont_status=2;
-        if($row[11]=='N'){
-            //Contest needs updating
+  
+  $tot_scores=0;
+  $tot_times=0;
+  if(strtotime($row[3])>time()){
+    //Contest hasn't started
+    $s_info = '<tr><td colspan="2" class="gradient-red text-center"><i class="fa fa-fw fa-remove"></i> 比赛尚未开始</td></tr>';
+    $cont_status=0;
+  }else{
+    $prob_arr=unserialize($row[2]);
+    if(time()>strtotime($row[4])){
+      //Contest has ended
+      $s_info = '<tr><td colspan="2" class="gradient-green text-center"><i class="fa fa-fw fa-check"></i> 比赛已经结束</td></tr>';
+      $cont_status=2;
+      if($row[11]=='N'){
+        //Contest needs updating
+        update_cont_rank($cont_id);
+        header("Location: contestpage.php?contest_id=$cont_id");
+        exit();
+      }else{
+        //Check if need updating
+        for($i=0;$i<$row[9];$i++){
+          $s_row=mysqli_fetch_row(mysqli_query($con,'select title,rejudged from problem where problem_id='.$prob_arr[$i].' limit 1'));
+          if($s_row[1]=='Y'){
             update_cont_rank($cont_id);
             header("Location: contestpage.php?contest_id=$cont_id");
-            exit();
-        }else{
-          //Check if need updating
-          for($i=0;$i<$row[9];$i++){
-            $s_row=mysqli_fetch_row(mysqli_query($con,'select title,rejudged from problem where problem_id='.$prob_arr[$i].' limit 1'));
-            if($s_row[1]=='Y'){
-                update_cont_rank($cont_id);
-                header("Location: contestpage.php?contest_id=$cont_id");
-                exit();
-            }
-            $pname_arr[$i]=$s_row[0];
-            $score_arr["$prob_arr[$i]"]=0;
-            $res_arr["$prob_arr[$i]"]=NULL;
-			$time_arr["$prob_arr[$i]"]=0;
+            exit(); 
           }
+          //Initialize arrays.
+          $pname_arr[$i]=$s_row[0];
+          $score_arr["$prob_arr[$i]"]=0;
+          $res_arr["$prob_arr[$i]"]=NULL;
+          $time_arr["$prob_arr[$i]"]=0;
         }
-        //Get scores from database directly
-        if(isset($row[12])){
-            $score_arr=unserialize($row[12]);
-            $res_arr=unserialize($row[13]);
-			$time_arr=unserialize($row[15]);
-            $tot_scores=array_sum($score_arr);
-			$tot_times=array_sum($time_arr);
-        }
-      }else{
-        //Contest in progress: live data
-        $s_info = '<tr><td colspan="2" class="gradient-green text-center"><i class="fa fa-fw fa-cog fa-spin"></i> 比赛正在进行</td></tr>';
-        $cont_status=1;
-        if(isset($row[12])){
-          for($i=0;$i<$row[9];$i++){
-            $s_row=mysqli_fetch_row(mysqli_query($con,'select title from problem where problem_id='.$prob_arr[$i].' limit 1'));
-            $pname_arr[$i]=$s_row[0];
+      }
+      //Get scores from database directly
+      if(isset($row[12])){
+        $score_arr=unserialize($row[12]);
+        $res_arr=unserialize($row[13]);
+        $time_arr=unserialize($row[15]);
+        $tot_scores=array_sum($score_arr);
+        $tot_times=array_sum($time_arr);
+      }
+    }else{
+      //Contest in progress: live data
+      $s_info = '<tr><td colspan="2" class="gradient-green text-center"><i class="fa fa-fw fa-cog fa-spin"></i> 比赛正在进行</td></tr>';
+      $cont_status=1;
+      if(isset($row[12])){
+        for($i=0;$i<$row[9];$i++){
+          $s_row=mysqli_fetch_row(mysqli_query($con,'select title from problem where problem_id='.$prob_arr[$i].' limit 1'));
+          $pname_arr[$i]=$s_row[0];
+          if($row[8]==2){ 
+            //For judge ways that only recognize the first submit
+            $s_row=mysqli_fetch_row(mysqli_query($con, "select score,result,in_date from solution where user_id='$user_id' and in_date>'".$row[3]."' and in_date<'".$row[4]."' and problem_id=".$prob_arr[$i].' order by in_date limit 1'));
+            //Process score
+            if(!isset($s_row[0]))
+              $s_row[0]=0;
+            $score_arr["$prob_arr[$i]"]=$s_row[0];
+            $tot_scores+=$score_arr["$prob_arr[$i]"];
+            //Process result
+            if(!isset($s_row[1]))
+              $s_row[1]=NULL;
+            $res_arr["$prob_arr[$i]"]=$s_row[1];
+            //Process time
+            if(!isset($s_row[2]))
+              $s_row[2]=0;
+            $time_arr["$prob_arr[$i]"]=$s_row[2];
+            $tot_times+=$time_arr["$prob_arr[$i]"];
+          }else{
+            //For judge ways that recognize max scores
             $s_row=mysqli_fetch_row(mysqli_query($con,"select max(score),count(score),min(result),max(in_date) from solution where user_id='$user_id' and in_date>'".$row[3]."' and in_date<'".$row[4]."' and problem_id=".$prob_arr[$i]));
             //Process scores
-            if(!isset($s_row[0])) $s_row[0]=0;
-            if($s_row[0]!=100&&$row[8]==1) $s_row[0]=0;
+            if(!isset($s_row[0]))
+              $s_row[0]=0;
+            if($s_row[0]!=100&&$row[8]==1)
+              $s_row[0]=0;
             $score_arr["$prob_arr[$i]"]=$s_row[0];
-            $tot_scores+=$s_row[0];
+            $tot_scores+=$score_arr["$prob_arr[$i]"];
             //Process results
+            if(!isset($s_row[2])) $s_row[2]=NULL;
             $res_arr["$prob_arr[$i]"]=$s_row[2];
             //Process times
-            if(!isset($s_row[3])) $s_row[3]=0;
-            if($s_row[0]==100) $time_arr["$prob_arr[$i]"]=strtotime($s_row[3])-strtotime($row[3])+1200*($s_row[1]-1);
-            else $time_arr["$prob_arr[$i]"]=1200*$s_row[1];
+            if(!isset($s_row[3]))
+              $s_row[3]=0;
+            if($s_row[0]==100)
+              $time_arr["$prob_arr[$i]"]=strtotime($s_row[3])-strtotime($row[3])+1200*($s_row[1]-1);
+            else 
+              $time_arr["$prob_arr[$i]"]=1200*$s_row[1];
             $tot_times+=$time_arr["$prob_arr[$i]"];
           }
         }
       }
     }
-  }else{
-    $s_info = '<tr><td colspan="2" class="text-center muted" >你还没有登录</td></tr>';
-  } 
+  }
   $cont_level=($row[6]&PROB_LEVEL_MASK)>>PROB_LEVEL_SHIFT;
 }
 if($forbidden) $info='看起来你无法访问该比赛';
@@ -158,9 +184,7 @@ $Title=$inTitle .' - '. $oj_name;
               <h5 class="panel-title">比赛题目</h5>
             </div>
             <?php
-              if(!isset($_SESSION['user'])){
-                echo '<div class="panel-body">请先<a href="login.php">登录</a>再查看比赛...</div>';
-              }else if($cont_status==0){
+              if($cont_status==0){
                 echo '<div class="panel-body">比赛开始后才可看到题目...</div>';
               }else if(!isset($row[12]) && $cont_status!=2){
                 echo '<div class="panel-body">请你先<a href="javascript:void(0)" onclick="return join_cont();">参加比赛</a>...</div>';
@@ -169,13 +193,14 @@ $Title=$inTitle .' - '. $oj_name;
                 <?php for($i=0;$i<$row[9];$i++){
                   echo '<li class="list-group-item"><i class=', is_null($res_arr["$prob_arr[$i]"]) ? '"fa fa-fw fa-lg fa-question" style="color:grey"' : ($res_arr["$prob_arr[$i]"] ? '"fa fa-fw fa-lg fa-remove" style="color:red"' : '"fa fa-fw fa-lg fa-check" style="color:green"'), '></i>';
                   echo ' <a href="problempage.php?contest_id='.$cont_id.'&prob='.($i+1).'">#'.$prob_arr[$i].' - '.$pname_arr[$i].'</a>';
-                  echo '<span class="pull-right">';
-                  if($row[8]==0) echo $score_arr["$prob_arr[$i]"];
-                  else if($row[8]==1){
+                  if(isset($row[12])){
+                    echo '<span class="pull-right">';
+                    if($row[8]==1){
                       if($score_arr["$prob_arr[$i]"]==100) echo '<font color="green">已AC</font>';
                       else echo '<font color="red">未AC</font>';
+                    }else echo $score_arr["$prob_arr[$i]"];
+                    echo '</span></li>';
                   }
-                  echo '</span></li>';
                 }?>
               </ul>
             <?php }?>
@@ -236,7 +261,7 @@ $Title=$inTitle .' - '. $oj_name;
                     <?php echo $s_info ?>
                     <?php if(isset($_SESSION['user'])&&isset($row[12])){?>
                     <tr><td style="text-align:left">你的分数:</td><td><?php echo $tot_scores?></td></tr>
-					<tr><td style="text-align:left">你的罚时:</td><td><?php echo $tot_times?></td></tr>
+					<tr><td style="text-align:left">你的罚时:</td><td><?php echo get_time_text($tot_times)?></td></tr>
                     <?php if($cont_status==2){?>
                     <tr><td style="text-align:left">你的排名:</td><td><?php echo $row[14]?></td></tr>
                     <?php }}?>

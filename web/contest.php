@@ -23,12 +23,11 @@ if(isset($_GET['level'])){
   $range="limit ".(($page_id-1)*100).",100";
   if(isset($_SESSION['user'])){
 	$user_id=$_SESSION['user'];
-	$result=mysqli_query($con,"SELECT contest_id,title,start_time,end_time,defunct,num,source,has_tex,joined.res,saved.cid from contest LEFT JOIN (select contest_id as cid,1 as res from contest_status where user_id='$user_id' group by contest_id) as joined on(joined.cid=contest_id) left join (select contest_id as cid from saved_contest where user_id='$user_id') as saved on(saved.cid=contest_id) where $addt_cond order by contest_id $range");
+	$result=mysqli_query($con,"SELECT contest_id,title,start_time,end_time,defunct,num,source,judge_way,has_tex,joined.res,saved.cid from contest LEFT JOIN (select contest_id as cid,1 as res from contest_status where user_id='$user_id' group by contest_id) as joined on(joined.cid=contest_id) left join (select contest_id as cid from saved_contest where user_id='$user_id') as saved on(saved.cid=contest_id) where $addt_cond order by contest_id $range");
   }else{
-	$result=mysqli_query($con,"select contest_id,title,start_time,end_time,defunct,num,source from contest where $addt_cond order by contest_id $range");
+	$result=mysqli_query($con,"select contest_id,title,start_time,end_time,defunct,num,source,judge_way from contest where $addt_cond order by contest_id $range");
   }
   if(mysqli_num_rows($result)==0) $info='该难度下还没有比赛';
-  
 }else{
   //If request contest page
   if(isset($_GET['page_id']))
@@ -61,11 +60,12 @@ if(isset($_GET['level'])){
   $range="between $page_id"."00 and $page_id".'99';
   if(isset($_SESSION['user'])){
     $user_id=$_SESSION['user'];
-    $result=mysqli_query($con,"SELECT contest_id,title,start_time,end_time,defunct,num,source,has_tex,joined.res,saved.cid from contest LEFT JOIN (select contest_id as cid,1 as res from contest_status where user_id='$user_id' group by contest_id) as joined on (joined.cid=contest_id) left join (select contest_id as cid from saved_contest where user_id='$user_id') as saved on(saved.cid=contest_id) where $addt_cond contest_id $range order by contest_id");
+    $result=mysqli_query($con,"SELECT contest_id,title,start_time,end_time,defunct,num,source,judge_way,has_tex,joined.res,saved.cid from contest LEFT JOIN (select contest_id as cid,1 as res from contest_status where user_id='$user_id' group by contest_id) as joined on (joined.cid=contest_id) left join (select contest_id as cid from saved_contest where user_id='$user_id') as saved on(saved.cid=contest_id) where $addt_cond contest_id $range order by contest_id");
   }else{
-    $result=mysqli_query($con,"select contest_id,title,start_time,end_time,defunct,num,source from contest where $addt_cond contest_id $range order by contest_id");
+    $result=mysqli_query($con,"select contest_id,title,start_time,end_time,defunct,num,source,judge_way from contest where $addt_cond contest_id $range order by contest_id");
   }
 }
+
 $inTitle='比赛';
 $Title=$inTitle .' - '. $oj_name;
 //$Title="contest $page_id";
@@ -128,30 +128,41 @@ $Title=$inTitle .' - '. $oj_name;
 				  echo '<th>标题</th>';?>
 				<th style="width:15%">开始时间</th>  
 				<th style="width:5%">状态</th>  
-				<th style="width:5%">题量</th>
+                <th style="width:10%">评分方式</th>
 				<th style="width:25%">比赛标签</th>
               </tr>
               </thead>
               <tbody>
               <?php 
               while($row=mysqli_fetch_row($result)){
+                switch ($row[7]){
+                  case 0:
+                    $judge_way='CWOJ赛制';
+                    break;
+                  case 1:
+                    $judge_way='类ACM赛制';
+                    break;
+                  case 2:
+                    $judge_way='类OI赛制';
+                    break;
+                }
                 if(time()>strtotime($row[3])) $cont_status='<span class="label label-wa">已经结束</span>';
                 else if(time()<strtotime($row[2])) $cont_status='<span class="label label-re">尚未开始</span>';
                 else $cont_status='<span class="label label-ac">正在进行</span>';
                 echo '<tr>';
                 echo '<td>',$row[0],'</td>';
                 if(isset($_SESSION['user'])){
-				  echo '<td class="width-for-2x-icon"><i class=', is_null($row[8]) ? '"fa fa-fw fa-remove fa-2x" style="visibility:hidden"' : '"fa fa-fw fa-2x fa-paper-plane" style="color:steelblue"', '></i>', '</td>';
+				  echo '<td class="width-for-2x-icon"><i class=', is_null($row[9]) ? '"fa fa-fw fa-remove fa-2x" style="visibility:hidden"' : '"fa fa-fw fa-2x fa-paper-plane" style="color:steelblue"', '></i>', '</td>';
 				  echo '<td style="text-align:left;border-left:0;">';
                 }else echo '<td style="text-align:left">';
                 echo '<a href="contestpage.php?contest_id=',$row[0],'">',$row[1];
                 if($row[4]=='Y')echo '&nbsp;&nbsp;<span class="label label-danger">已删除</span>';
                 echo '</a>';
                 if(isset($_SESSION['user']))
-				  echo '<td class="width-for-2x-icon" style="border-left:0;"><i data-pid="',$row[0],'" class="', is_null($row[9]) ? 'fa fa-star-o' : 'fa fa-star', ' fa-fw fa-2x text-warning save_problem" style="cursor:pointer;"></i></td>';
+				  echo '<td class="width-for-2x-icon" style="border-left:0;"><i data-pid="',$row[0],'" class="', is_null($row[10]) ? 'fa fa-star-o' : 'fa fa-star', ' fa-fw fa-2x text-warning save_problem" style="cursor:pointer;"></i></td>';
                 echo'</td><td>',$row[2],'</a></td>';
                 echo '<td>',$cont_status,'</td>';
-                echo '<td>',$row[5],'</td>';
+                echo '<td>',$judge_way,'</td>';
                 echo '<td>',$row[6],'</td></tr>';
               }?>
               </tbody>

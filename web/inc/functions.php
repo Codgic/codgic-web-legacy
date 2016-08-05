@@ -13,19 +13,45 @@ function update_cont_rank($cont_id){
 		$tot_scores=0;
 		$tot_times=0;
         for($i=0;$i<$cont_num;$i++){
+          if($cont_judgeway==2){
+            //For judge ways that only recognize the first submit
+            $s_row=mysqli_fetch_row(mysqli_query($con, "select score,result,in_date from solution where user_id='$user_id' and in_date>'".$row[3]."' and in_date<'".$row[4]."' and problem_id=".$prob_arr[$i].' order by in_date limit 1'));
+            //Process score
+            if(!isset($s_row[0]))
+              $s_row[0]=0;
+            $score_arr["$prob_arr[$i]"]=$s_row[0];
+            $tot_scores+=$score_arr["$prob_arr[$i]"];
+            //Process result
+            if(!isset($s_row[1]))
+              $s_row[1]=NULL;
+            $res_arr["$prob_arr[$i]"]=$s_row[1];
+            //Process time
+            if(!isset($s_row[2]))
+              $s_row[2]=0;
+            $time_arr["$prob_arr[$i]"]=$s_row[2];
+            $tot_times+=$time_arr["$prob_arr[$i]"];
+          }else{
             $s_row=mysqli_fetch_row(mysqli_query($con,"select max(score),count(score),min(result),max(in_date) from solution where user_id='$user_id' and in_date>'".$cont_start."' and in_date<'".$cont_end."' and problem_id=".$prob_arr[$i]));
             //Process scores
-            if(!isset($s_row[0])) $s_row[0]=0;
-            if($s_row[0]!=100&&$cont_judgeway==1) $s_row[0]=0;
+            if(!isset($s_row[0]))
+              $s_row[0]=0;
+            if($s_row[0]!=100&&$cont_judgeway==1)
+              $s_row[0]=0;
             $score_arr["$prob_arr[$i]"]=$s_row[0];
             $tot_scores+=$s_row[0];
             //Process results
+            if(!isset($s_row[2]))
+              $s_row[2]=NULL;
             $res_arr["$prob_arr[$i]"]=$s_row[2];
             //Process times
-            if(!isset($s_row[3])) $s_row[3]=0;
-            if($s_row[0]==100) $time_arr["$prob_arr[$i]"]=strtotime($s_row[3])-strtotime($cont_start)+1200*($s_row[1]-1);
-            else $time_arr["$prob_arr[$i]"]=1200*$s_row[1];
+            if(!isset($s_row[3]))
+              $s_row[3]=0;
+            if($s_row[0]==100)
+              $time_arr["$prob_arr[$i]"]=strtotime($s_row[3])-strtotime($cont_start)+1200*($s_row[1]-1);
+            else 
+              $time_arr["$prob_arr[$i]"]=1200*$s_row[1];
             $tot_times+=$time_arr["$prob_arr[$i]"];
+          }
         }
         $scores=serialize($score_arr);
         $results=serialize($res_arr);
@@ -51,8 +77,10 @@ function update_cont_rank($cont_id){
 }
 
 function get_judgeway_destext($judge_way){
-    if($judge_way==0) return '总分即时间内每题最高分之和，罚时对AC的记录记最后提交时间，对未AC的记录记1200s。<br><code>final_score = max_score;</code><br><code>final_time = AC ? (last_submit_time + 1200s * (submit_times - 1)) : 1200s * submit_times </code>';
-    else if($judge_way==1) return '总分AC题目分数之和，罚时对AC的记录记最后提交时间，对未AC的记录记1200s。<br><code>final_score = (max_score == full_score) ? full_score : 0;</code><br><code>final_time = AC ? last_submit_time + 1200s * (submit_times - 1) : 1200s * submit_times </code>';
+    if($judge_way==0) return '总分即时间内每题最高分之和，罚时对AC的记录记最后提交时间，对未AC的记录记1200s。<br><code>final_score = max_score;</code><br><code>final_time = AC ? (last_submit_time + 1200s * (submit_times - 1)) : 1200s * submit_times; </code>';
+    else if($judge_way==1) return '总分即AC题目分数之和，罚时对AC的记录记最后提交时间，对未AC的记录记1200s。<br><code>final_score = (max_score == full_score) ? full_score : 0;</code><br><code>final_time = AC ? last_submit_time + 1200s * (submit_times - 1) : 1200s * submit_times; </code>';
+    else if($judge_way==2) return '总分即每题第一次提交分数之和，罚时即第一次提交时间之和，非第一次提交记录无效。<br><code>final_score = first_submit_score;</code><br><code>final_time = first_submit_time; </code>';
+
 }
 
 function get_time_text($time){

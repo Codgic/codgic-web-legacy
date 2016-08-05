@@ -40,6 +40,9 @@ if(!isset($_GET['contest_id'])){
       case 1:
         $way='acm-like';
         break;
+      case 2:
+        $way='oi-like';
+        break;
     }
   }
 
@@ -97,6 +100,7 @@ $Title=$inTitle .' - '. $oj_name;
               <select class="form-control" name="judge" id="input_cmp">
                 <option value="cwoj">CWOJ赛制</option>
                 <option value="acm-like">类ACM赛制</option>
+                <option value="oi-like">类OI赛制</option>
               </select>
               <?php if($p_type=='edit'){?>
               <script>
@@ -225,6 +229,8 @@ $Title=$inTitle .' - '. $oj_name;
             $('#input_cmp_help').html('<?php echo get_judgeway_destext(0);?>');
           else if(way=='acm-like')
             $('#input_cmp_help').html('<?php echo get_judgeway_destext(1);?>');
+          else if(way=='oi-like')
+            $('#input_cmp_help').html('<?php echo get_judgeway_destext(2);?>');
         }
         (function(){
             show_help($('#input_cmp').val());

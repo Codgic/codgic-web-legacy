@@ -8,6 +8,8 @@ function JUDGE_TYPE($way)
       return 0;
     else if($way=='acm-like')
       return 1;
+    else if($way=='oi-like')
+      return 2;
 }
 session_start();
 if(!check_priv(PRIV_PROBLEM))
