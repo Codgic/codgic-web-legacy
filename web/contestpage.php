@@ -49,13 +49,13 @@ else{
   $tot_times=0;
   if(strtotime($row[3])>time()){
     //Contest hasn't started
-    $s_info = '<tr><td colspan="2" class="gradient-red text-center"><i class="fa fa-fw fa-remove"></i> 比赛尚未开始</td></tr>';
+    $s_info = '<tr><td colspan="2" class="label-re text-center"><i class="fa fa-fw fa-car"></i> 比赛尚未开始</td></tr>';
     $cont_status=0;
   }else{
     $prob_arr=unserialize($row[2]);
     if(time()>strtotime($row[4])){
       //Contest has ended
-      $s_info = '<tr><td colspan="2" class="gradient-green text-center"><i class="fa fa-fw fa-check"></i> 比赛已经结束</td></tr>';
+      $s_info = '<tr><td colspan="2" class="label-wa text-center"><i class="fa fa-fw fa-ambulance"></i> 比赛已经结束</td></tr>';
       $cont_status=2;
       if($row[11]=='N'){
         //Contest needs updating
@@ -88,7 +88,7 @@ else{
       }
     }else{
       //Contest in progress: live data
-      $s_info = '<tr><td colspan="2" class="gradient-green text-center"><i class="fa fa-fw fa-cog fa-spin"></i> 比赛正在进行</td></tr>';
+      $s_info = '<tr><td colspan="2" class="label-ac text-center"><i class="fa fa-fw fa-cog fa-spin"></i> 比赛正在进行</td></tr>';
       $cont_status=1;
       if(isset($row[12])){
         for($i=0;$i<$row[9];$i++){

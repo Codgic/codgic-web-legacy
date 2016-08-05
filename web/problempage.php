@@ -76,9 +76,9 @@ else{
     else{
       $statis=mysqli_fetch_row($user_status);
       if($statis[0]==0){
-        $s_info = '<tr><td colspan="2" class="gradient-green text-center"><i class="fa fa-fw fa-check"></i> 恭喜AC!</td></tr>';
+        $s_info = '<tr><td colspan="2" class="label-ac text-center"><i class="fa fa-fw fa-check"></i> 恭喜AC!</td></tr>';
       }else{
-        $s_info = '<tr><td colspan="2" class="gradient-red text-center"><i class="fa fa-fw fa-remove"></i> 再试一次吧!</td></tr>';
+        $s_info = '<tr><td colspan="2" class="label-wa text-center"><i class="fa fa-fw fa-remove"></i> 再试一次吧!</td></tr>';
       }
     }
     $current_user=$_SESSION['user'];
