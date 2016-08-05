@@ -27,7 +27,7 @@ if($op=='get_rank_table'){
             //If contest has ended
             for($i=0;$i<$row[2];$i++){
                 $s_row=mysqli_fetch_row(mysqli_query($con,'select rejudged from problem where problem_id='.$prob_arr[$i].' limit 1'));
-                if($s_row[1]=='Y'){
+                if(isset($s_row[1])&&$s_row[1]=='Y'){
                     update_cont_rank($cont_id);
                     break;
                 }
