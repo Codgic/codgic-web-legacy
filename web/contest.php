@@ -23,20 +23,13 @@ if(isset($_GET['level'])){
   $range="limit ".(($page_id-1)*100).",100";
   if(isset($_SESSION['user'])){
 	$user_id=$_SESSION['user'];
-	$result=mysqli_query($con,"SELECT contest_id,title,start_time,end_time,defunct,num,source,judge_way,has_tex,joined.res,saved.cid from contest LEFT JOIN (select contest_id as cid,1 as res from contest_status where user_id='$user_id' group by contest_id) as joined on(joined.cid=contest_id) left join (select contest_id as cid from saved_contest where user_id='$user_id') as saved on(saved.cid=contest_id) where $addt_cond order by contest_id $range");
+	$result=mysqli_query($con,"SELECT contest_id,title,start_time,end_time,defunct,num,source,judge_way,has_tex,joined.res,saved.cid from contest LEFT JOIN (select contest_id as cid,1 as res from contest_status where user_id='$user_id' group by contest_id) as joined on(joined.cid=contest_id) left join (select contest_id as cid from saved_contest where user_id='$user_id') as saved on(saved.cid=contest_id) where $addt_cond order by contest_id desc $range");
   }else{
-	$result=mysqli_query($con,"select contest_id,title,start_time,end_time,defunct,num,source,judge_way from contest where $addt_cond order by contest_id $range");
+	$result=mysqli_query($con,"select contest_id,title,start_time,end_time,defunct,num,source,judge_way from contest where $addt_cond order by contest_id desc $range");
   }
   if(mysqli_num_rows($result)==0) $info='该难度下还没有比赛';
 }else{
   //If request contest page
-  if(isset($_GET['page_id']))
-    $page_id=intval($_GET['page_id']);
-  else if(isset($_SESSION['view']))
-    $page_id=intval($_SESSION['view']/100);
-  else
-    $page_id=10;
-    
   if(check_priv(PRIV_PROBLEM)){
     $addt_cond1='';
     $addt_cond='';
@@ -45,8 +38,15 @@ if(isset($_GET['level'])){
     $addt_cond=" defunct='N' and ";
   }
   $row=mysqli_fetch_row(mysqli_query($con,"select max(contest_id) from contest $addt_cond1"));
-  
   $maxpage=intval($row[0]/100);
+  
+  if(isset($_GET['page_id']))
+    $page_id=intval($_GET['page_id']);
+  else if(isset($_SESSION['view']))
+    $page_id=intval($_SESSION['view']/100);
+  else
+    $page_id=$maxpage;
+   
   if($page_id<10){
     header("Location: contest.php");
     exit();
@@ -60,9 +60,9 @@ if(isset($_GET['level'])){
   $range="between $page_id"."00 and $page_id".'99';
   if(isset($_SESSION['user'])){
     $user_id=$_SESSION['user'];
-    $result=mysqli_query($con,"SELECT contest_id,title,start_time,end_time,defunct,num,source,judge_way,has_tex,joined.res,saved.cid from contest LEFT JOIN (select contest_id as cid,1 as res from contest_status where user_id='$user_id' group by contest_id) as joined on (joined.cid=contest_id) left join (select contest_id as cid from saved_contest where user_id='$user_id') as saved on(saved.cid=contest_id) where $addt_cond contest_id $range order by contest_id");
+    $result=mysqli_query($con,"SELECT contest_id,title,start_time,end_time,defunct,num,source,judge_way,has_tex,joined.res,saved.cid from contest LEFT JOIN (select contest_id as cid,1 as res from contest_status where user_id='$user_id' group by contest_id) as joined on (joined.cid=contest_id) left join (select contest_id as cid from saved_contest where user_id='$user_id') as saved on(saved.cid=contest_id) where $addt_cond contest_id $range order by contest_id desc");
   }else{
-    $result=mysqli_query($con,"select contest_id,title,start_time,end_time,defunct,num,source,judge_way from contest where $addt_cond contest_id $range order by contest_id");
+    $result=mysqli_query($con,"select contest_id,title,start_time,end_time,defunct,num,source,judge_way from contest where $addt_cond contest_id $range order by contest_id desc");
   }
 }
 
@@ -83,7 +83,7 @@ $Title=$inTitle .' - '. $oj_name;
 		  <ul class="pagination">
 		  <?php
 			if($maxpage>10){
-			  for($i=10;$i<=$maxpage;++$i)
+			  for($i=$maxpage;$i>=10;--$i)
 				if($i!=$page_id)
 				  echo '<li><a href="contest.php?page_id=',$i,'">',$i,'</a></li>';
 				else

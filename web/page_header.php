@@ -23,10 +23,10 @@ if(!isset($_SESSION['user'])){
    <div class="collapse navbar-collapse" id="nav_menus">
       <ul class="nav navbar-nav navbar-left" id="nav_left">
 		<li><a id="nav_cont" class="shortcut-hint" title="Alt+C" href="/contest.php"><i class="fa fa-fw fa-compass"></i><span id="nav_cont_text" class="hidden-sm"> 比赛</span></a></li>
-		<li><a id="nav_set" href="/problemset.php" class="shortcut-hint" title="Alt+P"><i class="fa fa-fw fa-th-list"></i><span id="nav_set_text" class="hidden-sm"> 题库</span></a></li>
+		<li><a id="nav_set" href="/problemset.php" class="shortcut-hint" title="Alt+P"><i class="fa fa-fw fa-book"></i><span id="nav_set_text" class="hidden-sm"> 题库</span></a></li>
 		<li><a id="nav_bbs" class="shortcut-hint" title="Alt+B" href="/board.php"><i class="fa fa-fw fa-comment"></i><span id="nav_bbs_text" class="hidden-sm"> 讨论</span></a></li>
 		<li><a id="nav_record" class="shortcut-hint" title="Alt+R" href="/record.php"><i class="fa fa-fw fa-university"></i><span id="nav_record_text" class="hidden-sm"> 记录</span></a></li>
-		<li><a id="nav_rank" href="/ranklist.php"><i class="fa fa-fw fa-leaf"></i><span id="nav_rank_text" class="hidden-sm"> 排名</span></a></li>
+		<li><a id="nav_rank" href="/ranklist.php"><i class="fa fa-fw fa-pie-chart"></i><span id="nav_rank_text" class="hidden-sm"> 排名</span></a></li>
 		<li><a id="nav_about" href="/about.php"><i class="fa fa-fw fa-magic"></i><span id="nav_about_text" class="hidden-sm"> 关于</span></a></li>
 		<li><a id="nav_searchbtn" class="visible-xs visible-sm" href="#" title="Alt+I"><i class="fa fa-fw fa-search"></i><span class="hidden-sm"> 搜索</span></a></li>
       </ul>
@@ -59,7 +59,7 @@ if(!isset($_SESSION['user'])){
 			<ul class="dropdown-menu dropdown-menu-right" id="nav_right">
                 <li><a href="/mail.php" id="nav_mail"><i class="fa fa-fw fa-envelope"></i> 私信 <strong class="notifier"></strong></a></li>
 				<li><a href="/marked.php"><i class="fa fa-fw fa-star"></i> 收藏</a></li>
-				<li><a href="/profile.php"><i class="fa fa-fw fa-user-secret"></i> 档案</a></li>
+				<li><a href="/profile.php"><i class="fa fa-fw fa-github-alt"></i> 档案</a></li>
 				<li><a href="/preferences.php"><i class="fa fa-fw fa-cog"></i> 设置</a></li>
 				<?php if(check_priv(PRIV_PROBLEM) || check_priv(PRIV_SYSTEM)){?>
 				<li class="divider hidden-xs"></li>

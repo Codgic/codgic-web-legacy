@@ -17,9 +17,9 @@ else
   $cont_id=1000;
 if(isset($_SESSION['user'])){
     $user_id=$_SESSION['user'];
-    $query="select title,description,problems,start_time,end_time,source,has_tex,defunct,judge_way,num,enroll_user,ranked,result.scr,result.res,result.rnk,result.tim from contest LEFT JOIN (select contest_id as cid, scores as scr, results as res, rank as rnk, times as tim from contest_status where user_id='$user_id' group by contest_id) as result on (result.cid=contest_id) where contest_id=$cont_id";
+    $query="select title,description,problems,start_time,end_time,source,has_tex,defunct,judge_way,num,enroll_user,last_rank_time,result.scr,result.res,result.rnk,result.tim from contest LEFT JOIN (select contest_id as cid, scores as scr, results as res, rank as rnk, times as tim from contest_status where user_id='$user_id' group by contest_id) as result on (result.cid=contest_id) where contest_id=$cont_id";
 }else
-    $query="select title,description,problems,start_time,end_time,source,has_tex,defunct,judge_way,num,enroll_user,ranked from contest where contest_id=$cont_id";
+    $query="select title,description,problems,start_time,end_time,source,has_tex,defunct,judge_way,num,enroll_user,last_rank_time from contest where contest_id=$cont_id";
 $result=mysqli_query($con,$query);
 $row=mysqli_fetch_row($result);
 if(!$row)
@@ -57,7 +57,7 @@ else{
       //Contest has ended
       $s_info = '<tr><td colspan="2" class="label-wa text-center"><i class="fa fa-fw fa-ambulance"></i> 比赛已经结束</td></tr>';
       $cont_status=2;
-      if($row[11]=='N'){
+      if($row[11]==NULL){
         //Contest needs updating
         update_cont_rank($cont_id);
         header("Location: contestpage.php?contest_id=$cont_id");
@@ -225,7 +225,7 @@ $Title=$inTitle .' - '. $oj_name;
             <div class="panel-heading">
               <h5 class="panel-title">比赛排名</h5>
             </div>
-            <div class="panel-body" id="cont_rank"></div>
+            <div class="panel-body" id="cont_rank"><i class="fa fa-refresh fa-spin fa-fw"></i> 正在刷新，请稍后...</div>
           </div>
         </div>
         <div class="col-xs-12 col-sm-3" id="rightside">

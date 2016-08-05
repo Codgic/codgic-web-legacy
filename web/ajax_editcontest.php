@@ -81,7 +81,7 @@ if($_POST['op']=='edit'){
 		die('参数无效...');
 	$id=intval($_POST['contest_id']);
 
-	$result=mysqli_query($con,"update contest set title='$title',start_time='$start_time',end_time='$end_time',problems='$problems',num='$num',description='$des',source='$source',has_tex=$has_tex,judge_way=$judge_way,ranked='N' where contest_id=$id");
+	$result=mysqli_query($con,"update contest set title='$title',start_time='$start_time',end_time='$end_time',problems='$problems',num='$num',description='$des',source='$source',has_tex=$has_tex,judge_way=$judge_way,last_rank_time=NULL where contest_id=$id");
 	if(!$result)
 		die('数据库操作失败...');
 	else

@@ -2,7 +2,6 @@
 -- version 4.5.4.1deb2ubuntu2
 -- http://www.phpmyadmin.net
 
-
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
 
@@ -14,6 +13,7 @@ SET time_zone = "+00:00";
 
 CREATE DATABASE cwoj CHARACTER SET utf8mb4;
 use cwoj;
+
 --
 -- Database: `cwoj`
 --
@@ -109,15 +109,8 @@ CREATE TABLE `contest` (
   `has_tex` tinyint(4) NOT NULL DEFAULT '0',
   `judge_way` int(11) NOT NULL DEFAULT '0',
   `enroll_user` int(11) NOT NULL DEFAULT '0',
-  `ranked` char(1) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'N'
+  `last_rank_time` datetime DEFAULT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Dumping data for table `contest`
---
-
-INSERT INTO `contest` (`contest_id`, `title`, `start_time`, `end_time`, `defunct`, `num`, `problems`, `description`, `in_date`, `source`, `has_tex`, `judge_way`, `enroll_user`) VALUES
-(1000, 'Fuck ZK', '2016-07-31 12:57:57', '2016-07-31 15:57:57', 'N', 2, 'a:2:{i:0;s:4:"1000";i:1;s:4:"1001";}', 'test', '2016-07-31 12:58:13', 'test', 0, 0, 0);
 
 -- --------------------------------------------------------
 
@@ -520,6 +513,8 @@ ALTER TABLE `source_code`
 --
 ALTER TABLE `users`
   ADD PRIMARY KEY (`user_id`),
+  ADD UNIQUE KEY `user_id` (`user_id`),
+  ADD UNIQUE KEY `email` (`email`),
   ADD KEY `solve_submit` (`solved`,`submit`);
 
 --

@@ -73,7 +73,7 @@ function update_cont_rank($cont_id){
     }
     for($i=0;$i<$cont_num;$i++)
       mysqli_query($con, "update problem set rejudged='N' where problem_id=".$prob_arr[$i]);
-    mysqli_query($con, "update contest set ranked='Y' where contest_id=$cont_id");
+    mysqli_query($con, "update contest set last_rank_time=NOW() where contest_id=$cont_id");
 }
 
 function get_judgeway_destext($judge_way){

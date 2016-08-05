@@ -9,25 +9,33 @@ if($op=='get_rank_table'){
     if(!isset($_POST['contest_id'])||empty($_POST['contest_id']))
       die('参数无效...');
     $cont_id=intval($_POST['contest_id']);
-    $row=mysqli_fetch_row(mysqli_query($con, "select end_time,num,problems,ranked from contest where contest_id=$cont_id"));
+    $row=mysqli_fetch_row(mysqli_query($con, "select start_time,end_time,num,problems,last_rank_time from contest where contest_id=$cont_id"));
     if(!$row)
       die('比赛不存在...');
-    $prob_arr=unserialize($row[2]);
-    $cont_num=$row[1];
-    if(strtotime($row[0]>time()))
-      update_cont_rank($cont_id);
-    else if($row[3]=='N') update_cont_rank($cont_id);
-    else{
-      for($i=0;$i<$row[1];$i++){
-        $s_row=mysqli_fetch_row(mysqli_query($con,'select rejudged from problem where problem_id='.$prob_arr[$i].' limit 1'));
-        if($s_row[0]=='Y'){
+    $prob_arr=unserialize($row[3]);
+    $cont_num=$row[2];
+    $cont_starttime=strtotime($row[0]);
+    if(time()>=$cont_starttime){
+        if($row[4]==NULL) 
+            //If last ranked time is undefined
             update_cont_rank($cont_id);
-            break;
+        else if(strtotime($row[1]>time())&&time()-strtotime($row[4])>20)
+            //If contest hasn't ended
+            //Won't rank if ranked less than 20 seconds ago.
+            update_cont_rank($cont_id);
+        else{
+            //If contest has ended
+            for($i=0;$i<$row[2];$i++){
+                $s_row=mysqli_fetch_row(mysqli_query($con,'select rejudged from problem where problem_id='.$prob_arr[$i].' limit 1'));
+                if($s_row[1]=='Y'){
+                    update_cont_rank($cont_id);
+                    break;
+                }
+            }
         }
-      }
     }
     $q=mysqli_query($con,"select user_id,scores,results,tot_scores,tot_times,rank from contest_status where contest_id=$cont_id order by rank,user_id");
-    if(mysqli_num_rows($q)==0) die('看起来没有人参加过这场比赛...');
+    if(mysqli_num_rows($q)==0) die('看起来没有人参加这场比赛...');
 ?>
     <table class="table table-condensed">
       <thead>
@@ -36,7 +44,8 @@ if($op=='get_rank_table'){
           <th>用户</th>
           <th>总分</th>
           <th>罚时</th>
-          <?php for($i=0;$i<$cont_num;$i++)
+          <?php if(time()>=$cont_starttime)
+          for($i=0;$i<$cont_num;$i++)
             echo "<th>$prob_arr[$i]</th>";?>
         </tr>
       </thead>
@@ -49,9 +58,11 @@ if($op=='get_rank_table'){
               echo '<td>',$row[0],'</td>';
               echo '<td>',$row[3],'</td>';
               echo '<td>',get_time_text($row[4]),'</td>';
-              for($i=0;$i<$cont_num;$i++){
+              if(time()>=$cont_starttime){
+                for($i=0;$i<$cont_num;$i++){
                   echo '<td><i class=', is_null($res_arr["$prob_arr[$i]"]) ? '"fa fa-fw fa-question" style="color:grey"' : ($res_arr["$prob_arr[$i]"] ? '"fa fa-fw fa-remove" style="color:red"' : '"fa fa-fw fa-check" style="color:green"'), '></i> ';
                   echo $scr_arr[$prob_arr[$i]],'</td>';
+                }
               }
               echo '</tr>';
           }
