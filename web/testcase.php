@@ -99,7 +99,7 @@ $Title=$inTitle .' - '. $oj_name;
         uploader=$("#html5_uploader").plupload({
         runtimes : 'html5',
         url : 'ajax_testcase.php',
-        chunk_size : '10mb',
+        chunk_size : '2mb',
         multipart : true,
         multipart_params: {
           "problem_id": problem_id
