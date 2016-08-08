@@ -262,11 +262,9 @@ if(!isset($_POST['title'])||!isset($_POST['content']))
     echo postmail($row[0],$title,$content);
 }else if($op=='sendemail_all'){
     ignore_user_abort(true);
-    if(isset($_POST['to_user'])&&!empty($_POST['to_user'])) $uid=mysqli_real_escape_string($con,trim($_POST['to_user']));
-	else die('收件人不能为空...');
     if(isset($_POST['title'])&&!empty($_POST['title'])) $title=mysqli_real_escape_string($con,trim($_POST['title']));
     else die('标题/内容不能为空...');
-    if(isset($_POST['content'])&&!empty($_POST['content'])) $content=mysqli_real_escape_string($con,trim(str_replace(array("\r\n", "\r", "\n"), "<br>", $_POST['text'])));
+    if(isset($_POST['content'])&&!empty($_POST['content'])) $content=mysqli_real_escape_string($con,trim(str_replace(array("\r\n", "\r", "\n"), "<br>", $_POST['content'])));
     else die('内容不能为空...');
     $res=mysqli_query($con,"select email from users");
     while($row=mysqli_fetch_row($res)){
