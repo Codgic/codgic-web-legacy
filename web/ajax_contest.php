@@ -16,10 +16,11 @@ if($op=='get_rank_table'){
     $cont_num=$row[2];
     $cont_starttime=strtotime($row[0]);
     if(time()>=$cont_starttime){
+		//If contest has started
         if($row[4]==NULL) 
             //If last ranked time is undefined
             update_cont_rank($cont_id);
-        else if(strtotime($row[1]>time())&&time()-strtotime($row[4])>20)
+        else if(strtotime($row[1])>time()&&time()-strtotime($row[4])>=20)
             //If contest hasn't ended
             //Won't rank if ranked less than 20 seconds ago.
             update_cont_rank($cont_id);
