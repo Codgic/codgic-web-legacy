@@ -1,4 +1,5 @@
 <?php
+require 'inc/global.php';
 require 'inc/ojsettings.php';
 require 'inc/checklogin.php';
 require 'inc/mail_flags.php';
@@ -24,7 +25,7 @@ else
 	$cond_starred='';
 
 if(!isset($_SESSION['user']))
-	$info = '您尚未登录...';
+	$info = _('Please login first');
 else{
 	require 'inc/database.php';
 	$user_id=$_SESSION['user'];
@@ -39,12 +40,11 @@ else{
       $result=mysqli_query($con,"select mail_id,title,from_user,new_mail,in_date,flags,usremail from mail LEFT JOIN (select user_id as uid,email as usremail from users) as fuckzk on (uid=from_user) where to_user='$user_id' and UPPER(defunct)='Y' $cond_starred order by mail_id desc limit ".(($page_id-1)*20).",20");
     }
     $maxpage=intval($row[0]/20)+1;
-}
-
     
-if($page_id<1||$page_id>$maxpage){
-    header("Location: mail.php");
-    exit();
+    if($page_id<1||$page_id>$maxpage){
+        header("Location: mail.php");
+        exit();
+    }
 }
 
 function get_next_link()
@@ -69,7 +69,7 @@ function get_pre_link()
   return http_build_query($arr); 
 }
 
-$inTitle='私信';
+$inTitle=_('Mails');
 $Title=$inTitle .' - '. $oj_name;
 ?>
 <!DOCTYPE html>
@@ -78,10 +78,13 @@ $Title=$inTitle .' - '. $oj_name;
 	<body>
 	  <?php require 'page_header.php'; ?>
 		<div class="container">
-		  <?php 
-		    if(isset($info)){
-			  echo '<div class="text-center">',$info,'</div>';
-			}else{?>
+		  <?php if(isset($info)){?>
+            <div class="text-center none-text none-center">
+              <p><i class="fa fa-meh-o fa-4x"></i></p>
+              <p><b>Whoops</b><br>
+              <?php echo $info?></p>
+            </div>
+			<?php }else{?>
 			<div class="row">
 			  <div class="col-xs-12">
                 <div class="btn-group">
@@ -89,18 +92,18 @@ $Title=$inTitle .' - '. $oj_name;
                     <span id="mailbox_text"></span> <span class="caret"></span>
                   </button>
                   <ul class="dropdown-menu">
-                    <li><a href="mail.php" id="slt_1"><i class="fa fa-fw fa-inbox"></i> 收件箱</a></li>
-                    <li><a href="mail.php?mailbox=2" id="slt_2"><i class="fa fa-fw fa-rocket"></i> 发件箱</a></li>
-                    <li><a href="mail.php?mailbox=3" id="slt_3"><i class="fa fa-fw fa-trash"></i> 回收站</a></li>
+                    <li><a href="mail.php" id="slt_1"><i class="fa fa-fw fa-inbox"></i> <?php echo _('Inbox')?></a></li>
+                    <li><a href="mail.php?mailbox=2" id="slt_2"><i class="fa fa-fw fa-rocket"></i> <?php echo _('Sent')?></a></li>
+                    <li><a href="mail.php?mailbox=3" id="slt_3"><i class="fa fa-fw fa-trash"></i> <?php echo _('Trash')?></a></li>
                   </ul>
                 </div>
                 <div class="btn-group">
-                  <button id="btn_newmail" class="btn btn-default shortcut-hint" title="Alt+N"><i class="fa fa-fw fa-send"></i> 新建... </button>
+                  <button id="btn_newmail" class="btn btn-default shortcut-hint" title="Alt+N"><i class="fa fa-fw fa-send"></i> <?php echo _('Send...')?></button>
                   <?php if($mailbox==1){
                     if(!isset($_GET['starred'])){$star_mode=0;?>
-                    <button id="btn_star" class="btn btn-default"><i class="fa fa-fw fa-star-o"></i> 显示星标 </button>
+                    <button id="btn_star" class="btn btn-default"><i class="fa fa-fw fa-star-o"></i> <?php echo _('Show starred')?></button>
                   <?php }else{$star_mode=1;?>
-                    <button id="btn_star" class="btn btn-default"><i class="fa fa-fw fa-star"></i> 显示所有 </button>
+                    <button id="btn_star" class="btn btn-default"><i class="fa fa-fw fa-star"></i> <?php echo _('Show all')?></button>
                   <?php }}else $star_mode=0;?>
                 </div>
                 <hr>
@@ -109,9 +112,14 @@ $Title=$inTitle .' - '. $oj_name;
 			<div class="row">
 			  <div class="col-xs-12" id="maillist">
                 <ul class="list-unstyled">
-				<?php
-                if(mysqli_num_rows($result)!=0){
-				  while($row=mysqli_fetch_row($result)){
+				<?php if(mysqli_num_rows($result)==0){?>
+                  <div class="text-center none-text none-center">
+                    <p><i class="fa fa-meh-o fa-4x"></i></p>
+                    <p><b>Whoops</b><br>
+                    <?php echo _('Looks like there\'s nothing here')?></p>
+                  </div>
+                <?php }else{
+                    while($row=mysqli_fetch_row($result)){
 					if(!function_exists("get_gravatar")) require 'inc/functions.php';
 					echo '<li class="mail-item" ',(($row[3]&&$mailbox==1) ? 'style="background-color: #FCF8E3;"' : ''),' id="mail',$row[0],'">';?>
 					  <div class="mail-container">
@@ -120,7 +128,7 @@ $Title=$inTitle .' - '. $oj_name;
 						  <?php echo ' <a href="#title" class="msg-title">',htmlspecialchars($row[1]),'</a>';?>
 					  </div>
 					  <div class="mail-info">
-                      <strong><a href="javascript:void(0)" onclick="return show_user('<?php echo $row[2]?>')"><?php echo $row[2],'</a></strong> 日期: ',substr($row[4],0,10);if($mailbox==1){?>
+                      <strong><a href="javascript:void(0)" onclick="return show_user('<?php echo $row[2]?>')"><?php echo $row[2],'</a></strong> ',_('Date: '),substr($row[4],0,10);if($mailbox==1){?>
                         <a href="#star" style="text-decoration:none">
                           <i class="<?php echo ($row[5]&MAIL_FLAG_STAR)?'fa fa-star':'fa fa-star-o'?> fa-2x text-warning"></i>
                         </a>
@@ -129,36 +137,27 @@ $Title=$inTitle .' - '. $oj_name;
 					  <div style="clear:both"></div>
 						<div class="mail-content">
 						  <div class="mail-op">
-                            接收时间: <?php echo substr($row[4],-8)?>
-                            <?php if($mailbox==1){?>
+                            <?php echo _('Recieved Date: '),substr($row[4],-8);
+                             if($mailbox==1){?>
                               <div class="btn-group">
-                                <a href="#rep" class="btn btn-sm btn-default"><i class="fa fa-fw fa-reply"></i> 回复</a>
-                                <a href="#del" class="btn btn-sm btn-danger"><i class="fa fa-fw fa-trash"></i> 删除</a>
+                                <a href="#rep" class="btn btn-sm btn-default"><i class="fa fa-fw fa-reply"></i> <?php echo _('Reply')?></a>
+                                <a href="#del" class="btn btn-sm btn-danger"><i class="fa fa-fw fa-trash"></i> <?php echo _('Delete')?></a>
                               </div>
                             <?php }else if($mailbox==2){?>
-                            <a href="#edit" class="btn btn-sm btn-default"><i class="fa fa-fw fa-pencil"></i> 编辑</a>
+                            <a href="#edit" class="btn btn-sm btn-default"><i class="fa fa-fw fa-pencil"></i> <?php echo _('Edit')?></a>
                             <span class="pull-right">
-                            <?php if($row[3]==0) echo '对方已读';
-                            else echo '对方未读';?>
+                            <?php if($row[3]==0) echo _('Read');
+                            else echo _('Unread');?>
                             </span>
                             <?php }else if($mailbox==3){?>
-                            <a href="#del" class="btn btn-sm btn-danger"><i class="fa fa-fw fa-undo"></i> 恢复</a>
+                            <a href="#del" class="btn btn-sm btn-danger"><i class="fa fa-fw fa-undo"></i> <?php echo _('Recover')?></a>
                             <?php }?>
 						  </div>
 						  <pre></pre>
 						</div>
 					  </div>
 					  </li>
-					  <?php }}else{?>
-                        <div class="text-center none-text none-center">
-                          <p><i class="fa fa-meh-o fa-4x"></i></p>
-                          <p><b>Whoops</b><br>
-                          <?php if($page_id==1){?>
-                          看起来这里什么也没有
-                          <?php }?>
-                          </p>
-                        </div>
-                      <?php }?>
+                      <?php }}?>
 					</ul>
 				  </div>
 				</div>  
@@ -167,12 +166,12 @@ $Title=$inTitle .' - '. $oj_name;
 					<li>
 					  <a class="pager-pre-link shortcut-hint" title="Alt+A" <?php
                         if($page_id>1) echo 'href="mail.php?'.htmlspecialchars(get_pre_link()).'"';
-                      ?>><i class="fa fa-fw fa-angle-left"></i> 上一页</a>
+                      ?>><i class="fa fa-fw fa-angle-left"></i> <?php echo _('Previous')?></a>
 					</li>
 					<li>
 					  <a class="pager-next-link shortcut-hint" title="Alt+D" <?php
                         if($page_id<$maxpage) echo 'href="mail.php?'.htmlspecialchars(get_next_link()).'"';
-                      ?>>下一页 <i class="fa fa-fw fa-angle-right"></i></a>
+                      ?>><?php echo _('Next')?> <i class="fa fa-fw fa-angle-right"></i></a>
 					</li>
 				  </ul>
                 </div>
@@ -182,21 +181,21 @@ $Title=$inTitle .' - '. $oj_name;
 				<div class="modal-content">
 				  <div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal">&times;</button>
-					<h4 class="modal-title" id="send_title">新建私信</h4>
+					<h4 class="modal-title" id="send_title"><?php echo _('Send mail')?></h4>
 				  </div>
 				<form action="#" method="post" id="send_form">
 				<div class="modal-body">
                   <div class="row">
 					<div class="form-group col-xs-4">
-					  <label>收信人</label>
+					  <label><?php echo _('To')?></label>
 					  <input type="text" class="form-control" id="input_to" name="touser">
 					</div>
 					<div class="form-group col-xs-8">
-					  <label>主题</label>
+					  <label><?php echo _('Title')?></label>
 					  <input type="text" class="form-control" id="input_title" name="title">
 					</div>
 					<div class="form-group col-xs-12">
-					  <label>内容</label>
+					  <label><?php echo _('Content')?></label>
 					  <textarea class="form-control" id="input_content" rows="10" name="content"></textarea>
 					</div>
                     <div class="form-group col-xs-12">
@@ -205,8 +204,8 @@ $Title=$inTitle .' - '. $oj_name;
                   </div>
 				</div>
 				<div class="modal-footer">
-				  <a href="#" class="btn btn-primary shortcut-hint" title="Alt+S" id="send_btn">发送</a>
-				  <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+				  <a href="#" class="btn btn-primary shortcut-hint" title="Alt+S" id="send_btn"><?php echo _('Send')?></a>
+				  <button type="button" class="btn btn-default" data-dismiss="modal"><?php echo _('Close')?></button>
 				</div>
 				</form>
 			  </div>
@@ -217,15 +216,13 @@ $Title=$inTitle .' - '. $oj_name;
               <div class="modal-content">
                 <div class="modal-header">
                   <button type="button" class="close" data-dismiss="modal">&times;</button>
-                  <h4 class="modal-title">用户信息</h4>
+                  <h4 class="modal-title"><?php echo _('User Profile')?></h4>
                 </div>
-                <div class="modal-body" id="user_status">
-                  <p>信息不可用……</p>
-                </div>
+                <div class="modal-body" id="user_status"></div>
                 <div class="modal-footer">
                   <input type="hidden" name="touser" id="input_touser">
-                  <button class="btn btn-default pull-left" id="btn_mnewmail"><i class="fa fa-fw fa-envelope-o"></i> 发私信</button>
-                  <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                  <button class="btn btn-default pull-left" id="btn_mnewmail"><i class="fa fa-fw fa-envelope-o"></i> <?php echo _('Send mail')?></button>
+                  <button type="button" class="btn btn-default" data-dismiss="modal"><?php echo _('Close')?></button>
                 </div>
               </div>
             </div>
@@ -240,7 +237,7 @@ $Title=$inTitle .' - '. $oj_name;
 		<script type="text/javascript"> 
             var op,mailid;
             function show_user(usr){
-                $('#user_status').html("<p>正在加载...</p>").load("ajax_user.php?user_id="+usr);
+                $('#user_status').html('<i class="fa fa-fw fa-refresh fa-spin"></i> <?php echo _('Loading...')?>').load('ajax_user.php?user_id='+usr);
                 $('#input_touser').val(usr);
                 $('#UserModal').modal('show');
                 return false;
@@ -292,7 +289,7 @@ $Title=$inTitle .' - '. $oj_name;
 							break;
                         case 'edit':
                             op='edit';
-                            $('#send_title').html('编辑私信');
+                            $('#send_title').html('<?php echo _('Edit mail')?>');
                             k=$a.parents('.mail-container'); 
 							mailid=k.parent().css('background-color','').attr('id').substr(4);
 							$('#input_to').val(k.children('.mail-info').find('a').html());
@@ -326,7 +323,7 @@ $Title=$inTitle .' - '. $oj_name;
                 });
 				$('#btn_newmail').click(function(){
                     op='send';
-                    $('#send_title').html('新建私信');
+                    $('#send_title').html('<?php echo _('Send mail')?>');
 					$('#send_result').slideUp();
 					$('#MailModal').modal('show');
 					$('#input_to').focus();

@@ -1,12 +1,20 @@
 <?php
+require 'inc/global.php';
 session_start();
 require 'inc/privilege.php';
-if(!check_priv(PRIV_SYSTEM))
-	die('你没有权限...');
-if(!isset($_SESSION['admin_tfa']) || !$_SESSION['admin_tfa'])
-	die('你没有验证身份...');
-if(!isset($_POST['op']))
-	die('参数无效...');
+if(!check_priv(PRIV_SYSTEM)){
+    echo _('Permission Denied...');
+    exit();
+}
+if(!isset($_SESSION['admin_tfa']) || !$_SESSION['admin_tfa']){
+	echo _('Privilege not authorized...');
+    exit();
+}
+if(!isset($_POST['op'])){
+    echo _('Invalid Argument...');
+    exit();
+}
+
 $op=$_POST['op'];
 require 'inc/database.php';
 require 'inc/problem_flags.php';
@@ -21,18 +29,20 @@ if($op=="list_usr"){
         $keyword=mysqli_real_escape_string($con,trim($_POST['q']));
     }else $keyword='';
 	$res=mysqli_query($con,"select user_id,accesstime,solved,submit,accesstime,defunct,email,privilege,nick from users where (user_id like '%$keyword%' or nick like '%$keyword%') order by defunct desc,privilege desc,user_id limit $page_id,20");
-	if(mysqli_num_rows($res)==0)
-		die ('<div class="text-center none-text none-center"><p><i class="fa fa-meh-o fa-4x"></i></p><p><b>Whoops</b><br>看起来我们并没有找到你想要的东西</p></div>');
+	if(mysqli_num_rows($res)==0){
+		echo '<div class="text-center none-text none-center"><p><i class="fa fa-meh-o fa-4x"></i></p><p><b>Whoops</b><br>',_('Looks like there\'s nothing here'),'</p></div>';
+        exit();
+    }
 ?>
 	<table class="table table-condensed table-striped">
 		<caption></caption>
 		<thead>
 			<tr>
-				<th colspan="2">用户</th>
-                <th style="width:30%">权限</th>
-				<th style="width:15%">最近登录</th>
-				<th style="width:7%">AC量/提交</th>
-                <th style="width:20%">操作</th>
+				<th colspan="2"><?php echo _('User')?></th>
+                <th style="width:30%"><?php echo _('Privilege')?></th>
+				<th style="width:15%"><?php echo _('Last Seen')?></th>
+				<th style="width:10%"><?php echo _('AC/Submit')?></th>
+                <th style="width:20%"><?php echo _('Operations')?></th>
 			</tr>
 		</thead>
 		<tbody>
@@ -41,16 +51,16 @@ if($op=="list_usr"){
 					echo '<tr><td><img class="img-circle" src="'.get_gravatar($row[6],30).'" width="30" height="30"></td>';
                     echo '<td style="text-align:left"><strong><a href="#linkU">'.$row[0].'</a></strong>';
 					if($row[5]=='Y'){
-                      if(is_null($row[1])) echo '<span style="color:red"> 待审核</span>';
-                      else echo '<span style="color:red"> 已禁用</span>';
+                      if(is_null($row[1])) echo '<span style="color:red"> ',_('To Be Reviewed'),'</span>';
+                      else echo '<span style="color:red"> ',_('Disabled'),'</span>';
                     }
 					echo '</td>';
                     echo '<td>'.list_priv($row[7]).'(<span>'.$row[7].'</span>)</td>';
 					echo '<td>',$row[1],'</td>';
-					echo '<td>',$row[2],' / ',$row[3],'</td>';
-                    echo '<td><div class="btn-group"><a href="#email" class="btn btn-default">邮件</a><a href="#priv" class="btn btn-default">权限</a><a href="#del" class="btn btn-default';
+					echo '<td>',$row[2],'/',$row[3],'</td>';
+                    echo '<td><div class="btn-group"><a href="#email" class="btn btn-default">',_('Email'),'</a><a href="#priv" class="btn btn-default">',_('Privilege'),'</a><a href="#del" class="btn btn-default';
                     if($row[7]&PRIV_SYSTEM) echo ' disabled';
-                    if($row[5]=='Y') echo '">启用'; else echo '">禁用';
+                    if($row[5]=='Y') echo '">',_('Enable'); else echo '">',_('Disable');
                     echo '</a></div></td></tr>';
 				}
 			?>
@@ -59,17 +69,18 @@ if($op=="list_usr"){
 <?php
 }else if($op=="list_news"){
 	$res=mysqli_query($con,"select news_id,time,title,importance from news where news_id>0 order by importance desc, news_id desc");
-	if(mysqli_num_rows($res)==0)
-		die ('<div class="alert alert-info">目前还没有发布过新闻...</div>');
+	if(mysqli_num_rows($res)==0){
+		echo '<div class="alert alert-info">',_('There\'s nothing here...'),'</div>';
+    }
 ?>
 	<table class="table table-condensed table-striped">
 		<caption></caption>
 		<thead>
 			<tr>
 				<th style="width:6%">ID</th>
-				<th style="width:20%">日期</th>
-				<th style="width:68%">标题</th>
-				<th style="width:6%">编辑</th>
+				<th style="width:20%"><?php echo _('Date')?></th>
+				<th style="width:62%"><?php echo _('Title')?></th>
+				<th style="width:12%"><?php echo _('Operations')?></th>
 			</tr>
 		</thead>
 		<tbody>
@@ -78,7 +89,7 @@ if($op=="list_usr"){
 					$addt1='';
 					$addt2='';
 					if($row[3]=='1'){
-						$row[2]='[顶置] '.$row[2];
+						$row[2]=_('[Sticky] ').$row[2];
 						$addt1='<b>';
 						$addt2='</b>';
 						}
@@ -92,12 +103,12 @@ if($op=="list_usr"){
 	$res=mysqli_query($con,"select title,experience from experience_titles order by experience");
 ?>
 <table class="table table-striped">
-      <caption>头衔</caption>
+      <caption><?php echo _('Titles')?></caption>
       <thead>
         <tr>
-          <th>经验&nbsp;&ge;</th>
-          <th>头衔</th>
-          <th>操作</th>
+          <th><?php echo _('Experience')?>&nbsp;&ge;</th>
+          <th><?php echo _('Title')?></th>
+          <th><?php echo _('Operations')?></th>
         </tr>
       </thead>
       <tbody>
@@ -125,10 +136,10 @@ EOF;
 ?>
 
 	<table class="table table-striped">
-	<caption>题目经验</caption>
+	<caption><?php echo _('Experience')?></caption>
 	<thead>
-	  <th>等级</th>
-	  <th>经验</th>
+	  <th><?php echo _('Level')?></th>
+	  <th><?php echo _('Experience')?></th>
 	</thead>
 	<tbody>
 	<?php
@@ -215,7 +226,7 @@ if(!isset($_POST['title'])||!isset($_POST['content']))
     if(mysqli_query($con,"update users set privilege='$new_priv' where user_id='$uid'"))
         echo 'success';
     else
-        echo '系统错误...';
+        echo _('Something went wrong...');
 }else if($op=='del_usr'){
 	isset($_POST['user_id']) ? $uid=mysqli_real_escape_string($con,trim($_POST['user_id'])) : die('');
    if(!strcasecmp($uid,$_SESSION['user'])) die('');
@@ -232,7 +243,7 @@ if(!isset($_POST['title'])||!isset($_POST['content']))
 		echo 'success';
     }
 	else
-		echo 'error';
+		echo _('Something went wrong...');
 }else if($op=='toggle_usr'){
 	isset($_POST['user_id']) ?  $uid=mysqli_real_escape_string($con,trim($_POST['user_id'])) : die('');
     $row=mysqli_fetch_row(mysqli_query($con,"select defunct,privilege from users where user_id='$uid'"));
@@ -244,28 +255,45 @@ if(!isset($_POST['title'])||!isset($_POST['content']))
 	if(mysqli_query($con,"insert into news (news_id,content,time) VALUES (0,'$index_text',NOW()) ON DUPLICATE KEY UPDATE content='$index_text', time=NOW()"))
 		echo 'success';
 	else
-		echo 'fail';
+		echo _('Something went wrong...');
 }else if($op=='update_category'){
 	$category=isset($_POST['content']) ? mysqli_real_escape_string($con,trim($_POST['content'])) : '';
 	if(mysqli_query($con,"insert into user_notes (id,problem_id,tags,user_id,content,edit_time) VALUES (0,0,'','root','$category',NOW()) ON DUPLICATE KEY UPDATE content='$category', edit_time=NOW()")) 
 		echo 'success';
 	else
-		echo 'fail';
+		echo _('Something went wrong...');
 }else if($op=='sendemail'){
+    require 'inc/mailsettings.php';
     if(isset($_POST['to_user'])&&!empty($_POST['to_user'])) $uid=mysqli_real_escape_string($con,trim($_POST['to_user']));
-	else die('收件人不能为空...');
+	else {
+        echo _('Reciever can\'t be empty...');
+        exit();
+    }
     if(isset($_POST['title'])&&!empty($_POST['title'])) $title=mysqli_real_escape_string($con,trim($_POST['title']));
-    else die('标题/内容不能为空...');
+    else {
+        echo _('Title can\'t be empty...');
+        exit();
+    }
     if(isset($_POST['content'])&&!empty($_POST['content'])) $content=mysqli_real_escape_string($con,trim(str_replace(array("\r\n", "\r", "\n"), "<br>", $_POST['content'])));
-    else die('内容不能为空...');
+    else {
+        echo _('Content can\'t be empty...');
+        exit();
+    }
     $row=mysqli_fetch_row(mysqli_query($con,"select email from users where user_id='$uid'"));
     echo postmail($row[0],$title,$content);
 }else if($op=='sendemail_all'){
+    require 'inc/mailsettings.php';
     ignore_user_abort(true);
     if(isset($_POST['title'])&&!empty($_POST['title'])) $title=mysqli_real_escape_string($con,trim($_POST['title']));
-    else die('标题/内容不能为空...');
+    else {
+        echo _('Title can\'t be empty...');
+        exit();
+    }
     if(isset($_POST['content'])&&!empty($_POST['content'])) $content=mysqli_real_escape_string($con,trim(str_replace(array("\r\n", "\r", "\n"), "<br>", $_POST['content'])));
-    else die('内容不能为空...');
+    else {
+        echo _('Content can\'t be empty...');
+        exit();
+    }
     $res=mysqli_query($con,"select email from users");
     while($row=mysqli_fetch_row($res)){
       $re='';
@@ -274,5 +302,5 @@ if(!isset($_POST['title'])||!isset($_POST['content']))
     }
     if($re=='') $re='success';
     echo $re;
-}
-?>
+}else
+    echo _('Invalid Argument...');

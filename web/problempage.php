@@ -1,4 +1,5 @@
 <?php 
+require 'inc/global.php';
 require 'inc/ojsettings.php';
 require 'inc/result_type.php';
 require 'inc/lang_conf.php';
@@ -6,6 +7,7 @@ require 'inc/problem_flags.php';
 require 'inc/checklogin.php';
 require 'inc/database.php';
 require 'inc/privilege.php';
+
 $is_contest=false;
 if(isset($_GET['contest_id'])){
 	$cont_id=intval($_GET['contest_id']);
@@ -14,7 +16,7 @@ if(isset($_GET['contest_id'])){
 	$result=mysqli_query($con,$query);
 	$row_cont=mysqli_fetch_row($result);
     if(!$row_cont)
-        $info='看起来这场比赛不存在';
+        $info=_('There\'s no such problem');
     if(time()<strtotime($row_cont[1])){
         header("Location: contestpage.php?contest_id=$cont_id");
         exit();
@@ -44,19 +46,19 @@ $query="select title,description,input,output,sample_input,sample_output,hint,so
 $result=mysqli_query($con,$query);
 $row_prob=mysqli_fetch_row($result);
 if(!$row_prob)
-  $info='看起来这道题目不存在';
+  $info=_('There\'s no such problem');
 switch ($row_prob[13] >> 16) {
   case 0:
-    $comparison='Traditional';
+    $comparison=_('Traditional');
     break;
   case 1:
-    $comparison='Real, precision: '.($row_prob[13] & 65535);
+    $comparison=_('Real, precision: ').($row_prob[13] & 65535);
     break;
   case 2:
-    $comparison='Integer';
+    $comparison=_('Integer');
     break;
   case 3:
-    $comparison='Special Judge';
+    $comparison=_('Special Judge');
     break;
 }
 
@@ -72,26 +74,26 @@ else{
     $query='select min(result) from solution where user_id=\''.$_SESSION['user']."' and problem_id=$prob_id group by problem_id";
     $user_status=mysqli_query($con,$query);
     if(mysqli_num_rows($user_status)==0)
-      $s_info = '<tr><td colspan="2" class="text-center muted" >你还没提交过哦...</td></tr>';
+      $s_info = '<tr><td colspan="2" class="label-re text-center"> '._('Give it a try...').'</td></tr>';
     else{
       $statis=mysqli_fetch_row($user_status);
       if($statis[0]==0){
-        $s_info = '<tr><td colspan="2" class="label-ac text-center"><i class="fa fa-fw fa-check"></i> 恭喜AC!</td></tr>';
+        $s_info = '<tr><td colspan="2" class="label-ac text-center"><i class="fa fa-fw fa-check"></i> '._('Congratulations!').'</td></tr>';
       }else{
-        $s_info = '<tr><td colspan="2" class="label-wa text-center"><i class="fa fa-fw fa-remove"></i> 再试一次吧!</td></tr>';
+        $s_info = '<tr><td colspan="2" class="label-wa text-center"><i class="fa fa-fw fa-remove"></i> '._('Let\'s try again...').'</td></tr>';
       }
     }
     $current_user=$_SESSION['user'];
     $result=mysqli_query($con,"SELECT problem_id FROM saved_problem where user_id='$current_user' and problem_id=$prob_id");
     $mark_flag=mysqli_fetch_row($result);
     if(!($mark_flag)){
-        $mark_icon_class='fa fa-star-o';
-        $mark_btn_class='btn btn-default btn-block';
-        $mark_btn_html='收藏题目';
+        $mark_icon_class='fa fa-fw fa-star-o';
+        $mark_btn_class='btn btn-default form-control';
+        $mark_btn_html=_('Mark');
     }else{
-        $mark_icon_class='fa fa-star';
-        $mark_btn_class='btn btn-danger btn-block';
-        $mark_btn_html='取消收藏';
+        $mark_icon_class='fa fa-fw fa-star';
+        $mark_btn_class='btn btn-danger form-control';
+        $mark_btn_html=_('Unmark');
     }
     $result=mysqli_query($con,"SELECT content,tags FROM user_notes where user_id='$current_user' and problem_id=$prob_id");
     $row_note=mysqli_fetch_row($result);
@@ -106,7 +108,7 @@ else{
     }
 
   }else{
-    $s_info = '<tr><td colspan="2" class="text-center muted" >你还没有登录</td></tr>';
+    $s_info = '<tr><td colspan="2" class="text-center muted"> '._('Please login first...').'</td></tr>';
   } 
   $result=mysqli_query($con,"select submit_user,solved,submit from problem where problem_id=$prob_id");
   $statis=mysqli_fetch_row($result);
@@ -121,8 +123,8 @@ else{
     $arr[$statis[0]]=$statis[1];
   ksort($arr);  
 }
-if($forbidden) $info='看起来你无法访问该题目';
-$inTitle="题目#$prob_id";
+if($forbidden) $info=_('Looks like you can\'t access this page');
+$inTitle=_('Problem')." #$prob_id";
 $Title=$inTitle .' - '. $oj_name;
 ?>
 <!DOCTYPE html>
@@ -143,13 +145,13 @@ $Title=$inTitle .' - '. $oj_name;
 	<?php if($is_contest){?>
 	<div class="alert alert-danger text-center" style="top:50px;height:50px;width:100%;position:fixed;z-index:100;border-radius:0">
     <?php
-        if($prob_num>1) echo '<a href="problempage.php?contest_id=',$cont_id,'&prob=',($prob_num-1),'" class="pull-left"><i class="fa fa-fw fa-angle-left"></i>上一题</a>';
-        else echo '<span class="pull-left"><i class="fa fa-fw fa-angle-left"></i>上一题</span>';
-        echo '题目: ',$prob_num,' / ',$row_cont[4],' &nbsp;&nbsp;';
-        if($rem_time<0) echo '比赛已经结束';
-        else echo '<span id="cont_st">剩余时间: <span id="tday"></span><span id="thour"></span><span id="tmin"></span><span id="tsec"></span></span>';
-        if($prob_num<$row_cont[4]) echo '<a href="problempage.php?contest_id=',$cont_id,'&prob=',($prob_num+1),'" class="pull-right">下一题<i class="fa fa-fw fa-angle-right"></i></a>';
-        else echo '<span class="pull-right">下一题<i class="fa fa-fw fa-angle-right"></i></span>';
+        if($prob_num>1) echo '<a href="problempage.php?contest_id=',$cont_id,'&prob=',($prob_num-1),'" class="pull-left"><i class="fa fa-fw fa-angle-left"></i>',_('Previous'),'</a>';
+        else echo '<span class="pull-left"><i class="fa fa-fw fa-angle-left"></i>',_('Previous'),'</span>';
+        echo _('Problem: '),$prob_num,' / ',$row_cont[4],' &nbsp;&nbsp;';
+        if($rem_time<0) echo _('Contest has ended');
+        else echo '<span id="cont_st">',_('Time Left: '),'<span id="tday"></span><span id="thour"></span><span id="tmin"></span><span id="tsec"></span></span>';
+        if($prob_num<$row_cont[4]) echo '<a href="problempage.php?contest_id=',$cont_id,'&prob=',($prob_num+1),'" class="pull-right">',_('Next'),'<i class="fa fa-fw fa-angle-right"></i></a>';
+        else echo '<span class="pull-right">',_('Next'),'<i class="fa fa-fw fa-angle-right"></i></span>';
 	  ?>
 	</div>
 	<div style="height:50px"></div>
@@ -169,13 +171,13 @@ $Title=$inTitle .' - '. $oj_name;
         <div class="col-xs-12 col-sm-9" id="leftside" style="font-size:16px">
           <div class="text-center">
             <h2><?php echo '#'.$prob_id,' ',$row_prob[0];
-              if($row_prob[11]=='Y')echo ' <span style="vertical-align:middle;font-size:12px" class="label label-danger">已删除</span>';
-              if($is_contest) echo '<a href="contestpage.php?contest_id=',$cont_id,'" class="btn btn-default pull-left"><i class="fa fa-fw fa-home"></i> 比赛主页</a>';?></h2>
+              if($row_prob[11]=='Y')echo ' <span style="vertical-align:middle;font-size:12px" class="label label-danger">',_('Deleted'),'</span>';
+              if($is_contest) echo '<a href="contestpage.php?contest_id=',$cont_id,'" class="btn btn-default pull-left"><i class="fa fa-fw fa-home"></i> ',_('Contest Home'),'</a>';?></h2>
           </div>
           <br>
           <div class="panel panel-default">
             <div class="panel-heading">
-              <h5 class="panel-title">题目描述</h5>
+              <h5 class="panel-title"><?php echo _('Description')?></h5>
             </div>
             <div class="panel-body">
               <?php echo mb_ereg_replace('\r?\n','<br>',$row_prob[1]);?>
@@ -183,7 +185,7 @@ $Title=$inTitle .' - '. $oj_name;
           </div>
           <div class="panel panel-default">
             <div class="panel-heading">
-              <h5 class="panel-title">输入格式</h5>
+              <h5 class="panel-title"><?php echo _('Input')?></h5>
             </div>
             <div class="panel-body">
               <?php echo mb_ereg_replace('\r?\n','<br>',$row_prob[2]);?>
@@ -191,7 +193,7 @@ $Title=$inTitle .' - '. $oj_name;
           </div>
           <div class="panel panel-default">
             <div class="panel-heading">
-              <h5 class="panel-title">输出格式</h5>
+              <h5 class="panel-title"><?php echo _('Output')?></h5>
             </div>
             <div class="panel-body">
               <?php echo mb_ereg_replace('\r?\n','<br>',$row_prob[3]);?>
@@ -199,8 +201,8 @@ $Title=$inTitle .' - '. $oj_name;
           </div>
           <div class="panel panel-default">
             <div class="panel-heading">
-              <h5 class="panel-title">样例输入
-              <a herf="#" class="pull-right" id="copy_in" style="cursor:pointer" data-toggle="tooltip" data-trigger="manual" data-clipboard-action="copy" data-clipboard-target="#sample_input">[复制]</a></h5>
+              <h5 class="panel-title"><?php echo _('Sample Input')?>
+              <a herf="#" class="pull-right" id="copy_in" style="cursor:pointer" data-toggle="tooltip" data-trigger="manual" data-clipboard-action="copy" data-clipboard-target="#sample_input"><?php echo _('[Copy]')?></a></h5>
             </div>
             <div class="panel-body problem-sample" id="sample_input">
               <?php echo mb_ereg_replace('\r?\n','<br>',$row_prob[4]);?>
@@ -208,8 +210,8 @@ $Title=$inTitle .' - '. $oj_name;
           </div>
           <div class="panel panel-default">
             <div class="panel-heading">
-              <h5 class="panel-title">样例输出
-              <a herf="#" class="pull-right" id="copy_out" style="cursor:pointer" data-toggle="tooltip" data-trigger="manual" data-clipboard-action="copy" data-clipboard-target="#sample_output">[复制]</a></h5>
+              <h5 class="panel-title"><?php echo _('Sample Output')?>
+              <a herf="#" class="pull-right" id="copy_out" style="cursor:pointer" data-toggle="tooltip" data-trigger="manual" data-clipboard-action="copy" data-clipboard-target="#sample_output"><?php echo _('[Copy]')?></a></h5>
             </div>
             <div class="panel-body problem-sample" id="sample_output">
               <?php echo mb_ereg_replace('\r?\n','<br>',$row_prob[5]);?>
@@ -218,7 +220,7 @@ $Title=$inTitle .' - '. $oj_name;
           <?php if(strlen($row_prob[6])){ ?>
             <div class="panel panel-default">
               <div class="panel-heading">
-                <h5 class="panel-title">题目提示</h5>
+                <h5 class="panel-title"><?php echo _('Hints')?></h5>
               </div>
               <div class="panel-body">
                 <?php echo mb_ereg_replace('\r?\n','<br>',$row_prob[6]);?>
@@ -227,7 +229,7 @@ $Title=$inTitle .' - '. $oj_name;
           <?php } ?>
           <div class="panel panel-default">
             <div class="panel-heading">
-              <h5 class="panel-title">题目标签</h5>
+              <h5 class="panel-title"><?php echo _('Tags')?></h5>
             </div>
             <div class="panel-body">
               <?php echo mb_ereg_replace('\r?\n','<br>',$row_prob[7]);?>
@@ -237,7 +239,7 @@ $Title=$inTitle .' - '. $oj_name;
         <div class="col-xs-12 col-sm-3" id="rightside">
           <div class="row">
 			<div class="col-xs-12">
-			  <button id="btn_hide" title="Alt+H" class="btn btn-primary shortcut-hint pull-right"><i class="fa fa-fw fa-toggle-on"></i> 隐藏详情</button>
+			  <button id="btn_hide" title="Alt+H" class="btn btn-primary shortcut-hint pull-right"><i class="fa fa-fw fa-toggle-on"></i> <?php echo _('Hide Sidebar')?></button>
 			</div>
 		  </div>
 		  <br> 
@@ -247,11 +249,11 @@ $Title=$inTitle .' - '. $oj_name;
 				<div class="panel-body">
                   <table class="table table-condensed table-striped" style="margin-bottom:0px">
 					<tbody>
-					  <tr><td style="text-align:left">时间限制:</td><td><?php echo $row_prob[8]?> ms</td></tr>
-                      <tr><td style="text-align:left">内存限制:</td><td><?php echo $row_prob[9]?> KB</td></tr>
-                      <tr><td style="text-align:left">每点分值:</td><td><?php echo $row_prob[10]?></td></tr>
-                      <tr><td style="text-align:left">评判方式:</td><td><?php echo $comparison?></td></tr>
-                      <tr><td style="text-align:left">题目等级:</td><td><?php echo $prob_level?></td></tr>
+					  <tr><td style="text-align:left"><?php echo _('Time Limit: ')?></td><td><?php echo $row_prob[8]?> ms</td></tr>
+                      <tr><td style="text-align:left"><?php echo _('Memory Limit: ')?></td><td><?php echo $row_prob[9]?> KB</td></tr>
+                      <tr><td style="text-align:left"><?php echo _('Case Score: ')?></td><td><?php echo $row_prob[10]?></td></tr>
+                      <tr><td style="text-align:left"><?php echo _('Comparison: ')?></td><td><?php echo $comparison?></td></tr>
+                      <tr><td style="text-align:left"><?php echo _('Level: ')?></td><td><?php echo $prob_level?></td></tr>
                     </tbody>
                   </table>
 				</div>
@@ -265,9 +267,9 @@ $Title=$inTitle .' - '. $oj_name;
                   <table class="table table-condensed table-striped" style="margin-bottom:0px">
                     <tbody>
                     <?php echo $s_info ?>
-                    <tr><td style="text-align:left">提交人数:</td><td><?php echo $submit_user?></td></tr>
-                    <tr><td style="text-align:left">通过人数:</td><td><?php echo $solved_user?></td></tr>
-                    <tr><td style="text-align:left">总提交数:</td><td><?php echo $total_submit?></td></tr>
+                    <tr><td style="text-align:left"><?php echo _('User Submitted: ')?></td><td><?php echo $submit_user?></td></tr>
+                    <tr><td style="text-align:left"><?php echo _('User Accepted: ')?></td><td><?php echo $solved_user?></td></tr>
+                    <tr><td style="text-align:left"><?php echo _('Total Submits: ')?></td><td><?php echo $total_submit?></td></tr>
                     <?php
                       foreach ($arr as $type => $cnt) {
 						if(isset($RESULT_TYPE[$type]))
@@ -284,9 +286,9 @@ $Title=$inTitle .' - '. $oj_name;
 		    <div class="col-xs-12 text-center">
 		      <div id="function" class="panel panel-default problem-operation" style="margin-top:10px">
 			    <div class="panel-body">
-			      <a href="#" title="Alt+S" class="btn btn-primary shortcut-hint" id="btn_submit">提交</a>
-                  <a href="record.php?way=time&amp;problem_id=<?php echo $prob_id?>" class="btn btn-success">状态</a>
-                  <a href="board.php?problem_id=<?php echo $prob_id;?>" class="btn btn-warning">讨论</a>
+			      <a href="#" title="Alt+S" class="btn btn-primary shortcut-hint" id="btn_submit"><?php echo _('Submit')?></a>
+                  <a href="record.php?way=time&amp;problem_id=<?php echo $prob_id?>" class="btn btn-success"><?php echo _('Record')?></a>
+                  <a href="board.php?problem_id=<?php echo $prob_id;?>" class="btn btn-warning"><?php echo _('Board')?></a>
                 </div>
               </div>
 		    </div>
@@ -296,9 +298,9 @@ $Title=$inTitle .' - '. $oj_name;
             <div class="col-xs-12 text-center">
               <div class="panel panel-default problem-operation" style="margin-top:10px">
 				<div class="panel-body">
-                  <a href="editproblem.php?problem_id=<?php echo $prob_id?>" class="btn btn-primary">编辑题目</a>
-                  <a href="testcase.php?problem_id=<?php echo $prob_id?>" class="btn btn-warning">测试数据</a>
-                  <span id="action_delete" class="btn btn-danger"><?php echo $row_prob[11]=='N' ? '删除题目' : '恢复题目';?></span>
+                  <a href="editproblem.php?problem_id=<?php echo $prob_id?>" class="btn btn-primary"><?php echo _('Edit')?></a>
+                  <a href="testcase.php?problem_id=<?php echo $prob_id?>" class="btn btn-warning"><?php echo _('Test Cases')?></a>
+                  <span id="action_delete" class="btn btn-danger"><?php echo $row_prob[11]=='N' ? _('Delete') : _('Recover');?></span>
                 </div>
 			  </div>
             </div>
@@ -306,30 +308,30 @@ $Title=$inTitle .' - '. $oj_name;
           <?php }?>
           <?php if(isset($note_content)){ ?>
           <div class="row">
-            <div class="col-xs-12" style="margin-bottom: 20px;">
-              <div class="panel-group <?php if(!$note_exist) echo '隐藏'?>" id="note_panel" >
+            <div class="col-xs-12">
+              <div class="panel-group <?php if(!$note_exist) echo 'collapse'?>" id="note_panel">
                 <div class="panel panel-default">
                   <div class="panel-heading">
-					<b>笔记</b>
-					<a data-toggle="modal" href="#NoteModal" class="btn btn-xs btn-primary pull-right" id="action_edit_note">编辑</a>
+					<b><?php echo _('Notes')?></b>
+					<a data-toggle="modal" href="#NoteModal" class="btn btn-xs btn-primary pull-right" id="action_edit_note"><?php echo _('Edit')?></a>
                   </div>
                   <div class="panel-collapse in collapse">
 					<div class="panel-body note-short" id="note_content">
-					  <?php if(!empty($note_content)) echo htmlspecialchars($note_content);
-							else echo '你还没在这道题上记过笔记哦...'; ?>
+					  <?php echo htmlspecialchars($note_content);?>
 					</div>
 					<div class="panel-body">
-					  <p><strong>标签</strong></p>
+					  <p><strong><?php echo _('Tags')?></strong></p>
                       <span id="user_tags"><?php echo htmlspecialchars($tags)?></span>
-					  <a id="note_new_btn" class="btn btn-success btn-block <?php if($note_exist) echo 'collapse'?>" data-toggle="modal" href="#NoteModal">添加笔记或标签...</a>
                     </div>
                   </div>
                 </div>
               </div>
+              <a href="#" class="btn btn-success form-control <?php if($note_exist) echo 'collapse'?>" style="margin-bottom:10px" id="btn_note" data-toggle="modal" data-target="#NoteModal">
+                <i class="fa fa-fw fa-pencil"></i><?php echo _('Add Notes/Tags')?>
+              </a>
             </div>
 		  </div>
-          <?php }?>
-          <?php if(isset($mark_btn_class)){ ?>
+          <?php }if(isset($mark_btn_class)){ ?>
           <div class="row">
             <div class="col-xs-12">
               <a href="#" class="<?php echo $mark_btn_class?>" id="action_mark">
@@ -347,30 +349,30 @@ $Title=$inTitle .' - '. $oj_name;
         <p>&copy; <?php echo"{$year} {$oj_copy}";?></p>
       </footer>
     </div>
-	
+
   <div class="modal fade" id="SubmitModal" data-keyboard="false">
 	<div class="modal-dialog" id="submit_dialog">
 	  <div class="modal-content" id="submit_content">
 		<div class="modal-header">
             <button type="button" class="close" data-dismiss="modal">&times;</button>
-            <h4 class="modal-title">代码提交: #<?php echo $prob_id?></h4>
+            <h4 class="modal-title"><?php echo _('Submit')," #$prob_id"?></h4>
 		</div>
 		<form method="post" id="form_submit">
 		<input type="hidden" name="op" value="judge">
 		<input type="hidden" id="prob_input" name="problem">
 		<div class="modal-body">
 		  <div class="form-group">
-		    <textarea spellcheck="false" class="form-control" style="resize:none" id="detail_input" rows="14" name="source" placeholder="在这里敲出你的代码..."></textarea>
+		    <textarea spellcheck="false" class="form-control" style="resize:none" id="detail_input" rows="14" name="source" placeholder="<?php echo _('Type your code here...')?>"></textarea>
 		  </div>
-		  <?php if($pref->edrmode=='vim') echo '<samp>指令: <span id="vim_cmd"></span></samp>'?>
+		  <?php if($pref->edrmode=='vim') echo '<samp>',_('Command: '),'<span id="vim_cmd"></span></samp>'?>
           <div class="alert alert-danger collapse" id="submit_res"></div>
 		</div>
 		<div class="modal-footer form-inline">
 		  <div class="row">
-			<div class="form-group col-xs-12 col-sm-4 pull-left" style="padding-left:15px">
+			<div class="form-group col-xs-12 col-sm-5">
 			  <div class="input-group">
 				<span class="input-group-addon">
-                  <input type="checkbox" <?php if($pref->sharecode=='on')echo 'checked';?> name="public">开源
+                  <input type="checkbox" <?php if($pref->sharecode=='on')echo 'checked';?> name="public"><?php echo _('Open Source')?>
 				</span>
 				<select class="form-control" name="language" id="slt_lang" onchange="editor_changemode()">
 				  <?php foreach ($LANG_NAME as $langid => $lang) {
@@ -382,12 +384,12 @@ $Title=$inTitle .' - '. $oj_name;
 				</select>
 			  </div>  
 			</div>
-			<div class="form-group col-xs-12 col-sm-8">
-			  <a href="javascript:void(0)" onclick="return clreditor()" class="btn btn-default shortcut-hint" title="Alt+C">清空</a>
-			  <button class="btn btn-primary shortcut-hint" title="Alt+S" type="submit">提交</button>
-			  <a href="#" class="btn btn-default" data-dismiss="modal">关闭</a>
+			<div class="form-group col-xs-12 col-sm-7">
+			  <a href="javascript:void(0)" onclick="return clreditor()" class="btn btn-danger shortcut-hint" title="Alt+C"><?php echo _('Clear')?></a>
+			  <button class="btn btn-primary shortcut-hint" title="Alt+S" type="submit"><?php echo _('Submit')?></button>
+			  <a href="#" class="btn btn-default" data-dismiss="modal"><?php echo _('Close')?></a>
 			</div>
-		</div>
+          </div>
 		</div>
 		</form>
 	  </div>
@@ -399,13 +401,13 @@ $Title=$inTitle .' - '. $oj_name;
 	  <div class="modal-content">
 		<div class="modal-header">
 		  <button type="button" class="close" data-dismiss="modal">&times;</button>
-		  <h4 class="modal-title">笔记 - <?php echo $prob_id?></h4>
+		  <h4 class="modal-title"><?php echo _('Notes')," #$prob_id"?></h4>
 		</div>
 		<form method="post" id="form_note"> 
 		<div class="modal-body">
 		  <div class="form-group">
-		    <textarea class="form-control" style="resize:none" rows="14" placeholder="在这里写点什么吧..." name="content"><?php echo $note_content?></textarea>
-		    <span class="help-block">这份笔记只能被你自己看见~</span>
+		    <textarea class="form-control" style="resize:none" rows="14" placeholder="<?php echo _('Write something here...')?>" name="content"><?php echo $note_content?></textarea>
+		    <span class="help-block"><?php echo _('Only you can read & edit your very own notes.')?></span>
 		    <input type="hidden" name="problem_id" value="<?php echo $prob_id?>">
 		  </div>
           <div class="alert alert-danger collapse" id="notes_res"></div>
@@ -414,13 +416,13 @@ $Title=$inTitle .' - '. $oj_name;
 		  <div class="row">
 			<div class="form-group col-xs-6 col-sm-7">
 			<div class="input-group pull-left">
-			  <span class="input-group-addon"><b>标签</b></span>
+			  <span class="input-group-addon"><b><?php echo _('Tags')?></b></span>
 			  <input class="form-control" id="tags_edit" type="text" name="tags">
 		    </div>
 			</div>
 			<div class="form-group col-xs-6 col-sm-5">
-		      <button class="btn btn-primary" id="note_submit" type="submit">保存</button>
-		      <a href="#" class="btn btn-default" data-dismiss="modal">关闭</a>
+		      <button class="btn btn-primary" id="note_submit" type="submit"><?php echo _('Save')?></button>
+		      <a href="#" class="btn btn-default" data-dismiss="modal"><?php echo _('Close')?></a>
 			</div>
 		  </div>
 		</div>
@@ -429,8 +431,8 @@ $Title=$inTitle .' - '. $oj_name;
 	</div>
   </div>
   <div id="show_tool" class="bottom-right collapse">
-	<span id="btn_submit2" title="Alt+S" class="btn btn-primary shortcut-hint">提交</span>
-	<span id="btn_show" title="Alt+H" class="btn btn btn-primary shortcut-hint"><i class="fa fa-fw fa-toggle-off"></i> 显示详情</span>
+	<span id="btn_submit2" title="Alt+S" class="btn btn-primary shortcut-hint"><?php echo _('Submit')?></span>
+	<span id="btn_show" title="Alt+H" class="btn btn btn-primary shortcut-hint"><i class="fa fa-fw fa-toggle-off"></i> <?php echo _('Show Sidebar')?></span>
   </div>
     <script src="/assets/js/common.js?v=<?php echo $web_ver?>"></script>
     <script src="/assets/js/clipboard.min.js"></script>
@@ -454,7 +456,7 @@ $Title=$inTitle .' - '. $oj_name;
         var NowTime=new Date();
 		var nMS=EndTime-NowTime.getTime()+SyncTime;
 		if(nMS<0){
-          $('#cont_st').html('比赛已经结束');
+          $('#cont_st').html('<?php echo _('Contest has ended')?>');
 		}else{
           var nD=Math.floor(nMS/86400000),nH=Math.floor(nMS/3600000)%24,nM=Math.floor(nMS/60000)%60,nS=Math.floor(nMS/1000)%60;
           if(nD<10) nD='0'+nD;
@@ -462,10 +464,10 @@ $Title=$inTitle .' - '. $oj_name;
           if(nM<10) nM='0'+nM;
           if(nS<10) nS='0'+nS;
           if(nD==0) $("#tday").hide();
-          else $("#tday").text(nD+' 日 ');
-          $("#thour").text(nH+' 时 ');
-          $("#tmin").text(nM+ ' 分 ');
-          $("#tsec").text(nS+' 秒 ');
+          else $("#tday").text(nD+'<?php echo _('d')?> ');
+          $("#thour").text(nH+'<?php echo _('h')?> ');
+          $("#tmin").text(nM+ '<?php echo _('m')?> ');
+          $("#tsec").text(nS+'<?php echo _('s')?> ');
 		}
       }
 	<?php };if($pref->edrmode!='off'){?>
@@ -531,22 +533,22 @@ $Title=$inTitle .' - '. $oj_name;
 	var clipin = new Clipboard('#copy_in')
 	var clipout = new Clipboard('#copy_out');
     clipin.on('success', function(e) {
-        $('#copy_in').attr('title','复制成功!');
+        $('#copy_in').attr('title','<?php echo _('Copied!')?>');
 		$('#copy_in').tooltip('show');
 		setTimeout("$('#copy_in').tooltip('destroy')",800);
     });
     clipin.on('error', function(e) {
-        $('#copy_in').attr('title','请按Ctrl+C复制...');
+        $('#copy_in').attr('title','<?php echo _('Failed...')?>');
 		$('#copy_in').tooltip('show');
 		setTimeout("$('#copy_in').tooltip('destroy')",800);
     });
 	clipout.on('success', function(e) {
-        $('#copy_out').attr('title','复制成功!');
+        $('#copy_out').attr('title','<?php echo _('Copied!')?>');
 		$('#copy_out').tooltip('show');
 		setTimeout("$('#copy_out').tooltip('destroy')",800);
     });
 	clipout.on('success', function(e) {
-        $('#copy_out').attr('title','请按Ctrl+C复制...');
+        $('#copy_out').attr('title','<?php echo _('Failed...')?>');
 		$('#copy_out').tooltip('show');
 		setTimeout("$('#copy_out').tooltip('destroy')",800);
     });
@@ -573,7 +575,7 @@ $Title=$inTitle .' - '. $oj_name;
         $('#form_submit').submit(function(){
           var code = $('#detail_input').val();
           if($.trim(code) == '' || code.length > 30000){
-            $('#submit_res').html('<i class="fa fa-fw fa-remove"></i> 代码太短或太长...').slideDown();
+            $('#submit_res').html('<i class="fa fa-fw fa-remove"></i> <?php echo _('Your code is too long or too short...')?>').slideDown();
           }else{
             $.ajax({
               type:"POST",
@@ -595,14 +597,18 @@ $Title=$inTitle .' - '. $oj_name;
           $.post('ajax_usernote.php', data, function(res){
             if(/success/.test(res)){
               for (var i = data.length - 1; i >= 0; i--) {
-                if(data[i].name=='content')
-					if($.trim(data[i].value)=='') $('#note_content').html('你还没在这道题上记过笔记哦...');
-					else $('#note_content').html(data[i].value);
-                else if(data[i].name=='tags')
+                if(data[i].name=='content'){
+					if($.trim(data[i].value)==''){
+                        $('#btn_note').show();
+                        $('#note_panel').hide();
+					}else{
+                        $('#note_content').html(data[i].value);
+                        $('#note_panel').show();
+                        $('#btn_note').hide();
+                    }
+                }else if(data[i].name=='tags')
                   $('#user_tags').html(data[i].value);
               };
-              $('#note_new_btn').hide();
-              $('#note_panel').show();
               $('#NoteModal').modal('hide');
             }else{
               $('#notes_res').html('<i class="fa fa-fw fa-remove"></i> '+res).slideDown();
@@ -616,7 +622,7 @@ $Title=$inTitle .' - '. $oj_name;
         });
         $("#action_mark").click(function(){
             var op;
-            if($('#action_mark_html').html()=="收藏题目")
+            if($('#action_mark_html').html()=='<?php echo _('Mark')?>')
                 op="add_saved";
             else
                 op="rm_saved";	
@@ -627,10 +633,10 @@ $Title=$inTitle .' - '. $oj_name;
                     tg.toggleClass("btn-default");
                     tg.find('i').toggleClass('fa-star-o').toggleClass('fa-star');
                     var tg=$("#action_mark_html");
-                    if(tg.html()=="收藏题目")
-                        tg.html("取消收藏");
+                    if(tg.html()=='<?php echo _('Mark')?>')
+                        tg.html('<?php echo _('Unmark')?>');
                     else
-                        tg.html("收藏题目");
+                        tg.html('<?php echo _('Mark')?>');
                 }else{
                     $('#alert_error').html('<i class="fa fa-fw fa-remove"></i> '+msg).fadeIn();
                     setTimeout(function(){$('#alert_error').fadeOut();},2000);
@@ -640,7 +646,7 @@ $Title=$inTitle .' - '. $oj_name;
         });
         function click_submit(){
           <?php if(!isset($_SESSION['user'])){?>
-            $('#alert_error').html('<i class="fa fa-fw fa-remove"></i> 您尚未登录...').fadeIn();
+            $('#alert_error').html('<i class="fa fa-fw fa-remove"></i> <?php echo _('Please login first...')?>').fadeIn();
 			setTimeout(function(){$('#alert_error').fadeOut();},2000);
           <?php }else{?>
             $('#prob_input').val(''+prob);

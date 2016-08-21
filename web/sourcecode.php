@@ -1,11 +1,12 @@
 <?php 
+require 'inc/global.php';
 require 'inc/ojsettings.php';
 require 'inc/privilege.php';
 
 function check_permission($prob_id,$opened,$user)
 {
   if(!isset($_SESSION['user']))
-    return "您尚未登录";
+    return _('Please login first');
   if(strcmp($user,$_SESSION['user'])==0 || check_priv(PRIV_SOURCE))
     return TRUE;
   require 'inc/database.php';
@@ -13,64 +14,55 @@ function check_permission($prob_id,$opened,$user)
   if($opened){
     $row = mysqli_fetch_row(mysqli_query($con,"select has_tex from problem where problem_id=$prob_id"));
     if(!$row)
-      return "不具备该问题";
+      return _('There\'s no such problem');
     $prob_flag = $row[0];
     if(($prob_flag & PROB_IS_HIDE) && !check_priv(PRIV_INSIDER))
-      return '你没有权限访问该题目';
+      return _('Looks like you can\'t access this page');
     if($prob_flag & PROB_DISABLE_OPENSOURCE)
-      return "本段代码尚未开源";
+      return _('This solution is not open-source');
     else if($prob_flag & PROB_SOLVED_OPENSOURCE){
       $query='select min(result) from solution where user_id=\''.$_SESSION['user']."' and problem_id=$prob_id group by problem_id";
       $user_status=mysqli_query($con,$query);
       $row=mysqli_fetch_row($user_status);
       if($row && $row[0]==0)
         return TRUE;
-      return "快滚回去自己写出来了再看";
+      return _('You can\'t see me before solving it');
     }
     return TRUE;
   }
-  return '你不被允许看这份代码。';
+  return _('Looks like you can\'t access this page');
 }
 require 'inc/result_type.php';
 require 'inc/lang_conf.php';
+
+$inTitle=_('Sourcecode');
 if(!isset($_GET['solution_id']))
-    die('Wrong argument.');
-$sol_id=intval($_GET['solution_id']);
-
-require 'inc/checklogin.php';
-require 'inc/database.php';
-$result=mysqli_query($con,"select user_id,time,memory,result,language,code_length,problem_id,public_code from solution where solution_id=$sol_id");
-$row=mysqli_fetch_row($result);
-if(!$row)
-  die('No such solution.');
-
-$ret = check_permission($row[6], $row[7], $row[0]);
-if($ret === TRUE)
-  $allowed = TRUE;
+  $info=_('Please specify the solution id');
 else{
-  $allowed = FALSE;
-  $info=$ret;
-}
-
-if($allowed){
-  $result=mysqli_query($con,"select source from source_code where solution_id=$sol_id");
-  if($tmp=mysqli_fetch_row($result))
-    $source=$tmp[0];
-  else
-    $info = '源代码不可用';
-}
-
-if(isset($_GET['raw'])){
-  if(isset($info)){
-    echo $info;
-  }else{
-    header("Content-Type: text/html; charset=utf-8");
-    echo "<plaintext>",$source;
+  $sol_id=intval($_GET['solution_id']);
+  require 'inc/checklogin.php';
+  require 'inc/database.php';
+  $result=mysqli_query($con,"select user_id,time,memory,result,language,code_length,problem_id,public_code from solution where solution_id=$sol_id");
+  $row=mysqli_fetch_row($result);
+  if(!$row)
+    die('No such solution.');
+  $ret = check_permission($row[6], $row[7], $row[0]);
+  if($ret === TRUE)
+    $allowed = TRUE;
+  else{
+    $allowed = FALSE;
+    $info=$ret;
   }
-  exit(0);
-}
 
-$inTitle="源代码#$sol_id";
+  if($allowed){
+    $result=mysqli_query($con,"select source from source_code where solution_id=$sol_id");
+    if($tmp=mysqli_fetch_row($result))
+      $source=$tmp[0];
+    else
+      $info = _('Sourcecode not available');
+  }
+  $inTitle.=" #$sol_id";
+}
 $Title=$inTitle .' - '. $oj_name;
 ?>
 <!DOCTYPE html>
@@ -92,27 +84,30 @@ $Title=$inTitle .' - '. $oj_name;
       </div>
       <?php }else{?>
         <div class="row text-center">
-            用户:<?php echo $row[0];?>
+          <?php echo _('User: '),$row[0];?>
         </div>
         <div class="row text-center">
-            题目:<?php echo $row[6];?>&nbsp;&nbsp;
-            结果:<?php echo $RESULT_TYPE[$row[3]];?>
+          <?php echo _('Problem: '),$row[6];?>&nbsp;&nbsp;
+          <?php echo _('Result: '),$RESULT_TYPE[$row[3]];?>
         </div>
         <div class="row text-center">
-            大小:<?php echo $row[5];?>&nbsp;&nbsp;
-            语言:<?php echo $LANG_NAME[$row[4]];?>
+          <?php echo _('Size: '),$row[5];?>&nbsp;&nbsp;
+          <?php echo _('Language: '),$LANG_NAME[$row[4]];?>
         </div>
         <div class="row text-center">
-            运行时间:<?php echo $row[1];?>&nbsp;ms&nbsp;
-            运行内存:<?php echo $row[2];?>&nbsp;KB
+            <?php echo _('Time: '),$row[1];?>&nbsp;ms&nbsp;
+            <?php echo _('Memory: '),$row[2];?>&nbsp;KB
         </div>
         <div class="row">
           <div class="col-xs-12">
-			<p><a href="javascript:history.back(-1);" class="btn btn-primary"><< 返回上一页</a>
-            <button class="btn btn-default" onclick="toggle_fullscreen(editor)">全屏 (Ctrl+F11)</button>
-            <button class="btn btn-default" data-clipboard-action="copy" data-toggle="tooltip" data-trigger="manual" id="btn_copy">复制代码</button></p>
+			<a href="javascript:history.back(-1);" class="btn btn-primary"><i class="fa fa-angle-left"></i> <?php echo _('Go Back...')?></a>
+            <div class="btn-group">
+              <button class="btn btn-default" onclick="toggle_fullscreen(editor)"><i class="fa fa-fw fa-expand"></i> <?php echo _('Fullscreen')?> (Ctrl+F11)</button>
+              <button class="btn btn-default" data-clipboard-action="copy" data-toggle="tooltip" data-trigger="manual" id="btn_copy"><i class="fa fa-fw fa-clipboard"></i> <?php echo _('Copy')?></button>
+            </div>
           </div>
         </div>
+        <hr>
         <div class="row">
           <div class="col-xs-12" id="div_code">
               <textarea id="text_code"><?php echo htmlspecialchars($source);?></textarea>
@@ -156,12 +151,12 @@ $Title=$inTitle .' - '. $oj_name;
     }
 	});
     clipboard.on('success', function(e) {
-		$('#btn_copy').attr('title','复制成功!');
+		$('#btn_copy').attr('title','<?php echo _('Copied!')?>');
 		$('#btn_copy').tooltip('show');
 		setTimeout("$('#btn_copy').tooltip('destroy')",800);
     });
     clipboard.on('error', function(e) {
-        $('#btn_copy').attr('title','复制失败...');
+        $('#btn_copy').attr('title','<?php echo _('Failed...')?>');
 		$('#btn_copy').tooltip('show');
 		setTimeout("$('#btn_copy').tooltip('destroy')",800);
     });

@@ -1,4 +1,5 @@
 <?php
+require 'inc/global.php';
 require 'inc/ojsettings.php';
 require 'inc/checklogin.php';
 require 'inc/database.php';
@@ -8,7 +9,7 @@ if(isset($_GET['q']) && strlen($search=trim($_GET['q'])))
   $cond='and user_id=\''.mysqli_real_escape_string($con,$search).'\'';
 
 $result=mysqli_query($con,"select solution_id,user_id,solution.problem_id,score,solution.in_date,title from solution LEFT JOIN problem USING(problem_id) where valid=1 $cond order by solution_id desc limit 100");
-$inTitle='AC记录';
+$inTitle=_('Recent AC');
 $Title=$inTitle .' - '. $oj_name;
 ?>
 <!DOCTYPE html>
@@ -23,10 +24,10 @@ $Title=$inTitle .' - '. $oj_name;
             <table class="table table-hover table-bordered" style="margin-bottom:0">
               <thead><tr>
                 <th>ID</th>
-                <th>用户</th>
-                <th>题目</th>
-                <th>分数</th>
-                <th>日期</th>
+                <th><?php echo _('User')?></th>
+                <th><?php echo _('Problem')?></th>
+                <th><?php echo _('Score')?></th>
+                <th><?php echo _('Date')?></th>
               </tr></thead>
               <tbody id="userlist">
                 <?php 
@@ -48,19 +49,17 @@ $Title=$inTitle .' - '. $oj_name;
           <div class="modal-content">
             <div class="modal-header">
               <button type="button" class="close" data-dismiss="modal">&times;</button>
-              <h4 class="modal-title">用户信息</h4>
+              <h4 class="modal-title"><?php echo _('User Profile')?></h4>
             </div>
-            <div class="modal-body" id="user_status">
-              <p>信息不可用……</p>
-            </div>
+            <div class="modal-body" id="user_status"></div>
             <div class="modal-footer">
               <form action="mail.php" method="post">
                 <input type="hidden" name="touser" id="um_touser">
                 <?php if(isset($_SESSION['user'])){?>
-                <button type="submit" class="btn btn-default pull-left"><i class="fa fa-fw fa-envelope-o"></i> 发私信</button>
+                <button type="submit" class="btn btn-default pull-left"><i class="fa fa-fw fa-envelope-o"></i> <?php echo _('Send Mail')?></button>
                 <?php }?>
               </form>
-              <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+              <button type="button" class="btn btn-default" data-dismiss="modal"><?php echo _('Close')?></button>
             </div>
           </div>
         </div>
@@ -77,9 +76,8 @@ $Title=$inTitle .' - '. $oj_name;
         $('#userlist').click(function(Event){
           var $target=$(Event.target);
           if($target.is('a') && $target.attr('href')=='#linkU'){
-            $('#user_status').html("<p>正在加载...</p>").load("ajax_user.php?user_id="+Event.target.innerHTML).scrollTop(0);
+            $('#user_status').html('<i class="fa fa-fw fa-refresh fa-spin"></i> <?php echo _('Loading...')?>').load("ajax_user.php?user_id="+Event.target.innerHTML).scrollTop(0);
             $('#um_touser').val(Event.target.innerHTML);
-            $('#UserModal').children('.modal-header').children('h4').html('用户信息');
             $('#UserModal').modal('show');
             return false;
           }

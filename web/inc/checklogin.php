@@ -1,5 +1,7 @@
 <?php
-if(!isset($_SESSION)) session_start();
+$check_login=1;
+if(!isset($_SESSION)) 
+    session_start();
 if(!isset($_SESSION['user'])){
 	if(!function_exists('check_cookie')) 
 		require 'inc/cookie.php';

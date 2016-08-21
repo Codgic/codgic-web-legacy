@@ -1,14 +1,15 @@
 <?php
+require 'inc/global.php';
 require 'inc/ojsettings.php';
 require 'inc/checklogin.php';
  
 if(!isset($_SESSION['user'])){
-  $info='你还没有登录';
+  $info=_('Please login first');
 }else{
   require 'inc/database.php';
   $user_id=$_SESSION['user'];
 }
-$inTitle='设置';
+$inTitle=_('Preferences');
 $Title=$inTitle .' - '. $oj_name;
 ?>
 <!DOCTYPE html>
@@ -27,28 +28,28 @@ $Title=$inTitle .' - '. $oj_name;
         </div>
       <?php }else{?>
 	  <div class="col-xs-12">
-		<h2>偏好设置</h2>
+		<h2><?php echo _('Preferences')?></h2>
 		<form id="form_preferences" action="#" method="post" style="margin-top:10px">
 		<div class="row">
 		  <div class="form-group col-xs-6 col-sm-3">
-			<label for="night">主题模式</label>
+			<label for="night"><?php echo _('Theme')?></label>
 			<select class="form-control" name="night" id="slt_night">
-			  <option value="auto">自动切换</option>
-		  	  <option value="off">日间模式</option>
-		 	  <option value="on">夜间模式</option>
+			  <option value="auto"><?php echo _('Auto switch')?></option>
+		  	  <option value="off"><?php echo _('Day mode')?></option>
+		 	  <option value="on"><?php echo _('Night mode')?></option>
 		    </select>
 		    <script>
 			  $('#slt_night').val("<?php echo $pref->night?>");
 		    </script>
 		  </div>
 		  <div class="form-group col-xs-6 col-sm-3">
-			<label for="edrmode">编辑器模式</label>
+			<label for="edrmode"><?php echo _('Code editor')?></label>
 			  <select class="form-control" name="edrmode" id="slt_edrmode">
-			  <option value="default">默认</option>
+			  <option value="default"><?php echo _('Default')?></option>
 			  <option value="vim">Vim</option>
 			  <option value="emacs">Emacs</option>
 			  <option value="sublime">Sublime</option>
-              <option value="off">不使用编辑器</option>
+              <option value="off"><?php echo _('None')?></option>
 		    </select>
 		    <script>
 			  $('#slt_edrmode').val("<?php echo $pref->edrmode?>");
@@ -59,35 +60,36 @@ $Title=$inTitle .' - '. $oj_name;
 		  <div class="col-xs-12"> 
 		    <div class="checkbox">
 			  <label>
-				<input name="sharecode" type="checkbox" <?php if($pref->sharecode=='on')echo 'checked'?>> 默认分享我的代码
+				<input name="sharecode" type="checkbox" <?php if($pref->sharecode=='on')echo 'checked'?>> <?php echo _('Share my code by default.')?>
 			  </label>
 			</div>
-		    <input type="submit" class="btn btn-default" value="保存">
+		    <input type="submit" class="btn btn-default" value="<?php echo _('Save')?>">
 		  </div>
 		</div>
 		</form>
-		<h2>备份我的代码</h2>
+		<h2><?php echo _('Backup my code')?></h2>
           <div class="row">
 			<div class="col-xs-12">
-			你可以通过这里下载所有你AC了的题目最后一次提交的代码。<br>你每周只能执行一次该操作。
+			<?php echo _('Here you can download your last accepted submit of every problem. However, you can execute this not more than once a week.')?>
             <?php
             if(!is_null($pref->backuptime))
               echo "<br><strong>最近一次备份时间: ",date('Y-m-d H:i:s', $pref->backuptime),"</strong>";
             ?>
-			<br><button class="btn btn-default" id="download_btn" style="margin-top:8px">备份并下载</button>
+			<br><button class="btn btn-default" id="download_btn" style="margin-top:8px"><?php echo _('Backup & Download')?></button>
 			</div>
           </div>
           
-          <h2>开源我的代码</h2>
+          <h2><?php echo _('Open my source code')?></h2>
 			<div class="row">
 			  <div class="col-xs-12" style="margin-top:10px">
-                <strong>为什么开源?</strong>
-				  <ol>
-					<li>开源是最有影响力的信息技术文化之一，开源软件丰富并奠基了我们的网站，网络以及世界。</li>
-					<li>如果你开放了你的代码，大家便都可以阅读、使用、发布、理解并提升他们自己的程序，这也在无形中帮助原作者进步。</li>
-					<li>虽然OI题目的代码都相对较短，但其算法往往都不易理解。 开源代码可以让其它的OIer在奋斗过程中少一些烦恼，毕竟我们都曾一样。</li>
-				  </ol>
-				  <button class="btn btn-default" id="open_source">开源所有代码</button>
+                <strong><?php echo _('Why open source?')?></strong>
+				  <ul>
+                    <li><?php echo _('Open-source is an influential cultures which can date back to the early age of computer science\'s history; in addition, open-source softwares are the foundation of the web, the Internet, and our world.')?></li>
+                    <li><?php echo _('If one shares his code, everyone would have the chance to use, distribute, understand and improve the programs, and thus helps the author in return.')?></li>
+                    <li><?php echo _('Codes in OI are relatively short, nevertheless proned to be extremely obscure. Open-sourcing them can help other OIers struggling for solutions, whom we were once alike.')?></li>
+				  </ul>
+                  <div class="alert collapse" id="opensource_res"></div>
+				  <button class="btn btn-default" id="open_source"><?php echo _('Open source all my code')?></button>
 				</div>
 			  </div>  
 		   </div>
@@ -115,9 +117,13 @@ $Title=$inTitle .' - '. $oj_name;
           $('<iframe>').hide().attr('src','backupcode.php').appendTo('body');
         });
         $('#open_source').click(function(){
-          if(!window.confirm("确定要开源你所有的代码?"))
-            return false;
-          $.post('ajax_opensource.php',{id:'all'});
+          $.post('ajax_opensource.php',{id:'all'},function(msg){
+            if(/success/.test(msg))
+              $('#opensource_res').removeClass('alert-danger').addClass('alert-success').html('<i class="fa fa-fw fa-check"></i> <?php echo _('Thanks for making a great contribution!')?>').slideDown();
+            else
+              $('#opensource_res').removeClass('alert-success').addClass('alert-danger').html('<i class="fa fa-fw fa-remove"></i> '+msg).slideDown();
+          });
+          return false;
         });
       });
     </script>

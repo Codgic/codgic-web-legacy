@@ -1,11 +1,12 @@
 <?php
+require 'inc/global.php';
 require 'inc/ojsettings.php';
 if(!isset($_GET['key']))
 	die('Invalid key.');
 $key=$_GET['key'];
 if(strlen($key)!=32 || preg_match('/\W/',$key))
 	die('Invalid key.');
-$inTitle='评测窗口';
+$inTitle=_('Judging');
 $Title=$inTitle .' - '. $oj_name;
 ?>
 <!DOCTYPE html>
@@ -16,20 +17,20 @@ $Title=$inTitle .' - '. $oj_name;
     <div class="container text-center">
     	<div class="row">
         <div class="col-xs-12">
-          <h1 class="text-center">评测结果</h1>
+          <h1 class="text-center"><?php echo _('Results')?></h1>
 		  <hr>
-          <p class="help-block">评测机正在评测你提交的代码，请不要手动关闭或是刷新该页面。<br>评测结束后，该页面会自动刷新。</p>
+          <p class="help-block"><?php echo _('We\'re judging your submitted code, please don\'t close or refresh this page.')?><br><?php echo _('This page will be updated automatically.')?></p>
           <div class="row">
             <div class="col-xs-12">
-              <div id="ele_queue" class="alert alert-info text-center"><strong><i class="fa fa-spinner fa-lg fa-spin"></i> 正在等待，请坐和放宽...</strong></div>
-              <div id="ele_judge" class="collapse alert alert-success text-center"><strong><i class="fa fa-spinner fa-lg fa-spin"></i> 正在评测，请坐和放宽...</strong></div>
+              <div id="ele_queue" class="alert alert-info text-center"><strong><i class="fa fa-spinner fa-lg fa-spin"></i> <?php echo _('Queueing... Sit back and relax.')?></strong></div>
+              <div id="ele_judge" class="collapse alert alert-success text-center"><strong><i class="fa fa-spinner fa-lg fa-spin"></i> <?php echo _('Judging...')?></strong></div>
             </div>
           </div>
           <div class="collapse panel panel-default" id="ele_table">
 			<div class="panel-body" id="ele_body">
             <table class="table table-condensed table-bordered result_table">
               <thead>
-                <tr><th>节点</th><th>结果</th><th>时间</th><th>内存</th><th>分数</th></tr>
+                <tr><th><?php echo _('Case')?></th><th><?php echo _('Result')?></th><th<?php echo _('Time')?></th><th><?php echo _('Memory')?></th><th><?php echo-('Score')?></th></tr>
               </thead>
               <tbody style="color:white" id="ele_tbody"></tbody>
             </table>
@@ -37,8 +38,8 @@ $Title=$inTitle .' - '. $oj_name;
           </div>
           <div class="collapse" id="ele_finish" style="margin-top:15px">
 			<p><b><span id="judge_result" style="font-size:16px"></span></b></p>
-            <ul class="pager"><li class="previous"><a class="pager-pre-link shortcut-hint" title="Alt+P" id="btn_back" href="#"><i class="fa fa-angle-left"></i> 题目页面</a></li>
-            <li class="next"><a class="pager-next-link shortcut-hint" title="Alt+R" href="record.php">提交记录 <i class="fa fa-angle-right"></i></a></li></ul>
+            <ul class="pager"><li class="previous"><a class="pager-pre-link shortcut-hint" title="Alt+P" id="btn_back" href="#"><i class="fa fa-angle-left"></i> <?php echo _('Problem Page')?></a></li>
+            <li class="next"><a class="pager-next-link shortcut-hint" title="Alt+R" href="record.php"><?php echo _('Submit Records')?> <i class="fa fa-angle-right"></i></a></li></ul>
           </div>
         </div>
     	</div>
@@ -60,7 +61,7 @@ $Title=$inTitle .' - '. $oj_name;
       function disp_SE(){
         $("#ele_judge").hide();
         $('#ele_queue').hide();
-        $('#ele_table').removeClass().html('<div class="alert alert-danger text-center"><p>对不起，评测系统出了些问题，你的代码没有被记录。<br>请联系管理员。</p></div>').show();
+        $('#ele_table').removeClass().html('<div class="alert alert-danger text-center"><p><?php echo _('Whoops! Something went wrong...<br>Please contact the administrator.')?></p></div>').show();
         $("#ele_finish").show();
       }
       function htmlEncode(str) {
@@ -82,7 +83,7 @@ $Title=$inTitle .' - '. $oj_name;
           if(obj.state=="invalid"){
             $("#ele_judge").hide();
             $("#ele_queue").hide();
-			$("#judge_result").html('该页面已过期，请到提交记录页查询得分...');
+			$("#judge_result").html('<?php echo _('This page has expired. Check your score in Records.')?>');
             $("#ele_finish").show();
           }else{
             var timeout=2500;
@@ -128,7 +129,7 @@ $Title=$inTitle .' - '. $oj_name;
             if(obj.state=='finish'){
               $('#ele_queue').hide();
               $("#ele_judge").hide();
-			  $("#judge_result").html('评测完成！现在你可以返回题目页面或是提交记录页面了...');
+			  $("#judge_result").html('<?php echo _('All Done! Go back to Problem Page or check out the Records.')?>');
               $("#ele_finish").show();
               return;
             }

@@ -1,4 +1,5 @@
 <?php
+require 'inc/global.php';
 require 'inc/ojsettings.php';
 require 'inc/checklogin.php';
 require 'inc/database.php';
@@ -27,7 +28,7 @@ if(isset($_GET['level'])){
   }else{
 	$result=mysqli_query($con,"select contest_id,title,start_time,end_time,defunct,num,source,judge_way from contest where $addt_cond order by contest_id desc $range");
   }
-  if(mysqli_num_rows($result)==0) $info='该难度下还没有比赛';
+  if(mysqli_num_rows($result)==0) $info=_('There\'s no contest of this level');
 }else{
   //If request contest page
   if(check_priv(PRIV_PROBLEM)){
@@ -51,7 +52,7 @@ if(isset($_GET['level'])){
     header("Location: contest.php");
     exit();
   }else if($page_id>$maxpage){
-    if($maxpage==0) $info='看起来这里还没有比赛';
+    if($maxpage==0) $info=_('Looks like there\'s no contest here');
     else{
       header("Location: contest.php?page_id=$maxpage");
       exit();
@@ -66,9 +67,8 @@ if(isset($_GET['level'])){
   }
 }
 
-$inTitle='比赛';
+$inTitle=_('Contests');
 $Title=$inTitle .' - '. $oj_name;
-//$Title="contest $page_id";
 ?>
 <!DOCTYPE html>
 <html>
@@ -89,11 +89,11 @@ $Title=$inTitle .' - '. $oj_name;
 				else
 				  echo '<li class="active"><a href="contest.php?page_id=',$i,'">',$i,'</a></li>';
 			}?>
-			<li><a href="contest.php?level=0"><i class="fa fa-fw fa-list-ul"></i> 按等级分类 &raquo;</a></li>
+			<li><a href="contest.php?level=0"><i class="fa fa-fw fa-list-ul"></i> <?php echo _('Levels')?> <i class="fa fa-angle-double-right"></i></a></li>
 		  </ul>
 		  <?php }else{?>  
 		  <ul class="pagination">
-			<li><a href="contest.php">&laquo; <i class="fa fa-fw fa-th-list"></i> 所有等级</a></li>
+			<li><a href="contest.php"><i class="fa fa-angle-double-left"></i> <i class="fa fa-fw fa-th-list"></i> <?php echo _('All')?></a></li>
             <?php
               for($i=0;$i<=$level_max;++$i){
                 if($i!=$level)
@@ -123,13 +123,14 @@ $Title=$inTitle .' - '. $oj_name;
 				<th style="width:6%">ID</th>
 				<?php 
 				if(isset($_SESSION['user']))
-				  echo '<th colspan="3">标题</th>';
+				  echo '<th colspan="3">';
 				else
-				  echo '<th>标题</th>';?>
-				<th style="width:15%">开始时间</th>  
-				<th style="width:5%">状态</th>  
-                <th style="width:10%">评分方式</th>
-				<th style="width:25%">比赛标签</th>
+				  echo '<th>';
+                echo _('Title'),'</th>';?>
+				<th style="width:15%"><?php echo _('Start Time')?></th>  
+				<th style="width:5%"><?php echo _('Status')?></th>  
+                <th style="width:10%"><?php echo _('Format')?></th>
+				<th style="width:25%"><?php echo _('Tags')?></th>
               </tr>
               </thead>
               <tbody>
@@ -137,18 +138,21 @@ $Title=$inTitle .' - '. $oj_name;
               while($row=mysqli_fetch_row($result)){
                 switch ($row[7]){
                   case 0:
-                    $judge_way='CWOJ赛制';
+                    $judge_way=_('Training');
                     break;
                   case 1:
-                    $judge_way='类ACM赛制';
+                    $judge_way=_('CWOJ');
                     break;
                   case 2:
-                    $judge_way='类OI赛制';
+                    $judge_way=_('ACM-like');
+                    break;
+                  case 3:
+                    $judge_way=_('OI-like');
                     break;
                 }
-                if(time()>strtotime($row[3])) $cont_status='<span class="label label-wa">已经结束</span>';
-                else if(time()<strtotime($row[2])) $cont_status='<span class="label label-re">尚未开始</span>';
-                else $cont_status='<span class="label label-ac">正在进行</span>';
+                if(time()>strtotime($row[3])) $cont_status='<span class="label label-wa">'._('Ended').'</span>';
+                else if(time()<strtotime($row[2])) $cont_status='<span class="label label-re">'._('Upcoming').'</span>';
+                else $cont_status='<span class="label label-ac">'._('In Progress').'</span>';
                 echo '<tr>';
                 echo '<td>',$row[0],'</td>';
                 if(isset($_SESSION['user'])){
@@ -156,14 +160,14 @@ $Title=$inTitle .' - '. $oj_name;
 				  echo '<td style="text-align:left;border-left:0;">';
                 }else echo '<td style="text-align:left">';
                 echo '<a href="contestpage.php?contest_id=',$row[0],'">',$row[1];
-                if($row[4]=='Y')echo '&nbsp;&nbsp;<span class="label label-danger">已删除</span>';
+                if($row[4]=='Y')echo '&nbsp;&nbsp;<span class="label label-danger">',_('Deleted'),'</span>';
                 echo '</a>';
                 if(isset($_SESSION['user']))
 				  echo '<td class="width-for-2x-icon" style="border-left:0;"><i data-pid="',$row[0],'" class="', is_null($row[10]) ? 'fa fa-star-o' : 'fa fa-star', ' fa-fw fa-2x text-warning save_problem" style="cursor:pointer;"></i></td>';
                 echo'</td><td>',$row[2],'</a></td>';
                 echo '<td>',$cont_status,'</td>';
                 echo '<td>',$judge_way,'</td>';
-                echo '<td>',$row[6],'</td></tr>';
+                echo '<td>',$row[6],"</td></tr>\n";
               }?>
               </tbody>
 		    </table>
@@ -177,22 +181,22 @@ $Title=$inTitle .' - '. $oj_name;
             <?php if(!isset($_GET['level'])){?>
             <a class="pager-pre-link shortcut-hint" title="Alt+A" <?php 
               if($page_id>10) echo 'href="contest.php?page_id='.($page_id-1).'"';
-            ?>><i class="fa fa-fw fa-angle-left"></i>上一页</a>
+            ?>><i class="fa fa-fw fa-angle-left"></i> <?php echo _('Previous')?></a>
             <?php }else{?>
             <a class="pager-pre-link shortcut-hint" title="Alt+A" <?php
               if($page_id>1) echo 'href="contest.php?level='.$level.'&page_id='.($page_id-1).'"';
-            ?>><i class="fa fa-fw fa-angle-left"></i>上一页</a>
+            ?>><i class="fa fa-fw fa-angle-left"></i> <?php echo _('Previous')?></a>
             <?php }?>
           </li>
           <li>
              <?php if(!isset($_GET['level'])){?>
             <a class="pager-next-link shortcut-hint" title="Alt+D" <?php 
               if($page_id<$maxpage) echo 'href="contest.php?page_id='.($page_id+1).'"';
-            ?>>下一页<i class="fa fa-fw fa-angle-right"></i></a>
+            ?>><?php echo _('Next')?> <i class="fa fa-fw fa-angle-right"></i></a>
             <?php }else{?>
             <a class="pager-pre-link shortcut-hint" title="Alt+D" <?php
               if(mysqli_num_rows($result)==100) echo 'href="contest.php?level='.$level.'&page_id='.($page_id+1).'"';
-            ?>>下一页<i class="fa fa-fw fa-angle-right"></i></a>
+            ?>><?php echo _('Next')?> <i class="fa fa-fw fa-angle-right"></i></a>
             <?php }?>
           </li>
         </ul>

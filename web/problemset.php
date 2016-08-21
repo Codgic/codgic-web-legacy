@@ -1,4 +1,5 @@
 <?php
+require 'inc/global.php';
 require 'inc/ojsettings.php';
 require 'inc/checklogin.php';
 require 'inc/database.php';
@@ -27,7 +28,7 @@ if(isset($_GET['level'])){
   }else{
 	$result=mysqli_query($con,"select problem_id,title,accepted,submit,source,defunct from problem where $addt_cond order by problem_id $range");
   }
-  if(mysqli_num_rows($result)==0) $info='该难度下还没有题目';
+  if(mysqli_num_rows($result)==0) $info=_('There\'s no problem of this level');
   
 }else{
   //If request problemset page
@@ -52,7 +53,7 @@ if(isset($_GET['level'])){
     header("Location: problemset.php");
     exit();
   }else if($page_id>$maxpage){
-    if($maxpage==0) $info='看起来这里还没有题目';
+    if($maxpage==0) $info=_('Looks like there\'s no problem here');
     else {
       header("Location: problemset.php?page_id=$maxpage");
       exit();
@@ -67,7 +68,7 @@ if(isset($_GET['level'])){
     $result=mysqli_query($con,"select problem_id,title,accepted,submit,source,defunct from problem where $addt_cond problem_id $range order by problem_id");
   }
 }
-$inTitle='题库';
+$inTitle=_('Problems');
 $Title=$inTitle .' - '. $oj_name;
 //$Title="Problemset $page_id";
 ?>
@@ -90,11 +91,11 @@ $Title=$inTitle .' - '. $oj_name;
 				else
 				  echo '<li class="active"><a href="problemset.php?page_id=',$i,'">',$i,'</a></li>';
 			}?>
-			<li><a href="problemset.php?level=0"><i class="fa fa-fw fa-list-ul"></i> 按等级分类 &raquo;</a></li>
+			<li><a href="problemset.php?level=0"><i class="fa fa-fw fa-list-ul"></i> <?php echo _('Levels')?> <i class="fa fa-angle-double-right"></i></a></li>
 		  </ul>
 		  <?php }else{?>  
 		  <ul class="pagination">
-			<li><a href="problemset.php">&laquo; <i class="fa fa-fw fa-th-list"></i> 所有等级</a></li>
+			<li><a href="problemset.php"><i class="fa fa-angle-double-left"></i> <i class="fa fa-fw fa-th-list"></i> <?php echo _('All')?></a></li>
             <?php
               for($i=0;$i<=$level_max;++$i){
                 if($i!=$level)
@@ -124,12 +125,13 @@ $Title=$inTitle .' - '. $oj_name;
                   <th style="width:6%">ID</th>
                   <?php 
                   if(isset($_SESSION['user']))
-                    echo '<th colspan="3">标题</th>';
+                    echo '<th colspan="3">';
                   else
-                    echo '<th>标题</th>';?>
-                  <th style="width:10%">AC比例</th>
-                  <th style="width:10%">通过率</th>
-                  <th style="width:25%">题目标签</th>
+                    echo '<th>';
+                  echo _('Title'),'</th>';?>
+                  <th style="width:10%"><?php echo _('AC/Submit')?></th>
+                  <th style="width:10%"><?php echo _('AC Ratio')?></th>
+                  <th style="width:25%"><?php echo _('Tags')?></th>
                 </tr>
               </thead>
               <tbody>
@@ -142,7 +144,7 @@ $Title=$inTitle .' - '. $oj_name;
 				  echo '<td style="text-align:left">';
                 }
                 echo '<a href="problempage.php?problem_id=',$row[0],'">',$row[1];
-                if($row[5]=='Y')echo '&nbsp;&nbsp;<span class="label label-danger">已删除</span>';
+                if($row[5]=='Y')echo '&nbsp;&nbsp;<span class="label label-danger">',_('Deleted'),'</span>';
                   echo '</a>';
                 if(isset($_SESSION['user'])){
 				  echo '<td class="width-for-2x-icon" style="border-left:0;"><i data-pid="',$row[0],'" class="', is_null($row[7]) ? 'fa fa-star-o' : 'fa fa-star', ' fa-2x text-warning save_problem" style="cursor:pointer;"></i></td>';
@@ -150,7 +152,7 @@ $Title=$inTitle .' - '. $oj_name;
                 echo '</td><td><a href="record.php?result=0&amp;problem_id=',$row[0],'">',$row[2],'</a>/';
                 echo '<a href="record.php?problem_id=',$row[0],'">',$row[3],'</a></td>';
                 echo '<td>',$row[3] ? intval($row[2]/$row[3]*100) : 0,'%</td>';
-                echo '<td style="text-align:left;">',$row[4],'</td></tr>';
+                echo '<td style="text-align:left;">',$row[4],"</td></tr>\n";
                 }?>
               </tbody>
             </table>
@@ -164,22 +166,22 @@ $Title=$inTitle .' - '. $oj_name;
             <?php if(!isset($_GET['level'])){?>
               <a class="pager-pre-link shortcut-hint" title="Alt+A" <?php 
                 if($page_id>10) echo 'href="problemset.php?page_id='.($page_id-1).'"';
-              ?>><i class="fa fa-fw fa-angle-left"></i>上一页</a>
+              ?>><i class="fa fa-fw fa-angle-left"></i><?php echo _('Previous')?></a>
             <?php }else{?>
               <a class="pager-pre-link shortcut-hint" title="Alt+A" <?php
                 if($page_id>1) echo 'href="problemset.php?level='.$level.'&page_id='.($page_id-1).'"';
-              ?>><i class="fa fa-fw fa-angle-left"></i>上一页</a>
+              ?>><i class="fa fa-fw fa-angle-left"></i><?php echo _('Previous')?></a>
             <?php }?>
           </li>
           <li>
             <?php if(!isset($_GET['level'])){?>
               <a class="pager-next-link shortcut-hint" title="Alt+D" <?php 
                 if($page_id<$maxpage) echo 'href="problemset.php?page_id='.($page_id+1).'"';
-              ?>>下一页<i class="fa fa-fw fa-angle-right"></i></a>
+              ?>><?php echo _('Next')?><i class="fa fa-fw fa-angle-right"></i></a>
             <?php }else{?>
               <a class="pager-pre-link shortcut-hint" title="Alt+D" <?php
                 if(mysqli_num_rows($result)==100) echo 'href="problemset.php?level='.$level.'&page_id='.($page_id+1).'"';
-              ?>>下一页<i class="fa fa-fw fa-angle-right"></i></a>
+              ?>><?php echo _('Next')?><i class="fa fa-fw fa-angle-right"></i></a>
             <?php }?>
           </li>
         </ul>

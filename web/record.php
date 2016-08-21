@@ -1,4 +1,5 @@
 <?php
+require 'inc/global.php';
 require 'inc/ojsettings.php';
 require 'inc/result_type.php';
 require 'inc/lang_conf.php';
@@ -21,7 +22,6 @@ if(isset($_GET['way']) && !preg_match('/\W/',$_GET['way'])){
   $way=$_GET['way'];
   if($way=="time"||$way=="memory"){
     $rank_mode=true;
-    $result=0;
     if(!$problem_id)
       $problem_id=1000;
     $cond.=" and result=0";
@@ -86,6 +86,7 @@ if($problem_id==0)
 $max_solution=0;
 $min_solution=2100000000;
 $num=mysqli_num_rows($res);
+if($num==0) $info=_('Looks like there\'s nothing here');
 
 function get_next_link()
 {
@@ -124,7 +125,7 @@ function get_pre_link()
   }
   return http_build_query($arr); 
 }
-$inTitle='记录';
+$inTitle=_('Record');
 $Title=$inTitle .' - '. $oj_name;
 ?>
 <!DOCTYPE html>
@@ -135,69 +136,76 @@ $Title=$inTitle .' - '. $oj_name;
     <div class="container">
       <div class="row">
           <form action="record.php" method="get" id="form_filter">
-			<div class="form-group col-xs-6 col-md-3 col-lg-2">
-			<label>题目:</label>
+			<div class="form-group col-xs-6 col-md-3 col-lg-3">
+			<label><?php echo _('Problem')?></label>
 			  <div class="input-group">
 				<span class="input-group-addon">
-                  <input <?php if($public_code)echo 'checked'?> id="chk_public" type="checkbox" name="public"> 开源
+                  <input <?php if($public_code)echo 'checked'?> id="chk_public" type="checkbox" name="public"><?php echo _('Open Source');?>
 				</span>
 				<input type="number" class="form-control" name="problem_id" id="ipt_problem_id" value="<?php echo $problem_id?>">
 			  </div>  
 			</div>
 			<div class="form-group col-xs-6 col-md-2 col-lg-2">
-			  <label>用户:</label>
+			  <label><?php echo _('User')?></label>
 			  <div class="input-group">
                 <input type="text" class="form-control" name="user_id" id="ipt_user_id" value="<?php echo $user_id?>">
-                <?php if(isset($_SESSION['user'])) echo'<span class="input-group-addon btn btn-default" id="filter_me" data-myuid="',$_SESSION['user'],'">自己</span>' ?>
+                <?php if(isset($_SESSION['user'])) echo'<span class="input-group-addon btn btn-default" id="filter_me" data-myuid="',$_SESSION['user'],'">',_('Me'),'</span>' ?>
 			  </div>  
 			</div>
 			<div class="form-group col-xs-4 col-sm-4 col-md-2 col-lg-2">
-			  <label>结果:</label>
+			  <label><?php echo _('Result')?></label>
               <select class="form-control" name="result" id="slt_result">
-                <option value="-1">所有</option>
+                <option value="-1"><?php echo _('All')?></option>
                 <?php foreach ($RESULT_TYPE as $type => $str)
                   echo '<option value="',$type,'">',$str,'</option>';
                 ?>
               </select>
 			</div>
 			<div class="form-group col-xs-4 col-sm-3 col-md-2 col-lg-2">
-              <label>语言:</label>
+              <label><?php echo _('Language')?></label>
               <select class="form-control" name="lang" id="slt_lang">
-                <option value="-1">所有</option>
+                <option value="-1"><?php echo _('All')?></option>
                 <?php foreach ($LANG_NAME as $langid => $lang_name)
                 echo '<option value="',$langid,'">',$lang_name,'</option>';
                 ?>
               </select>
 			</div>
 			<div class="form-group col-xs-4 col-sm-3 col-md-2 col-lg-2">
-              <label>排序:</label>
+              <label><?php echo _('Order by')?></label>
               <select class="form-control" name="way" id="slt_way">
-                <option value="none">提交时间</option>
-                <option value="time">运行时间</option>
-                <option value="memory">运行内存</option>
+                <option value="none"><?php echo _('Submit')?></option>
+                <option value="time"><?php echo _('Time')?></option>
+                <option value="memory"><?php echo _('Memory')?></option>
               </select>
 			</div>
-			<div class="form-group col-xs-12 col-sm-2 col-md-1 col-lg-2" style="max-width:200px">
-			  <label class="hidden-xs">操作:</label>
-			  <input class="form-control btn btn-danger" id="btn_reset" type="button" value="重置">
+			<div class="form-group col-xs-12 col-sm-2 col-md-1 col-lg-1" style="max-width:200px">
+			  <label class="hidden-xs"><?php echo _('Operation')?></label>
+			  <input class="form-control btn btn-danger" id="btn_reset" type="button" value="<?php echo _('Reset')?>">
 			</div>  
 		  </form>
       </div>
-	  <br>  
       <div class="row">
-        <div class="col-xs-12 table-responsive">
+        <div class="col-xs-12">
+          <?php if(isset($info)){?>
+            <div class="text-center none-text none-center">
+              <p><i class="fa fa-meh-o fa-4x"></i></p>
+              <p><b>Whoops</b><br>
+              <?php echo $info?></p>
+            </div>
+          <?php }else{?>
+          <div class="table-responsive">
             <table class=" table table-hover table-bordered">
               <thead><tr>
                 <th style="width:6%">ID</th>
-                <th style="width:7%">题目</th>
-                <th style="width:12%">用户</th>
-                <th style="width:11%">结果</th>
-                <th style="width:8%">得分</th>
-                <th style="width:10%">运行时间</th>
-                <th style="width:10%">运行内存</th>
-                <th style="width:8%">文件大小</th>
-                <th style="width:11%">语言</th>
-                <th style="width:17%">提交时间</th>
+                <th style="width:9%"><?php echo _('Problem')?></th>
+                <th style="width:12%"><?php echo _('User')?></th>
+                <th style="width:11%"><?php echo _('Result')?></th>
+                <th style="width:7%"><?php echo _('Score')?></th>
+                <th style="width:10%"><?php echo _('Time')?></th>
+                <th style="width:10%"><?php echo _('Memory')?></th>
+                <th style="width:7%"><?php echo _('Size')?></th>
+                <th style="width:11%"><?php echo _('Language')?></th>
+                <th style="width:17%"><?php echo _('Submit')?></th>
               </tr></thead>
               <tbody id="tab_record">
               <?php
@@ -225,16 +233,18 @@ $Title=$inTitle .' - '. $oj_name;
                 }
               ?>
               </tbody>
-            </table
+            </table>
+          </div>
+          <?php }?>
         </div>  
       </div>
       <div class="row">
         <ul class="pager">
           <li>
-            <a class="pager-pre-link shortcut-hint" title="Alt+A" <?php if($_SERVER['QUERY_STRING']!=htmlspecialchars(get_pre_link())) echo 'href="record.php?'.htmlspecialchars(get_pre_link()).'"'?>><i class="fa fa-angle-left"></i> 上一页</a>
+            <a class="pager-pre-link shortcut-hint" title="Alt+A" <?php if($_SERVER['QUERY_STRING']!=htmlspecialchars(get_pre_link())) echo 'href="record.php?'.htmlspecialchars(get_pre_link()).'"'?>><i class="fa fa-angle-left"></i> <?php echo _('Previous')?></a>
           </li>
           <li>
-            <a class="pager-next-link shortcut-hint" title="Alt+D" <?php if((!$rank_mode&&$solution_id>1020)||($rank_mode&&intval($start_id/20)<intval($maxpage/20))) echo 'href="record.php?'.htmlspecialchars(get_next_link()).'"'?>>下一页 <i class="fa fa-angle-right"></i></a>
+            <a class="pager-next-link shortcut-hint" title="Alt+D" <?php if((!$rank_mode&&$solution_id>1020)||($rank_mode&&intval($start_id/20)<intval($maxpage/20))) echo 'href="record.php?'.htmlspecialchars(get_next_link()).'"'?>><?php echo _('Next')?> <i class="fa fa-angle-right"></i></a>
           </li>
         </ul>
       </div>
@@ -243,19 +253,17 @@ $Title=$inTitle .' - '. $oj_name;
           <div class="modal-content">
             <div class="modal-header">
               <button type="button" class="close" data-dismiss="modal">&times;</button>
-              <h4 class="modal-title">用户信息</h4>
+              <h4 class="modal-title"><?php echo _('User Profile')?></h4>
             </div>
-            <div class="modal-body" id="user_status">
-              <p>信息不可用……</p>
-            </div>
+            <div class="modal-body" id="user_status"></div>
             <div class="modal-footer">
               <form action="mail.php" method="post">
                 <input type="hidden" name="touser" id="input_touser">
                 <?php if(isset($_SESSION['user'])){?>
-                <button type="submit" class="btn btn-default pull-left"><i class="fa fa-fw fa-envelope-o"></i> 发私信</button>
+                <button type="submit" class="btn btn-default pull-left"><i class="fa fa-fw fa-envelope-o"></i> <?php echo _('Send Mail')?></button>
                 <?php }?>
               </form>
-              <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+              <button type="button" class="btn btn-default" data-dismiss="modal"><?php echo _('Close')?></button>
             </div>
           </div>
         </div>
@@ -304,7 +312,7 @@ $Title=$inTitle .' - '. $oj_name;
             });
             return false;
           }else if(h=='#uid'){
-            $('#user_status').html("<p>正在加载...</p>").load("ajax_user.php?user_id="+E.target.innerHTML).scrollTop(0);
+            $('#user_status').html('<i class="fa fa-fw fa-refresh fa-spin"></i> <?php echo _('Loading...')?>').load("ajax_user.php?user_id="+E.target.innerHTML).scrollTop(0);
             $('#input_touser').val(E.target.innerHTML);
             $('#UserModal').modal('show');
             return false;

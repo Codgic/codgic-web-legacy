@@ -24,18 +24,6 @@ footer {
   }
 }
 
-@media (min-width: 768px) and (max-width: 991px) {
-  #search_form {
-    width: 100%
-  }
-}
-
-@media (min-width: 992px) and (max-width: 1199px) {
-  #search_form {
-    width: 200px;
-  }
-}
-
 @media (min-width: 1200px) {
   #search_form {
     width: 300px;
@@ -351,7 +339,8 @@ ul.msg-group {
 	position: fixed;
 	top: 60px;
 	left: 50%;
-	width: 200px;
+	min-width: 200px;
+        max-width: 400px;
 	margin-left: -100px;
 	z-index: 1040
 }
@@ -466,18 +455,6 @@ h1,h2,h3,h4,h5,h6 {
 	-ms-box-sizing: border-box;
 	-o-box-sizing: border-box;
 	box-sizing: border-box
-}
-
-.admin-page .operations>.btn {
-	width: 85px;
-	margin: 20px auto;
-	display: block
-}
-
-.admin-page .meter {
-	width: 260px;
-	margin-left: auto;
-	margin-right: auto
 }
 
 .control_panel h2 {

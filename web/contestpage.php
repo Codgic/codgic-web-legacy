@@ -1,4 +1,5 @@
 <?php 
+require 'inc/global.php';
 require 'inc/ojsettings.php';
 require 'inc/result_type.php';
 require 'inc/lang_conf.php';
@@ -23,16 +24,19 @@ if(isset($_SESSION['user'])){
 $result=mysqli_query($con,$query);
 $row=mysqli_fetch_row($result);
 if(!$row)
-  $info='看起来这场比赛不存在';
+  $info=_('There\'s no such contest');
 switch ($row[8]) {
   case 0:
-    $judge_way='CWOJ赛制';
+    $judge_way=_('Training');
     break;
   case 1:
-    $judge_way='类ACM赛制';
+    $judge_way=_('CWOJ');
     break;
   case 2:
-    $judge_way='类OI赛制';
+    $judge_way=_('ACM-like');
+    break;
+  case 3:
+    $judge_way=_('OI-like');
     break;
 }
 
@@ -49,13 +53,13 @@ else{
   $tot_times=0;
   if(strtotime($row[3])>time()){
     //Contest hasn't started
-    $s_info = '<tr><td colspan="2" class="label-re text-center"><i class="fa fa-fw fa-car"></i> 比赛尚未开始</td></tr>';
+    $s_info = '<tr><td colspan="2" class="label-re text-center"><i class="fa fa-fw fa-car"></i> '._('Contest hasn\'t started').'</td></tr>';
     $cont_status=0;
   }else{
     $prob_arr=unserialize($row[2]);
     if(time()>strtotime($row[4])){
       //Contest has ended
-      $s_info = '<tr><td colspan="2" class="label-wa text-center"><i class="fa fa-fw fa-ambulance"></i> 比赛已经结束</td></tr>';
+      $s_info = '<tr><td colspan="2" class="label-wa text-center"><i class="fa fa-fw fa-ambulance"></i> '._('Contest has ended').'</td></tr>';
       $cont_status=2;
       if($row[11]==NULL){
         //Contest needs updating
@@ -88,13 +92,13 @@ else{
       }
     }else{
       //Contest in progress: live data
-      $s_info = '<tr><td colspan="2" class="label-ac text-center"><i class="fa fa-fw fa-cog fa-spin"></i> 比赛正在进行</td></tr>';
+      $s_info = '<tr><td colspan="2" class="label-ac text-center"><i class="fa fa-fw fa-cog fa-spin"></i> '._('Contest in progress').'</td></tr>';
       $cont_status=1;
       if(isset($row[12])){
         for($i=0;$i<$row[9];$i++){
           $s_row=mysqli_fetch_row(mysqli_query($con,'select title from problem where problem_id='.$prob_arr[$i].' limit 1'));
           $pname_arr[$i]=$s_row[0];
-          if($row[8]==2){ 
+          if($row[8]==3){ 
             //For judge ways that only recognize the first submit
             $s_row=mysqli_fetch_row(mysqli_query($con, "select score,result,in_date from solution where user_id='$user_id' and in_date>'".$row[3]."' and in_date<'".$row[4]."' and problem_id=".$prob_arr[$i].' order by in_date limit 1'));
             //Process score
@@ -117,9 +121,13 @@ else{
             //Process scores
             if(!isset($s_row[0]))
               $s_row[0]=0;
-            if($s_row[0]!=100&&$row[8]==1)
+            if($s_row[0]!=100&&$row[8]==2)
               $s_row[0]=0;
             $score_arr["$prob_arr[$i]"]=$s_row[0];
+            if($row[8]==1&&$s_row[1]!=0){
+                $score_arr["$prob_arr[$i]"]-=5*($s_row[1]-1);
+                if($score_arr["$prob_arr[$i]"]<0) $score_arr["$prob_arr[$i]"]=0;
+            }
             $tot_scores+=$score_arr["$prob_arr[$i]"];
             //Process results
             if(!isset($s_row[2])) $s_row[2]=NULL;
@@ -139,9 +147,9 @@ else{
   }
   $cont_level=($row[6]&PROB_LEVEL_MASK)>>PROB_LEVEL_SHIFT;
 }
-if($forbidden) $info='看起来你无法访问该比赛';
+if($forbidden) $info=_('Looks like you can\'t access this page');
 
-$inTitle="比赛#$cont_id";
+$inTitle=_('Contest')." #$cont_id";
 $Title=$inTitle .' - '. $oj_name;
 ?>
 <!DOCTYPE html>
@@ -168,12 +176,12 @@ $Title=$inTitle .' - '. $oj_name;
       <div class="row">
         <div class="col-xs-12 col-sm-9" id="leftside" style="font-size:16px">
           <div class="text-center">
-            <h2><?php echo '#'.$cont_id,' ',$row[0];if($row[7]=='Y')echo ' <span style="vertical-align:middle;font-size:12px" class="label label-danger">已删除</span>';?></h2>
+            <h2><?php echo '#'.$cont_id,' ',$row[0];if($row[7]=='Y')echo ' <span style="vertical-align:middle;font-size:12px" class="label label-danger">',_('Deleted'),'</span>';?></h2>
           </div>
 		  <br>
           <div class="panel panel-default">
             <div class="panel-heading">
-              <h5 class="panel-title">比赛简介</h5>
+              <h5 class="panel-title"><?php echo _('Description')?></h5>
             </div>
             <div class="panel-body">
               <?php echo mb_ereg_replace('\r?\n','<br>',$row[1]);?>
@@ -181,13 +189,13 @@ $Title=$inTitle .' - '. $oj_name;
           </div>
           <div class="panel panel-default">
             <div class="panel-heading">
-              <h5 class="panel-title">比赛题目</h5>
+              <h5 class="panel-title"><?php echo _('Problems')?></h5>
             </div>
             <?php
               if($cont_status==0){
-                echo '<div class="panel-body">比赛开始后才可看到题目...</div>';
+                echo '<div class="panel-body">',_('You can\'t see me before the contest starts...'),'</div>';
               }else if(!isset($row[12]) && $cont_status!=2){
-                echo '<div class="panel-body">请你先<a href="javascript:void(0)" onclick="return join_cont();">参加比赛</a>...</div>';
+                echo '<div class="panel-body">',_('Please <a href="javascript:void(0)" onclick="return enroll_cont();">enroll in the contest</a> first...'),'</div>';
               }else{?>
               <ul class="list-group">
                 <?php for($i=0;$i<$row[9];$i++){
@@ -195,9 +203,9 @@ $Title=$inTitle .' - '. $oj_name;
                   echo ' <a href="problempage.php?contest_id='.$cont_id.'&prob='.($i+1).'">#'.$prob_arr[$i].' - '.$pname_arr[$i].'</a>';
                   if(isset($row[12])){
                     echo '<span class="pull-right">';
-                    if($row[8]==1){
-                      if($score_arr["$prob_arr[$i]"]==100) echo '<font color="green">已AC</font>';
-                      else echo '<font color="red">未AC</font>';
+                    if($row[8]==2){
+                      if($score_arr["$prob_arr[$i]"]==100) echo '<font color="green">',_('Accepted'),'</font>';
+                      else echo '<font color="red">',_('Not Accepted'),'</font>';
                     }else echo $score_arr["$prob_arr[$i]"];
                     echo '</span></li>';
                   }
@@ -215,7 +223,7 @@ $Title=$inTitle .' - '. $oj_name;
           </div>
           <div class="panel panel-default">
             <div class="panel-heading">
-              <h5 class="panel-title">比赛标签</h5>
+              <h5 class="panel-title"><?php echo _('Tags')?></h5>
             </div>
             <div class="panel-body">
               <?php echo mb_ereg_replace('\r?\n','<br>',$row[5]);?>
@@ -223,15 +231,15 @@ $Title=$inTitle .' - '. $oj_name;
           </div>
           <div class="panel panel-default">
             <div class="panel-heading">
-              <h5 class="panel-title">比赛排名</h5>
+              <h5 class="panel-title"><?php echo _('Rankings')?></h5>
             </div>
-            <div class="panel-body" id="cont_rank"><i class="fa fa-refresh fa-spin fa-fw"></i> 正在刷新，请稍后...</div>
+            <div class="panel-body" id="cont_rank"><i class="fa fa-refresh fa-spin fa-fw"></i> <?php echo _('Loading...')?></div>
           </div>
         </div>
         <div class="col-xs-12 col-sm-3" id="rightside">
           <div class="row">
 			<div class="col-xs-12">
-			  <button id="btn_hide" title="Alt+H" class="btn btn-primary shortcut-hint pull-right"><i class="fa fa-fw fa-toggle-on"></i> 隐藏详情</button>
+			  <button id="btn_hide" title="Alt+H" class="btn btn-primary shortcut-hint pull-right"><i class="fa fa-fw fa-toggle-on"></i> <?php echo _('Hide Sidebar')?></button>
 			</div>
 		  </div>
 		  <br> 
@@ -241,11 +249,11 @@ $Title=$inTitle .' - '. $oj_name;
 				<div class="panel-body">
                   <table class="table table-condensed table-striped" style="margin-bottom:0px">
 					<tbody>
-                      <tr><td style="text-align:left">开始时间:</td><td><?php echo $row[3]?></td></tr>
-                      <tr><td style="text-align:left">结束时间:</td><td><?php echo $row[4]?></td></tr>
-                      <tr><td style="text-align:left">持续时间:</td><td><?php echo get_time_text(strtotime($row[4])-strtotime($row[3]))?></td></tr>
-                      <tr><td style="text-align:left">评分方式:</td><td><?php echo $judge_way?></td></tr>
-                      <tr><td style="text-align:left">比赛等级:</td><td><?php echo $cont_level?></td></tr>
+                      <tr><td style="text-align:left"><?php echo _('Start Time: ')?></td><td><?php echo $row[3]?></td></tr>
+                      <tr><td style="text-align:left"><?php echo _('End Time: ')?></td><td><?php echo $row[4]?></td></tr>
+                      <tr><td style="text-align:left"><?php echo _('Duration: ')?></td><td><?php echo get_time_text(strtotime($row[4])-strtotime($row[3]))?></td></tr>
+                      <tr><td style="text-align:left"><?php echo _('Format: ')?></td><td><?php echo $judge_way?></td></tr>
+                      <tr><td style="text-align:left"><?php echo _('Level: ')?></td><td><?php echo $cont_level?></td></tr>
                     </tbody>
                   </table>
 				</div>
@@ -260,12 +268,12 @@ $Title=$inTitle .' - '. $oj_name;
                     <tbody>
                     <?php echo $s_info ?>
                     <?php if(isset($_SESSION['user'])&&isset($row[12])){?>
-                    <tr><td style="text-align:left">你的分数:</td><td><?php echo $tot_scores?></td></tr>
-					<tr><td style="text-align:left">你的罚时:</td><td><?php echo get_time_text($tot_times)?></td></tr>
+                    <tr><td style="text-align:left"><?php echo _('Your Score: ')?></td><td><?php echo $tot_scores?></td></tr>
+					<tr><td style="text-align:left"><?php echo _('Time Penalty: ')?></td><td><?php echo get_time_text($tot_times)?></td></tr>
                     <?php if($cont_status==2){?>
-                    <tr><td style="text-align:left">你的排名:</td><td><?php echo $row[14]?></td></tr>
+                    <tr><td style="text-align:left"><?php echo _('Your Rank: ')?></td><td><?php echo $row[14]?></td></tr>
                     <?php }}?>
-                    <tr><td style="text-align:left">参赛人数:</td><td><?php echo $row[10]?></td></tr>
+                    <tr><td style="text-align:left"><?php echo _('Competitors: ')?></td><td><?php echo $row[10]?></td></tr>
                     </tbody>
                   </table>
 			    </div>
@@ -276,9 +284,8 @@ $Title=$inTitle .' - '. $oj_name;
 		    <div class="col-xs-12 text-center">
 		      <div id="function" class="panel panel-default problem-operation" style="margin-top:10px">
 			    <div class="panel-body">
-			      <a href="#" title="Alt+S" class="btn btn-primary shortcut-hint" id="btn_submit">参赛</a>
-                  <a href="#" class="btn btn-success" id="btn_rank">排名</a>
-                  <a href="board.php?problem_id=<?php echo $cont_id;?>" class="btn btn-warning disabled">讨论</a>
+			      <a href="#" title="Alt+S" class="btn btn-primary shortcut-hint" id="btn_submit"><?php echo _('Enroll')?></a>
+                  <a href="#" class="btn btn-success" id="btn_rank"><?php echo _('Rankings')?></a>
                 </div>
               </div>
 		    </div>
@@ -288,8 +295,8 @@ $Title=$inTitle .' - '. $oj_name;
             <div class="col-xs-12 text-center">
               <div class="panel panel-default problem-operation" style="margin-top:10px">
 				<div class="panel-body">
-                  <a href="editcontest.php?contest_id=<?php echo $cont_id?>" class="btn btn-primary">编辑比赛</a>
-                  <span id="action_delete" class="btn btn-danger"><?php echo $row[7]=='N' ? '删除比赛' : '恢复比赛';?></span>
+                  <a href="editcontest.php?contest_id=<?php echo $cont_id?>" class="btn btn-primary"><?php echo _('Edit')?></a>
+                  <span id="action_delete" class="btn btn-danger"><?php echo $row[7]=='N' ? _('Delete') : _('Recover');?></span>
                 </div>
 			  </div>
             </div>
@@ -305,8 +312,8 @@ $Title=$inTitle .' - '. $oj_name;
     </div>
 	
     <div id="show_tool" class="bottom-right collapse">
-	  <span id="btn_submit2" title="Alt+S" class="btn btn-primary shortcut-hint">参赛</span>
-	  <span id="btn_show" title="Alt+H" class="btn btn btn-primary shortcut-hint"><i class="fa fa-fw fa-toggle-off"></i> 显示详情</span>
+	  <span id="btn_submit2" title="Alt+S" class="btn btn-primary shortcut-hint"><?php echo _('Enroll')?></span>
+	  <span id="btn_show" title="Alt+H" class="btn btn btn-primary shortcut-hint"><i class="fa fa-fw fa-toggle-off"></i> <?php echo _('Show Sidebar')?></span>
     </div>
     
     <script src="/assets/js/common.js?v=<?php echo $web_ver?>"></script>
@@ -314,9 +321,9 @@ $Title=$inTitle .' - '. $oj_name;
     var cont=<?php echo $cont_id?>;
     change_type(2);
     var hide_info = 0;
-    function join_cont(){
+    function enroll_cont(){
       <?php if(!isset($_SESSION['user'])){?>
-        $('#alert_error').html('<i class="fa fa-fw fa-remove"></i> 你还没有登录...').fadeIn();
+        $('#alert_error').html('<i class="fa fa-fw fa-remove"></i> <?php echo _('Please login first...')?>').fadeIn();
         setTimeout(function(){$('#alert_error').fadeOut();},2000);
       <?php }else{?>
         $.post('ajax_contest.php', {op:'enroll',contest_id:cont}, function(msg){
@@ -352,8 +359,8 @@ $Title=$inTitle .' - '. $oj_name;
             }
           });
         });
-        $('#btn_submit').click(function(){join_cont()});
-        $('#btn_submit2').click(function(){join_cont()});
+        $('#btn_submit').click(function(){enroll_cont()});
+        $('#btn_submit2').click(function(){enroll_cont()});
         $('#btn_rank').click(function(){$("html,body").animate({scrollTop:$("#cont_rank").offset().top},200);});
         function toggle_info(){
           if(hide_info) {
@@ -370,9 +377,7 @@ $Title=$inTitle .' - '. $oj_name;
         }
         $('#btn_hide').click(toggle_info);
         $('#btn_show').click(toggle_info);
-        reg_hotkey(83, function(){ //Alt+S
-            alert('Coming Soon...');
-        });
+        reg_hotkey(83, function(){enroll_cont()}); //Alt+S
         reg_hotkey(72, toggle_info); //Alt+H
       });
     </script>

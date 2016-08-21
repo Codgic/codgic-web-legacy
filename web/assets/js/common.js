@@ -145,14 +145,15 @@ $(document).ready(function(){
 	function checkMail()
 	{
 		$.get("/ajax_mailfunc.php?op=check",function(data){
-			if(isNaN(data)||data=='0')
+                      if(data=='-1')
+                            window.location.reload();
+			else if(isNaN(data)||data=='0')
 				return;
                       $notifier.html(data);
                       if(data>msgnum){
                       msgnum=data;
-			var $alert=$('<div class="alert alert-success text-center alert-popup collapse" id="alert_newmsg"><i class="fa fa-fw fa-info"></i> 你收到了新私信...</div>').appendTo('body');
-                      setTimeout(function(){$alert.fadeIn()},1000);  
-			setTimeout(function(){$alert.fadeOut()},3000);  
+                      $('#alert_newmsg').fadeIn();  
+			setTimeout(function(){$('#alert_newmsg').fadeOut()},2000);  
                     }           
 		});
 	}
@@ -177,14 +178,14 @@ $(document).ready(function(){
 }).keyup(hotkey_hint_dismiss);
 $('#search_input').keyup(hotkey_hint_dismiss);
 $('#nav_searchbtn').click(function(){
-	$('#search_form').addClass("visible-xs-inline-block visible-sm-inline-block");
-       $('#nav_back').removeClass("hidden-xs hidden-sm");
-	$('#nav_left').addClass('hidden-xs hidden-sm');
+	$('#search_form').addClass("visible-xs-inline-block visible-sm-inline-block visible-md-inline-block");
+       $('#nav_back').removeClass("hidden-xs hidden-sm hidden-md");
+	$('#nav_left').addClass('hidden-xs hidden-sm hidden-md');
 	$('#search_input').focus();
 });
 $('#btn_clrsearch').click(function(){
 	$('#search_input').val('');
-       $('#nav_back').addClass("hidden-xs hidden-sm");
-	$('#search_form').removeClass("visible-xs-inline-block visible-sm-inline-block");
-	$('#nav_left').removeClass('hidden-xs hidden-sm');
+       $('#nav_back').addClass("hidden-xs hidden-sm hidden-md");
+	$('#search_form').removeClass("visible-xs-inline-block visible-sm-inline-block visible-md-inline-block");
+	$('#nav_left').removeClass('hidden-xs hidden-sm hidden-md');
 });

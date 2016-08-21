@@ -15,10 +15,10 @@ function my_rsa($value)
 
 function password_right($usr, $pwd_in){
 	require 'inc/database.php';
-    $result=mysqli_query($con,"select password from users where user_id='$usr'");
+    $result=mysqli_query($con,"select password,user_id from users where user_id='$usr' or email='$usr' limit 1");
     if(!($row=mysqli_fetch_row($result)) || !$row[0])
     	return false;
-
+    $usr=$row[1];
 	$pwd_enc=my_rsa($pwd_in);
 	$pwd_real=$row[0];
 	if(ord($pwd_real)!=0){ //password in database is not encrypted password

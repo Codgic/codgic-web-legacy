@@ -1,5 +1,5 @@
 <?php
-define("cookie_key","random string 133 "); //Please enter a random string
+define("cookie_key","Hello_World_CWOJ"); //Please enter a random string
 define("cookie_expire",31536000); //about one year
 
 function check_cookie()

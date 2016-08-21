@@ -1,4 +1,5 @@
 <?php
+require 'inc/global.php';
 require 'inc/ojsettings.php';
 require 'inc/checklogin.php';
 require 'inc/privilege.php';
@@ -24,7 +25,7 @@ if(isset($_POST['paswd'])){
   }
 }
 
-$inTitle='管理员验证';
+$inTitle=_('Admin Verification');
 $Title=$inTitle .' - '. $oj_name;
 ?>
 <!DOCTYPE html>
@@ -39,9 +40,9 @@ $Title=$inTitle .' - '. $oj_name;
           <form class="form-inline text-center" method="post">
             <div class="form-group">
               <div class="input-group">
-               <input type="password" class="form-control" autofoucs id="input_adminpass" name="paswd" placeholder="请再次输入密码...">
+               <input type="password" class="form-control" autofoucs id="input_adminpass" name="paswd" placeholder="<?php echo _('Your pasword...')?>">
                <span class="input-group-btn">
-                  <button type="submit" class="btn btn-default">确定</button>
+                  <button type="submit" class="btn btn-default"><?php echo _('Go')?></button>
                </span>
               </div>
 			</div>
@@ -58,7 +59,6 @@ $Title=$inTitle .' - '. $oj_name;
       $(document).ready(function(){
         $('#input_adminpass').focus();
       });
-
     </script>
   </body>
 </html>

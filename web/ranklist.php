@@ -1,4 +1,5 @@
 <?php
+require 'inc/global.php';
 require 'inc/ojsettings.php';
 require 'inc/checklogin.php';
 
@@ -53,8 +54,7 @@ if($online==0)
 else
   $result=mysqli_query($con,"SELECT user_id,nick,solved,submit,score,accesstime,experience_titles.title FROM (SELECT user_id,nick,solved,submit,score,accesstime,MAX(experience_titles.experience) AS m FROM (SELECT user_id,nick,solved,submit,score,accesstime,experience from users order by score desc,experience desc,solved desc,submit desc)t,experience_titles where t.experience>=experience_titles.experience and (NOW()-accesstime)<=300 GROUP BY user_id)t1 LEFT JOIN experience_titles ON t1.m=experience_titles.experience order by score desc,experience desc,solved desc,submit desc limit $rank,20");
 
-//time()-strtotime($row[5])>300
-$inTitle='排名';
+$inTitle=_('Rank');
 $Title=$inTitle .' - '. $oj_name;
 ?>
 <!DOCTYPE html>
@@ -68,44 +68,44 @@ $Title=$inTitle .' - '. $oj_name;
 	  <div class="row">
         <div class="col-xs-12" style="margin-bottom:10px">
         
-        <a href="solved.php" class="btn btn-success"><i class="fa fa-fw fa-clock-o"></i> 最近AC...</a>
+        <a href="solved.php" class="btn btn-success"><i class="fa fa-fw fa-clock-o"></i> <?php echo _('Recent AC')?></a>
         <?php if($online==0){?>
-          <a href="ranklist.php?online=1" class="btn btn-primary" id="btn_online"><i class="fa fa-fw fa-car"></i> 在线用户</a>
+          <a href="ranklist.php?online=1" class="btn btn-primary" id="btn_online"><i class="fa fa-fw fa-car"></i> <?php echo _('Show Online')?></a>
         <?php }else{?>
-          <a href="ranklist.php" class="btn btn-primary" id="btn_online"><i class="fa fa-fw fa-gamepad"></i> 所有用户</a>
+          <a href="ranklist.php" class="btn btn-primary" id="btn_online"><i class="fa fa-fw fa-gamepad"></i> <?php echo _('Show All')?></a>
         <?php }?>
         <div class="btn-group dropdown">
-          <button class="btn btn-primary dropdown-toggle" id="btn_usrcmp_menu"><i class="fa fa-fw fa-users"></i> 用户比较 <span class="caret"></span></button>
+          <button class="btn btn-primary dropdown-toggle" id="btn_usrcmp_menu"><i class="fa fa-fw fa-users"></i> <?php echo _('User Compare')?> <span class="caret"></span></button>
           <ul class="dropdown-menu dropdown-menu-right" id="usrcmp_menu">
-            <li><input type="text" id="ipt_user1" class="form-control" placeholder="用户1"></li>
-            <li><input type="text" id="ipt_user2" class="form-control" placeholder="用户2"></li>
+            <li><input type="text" id="ipt_user1" class="form-control" placeholder="<?php echo _('User 1')?>"></li>
+            <li><input type="text" id="ipt_user2" class="form-control" placeholder="<?php echo _('User 2')?>"></li>
             <li class="divider"></li>
-            <li><button id="btn_usrcmp" class="btn btn-small btn-primary pull-right" style="margin-right:9px;">比较</button></li>
+            <li><button id="btn_usrcmp" class="btn btn-small btn-primary pull-right" style="margin-right:9px;"><?php echo _('Compare')?></button></li>
           </ul>
         </div>
       </div>
 	  </div>
-      <br>
       <div class="row">
         <?php if(mysqli_num_rows($result)==0){?>
           <div class="text-center none-text none-center">
             <p><i class="fa fa-meh-o fa-4x"></i></p>
             <p><b>Whoops</b><br>
-            看起来这里什么也没有</p>
+            <?php echo _('Looks like there\'s nothing here')?></p>
           </div>
         <?php }else{?>
-        <div class="col-xs-12 table-responsive">
+        <div class="col-xs-12">
+          <div class="table-responsive">
             <table class="table table-hover table-bordered " style="margin-bottom:0 margin-right:10px">
               <thead><tr>
                 <th style="width:5%">No.</th>
-                <th style="width:15%">用户</th>
-                <th style="width:32%">昵称</th>
-                <th style="width:8%">状态</th>
-                <th style="width:8%">头衔</th>
-                <th style="width:8%">分数</th>
-                <th style="width:8%">AC</th>
-                <th style="width:8%">提交数</th>
-                <th style="width:8%">通过率</th>
+                <th style="width:15%"><?php echo _('User')?></th>
+                <th style="width:32%"><?php echo _('Nickname')?></th>
+                <th style="width:8%"><?php echo _('Status')?></th>
+                <th style="width:8%"><?php echo _('Title')?></th>
+                <th style="width:8%"><?php echo _('Score')?></th>
+                <th style="width:8%"><?php echo _('AC')?></th>
+                <th style="width:8%"><?php echo _('Submit')?></th>
+                <th style="width:8%"><?php echo _('AC Ratio')?></th>
               </tr></thead>
               <tbody id="userlist">
                 <?php 
@@ -113,8 +113,8 @@ $Title=$inTitle .' - '. $oj_name;
                     echo '<tr><td>',(++$rank),'</td>';
                     echo '<td><a href="#linkU">',$row[0],'</a></td>';
                     echo '<td>',htmlspecialchars($row[1]),'</td>';
-                    if(time()-strtotime($row[5])<=300) echo '<td><label class="label label-success">在线</label></td>';
-                    else echo '<td><label class="label label-danger">离线</label></td>';
+                    if(time()-strtotime($row[5])<=300) echo '<td><label class="label label-success">',_('Online'),'</label></td>';
+                    else echo '<td><label class="label label-danger">',_('Offline'),'</label></td>';
                     echo '<td>',htmlspecialchars($row[6]),'</td>';
                     echo '<td>',$row[4],'</td>';
                     echo '<td><a href="record.php?user_id=',$row[0],'&amp;result=0">',$row[2],'</a></td>';
@@ -125,16 +125,17 @@ $Title=$inTitle .' - '. $oj_name;
                 ?>
               </tbody>
             </table>
+          </div>
         </div>
         <?php }?>
       </div>
       <div class="row">
         <ul class="pager">
           <li>
-            <a class="pager-pre-link shortcut-hint" title="Alt+A" <?php if($page_id>1) echo 'href="ranklist.php?'.htmlspecialchars(get_pre_link()).'"'?>><i class="fa fa-fw fa-angle-left"></i>上一页</a>
+            <a class="pager-pre-link shortcut-hint" title="Alt+A" <?php if($page_id>1) echo 'href="ranklist.php?'.htmlspecialchars(get_pre_link()).'"'?>><i class="fa fa-fw fa-angle-left"></i> <?php echo _('Previous')?></a>
           </li>
           <li>
-            <a class="pager-next-link shortcut-hint" title="Alt+D" <?php if($page_id<$maxpage) echo'href="ranklist.php?'.htmlspecialchars(get_next_link()).'"'?>>下一页<i class="fa fa-fw fa-angle-right"></i></a>
+            <a class="pager-next-link shortcut-hint" title="Alt+D" <?php if($page_id<$maxpage) echo'href="ranklist.php?'.htmlspecialchars(get_next_link()).'"'?>><?php echo _('Next')?> <i class="fa fa-fw fa-angle-right"></i></a>
           </li>
         </ul>
       </div>  
@@ -143,19 +144,18 @@ $Title=$inTitle .' - '. $oj_name;
           <div class="modal-content">
             <div class="modal-header">
               <button type="button" class="close" data-dismiss="modal">&times;</button>
-              <h4 class="modal-title">用户信息</h4>
+              <h4 class="modal-title" id="modal_title"><?php echo _('User Profile')?></h4>
             </div>
             <div class="modal-body" id="user_status">
-              <p>信息不可用……</p>
             </div>
             <div class="modal-footer">
               <form action="mail.php" method="post">
                 <input type="hidden" name="touser" id="um_touser">
                 <?php if(isset($_SESSION['user'])){?>
-                <button type="submit" class="btn btn-default pull-left"><i class="fa fa-fw fa-envelope-o"></i> 发私信</button>
+                <button type="submit" class="btn btn-default pull-left" id="btn_mail"><i class="fa fa-fw fa-envelope-o"></i> <?php echo _('Send Mail')?></button>
                 <?php }?>
               </form>
-              <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+              <button type="button" class="btn btn-default" data-dismiss="modal"><?php echo _('Close')?></button>
             </div>
 		  </div>
         </div>
@@ -192,21 +192,21 @@ $Title=$inTitle .' - '. $oj_name;
         var arr1=[],arr2=[],ist=[];
         content='<table class="table table-condensed table-left-aligned" style="margin-bottom:0px;">';
         intersection(info1.solved,info2.solved,arr1,arr2,ist);
-        content+='<tr class="success"><td>只有'+id1;
-        content+='才AC的题目:</td></tr><tr><td><samp>';output(arr1);
-        content+='</samp></td></tr><tr class="success"><td>只有'+id2;
-        content+='才AC的题目:</td></tr><tr><td><samp>';output(arr2);
-        content+='</samp></td></tr><tr class="success"><td>'+id1+'与'+id2;
-        content+='同时AC的题目:</td></tr><tr><td><samp>';output(ist);
+        content+='<tr class="success"><td><?php echo _('Problems only solved by \'+id1+\'')?></td></tr><tr><td><samp>';
+        output(arr1);
+        content+='</samp></td></tr><tr class="success"><td><?php echo _('Problems only solved by \'+id2+\'')?></td></tr><tr><td><samp>';
+        output(arr2);
+        content+='</samp></td></tr><tr class="success"><td><?php echo _('Problems solved by both \'+id1+\' and \'+id2+\'')?></td></tr><tr><td><samp>';
+        output(ist);
         content+='</samp></td></tr>';
         arr1=[];arr2=[];ist=[];
         intersection(info1.failed,info2.failed,arr1,arr2,ist);
-        content+='<tr class="danger"><td>只有'+id1;
-        content+='提交过但没AC的题目:</td></tr><tr><td><samp>';output(arr1);
-        content+='</samp></td></tr><tr class="danger"><td>只有'+id2;
-        content+='提交过但没AC的题目:</td></tr><tr><td><samp>';output(arr2);
-        content+='</samp></td></tr><tr class="danger"><td>'+id1+'与'+id2;
-        content+='提交过但没AC的题目:</td></tr><tr><td><samp>';output(ist);
+        content+='<tr class="danger"><td><?php echo _('Problems only \'+id1+\' tried but failed')?></td></tr><tr><td><samp>';
+        output(arr1);
+        content+='</samp></td></tr><tr class="danger"><td><?php echo _('Problems only \'+id2+\' tried but failed')?></td></tr><tr><td><samp>';
+        output(arr2);
+        content+='</samp></td></tr><tr class="danger"><td><?php echo _('Problems both \'+id1+\' and \'+id2+\' tried but failed')?></td></tr><tr><td><samp>';
+        output(ist);
         content+='</samp></td></tr></table>';
       }
       $(document).ready(function(){
@@ -214,9 +214,10 @@ $Title=$inTitle .' - '. $oj_name;
         $('#userlist').click(function(Event){
           var $target=$(Event.target);
           if($target.is('a') && $target.attr('href')=='#linkU'){
-            $('#user_status').html("<p>正在加载...</p>").load("ajax_user.php?user_id="+Event.target.innerHTML).scrollTop(0);
+            $('#user_status').html('<i class="fa fa-fw fa-refresh fa-spin"></i> <?php echo _('Loading...')?>').load("ajax_user.php?user_id="+Event.target.innerHTML).scrollTop(0);
             $('#um_touser').val(Event.target.innerHTML);
-            $('#UserModal').children('.modal-header').children('h4').html('用户信息');
+            $('#modal_title').html('<?php echo _('User Profile')?>');
+            $('#btn_mail').show();
             $('#UserModal').modal('show');
             return false;
           }
@@ -228,31 +229,32 @@ $Title=$inTitle .' - '. $oj_name;
           var user1=$.trim($('#ipt_user1').val());
           var user2=$.trim($('#ipt_user2').val());
           if(!user1||!user2){
-			  $('#alert_error').html('<i class="fa fa-fw fa-remove"></i> 人不齐怎么比...').fadeIn();
+			  $('#alert_error').html("<i class=\"fa fa-fw fa-remove\"></i> <?php echo _('There\'s only one user...')?>").fadeIn();
 			  setTimeout(function(){$('#alert_error').fadeOut();},2000);
               return;
 		  }
 		  if(user1==user2){
-			  $('#alert_error').html('<i class="fa fa-fw fa-remove"></i> 才不陪你玩呢...').fadeIn();
+			  $('#alert_error').html("<i class=\"fa fa-fw fa-remove\"></i> <?php echo _('That\'s meaningless...')?>").fadeIn();
 			  setTimeout(function(){$('#alert_error').fadeOut();},2000);
               return;
 		  }
           $.getJSON("ajax_user.php?type=json&user_id="+user1, function(info1){
             if(info1.hasOwnProperty('nobody')){
-			  $('#alert_error').html('<i class="fa fa-fw fa-remove"></i> 用户 "'+user1+'" 不存在...').fadeIn();
+			  $('#alert_error').html('<i class="fa fa-fw fa-remove"></i> <?php echo _('User "\'+user1+\'" does not exist...')?>').fadeIn();
 			  setTimeout(function(){$('#alert_error').fadeOut();},2000);
               return;
             }
             $.getJSON("ajax_user.php?type=json&user_id="+user2, function(info2){
               if(info2.hasOwnProperty('nobody')){
-                $('#alert_error').html('<i class="fa fa-fw fa-remove"></i> 用户 "'+user2+'" 不存在...').fadeIn();
+                $('#alert_error').html('<i class="fa fa-fw fa-remove"></i> <?php echo _('User "\'+user2+\'" does not exist...')?>').fadeIn();
 			    setTimeout(function(){$('#alert_error').fadeOut();},2000);
 				return;
               }
               $('#usrcmp_menu').parent().removeClass('open');
               user_diff(user1,info1,user2,info2);
               $('#user_status').html(content).scrollTop(0);
-              $('#UserModal').children('.modal-header').children('h4').html(user1+' vs '+user2);
+              $('#modal_title').html(user1+' vs '+user2);
+              $('#btn_mail').hide();
               $('#UserModal').modal('show');
               return false;
             });

@@ -1,7 +1,9 @@
 <?php
+require 'inc/global.php';
 require 'inc/ojsettings.php';
 require 'inc/checklogin.php';
 require 'inc/privilege.php';
+
 if(!check_priv(PRIV_PROBLEM) && !check_priv(PRIV_SYSTEM)){
   include '403.php';
 }else if(!isset($_SESSION['admin_tfa']) || !$_SESSION['admin_tfa']){
@@ -15,7 +17,7 @@ if(!check_priv(PRIV_PROBLEM) && !check_priv(PRIV_SYSTEM)){
   $res=mysqli_query($con,"select content from user_notes where id=0 limit 1");
   $category=($res && ($row=mysqli_fetch_row($res))) ? str_replace('<br>', "\n", $row[0]) : '';
 
-$inTitle='管理';
+$inTitle=_('Administration');
 $Title=$inTitle .' - '. $oj_name;
 ?>
 <!DOCTYPE html>
@@ -24,45 +26,47 @@ $Title=$inTitle .' - '. $oj_name;
   <body>
     <?php require 'page_header.php'; ?>  
           
-    <div class="container admin-page">
+    <div class="container">
       <div class="row">
         <div class="col-xs-12">
 		  <ul class="nav nav-pills" id="nav_tab">
-			<li class="active"><a href="#home" data-toggle="tab"><i class="fa fa-fw fa-home"></i> <span class="hidden-xs">主页</span></a></li>
+			<li class="active"><a href="#home" data-toggle="tab"><i class="fa fa-fw fa-home"></i> <span class="hidden-xs"><?php echo _('Home')?></span></a></li>
             <?php if(check_priv(PRIV_SYSTEM)){?>
-			<li><a href="#news" data-toggle="tab"><i class="fa fa-fw fa-newspaper-o"></i> <span class="hidden-xs">新闻</span></a></li>
-			<li><a href="#experience" data-toggle="tab"><i class="fa fa-fw fa-diamond"></i> <span class="hidden-xs">经验</span></a></li>
-			<li><a href="#user" data-toggle="tab"><i class="fa fa-fw fa-users"></i> <span class="hidden-xs">用户</span></a></li>
+			<li><a href="#news" data-toggle="tab"><i class="fa fa-fw fa-newspaper-o"></i> <span class="hidden-xs"><?php echo _('News')?></span></a></li>
+			<li><a href="#experience" data-toggle="tab"><i class="fa fa-fw fa-diamond"></i> <span class="hidden-xs"><?php echo _('Experience')?></span></a></li>
+			<li><a href="#user" data-toggle="tab"><i class="fa fa-fw fa-users"></i> <span class="hidden-xs"><?php echo _('Users')?></span></a></li>
             <?php }?>
 		  </ul>
 		  <br>
           <div class="tab-content">
 			<div class="tab-pane fade in active" id="home">
 			  <div class="row">
-				<div class="col-xs-12 col-sm-3 operations">
-				  <h3 class="text-center">题目</h3>
-				  <a href="editproblem.php" class="btn btn-primary">添加题目</a>
-                  <a href="editcontest.php" class="btn btn-primary">添加比赛</a>
-				  <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#CategoryModal">题目分类</a>
-                  <a href="#" class="btn btn-warning" data-toggle="modal" data-target="#RejudgeModal">重新评测</a>
+				<div class="col-xs-12 col-sm-3">
+				  <h3 class="text-center"><?php echo _('Getting Started')?></h3><br>
+                  <ul class="nav nav-pills nav-stacked">
+				  <li><a href="editproblem.php"><i class="fa fa-fw fa-coffee"></i> <?php echo _('New Problem...')?></a></li>
+                  <li><a href="editcontest.php"><i class="fa fa-fw fa-compass"></i> <?php echo _('New Contest...')?></a></li>
+				  <li><a href="#" data-toggle="modal" data-target="#CategoryModal"><i class="fa fa-fw fa-th-list"></i> <?php echo _('Problem Categories...')?></a></li>
+                  <li><a href="#" data-toggle="modal" data-target="#RejudgeModal"><i class="fa fa-fw fa-refresh"></i> <?php echo _('Rejudge...')?></a></li>
+                  </ul>
                 </div>
 				<hr class="visible-xs">
                 <div class="col-xs-12 col-sm-5">
-                  <h3 class="text-center">主页</h3><br>
+                  <h3 class="text-center"><?php echo _('Home')?></h3><br>
                   <form action="#" method="post" id="form_index">
 					<input type="hidden" name="op" value="update_index">
 					<div class="form-group">  
 					  <textarea class="form-control" name="text" rows="10"><?php echo htmlspecialchars($index_text)?></textarea>
 					</div>  
-                    <div class="alert alert-success collapse" id="alert_result"><i class="fa fa-fw fa-check"></i> 主页更新成功!</div>
+                    <div class="alert alert-success collapse" id="alert_result"></div>
                     <div class="pull-right">
-					  <input type="submit" class="btn btn-default" value="更新">
+					  <input type="submit" class="btn btn-default" value="<?php echo _('Save')?>">
                     </div>
                   </form>
                 </div>
 				<hr class="visible-xs">
                 <div class="col-xs-12 col-sm-4">
-                  <h3 class="text-center" id="meter_title">系统信息</h3>
+                  <h3 class="text-center" id="meter_title"><?php echo _('System Information')?></h3>
 				  <br>
 				  <label>CPU:</label>
 				  <div class="progress">
@@ -82,10 +86,10 @@ $Title=$inTitle .' - '. $oj_name;
               <div class="row">
                 <div class="col-xs-12">
                   <div class="pull-right">
-                    <button class="btn btn-primary" id="new_news">添加新闻...</buttton>
+                    <button class="btn btn-primary" id="new_news"><i class="fa fa-fw fa-file-text-o"></i> <?php echo _('Add News...')?></buttton>
                   </div>
                   <div id="table_news">
-                    <div class="alert alert-info col-sm-6"><i class="fa fa-circle-o-notch fa-spin"></i> 正在加载新闻...</div>
+                    <div class="alert alert-info col-sm-6"><i class="fa fa-circle-o-notch fa-spin"></i> <?php echo _('Loading...')?></div>
                   </div>
                 </div>
               </div>
@@ -95,9 +99,9 @@ $Title=$inTitle .' - '. $oj_name;
                 <div class="col-xs-12 col-sm-6">
                   <div id="table_experience_title"></div>
                     <form action="admin.php" method="post" class="form-inline" id="form_experience_title">
-                      <input type="text" id="input_experience" name="experience" class="form-control" placeholder="经验值&nbsp;&ge;">&nbsp;&nbsp;
-                      <input type="text" id="input_experience_title" name="title" class="form-control" placeholder="头衔">&nbsp;&nbsp;
-                      <input type="submit" class="btn btn-default" value="添加">
+                      <input type="text" id="input_experience" name="experience" class="form-control" placeholder="<?php echo _('Experience')?>&nbsp;&ge;">&nbsp;&nbsp;
+                      <input type="text" id="input_experience_title" name="title" class="form-control" placeholder="<?php echo _('Title')?>">&nbsp;&nbsp;
+                      <input type="submit" class="btn btn-default" value="<?php echo _('Add')?>">
                       <input type="hidden" name="op" value="add_experience_title">
 					</form>
                   </div>
@@ -105,7 +109,7 @@ $Title=$inTitle .' - '. $oj_name;
                   <div class="col-xs-12 col-sm-6">
                     <form action="admin.php" method="post" id="form_level_experience">
                       <div id="table_level_experience"></div>
-                      <input type="submit" class="btn btn-default" value="更新">
+                      <input type="submit" class="btn btn-default" value="<?php echo _('Save')?>">
                       <input type="hidden" name="op" value="update_level_experience">
                     </form>
                   </div>
@@ -115,12 +119,12 @@ $Title=$inTitle .' - '. $oj_name;
 				<div class="row">
                   <div class="col-xs-4 pull-left">
                     <div class="btn-group">
-                      <a class="btn btn-default" id="btn_emailall"><i class="fa fa-fw fa-envelope"></i> 群发邮件</a>
+                      <a class="btn btn-default" id="btn_emailall"><i class="fa fa-fw fa-envelope"></i> <?php echo _('Send Email to All')?></a>
                     </div>
                   </div>
                   <div class="col-xs-8 col-sm-5 col-md-3 pull-right">
                     <div class="form-group has-feedback">
-                      <input class="form-control" id="user_q" name="q" type="text" placeholder="搜索用户...">
+                      <input class="form-control" id="user_q" name="q" type="text" placeholder="<?php echo _('Search User...')?>">
                       <span class="form-control-feedback"><i class="fa fa-fw fa-user"></i></span>
                     </div>
                   </div>
@@ -133,10 +137,10 @@ $Title=$inTitle .' - '. $oj_name;
                 <div class="row">
                   <ul class="pager">
                     <li>
-                      <a class="pager-pre-link shortcut-hint" title="Alt+A" href="#" id="usr_pre"><i class="fa fa-fw fa-angle-left"></i> 上一页</a>
+                      <a class="pager-pre-link shortcut-hint" title="Alt+A" href="#" id="usr_pre"><i class="fa fa-fw fa-angle-left"></i> <?php echo _('Previous')?></a>
                     </li>
                     <li>
-                      <a class="pager-next-link shortcut-hint" title="Alt+D" href="#" id="usr_nxt">下一页 <i class="fa fa-fw fa-angle-right"></i></a>
+                      <a class="pager-next-link shortcut-hint" title="Alt+D" href="#" id="usr_nxt"><?php echo _('Next')?> <i class="fa fa-fw fa-angle-right"></i></a>
                     </li>
                   </ul>
                 </div>
@@ -152,18 +156,18 @@ $Title=$inTitle .' - '. $oj_name;
             <div class="modal-content">
               <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">题目分类编辑</h4>
+                <h4 class="modal-title"><?php echo _('Problem Categories')?></h4>
               </div>
               <form action="#" method="post" id="form_category"> 
               <div class="modal-body">
                 <div class="form-group">
-                  <textarea class="form-control" id="input_category" rows="16" name="source" placeholder="请输入显示在首页的题目分类列表代码..."><?php echo $category?></textarea>
+                  <textarea class="form-control" id="input_category" rows="16" name="source" placeholder="<?php echo _('Please input HTML code...')?>"><?php echo $category?></textarea>
                 </div>
-              <div class="alert alert-danger collapse" id="addcategory_res"><i class="fa fa-fw fa-remove"></i> 发生错误...</div>
+              <div class="alert alert-danger collapse" id="addcategory_res"></div>
             </div>
             <div class="modal-footer">
-              <button class="btn btn-primary" type="submit">提交</button>
-              <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+              <button class="btn btn-primary" type="submit"><?php echo _('Save')?></button>
+              <button type="button" class="btn btn-default" data-dismiss="modal"><?php echo _('Close')?></button>
             </div>
             </form> 
           </div>
@@ -175,20 +179,20 @@ $Title=$inTitle .' - '. $oj_name;
           <div class="modal-content">
             <div class="modal-header">
 		    <button type="button" class="close" data-dismiss="modal">&times;</button>
-            <h4 class="modal-title">重新评测</h4>
+            <h4 class="modal-title"><?php echo _('Rejudge')?></h4>
           </div>
           <form action="#" method="post" id="form_rejudge">
           <input type="hidden" name="op" value="rejudge">
           <div class="modal-body">
             <div class="form-group">
-              <label>请输入需要重新评测的题号:</label>
+              <label><?php echo _('Please enter the Problem ID:')?></label>
               <input class="form-control" id="input_rejudge" type="number" name="problem" placeholder="1000~9999">
             </div>
             <div class="alert alert-danger collapse" id="rejudge_res"></div>
           </div>
           <div class="modal-footer">
-			<button class="btn btn-primary" type="submit">重新评测</button>
-            <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+			<button class="btn btn-primary" type="submit"><?php echo _('Rejudge')?></button>
+            <button type="button" class="btn btn-default" data-dismiss="modal"><?php echo _('Close')?></button>
           </div>
           </form> 
           </div>
@@ -208,29 +212,29 @@ $Title=$inTitle .' - '. $oj_name;
             <input type="hidden" id="news_id" name="news_id" value="0">  
             <div class="modal-body">
               <div class="form-group">
-                <input type="text" class="form-control" id="input_newstitle" name="title" placeholder="请输入新闻标题...">
+                <input type="text" class="form-control" id="input_newstitle" name="title" placeholder="<?php echo _('Please enter News Title...')?>">
               </div>
               <div class="form-group">
-                <textarea class="form-control" id="input_newscontent" rows="14" name="content" placeholder="请输入新闻内容 (可选)..."></textarea>
+                <textarea class="form-control" id="input_newscontent" rows="14" name="content" placeholder="<?php echo _('Please enter News Content (Optional)...')?>"></textarea>
               </div>
               <div class="alert alert-danger collapse" id="news_res"></div>
             </div>
             <div class="modal-footer">
               <div class="checkbox" style="display:inline-block">
-                <label><input type="checkbox" name="importance" id="is_top">顶置</label>
+                <label><input type="checkbox" name="importance" id="is_top"><?php echo _('Sticky')?></label>
               </div>
               <div class="btn-group pull-left">
-                <button class="pull-left btn btn-danger collapse" id="btn_delnews">删除</button>
-                <button class="pull-left btn btn-default" id="btn_upload">上传图片</button>
-                <button class="pull-left btn btn-default dropdown-toggle" id="btn_newspriv" data-toggle="dropdown">需要权限 <span class="caret"></span></button>
+                <button class="pull-left btn btn-danger collapse" id="btn_delnews"><?php echo _('Delete')?></button>
+                <button class="pull-left btn btn-default" id="btn_upload"><?php echo _('Upload Image')?></button>
+                <button class="pull-left btn btn-default dropdown-toggle" id="btn_newspriv" data-toggle="dropdown"><?php echo _('Need Privilege')?> <span class="caret"></span></button>
                 <ul class="dropdown-menu dropdown-menu-right">
-                  <li><a href="#0"><input type="checkbox" id="news_0" name="0"> 校内</a></li>
-                  <li><a href="#1"><input type="checkbox" id="news_1" name="1"> 源码</a></li>
-                  <li><a href="#2"><input type="checkbox" id="news_2" name="2"> 题库</a></li>
+                  <li><a href="#0"><input type="checkbox" id="news_0" name="0"> <?php echo _('Insider')?></a></li>
+                  <li><a href="#1"><input type="checkbox" id="news_1" name="1"> <?php echo _('Source')?></a></li>
+                  <li><a href="#2"><input type="checkbox" id="news_2" name="2"> <?php echo _('Problems')?></a></li>
                 </ul>
               </div>
-              <button class="btn btn-primary" type="submit">提交</button>
-              <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+              <button class="btn btn-primary" type="submit"><?php echo _('Save')?></button>
+              <button type="button" class="btn btn-default" data-dismiss="modal"><?php echo _('Close')?></button>
             </div>
             </form> 
           </div>
@@ -249,16 +253,16 @@ $Title=$inTitle .' - '. $oj_name;
             <input type="hidden" id="email_touser" name="to_user" value="">  
             <div class="modal-body">
               <div class="form-group">
-                <input type="text" class="form-control" id="input_emailtitle" name="title" placeholder="请输入邮件标题...">
+                <input type="text" class="form-control" id="input_emailtitle" name="title" placeholder="<?php echo _('Please enter Email Title...')?>">
               </div>
               <div class="form-group">
-                <textarea class="form-control" id="input_emailcontent" rows="14" name="content" placeholder="请输入邮件内容..."></textarea>
+                <textarea class="form-control" id="input_emailcontent" rows="14" name="content" placeholder="<?php echo _('Please enter Email Content...')?>"></textarea>
               </div>
               <div class="alert alert-danger collapse" id="email_res"></div>
             </div>
             <div class="modal-footer">
-              <button class="btn btn-primary" type="submit">提交</button>
-              <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+              <button class="btn btn-primary" type="submit"><?php echo _('Send')?></button>
+              <button type="button" class="btn btn-default" data-dismiss="modal"><?php echo _('Close')?></button>
             </div>
             </form> 
           </div>
@@ -277,22 +281,22 @@ $Title=$inTitle .' - '. $oj_name;
             <input type="hidden" id="priv_uid" name="user_id" value="">  
             <div class="modal-body">
               <div class="checkbox">
-                <label><input type="checkbox" name="0" id="chk_insider"> 校内(<?php echo PRIV_INSIDER?>)</label>
+                <label><input type="checkbox" name="0" id="chk_insider"> <?php echo _('Insider'),'(',PRIV_INSIDER,')'?></label>
               </div>
               <div class="checkbox">
-                <label><input type="checkbox" name="1" id="chk_source"> 源码(<?php echo PRIV_SOURCE?>)</label>
+                <label><input type="checkbox" name="1" id="chk_source"> <?php echo _('Source'),'(',PRIV_SOURCE,')'?></label>
               </div>
               <div class="checkbox">
-                <label><input type="checkbox" name="2" id="chk_problem"> 题库(<?php echo PRIV_PROBLEM?>)</label>
+                <label><input type="checkbox" name="2" id="chk_problem"> <?php echo _('Problems'),'(',PRIV_PROBLEM,')'?></label>
               </div>
               <div class="checkbox">
-                <label><input type="checkbox" name="3" id="chk_system"> 系统(<?php echo PRIV_SYSTEM?>)</label>
+                <label><input type="checkbox" name="3" id="chk_system"> <?php echo _('System'),'(',PRIV_SYSTEM,')'?></label>
               </div>
               <div class="alert alert-danger collapse" id="priv_res"></div>
             </div>
             <div class="modal-footer">
-              <button class="btn btn-primary" type="submit">提交</button>
-              <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+              <button class="btn btn-primary" type="submit"><?php echo _('Save')?></button>
+              <button type="button" class="btn btn-default" data-dismiss="modal"><?php echo _('Close')?></button>
             </div>
             </form> 
           </div>
@@ -304,19 +308,17 @@ $Title=$inTitle .' - '. $oj_name;
           <div class="modal-content">
             <div class="modal-header">
               <button type="button" class="close" data-dismiss="modal">&times;</button>
-              <h4 class="modal-title">用户信息</h4>
+              <h4 class="modal-title"><?php echo _('User Profile')?></h4>
             </div>
-            <div class="modal-body" id="user_status">
-              <p>信息不可用……</p>
-            </div>
+            <div class="modal-body" id="user_status"></div>
             <div class="modal-footer">
               <form action="mail.php" method="post">
                 <input type="hidden" name="touser" id="input_touser">
                 <?php if(isset($_SESSION['user'])){?>
-                <button type="submit" class="btn btn-default pull-left"><i class="fa fa-fw fa-envelope-o"></i> 发私信</button>
+                <button type="submit" class="btn btn-default pull-left"><i class="fa fa-fw fa-envelope-o"></i> <?php echo _('Send Mail')?></button>
                 <?php }?>
               </form>
-              <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+              <button type="button" class="btn btn-default" data-dismiss="modal"><?php echo _('Close')?></button>
             </div>
           </div>
         </div>
@@ -361,8 +363,8 @@ $Title=$inTitle .' - '. $oj_name;
 			}
 		  }
 		  if(data&&"number"==typeof(data.daemon)){
-			if(data.daemon==1) $('#pg_daemon').html('<font color=green>正在运行...</font>');
-			else $('#pg_daemon').html('<font color=red>尚未运行...</font>');
+			if(data.daemon==1) $('#pg_daemon').html('<font color=green><?php echo _('Running...')?></font>');
+			else $('#pg_daemon').html('<font color=red><?php echo _('Not Running...')?></font>');
 		  }
           setTimeout('update_chart()',3000);
         });
@@ -422,7 +424,7 @@ $Title=$inTitle .' - '. $oj_name;
 					data:{"op":'update_category',"content":$.trim($('#input_category').val())},
 					success:function(msg){
 						if(msg=='success') $('#CategoryModal').modal('hide');
-						else $('#addcategory_res').slideDown();
+						else $('#addcategory_res').html('<i class="fa fa-fw fa-remove"></i> '+msg).slideDown();
 					}
 				});
 			return false;
@@ -445,7 +447,7 @@ $Title=$inTitle .' - '. $oj_name;
                   var obj=eval("("+data+")");
 				  $('#news_op').val('edit_news');
 				  $('#news_id').val(cnt);
-				  $('#NewsModal .modal-title').html('编辑新闻');
+				  $('#NewsModal .modal-title').html('<?php echo _('Edit News')?>');
 		          $('#NewsModal').modal('show');
 				  if(obj.importance==0) var a=false;
 				  else a=true;
@@ -469,7 +471,7 @@ $Title=$inTitle .' - '. $oj_name;
             return false;
         });
 		$('#new_news').click(function(){
-			$('#NewsModal .modal-title').html('添加新闻');
+			$('#NewsModal .modal-title').html('<?php echo _('Add News')?>');
 			$('#news_op').val('add_news');
 			$('#input_newstitle').val('');
 		    $('#input_newscontent').val('');
@@ -511,7 +513,7 @@ $Title=$inTitle .' - '. $oj_name;
               },
               success:function(msg){
 				  if(msg=='success') $('#NewsModal').modal('hide');
-				  else $('#news_res').html('<i class="fa fa-fw fa-remove"></i> 删除失败...').show();
+				  else $('#news_res').html('<i class="fa fa-fw fa-remove"></i> '+msg).show();
 			  }
             });
 			getnewslist();
@@ -543,11 +545,11 @@ $Title=$inTitle .' - '. $oj_name;
             url:"ajax_admin.php",
             data:$(this).serialize(),
             success:getlevellist
-          });
+          });正在发送
         });
         $('#btn_emailall').click(function(){
             $('#email_op').val('sendemail_all');
-            $('#EmailModal .modal-title').html('发送邮件: 全体用户');
+            $('#EmailModal .modal-title').html('<?php echo _('Send Email: All Users')?>');
             $('#email_res').hide();
             $('#EmailModal').modal('show');
         });
@@ -560,13 +562,13 @@ $Title=$inTitle .' - '. $oj_name;
                 case '#email':
                 $('#email_op').val('sendemail');
                 $('#email_touser').val(uid);
-                $('#EmailModal .modal-title').html('发送邮件: '+uid);
+                $('#EmailModal .modal-title').html('<?php echo _('Send Email')?>: '+uid);
                 $('#email_res').hide();
                 $('#EmailModal').modal('show');
                 break;
                 case '#priv':
                 $('#priv_uid').val(uid);
-                $('#PrivModal .modal-title').html('更改权限: '+uid);
+                $('#PrivModal .modal-title').html('<?php echo _('Edit Privilege')?>: '+uid);
                 $('#priv_res').hide();
                 var p=jq.parents('tr').first().children().first().next().next().children('span').contents().text();
                 $('#chk_insider').prop('checked', p&<?php echo PRIV_INSIDER?>);
@@ -584,7 +586,7 @@ $Title=$inTitle .' - '. $oj_name;
                 });
                 break;
                 case '#linkU':
-                $('#user_status').html("<p>正在加载...</p>").load("ajax_user.php?user_id="+uid).scrollTop(0);
+                $('#user_status').html('<i class="fa fa-fw fa-refresh fa-spin"></i> <?php echo _('Loading...')?>').load("ajax_user.php?user_id="+uid).scrollTop(0);
                 $('#input_touser').val(uid);
                 $('#UserModal').modal('show');
                 break;
@@ -628,12 +630,12 @@ $Title=$inTitle .' - '. $oj_name;
               if(/success/.test(msg)){
 				$('#alert_result').removeClass("alert-danger");
                 $('#alert_result').addClass("alert-success");
-				$('#alert_result').html('<i class="fa fa-fw fa-check"></i> 主页更新成功!').slideDown();
+				$('#alert_result').html('<i class="fa fa-fw fa-check"></i> <?php echo _('Saved successfully!')?>').slideDown();
 			  }
               else{
                 $('#alert_result').removeClass("alert-success");
                 $('#alert_result').addClass("alert-danger");
-                $('#alert_result').html('<i class="fa fa-fw fa-remove"></i> 主页更新失败...').slideDown();
+                $('#alert_result').html('<i class="fa fa-fw fa-remove"></i> '+msg).slideDown();
                }
             }
           });
@@ -641,7 +643,7 @@ $Title=$inTitle .' - '. $oj_name;
         });
         $('#form_email').submit(function(E){
           E.preventDefault();
-          $('#email_res').removeClass('alert-danger').addClass('alert-info').html('<i class="fa fa-circle-o-notch fa-fw fa-spin"></i> 正在发送...').slideDown();
+          $('#email_res').removeClass('alert-danger').addClass('alert-info').html('<i class="fa fa-circle-o-notch fa-fw fa-spin"></i> <?php echo _('Sending...')?>').slideDown();
           $.ajax({
             type:"POST",
             url:"ajax_admin.php",

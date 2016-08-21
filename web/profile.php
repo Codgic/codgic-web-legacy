@@ -1,16 +1,17 @@
 <?php
+require 'inc/global.php';
 require 'inc/ojsettings.php';
 require 'inc/checklogin.php';
  
 if(!isset($_SESSION['user'])){
-  $info='你还没有登录';
+  $info=_('Please login first');
 }else{
   if(!isset($con)) require 'inc/database.php';
   $user_id=$_SESSION['user'];
   $result=mysqli_query($con,'select email,nick,school,motto,user_id from users where user_id=\''.$user_id."'");
   $row=mysqli_fetch_row($result);
 }
-$inTitle='档案';
+$inTitle=_('Profile');
 $Title=$inTitle .' - '. $oj_name;
 ?>
 <!DOCTYPE html>
@@ -38,7 +39,7 @@ $Title=$inTitle .' - '. $oj_name;
           </h1>
           <text class="motto-text" id="user_motto"><?php echo $row[3]?></text>
           <br>
-          <text class="help-block">Avatar powered by Gravatar.</text>
+          <text class="help-block"><?php echo _('Avatar powered by Gravatar.')?></text>
           </div>
       </div>
       </div>
@@ -46,41 +47,39 @@ $Title=$inTitle .' - '. $oj_name;
       <div class="row">
         <form id="form_profile" action="#" method="post">
           <input type="hidden" value="profile" name="type">
-          <div class="form-group col-xs-12 col-sm-6" id="oldpwd_ctl">
-            <label>旧密码(*)</label>
-            <input class="form-control" id="input_oldpwd" name="oldpwd" type="password">
-			<span class="help-block">你需要先输入你的密码才能修改资料。</span>
-          </div>
-		  <div class="form-group col-xs-12 col-sm-6" id="newpwd_ctl">
-            <label>新密码</label>
-            <input class="form-control" type="password" id="input_newpwd" name="newpwd">
-            <span class="help-block">若你不打算更改密码无需填写此栏。</span>
-          </div>
-		  <div class="form-group col-xs-12 col-sm-6">
-            <label>昵称</label>
-            <input class="form-control" type="text" name="nick" id="input_nick" value="<?php echo htmlspecialchars($row[1])?>">
+          <div class="form-group col-xs-12 col-sm-6">
+            <label><?php echo _('Nickname')?></label>
+            <input class="form-control" type="text" name="nick" id="input_nick" value="<?php echo htmlspecialchars($row[1])?>" placeholder="<?php echo _('Your new cool nickname...')?>">
           </div>
           <div class="form-group col-xs-12 col-sm-6">
-            <label>签名</label>
-            <input class="form-control" id="input_motto" name="motto" type="text" value="<?php echo htmlspecialchars($row[3])?>">
+            <label><?php echo _('Motto')?></label>
+            <input class="form-control" id="input_motto" name="motto" type="text" value="<?php echo htmlspecialchars($row[3])?>" placeholder="<?php echo _('Leave it blank if slience is gold...')?>">
+          </div>
+          <div class="form-group col-xs-12 col-sm-6" id="newpwd_ctl">
+            <label><?php echo _('New Password')?></label>
+            <input class="form-control" type="password" id="input_newpwd" name="newpwd" placeholder="<?php echo _('A new password if you like...')?>">
           </div>
           <div class="form-group col-xs-12 col-sm-6" id="reppwd_ctl">
-            <label>重复密码</label>
-            <input class="form-control" type="password" id="input_reppwd">
+            <label><?php echo _('Retype Password')?></label>
+            <input class="form-control" type="password" id="input_reppwd" placeholder="<?php echo _('Retype your brand new password...')?>">
           </div>
           <div class="form-group col-xs-12 col-sm-6">
-            <label>邮箱</label>
-            <input class="form-control" type="text" name="email" id="input_email" value="<?php echo htmlspecialchars($row[0])?>">
+            <label><?php echo _('Email')?></label>
+            <input class="form-control" type="text" name="email" id="input_email" value="<?php echo htmlspecialchars($row[0])?>" placeholder="<?php echo _('A vaild email is required for convenience...')?>">
           </div>
           <div class="form-group col-xs-12 col-sm-6">
-            <label>学校</label>
-            <input class="form-control" type="text" name="school" id="input_school" value="<?php echo htmlspecialchars($row[2])?>">
+            <label><?php echo _('School')?></label>
+            <input class="form-control" type="text" name="school" id="input_school" value="<?php echo htmlspecialchars($row[2])?>" placeholder="<?php echo _('Make your school proud...')?>">
+          </div>
+          <div class="form-group col-xs-12 col-sm-6" id="oldpwd_ctl">
+            <label><?php echo _('Current password')?>(*)</label>
+            <input class="form-control" id="input_oldpwd" name="oldpwd" type="password" placeholder="<?php echo _('Required before changing anything...')?>">
           </div>
           <div class="col-xs-12">
 			<div id="ajax_result" class="alert col-xs-12 collapse"></div>
-			<button id="save_btn" class="btn btn-primary" type="submit">保存更改</button>
+			<button id="save_btn" class="btn btn-primary" type="submit"><?php echo _('Save')?></button>
 		  </div>
-          </form>
+        </form>
       <?php } ?>
       </div>
       <hr>
@@ -115,8 +114,9 @@ $Title=$inTitle .' - '. $oj_name;
             data:$('#form_profile').serialize(),
             success:function(msg){
                 if(msg=='success'){
-                  $('#ajax_result').html('<i class="fa fa-fw fa-check"></i> 用户信息更新成功!').removeClass('alert-danger').addClass('alert-success').slideDown();
+                  $('#ajax_result').html('<i class="fa fa-fw fa-check"></i> <?php echo _('Profile updated successfully!')?>').removeClass('alert-danger').addClass('alert-success').slideDown();
                   $('#user_motto').text($('#input_motto').val());
+                  $('#input_oldpwd').val('');
                 }
                 else $('#ajax_result').html('<i class="fa fa-fw fa-remove"></i> '+msg).removeClass('alert-success').addClass('alert-danger').slideDown();
             }

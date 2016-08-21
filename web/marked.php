@@ -1,31 +1,49 @@
 <?php
+require 'inc/global.php';
 require 'inc/ojsettings.php';
 require 'inc/checklogin.php';
 
 $type='problem';
 if(!isset($_SESSION['user']))
-  $info = '你还没有登录';
+    $info = _('Please login first');
 else{
-  if(isset($_GET['type']))
-    if($_GET['type']=='contest'||$_GET['type']=='problem')
-      $type=$_GET['type'];
-    else{
-      header("Location: marked.php");
-      exit();
-  }   
-  require 'inc/database.php';
-  $user_id=$_SESSION['user'];
-  if($type=='problem'){
-    $result=mysqli_query($con,"SELECT saved_problem.problem_id,title,savetime,problem_flag_to_level(has_tex) from saved_problem inner join problem using (problem_id) where user_id='$user_id' order by savetime desc");
-    if(mysqli_num_rows($result)==0) $info='你还没收藏过题目哦';
-    $t=1;
-  }else{
-    $result=mysqli_query($con,"SELECT saved_contest.contest_id,title,savetime,problem_flag_to_level(has_tex) from saved_contest inner join contest using (contest_id) where user_id='$user_id' order by savetime desc");
-    if(mysqli_num_rows($result)==0) $info='你还没收藏过比赛哦';
-    $t=2;
-  }
+    if(isset($_GET['type']))
+        if($_GET['type']=='contest'||$_GET['type']=='problem')
+            $type=$_GET['type'];
+        else{
+            header("Location: marked.php");
+            exit();
+        }
+    if(isset($_GET['page_id']))
+        $page_id=intval($_GET['page_id']);
+    else
+        $page_id=1;
+        
+    require 'inc/database.php';
+    $user_id=$_SESSION['user'];
+    if($type=='problem'){
+        $row=mysqli_fetch_row(mysqli_query($con,"select count(1) from saved_problem where user_id='$user_id'"));
+        $maxpage=intval($row[0]/20)+1;
+        if($page_id<1||$page_id>$maxpage){
+            header("Location: marked.php");
+            exit();
+        }
+        $result=mysqli_query($con,"SELECT saved_problem.problem_id,title,savetime,problem_flag_to_level(has_tex) from saved_problem inner join problem using (problem_id) where user_id='$user_id' order by savetime desc limit ".(($page_id-1)*20).",20");
+        $t=1;
+    }else{
+        $row=mysqli_fetch_row(mysqli_query($con,"select count(1) from saved_contest where user_id='$user_id'"));
+        $maxpage=intval($row[0]/20)+1;
+        if($page_id<1||$page_id>$maxpage){
+            header("Location: marked.php");
+            exit();
+        }
+        $result=mysqli_query($con,"SELECT saved_contest.contest_id,title,savetime,problem_flag_to_level(has_tex) from saved_contest inner join contest using (contest_id) where user_id='$user_id' order by savetime desc limit ".(($page_id-1)*20).",20");
+        $t=2;
+    }
+    if(mysqli_num_rows($result)==0) $info=_('Looks like there\'s nothing here');
 }
-$inTitle='收藏';
+
+$inTitle=_('Marked');
 $Title=$inTitle .' - '. $oj_name;
 ?>
 <!DOCTYPE html>
@@ -34,11 +52,18 @@ $Title=$inTitle .' - '. $oj_name;
 	<body>
       <?php require 'page_header.php'; ?>
       <div class="container">
+        <?php if(!isset($_SESSION['user'])){?>
+          <div class="text-center none-text none-center">
+            <p><i class="fa fa-meh-o fa-4x"></i></p>
+            <p><b>Whoops</b><br>
+            <?php echo $info?></p>
+          </div>
+        <?php }else{?>
         <div class="row">
           <div class="col-xs-12">
             <ul class="nav nav-pills">
-              <li <?php if($type=='problem') echo 'class="active"'?>><a href="marked.php"><i class="fa fa-fw fa-th-list"></i> 题目</a></li>
-			  <li <?php if($type=='contest') echo 'class="active"'?>><a href="marked.php?type=contest"><i class="fa fa-fw fa-compass"></i> 比赛</a></li>
+              <li <?php if($type=='problem') echo 'class="active"'?>><a href="marked.php"><i class="fa fa-fw fa-coffee"></i> <?php echo _('Problems')?></a></li>
+			  <li <?php if($type=='contest') echo 'class="active"'?>><a href="marked.php?type=contest"><i class="fa fa-fw fa-compass"></i> <?php echo _('Contests')?></a></li>
             </ul>
 			<?php if(isset($info)){?>
               <div class="text-center none-text none-center">
@@ -52,10 +77,10 @@ $Title=$inTitle .' - '. $oj_name;
                 <thead>
                   <tr>
                     <th style="width:6%">No.</th>
-                    <th>题目</th>
-                    <th style="width:8%">等级</th>
-                    <th style="width:25%">收藏时间</th>
-                    <th style="width:10%">删除</th>
+                    <th><?php echo _('Problem')?></th>
+                    <th style="width:8%"><?php echo _('Level')?></th>
+                    <th style="width:25%"><?php echo _('Date')?></th>
+                    <th style="width:10%"><?php echo _('Delete')?></th>
                   </tr>
                 </thead>
                 <tbody id="marked_list">
@@ -70,9 +95,25 @@ $Title=$inTitle .' - '. $oj_name;
                   <?php } ?>
                 </tbody>
               </table>
+              <?php }?>
             </div>
-          </div>  
-          <?php } ?>
+          </div>
+          
+          <div class="row">
+            <ul class="pager">
+              <li>
+                <a class="pager-pre-link shortcut-hint" title="Alt+A" <?php
+                if($page_id>1) echo 'href="marked.php?page_id='.($page_id-1).'"';
+                ?>><i class="fa fa-fw fa-angle-left"></i> <?php echo _('Previous')?></a>
+              </li>
+              <li>
+                <a class="pager-next-link shortcut-hint" title="Alt+D" <?php
+                if($page_id<$maxpage) echo 'href="marked.php?page_id='.($page_id+1).'"';
+                ?>><?php echo _('Next')?> <i class="fa fa-fw fa-angle-right"></i></a>
+              </li>
+            </ul>
+          </div>
+          <?php }?>
           <hr>
           <footer>
             <p>&copy; <?php echo"{$year} {$oj_copy}";?></p>

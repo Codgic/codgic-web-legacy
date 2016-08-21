@@ -13,7 +13,7 @@ function update_cont_rank($cont_id){
 		$tot_scores=0;
 		$tot_times=0;
         for($i=0;$i<$cont_num;$i++){
-          if($cont_judgeway==2){
+          if($cont_judgeway==3){
             //For judge ways that only recognize the first submit
             $s_row=mysqli_fetch_row(mysqli_query($con, "select score,result,in_date from solution where user_id='$user_id' and in_date>'".$cont_start."' and in_date<'".$cont_end."' and problem_id=".$prob_arr[$i].' order by in_date limit 1'));
             //Process score
@@ -35,9 +35,13 @@ function update_cont_rank($cont_id){
             //Process scores
             if(!isset($s_row[0]))
               $s_row[0]=0;
-            if($s_row[0]!=100&&$cont_judgeway==1)
+            if($s_row[0]!=100&&$cont_judgeway==2)
               $s_row[0]=0;
             $score_arr["$prob_arr[$i]"]=$s_row[0];
+            if($cont_judgeway==1&&$s_row[1]!=0){
+                $score_arr["$prob_arr[$i]"]-=5*($s_row[1]-1);
+                if($score_arr["$prob_arr[$i]"]<0) $score_arr["$prob_arr[$i]"]=0;
+            }
             $tot_scores+=$s_row[0];
             //Process results
             if(!isset($s_row[2]))
@@ -77,10 +81,10 @@ function update_cont_rank($cont_id){
 }
 
 function get_judgeway_destext($judge_way){
-    if($judge_way==0) return '总分即时间内每题最高分之和，罚时对AC的记录记最后提交时间，对未AC的记录记1200s。<br><code>final_score = max_score;</code><br><code>final_time = AC ? (last_submit_time + 1200s * (submit_times - 1)) : 1200s * submit_times; </code>';
-    else if($judge_way==1) return '总分即AC题目分数之和，罚时对AC的记录记最后提交时间，对未AC的记录记1200s。<br><code>final_score = (max_score == full_score) ? full_score : 0;</code><br><code>final_time = AC ? last_submit_time + 1200s * (submit_times - 1) : 1200s * submit_times; </code>';
-    else if($judge_way==2) return '总分即每题第一次提交分数之和，罚时即第一次提交时间之和，非第一次提交记录无效。<br><code>final_score = first_submit_score;</code><br><code>final_time = first_submit_time; </code>';
-
+    if($judge_way==0) return _('Final score is the sum of the highest score of each problem. Time Penalty records the latest submit time for solved problems and 1200s for unsolved problems.').'<br><code>final_score = max_score;</code><br><code>final_time = AC ? (last_submit_time + 1200s * (submit_times - 1)) : 1200s * submit_times; </code>';
+    else if($judge_way==1) return _('Based on the highest score, each non-first submit will let you lose 5 points. Time Penalty records the latest submit time for solved problems and 1200s for unsolved problems.').'<br><code>final_score = max_score - 5 * (0.9, submit_times - 1);</code><br><code>final_time = AC ? (last_submit_time + 1200s * (submit_times - 1)) : 1200s * submit_times; </code>';
+    else if($judge_way==2) return _('Final score is the sum of the scores of SOLVED problems. Time Penalty records the latest submit time for SOLVED problems and 1200s for unsolved problems.').'<br><code>final_score = (max_score == full_score) ? full_score : 0;</code><br><code>final_time = AC ? last_submit_time + 1200s * (submit_times - 1) : 1200s * submit_times; </code>';
+    else if($judge_way==3) return _('Final score is the sum of the score of the FIRST submit of each problem. Time Penalty is the sum of the FIRST submit time of each problem.').'<br><code>final_score = first_submit_score;</code><br><code>final_time = first_submit_time; </code>';
 }
 
 function get_time_text($time){
@@ -95,7 +99,7 @@ function get_time_text($time){
 }
 
 function get_ip(){
-   if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
+   if (!empty($_SERVER['HTTP_CLIENT_IP'])){
       return $_SERVER['HTTP_CLIENT_IP'];
     }
 	else if (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
@@ -116,7 +120,7 @@ function get_gravatar($email, $s=80, $d='mm'){
 function get_ipgeo($ip = ''){
 	if(preg_match("/^((192\.168|172\.([1][6-9]|[2]\d|3[01]))(\.([2][0-4]\d|[2][5][0-5]|[01]?\d?\d)){2}|10(\.([2][0-4]\d|[2][5][0-5]|[01]?\d?\d)){3})$/",$ip)) return '局域网';
     $res = @file_get_contents('http://int.dpool.sina.com.cn/iplookup/iplookup.php?format=js&ip=' . $ip);
-    if(empty($res)){ return '未知'; }
+    if(empty($res)){ return _('Unknown'); }
     $jsonMatches = array();
     preg_match('#\{.+?\}#', $res, $jsonMatches);
     if(!isset($jsonMatches[0])){ return false; }
@@ -125,52 +129,7 @@ function get_ipgeo($ip = ''){
         $json['ip'] = $ip;
         unset($json['ret']);
     }else{
-        return '未知';
+        return _('Unknown');
     }
 	return $json["city"];
-}
-
-function resetpwd_mail(){
-    require 'inc/ojsettings.php';
-    if(!isset($_SESSION['resetpwd_user']) || !isset($_SESSION['resetpwd_email']) || !isset($_SESSION['resetpwd_code'])) return 'timeout';
-    $user = $_SESSION['resetpwd_user'];
-    $email = $_SESSION['resetpwd_email'];
-    $code = $_SESSION['resetpwd_code'];
-    $subject = "$oj_name 密码重置验证";
-    $ip = get_ip();
-    $nowtime = date("Y/m/d H:i:s");
-    $content = "<div>亲爱的 $user ,<br><p>我们收到了您在{$oj_name}重置密码的请求并发送了验证码来确认您的身份。</p><b><p>请求时间: $nowtime (UTC+08:00)</p><p>IP地址: $ip</p><p>验证码: $code</p></b><p>如果您没有在{$oj_name}有过重置密码的请求，您只需忽略这封邮件并不要把验证码告诉任何人。<br>如有任何问题，请回复该邮件来与管理员取得联系。</p><br>谢谢！<p>$oj_copy</p></div>";
-    return postmail($email,$subject,$content);
-}
-
-function postmail($to,$subject = '',$body = ''){
-    //error_reporting(E_STRICT);
-    date_default_timezone_set('Asia/Shanghai');
-	if(!class_exists("phpmailer")) require 'inc/class.phpmailer.php';
-	if(!class_exists("SMTP")) include 'inc/class.smtp.php';
-    $mail = new PHPMailer(); 
-    $mail->CharSet ="UTF-8";
-    $mail->Encoding ="base64";
-    $mail->IsSMTP();
-    //$mail->SMTPDebug  = 0;                     // 2 - DISABLE
-    $mail->SMTPAuth   = true;               
-    $mail->SMTPSecure = "ssl";         
-    $mail->Host       = 'YOURSMTPSERVER';      //SMTP Server Address
-    $mail->Port       = 999;     //SMTP Service Port             
-    $mail->Username   = 'YOUREMAIL';  //Input your admin email
-    $mail->Password   = 'YOURPASSWORD';  //Input your email password.     
-    $mail->SetFrom('YOUREMAIL', 'CWOJ');
-    $mail->AddReplyTo('YOUREMAIL','CWOJ');
-    $mail->Subject    = $subject;
-	$mail->WordWrap = 60;
-    //$mail->AltBody    = 'To view the message, please use an HTML compatible email viewer!'; // optional, comment out and test
-    $mail->MsgHTML($body);http://www.jb51.net/article/37929.htm
-    $address = $to;
-    $mail->AddAddress($address, '');
-    $mail->IsHTML(true); 
-    if(!$mail->Send()) {
-        return '发送邮件失败: ' . $mail->ErrorInfo;
-    } else {
-        return 'success';
-    }
 }

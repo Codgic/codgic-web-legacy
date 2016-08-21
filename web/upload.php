@@ -1,4 +1,5 @@
-<?php 
+<?php
+require 'inc/global.php';
 require 'inc/ojsettings.php';
 require 'inc/privilege.php';
 session_start();
@@ -8,27 +9,27 @@ else{
 if(isset($_FILES['file'])){
 	try{
 		if(!isset($_FILES['file']['name']) || !preg_match('/\.(jpg|jpeg|png|gif|bmp|tif|tiff|ico|wmf)$/i',$_FILES['file']['name']))
-			throw new Exception('无效的图片格式');
+			echo _('Unsupported File type...');
 		if($_FILES["file"]["error"] > 0)
-			throw new Exception('上传错误: '.$_FILES["file"]["error"]);
+			echo _('Error: '.$_FILES["file"]["error"]);
 			
 		$filename=isset($_POST['savename']) ? $_POST['savename'] : date('YmdHis_').mt_rand(10000,99999);
 		if(!strlen($filename) || preg_match('/[^-)(\w]/',$filename))
-			throw new Exception("无效的文件名");
+			echo _("Invalid File name...");
 			
 		$tmp = explode('.', $filename);
         $file_extension = end($tmp);
 
 		if(file_exists("../images/$filename"))
-			throw new Exception("文件 '$filename' 已经存在,<br>换一个文件名再试试。");
+			echo _('File '),"'$filename'",_(' exists already, try another name...');
 		if(!is_dir("../images"))
 			if(!mkdir("../images",0770))
-				throw new Exception("images目录无法访问, 请联系管理员!");
+				echo _('Can\'t access upload directory...');
 				
 		if(move_uploaded_file($_FILES["file"]["tmp_name"],"../images/$filename")){
 			$imgtag="img src=\"../images/$filename\"";
 		}else
-			throw new Exception("上传失败");
+			echo _('Upload Failed!');
 	}catch(Exception $e){
 		$info=$e->getMessage();
 	}
@@ -37,7 +38,7 @@ if(isset($_FILES['file'])){
 	if(isset($_GET['id']))
 		$filename=intval($_GET['id']);
 }
-$inTitle='上传图片';
+$inTitle=_('Upload');
 $Title=$inTitle .' - '. $oj_name;
 ?>
 <!DOCTYPE html>
@@ -48,36 +49,36 @@ $Title=$inTitle .' - '. $oj_name;
 	  <div class="row">
 		<div class="col-xs-12">
 		<?php if(isset($imgtag)){ ?>
-			<h2 style="margin:10px auto">上传成功</h2>
+			<h2 style="margin:10px auto"><?php echo _('Uploaded Successfully!')?></h2>
 			<hr>
 			<div style="white-space:nowrap">
-				<div>HTML引用标签:</div> 
+				<div><?php echo _('HTML Code')?></div> 
 				<div style="margin-top:15px;margin-buttom:15px;height:30px"><span class="alert alert-info" id="html_tag">&lt;<?php echo $imgtag ?>&gt;</span></div>
 			</div>
 			<p style="margin-top:15px;margin-buttom:15px">
-				<a href="#" class="btn btn-primary copy" id="btn_copy">复制文本</a>
-				<a href="#" class="btn btn-danger" onclick="return window.close(),false;">关闭</a>
+				<a href="#" class="btn btn-primary copy" id="btn_copy"><?php echo _('Copy')?></a>
+				<a href="#" class="btn btn-danger" onclick="return window.close(),false;"><?php echo _('Close')?></a>
 			</p>
 		<?php }else if(isset($info)){ ?>
-			<h2 style="margin:10px auto">错误</h2>
+			<h2 style="margin:10px auto"><?php echo _('Error!')?></h2>
 			<hr>
 			<div class="alert alert-danger"><i class="fa fa-fw fa-remove"></i> <?php echo $info ?></div>
-			<a href="#" class="btn btn-primary" onclick="return history.back(),false;">&laquo;返回</a>
+			<a href="#" class="btn btn-primary" onclick="return history.back(),false;"><i class="fa fa-fw fa-angle-left"></i> <?php echo _('Back')?></a>
 		<?php }else{ ?>
-			<h2 style="margin:10px auto">上传图片</h2>
+			<h2 style="margin:10px auto"><?php echo _('Upload Image')?></h2>
 			<hr>
 			<form action="upload.php" method="post" enctype="multipart/form-data" onsubmit="return check_upload();">
 			  <div class="form-group">
-				<label>选择图片:</label>
+				<label><?php echo _('Select Image')?></label>
 				<input type="file" name="file" id="file">
 			  </div>
 			  <div class="form-group">
-				<label>文件名(不含后缀):</label>
+				<label><?php echo _('Image Name (Without extension)')?></label>
 				<input class="form-control" type="text" name="savename" value="<?php echo htmlspecialchars($filename);?>">  
 			  </div>
 			  <div class="form-group">
 				<div class="alert alert-danger collapse" id="info"></div>
-				<input class="btn btn-primary" type="submit" value="上传"> 
+				<input class="btn btn-primary" type="submit" value="<?php echo _('Upload')?>"> 
 			  </div>
 			</form>
 		<?php } ?>
@@ -92,16 +93,16 @@ $Title=$inTitle .' - '. $oj_name;
 				return true;
 			}else{
 				$('#info').show();
-				document.getElementById('info').innerHTML="<i class="fa fa-fw fa-remove"></i> 不受支持的图片格式...";
+				document.getElementById('info').innerHTML="<i class="fa fa-fw fa-remove"></i> <?php echo _('Unsupported File type...')?>";
 			}
 			return false;
 		}
-		var clipboard = new Clipboard('#btn_copy', {
-        text: function() {
+		var clipboard = new Clipboard('#btn_copy',{
+        text: function(){
             return '<<?php if(isset($imgtag)) echo $imgtag?>>';
         }
     });
-    clipboard.on('error', function(e) {
+    clipboard.on('error',function(e){
         console.log(e);
     });
 	</script>

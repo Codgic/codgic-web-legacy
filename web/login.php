@@ -1,6 +1,8 @@
 <?php
+require 'inc/global.php';
 require 'inc/database.php';
 require 'inc/ojsettings.php';
+
 if(!isset($_SESSION)) session_start();
 if(isset($_SESSION['user'])){
     header("Location: /");
@@ -12,7 +14,7 @@ if(check_cookie()){
     header("Location: /");
     exit();
 };
-$Title='欢迎来到'.$oj_name;
+$Title=_('Welcome to ').$oj_name;
 ?>
 <!DOCTYPE html>
 <html>
@@ -23,32 +25,32 @@ $Title='欢迎来到'.$oj_name;
         <div class="panel panel-default panel-login" style="display:table;margin:auto">
 		  <div class="panel-body">
             <form id="form_login" method="post">
-            <h1 class="text-center">欢迎回来</h1>
+            <h1 class="text-center"><?php echo _('Welcome Back')?></h1>
             <hr>
               <div class="form-group has-feedback" id="uid_ctl">
-                <input class="form-control" autofocus="autofocus" type="text" id="input_uid" name="uid" placeholder="用户名">
+                <input class="form-control" autofocus="autofocus" type="text" id="input_uid" name="uid" placeholder="<?php echo _('Username...')?>">
                 <span class="form-control-feedback"><i class="fa fa-fw fa-user"></i></span>
               </div>
 
               <div class="form-group has-feedback" id="pwd_ctl">
-                <input class="form-control" id="input_pwd" name="pwd" type="password" placeholder="密码">
+                <input class="form-control" id="input_pwd" name="pwd" type="password" placeholder="<?php echo _('Password...')?>">
                 <span class="form-control-feedback"><i class="fa fa-fw fa-lock"></i></span>
               </div>
               <div class="form-group">
                 <div class="checkbox">
-                  <label><input type="checkbox" name="remember" id="chk_remember">记住英俊潇洒的我...</label>
+                  <label><input type="checkbox" name="remember" id="chk_remember"><?php echo _('Say you remember me...')?></label>
                 </div>
               </div>
               <div id="login_res" class="alert alert-danger collapse"></div>
               <div class="form-group center">
-                <button type="submit" class="btn btn-primary">登录</button>
-                <a href="signup.php" style="margin-left:8px">申请账号</a>
-                <a href="resetpwd.php" style="margin-left:8px">忘记密码</a>
-                <a href="javascript:void(0)" onclick="return $('#contact').slideToggle();" style="margin-left:8px">联系管理员</a>
+                <button type="submit" class="btn btn-primary"><?php echo _('Log in')?></button>
+                <a href="signup.php" style="margin-left:8px"><?php echo _('Sign up')?></a>
+                <a href="resetpwd.php" style="margin-left:8px"><?php echo _('Forgot?')?></a>
+                <a href="javascript:void(0)" onclick="return $('#contact').slideToggle();" style="margin-left:8px"><?php echo _('Contact us...')?></a>
               </div>
             </div>
 		  	<div class="collapse" id="contact">
-		  	    <p class="text-center"><b>联系管理员: <a href="mailto:<?php echo $contact_email?>"><?php echo $contact_email?></a></b></p>
+		  	    <p class="text-center"><b><?php echo _('Contact mail:')?> <a href="mailto:<?php echo $contact_email?>"><?php echo $contact_email?></a></b></p>
 		      </div>
 		  	<br>
             </form>

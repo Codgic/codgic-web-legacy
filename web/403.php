@@ -1,6 +1,10 @@
 <?php
-require 'inc/ojsettings.php';
-require 'inc/checklogin.php';
+if(!isset($language))
+    require 'inc/global.php';
+if(!isset($oj_name))
+    require 'inc/ojsettings.php';
+if(!isset($check_login))
+    require 'inc/checklogin.php';
 $inTitle='ERROR 403';
 $Title=$inTitle .' - '. $oj_name;
 ?>
@@ -15,7 +19,7 @@ $Title=$inTitle .' - '. $oj_name;
           <div class="text-center none-text none-center">
             <p><i class="fa fa-meh-o fa-4x"></i></p>
             <p><b>ERROR 403</b><br>
-            看起来您无权访问此页面</p>
+            <?php echo _('Looks like you can\'t access this page')?></p>
           </div>
         </div>
       </div>

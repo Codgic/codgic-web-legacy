@@ -1,4 +1,5 @@
 <?php
+require 'inc/global.php';
 require 'inc/ojsettings.php';
 require 'inc/checklogin.php';
 require 'inc/database.php';
@@ -6,28 +7,29 @@ require 'inc/privilege.php';
 
 $page_id=1;
 if(isset($_GET['page_id']))
-  $page_id=intval($_GET['page_id']);
+    $page_id=intval($_GET['page_id']);
   
 if($page_id<1){
-  header("Location: news.php");
-  exit();
+    header("Location: news.php");
+    exit();
 }else{
-  require 'inc/database.php';
-  if(!isset($_SESSION['user'])){
-    $maxq="select count(news_id) from news where news_id>0 and privilege=0";
-    $newsq="select news_id,title,importance,privilege from news where news_id>0 and privilege=0 order by importance desc, news_id desc limit ".(($page_id-1)*20).",20";
-  }else{
-    $maxq="select count(news_id) from news where news_id>0 and ((privilege & ".$_SESSION['priv'].")<>0 or privilege=0)";
-    $newsq="select news_id,title,importance,privilege from news where news_id>0 and ((privilege & ".$_SESSION['priv'].")<>0 or privilege=0) order by importance desc, news_id desc limit ".(($page_id-1)*20).",20";
+    require 'inc/database.php';
+    if(!isset($_SESSION['user'])){
+        $maxq="select count(news_id) from news where news_id>0 and privilege=0";
+        $newsq="select news_id,title,time,importance from news where news_id>0 and privilege=0 order by importance desc, news_id desc limit ".(($page_id-1)*20).",20";
+    }else{
+        $maxq="select count(news_id) from news where news_id>0 and ((privilege & ".$_SESSION['priv'].")<>0 or privilege=0)";
+        $newsq="select news_id,title,time,importance from news where news_id>0 and ((privilege & ".$_SESSION['priv'].")<>0 or privilege=0) order by importance desc, news_id desc limit ".(($page_id-1)*20).",20";
+    }
+
+    if($row=mysqli_fetch_row(mysqli_query($con,$maxq)))
+        $maxpage=intval($row[0]/20);
+    else
+        $maxpage=1;
+    $res=mysqli_query($con,$newsq);
 }
 
-if($row=mysqli_fetch_row(mysqli_query($con,$maxq)))
-  $maxpage=intval($row[0]/20);
-else
-  $maxpage=1;
-  $res=mysqli_query($con,$newsq);
-}
-$inTitle='新闻';
+$inTitle=_('News');
 $Title=$inTitle .' - '. $oj_name;
 ?>
 <!DOCTYPE html>
@@ -44,14 +46,14 @@ $Title=$inTitle .' - '. $oj_name;
             <div class="text-center none-text none-center">
               <p><i class="fa fa-meh-o fa-4x"></i></p>
               <p><b>Whoops</b><br>
-              看起来这里什么也没有</p>
+              <?php echo _('Looks like there\'s nothing here')?></p>
             </div>
           <?php }else{?>
             <table class="table table-responsive table-striped table-bordered">
               <thead><tr>
                 <th style="width:6%">No.</th>
-                <th>标题</th>
-                <th style="width:25%">日期</th>
+                <th><?php echo _('Title')?></th>
+                <th style="width:25%"><?php echo _('Date')?></th>
               </tr></thead>
               <tbody id="tab_record">
               <?php
@@ -59,7 +61,7 @@ $Title=$inTitle .' - '. $oj_name;
             $addt1='';
             $addt2='';
             if($row[3]=='1'){
-                 $row[1]='[顶置] '.$row[1];
+                 $row[1]=_('[Sticky] ').$row[1];
                  $addt1='<b>';
                  $addt2='</b>';
             }
@@ -79,12 +81,12 @@ $Title=$inTitle .' - '. $oj_name;
           <li>
             <a class="pager-pre-link shortcut-hint" title="Alt+A" <?php
               if($page_id>1) echo 'href="news.php?page_id='.($page_id-1).'"';
-            ?>><i class="fa fa-fw fa-angle-left"></i>上一页</a>
+            ?>><i class="fa fa-fw fa-angle-left"></i> <?php echo _('Previous')?></a>
           </li>
           <li>
             <a class="pager-next-link shortcut-hint" title="Alt+D" <?php
               if(mysqli_num_rows($res)==20&&$page_id<$maxpage) echo 'href="news.php?page_id='.($page_id+1).'"';
-            ?>>下一页<i class="fa fa-fw fa-angle-right"></i></a>
+            ?>><?php echo _('Next')?> <i class="fa fa-fw fa-angle-right"></i></a>
           </li>
         </ul>
       </div> 
@@ -100,11 +102,9 @@ $Title=$inTitle .' - '. $oj_name;
          <div class="modal-footer">
 			<text class="pull-left" id="newstime"></text>
 			<?php if(check_priv(PRIV_SYSTEM))
-		     echo '<a class="pull-left" href="admin.php#news">编辑</a>';
+		     echo '<a class="pull-left" href="admin.php#news">',_('Edit'),'</a>';
 			 ?> 
-            <button type="button" class="btn btn-default" 
-               data-dismiss="modal">关闭
-            </button>
+            <button type="button" class="btn btn-default" data-dismiss="modal"><?php echo _('Close')?></button>
          </div>
 		</div>
 	  </div>
@@ -126,7 +126,7 @@ $Title=$inTitle .' - '. $oj_name;
             if(obj.type=='success'){
               $('#newstitle').html(obj.title);
               $('#newscontent').html(obj.content);
-              $('#newstime').html('发布时间: '+obj.time+'&nbsp;&nbsp;权限: '+obj.priv+'&nbsp;&nbsp;');
+              $('#newstime').html('<?php echo _('Date: ')?>'+obj.time+'&nbsp;&nbsp;<?php echo _('Privilege: ')?>'+obj.priv+'&nbsp;&nbsp;');
               $('#NewsModal').modal('show');
             }else{
               $('#alert_error').html('<i class="fa fa-fw fa-remove"></i> '+obj.content).fadeIn();

@@ -13,10 +13,11 @@ function check_priv($priv){
 
 function list_priv($i){
     $r='';
-    if($i & PRIV_SYSTEM) $r.='系统 ';
-    if($i & PRIV_PROBLEM) $r.='题库 ';
-    if($i & PRIV_SOURCE) $r.='源码 ';
-    if($i & PRIV_INSIDER) $r.='校内 '; 
-    if($r=='') $r='用户';
+    if($i & PRIV_SYSTEM) $r.=_('System').' ';
+    if($i & PRIV_PROBLEM) $r.=_('Problems').' ';
+    if($i & PRIV_SOURCE) $r.=_('Source').' ';
+    if($i & PRIV_INSIDER) $r.=_('Insider').' '; 
+    if($r=='') $r=_('User');
+    else $r=substr($r,0,-1);
     return $r;
 }

@@ -1,4 +1,5 @@
-<?php 
+<?php
+require 'inc/global.php';
 require 'inc/ojsettings.php';
 require 'inc/checklogin.php';
 require 'inc/privilege.php';
@@ -6,51 +7,52 @@ if(!function_exists('get_time_text'))
 	require 'inc/functions.php';
 
 if(!check_priv(PRIV_PROBLEM))
-  include '403.php';
+    include '403.php';
 else if(!isset($_SESSION['admin_tfa']) || !$_SESSION['admin_tfa']){
-  $_SESSION['admin_retpage'] = $_SERVER['REQUEST_URI'];
-  header("Location: admin_auth.php");
-  exit;
+    $_SESSION['admin_retpage'] = $_SERVER['REQUEST_URI'];
+    header("Location: admin_auth.php");
+    exit();
 }else{
-require 'inc/problem_flags.php';
-require 'inc/database.php';
-$level_max=(PROB_LEVEL_MASK>>PROB_LEVEL_SHIFT);
-if(!isset($_GET['contest_id'])){
-  $p_type='add';
-  $inTitle='新建比赛';
-  $cont_id=1000;
-	$result=mysqli_query($con,'select max(contest_id) from contest');
-	if( ($row=mysqli_fetch_row($result)) && intval($row[0]))
-		$cont_id=intval($row[0])+1;
-}else{
-  $p_type='edit';
-  $cont_id=intval($_GET['contest_id']);  
-  $inTitle="编辑比赛#$cont_id";
-  
-  $query="select title,start_time,end_time,problems,description,source,judge_way,has_tex from contest where contest_id=$cont_id";
-  $result=mysqli_query($con,$query);
-  $row=mysqli_fetch_row($result);
-  if(!$row)
-    $info = '看起来该比赛不存在';
-  else { 
-    switch ($row[6]) {
-      case 0:
-        $way='cwoj';
-        break;
-      case 1:
-        $way='acm-like';
-        break;
-      case 2:
-        $way='oi-like';
-        break;
+    require 'inc/problem_flags.php';
+    require 'inc/database.php';
+    $level_max=(PROB_LEVEL_MASK>>PROB_LEVEL_SHIFT);
+    if(!isset($_GET['contest_id'])){
+        $p_type='add';
+        $inTitle=_('New Contest');
+        $cont_id=1000;
+        $result=mysqli_query($con,'select max(contest_id) from contest');
+        if(($row=mysqli_fetch_row($result)) && intval($row[0]))
+            $cont_id=intval($row[0])+1;
+    }else{
+        $p_type='edit';
+        $cont_id=intval($_GET['contest_id']);  
+        $inTitle=_('Edit Contest')." #$cont_id";
+        $query="select title,start_time,end_time,problems,description,source,judge_way,has_tex from contest where contest_id=$cont_id";
+        $result=mysqli_query($con,$query);
+        $row=mysqli_fetch_row($result);
+        if(!$row)
+            $info=_('There\'s no such contest');
+        else{ 
+            switch ($row[6]) {
+                case 0:
+                    $way='train';
+                    break;
+                case 1:
+                    $way='cwoj';
+                    break;
+                case 2:
+                    $way='acm-like';
+                    break;
+                case 3:
+                    $way='oi-like';
+                    break;
+            }
+        }
+        $option_level=($row[7]&PROB_LEVEL_MASK)>>PROB_LEVEL_SHIFT;
+        $option_hide=(($row[7]&PROB_IS_HIDE)?'checked':'');
     }
-  }
 
-  $option_level=($row[7]&PROB_LEVEL_MASK)>>PROB_LEVEL_SHIFT;
-  $option_hide=(($row[7]&PROB_IS_HIDE)?'checked':'');
-}
-
-$Title=$inTitle .' - '. $oj_name;
+    $Title=$inTitle .' - '. $oj_name;
 ?>
 <!DOCTYPE html>
 <html>
@@ -67,40 +69,41 @@ $Title=$inTitle .' - '. $oj_name;
         </div>
       <?php }else{?>
 	  <div class="collapse" id="showtools">
-	    <p><button class="btn btn-primary" id="btn_show">显示工具栏<i class="fa fa-fw fa-angle-right"></i></button></p>
+	    <p><button class="btn btn-primary" id="btn_show"><?php echo _('Show Toolbar')?><i class="fa fa-fw fa-angle-right"></i></button></p>
 	  </div>
       <form action="#" method="post" id="edit_form" style="padding-top:10px">
         <input type="hidden" name="op" value="<?php echo $p_type?>">
 		<input type="hidden" name="contest_id" value="<?php echo $cont_id?>">
         <div class="row">
           <div class="form-group col-xs-12 col-sm-9">
-            <label>比赛标题: </label>
+            <label><?php echo _('Title')?> </label>
 			<input type="text" class="form-control" name="title" id="input_title" value="<?php if($p_type=='edit') echo $row[0]?>">
           </div>
         </div>
         <div class="row">
           <div class="form-group col-xs-12 col-sm-9">
-            <label>比赛题目 (逗号隔开，如:1000,1001): </label>
+            <label><?php echo _('Problems (Format: a,b,c)')?></label>
 			<input type="text" class="form-control" name="problems" value="<?php if($p_type=='edit'){ $prob_arr=unserialize($row[3]);echo implode(',', $prob_arr);}?>">
           </div>
         </div>
         <div class="row">
           <div class="form-group col-xs-6 col-sm-4">
-            <label>开始时间 (yyyy-mm-dd hh:mm:ss): </label>
+            <label><?php echo _('Start Time (yyyy-mm-dd hh:mm:ss)')?></label>
 			<input id="input_time" name="start_time" class="form-control" type="text" value="<?php if($p_type=='edit') echo $row[1]; else echo date("Y-m-d H:i:s",time())?>">
           </div>
 		  <div class="form-group col-xs-6 col-sm-4">
-            <label>结束时间 (yyyy-mm-dd hh:mm:ss): </label>
+            <label><?php echo _('End Time (yyyy-mm-dd hh:mm:ss)')?></label>
 			<input id="input_memory" name="end_time" class="form-control" type="text" value="<?php if($p_type=='edit') echo $row[2]; else echo date("Y-m-d H:i:s",time()+10800)?>">
           </div> 
         </div>
         <div class="row">
           <div class="form-group col-xs-12 col-sm-9">
-            <label>计分方式: </label>
+            <label><?php echo _('Format')?></label>
               <select class="form-control" name="judge" id="input_cmp">
-                <option value="cwoj">CWOJ赛制</option>
-                <option value="acm-like">类ACM赛制</option>
-                <option value="oi-like">类OI赛制</option>
+                <option value="train"><?php echo _('Training')?></option>
+                <option value="cwoj"><?php echo _('CWOJ')?></option>
+                <option value="acm-like"><?php echo _('ACM-like')?></option>
+                <option value="oi-like"><?php echo _('OI-like')?></option>
               </select>
               <?php if($p_type=='edit'){?>
               <script>
@@ -112,15 +115,15 @@ $Title=$inTitle .' - '. $oj_name;
         </div>      
         <div class="row">
           <div class="form-group col-xs-6 col-sm-3">
-            <label>比赛难度: </label>
+            <label><?php echo _('Level')?></label>
             <select class="form-control" name="option_level" id="option_level">
               <script>
               <?php if($p_type=='add'){?>
-                for (var i = 0; i <= <?php echo $level_max?>; i++) {
+                for(var i=0;i<=<?php echo $level_max?>;i++){
                   document.write('<option value="'+i+'">'+i+'</option>')
-                };
+                }
               <?php }else{?>
-                for (var i = 0; i <= <?php echo $level_max?>; i++) {
+                for(var i=0;i<=<?php echo $level_max?>;i++){
                   if(i==<?php echo $option_level?>)
                     document.write('<option selected value="'+i+'">'+i+'</option>')
                   else
@@ -131,30 +134,30 @@ $Title=$inTitle .' - '. $oj_name;
             </select>
           </div>
           <div class="form-group col-xs-6 col-sm-4">
-			<label>比赛选项: </label>
+			<label><?php echo _('Options')?></label>
 			<div class="checkbox">
 			  <label>
-				<input <?php if($p_type=='edit') echo $option_hide?> type="checkbox" name="hide_cont">隐藏比赛
+				<input <?php if($p_type=='edit') echo $option_hide?> type="checkbox" name="hide_cont"><?php echo _('Hide')?>
 			  </label>
 			</div>  
 		  </div>
         </div>
         <div class="row">
           <div class="form-group col-xs-12 col-sm-9">
-              <label>比赛简介:</label>
+              <label><?php echo _('Description')?></label>
               <textarea class="form-control col-xs-12" name="description" rows="13"><?php if($p_type=='edit') echo htmlspecialchars($row[4])?></textarea>
           </div>
         </div>       
         <div class="row">
           <div class="form-group col-xs-12 col-sm-9">
-              <label>比赛标签:</label>
+              <label><?php echo _('Tags')?></label>
               <input class="form-control col-xs-12" type="text" name="source" value="<?php if($p_type=='edit') echo htmlspecialchars($row[5])?>">
           </div>
         </div>
         <div class="row">
           <div class="form-group col-xs-12 col-sm-9">
             <div class="alert alert-danger collapse" id="alert_error"></div>  
-            <button class="btn btn-primary" type="submit">提交</button>
+            <button class="btn btn-primary" type="submit"><?php echo _('Submit')?></button>
           </div>
         </div>
       </form>
@@ -167,54 +170,54 @@ $Title=$inTitle .' - '. $oj_name;
     <div class="html-tools">
       <div class="panel panel-default" id="tools">
         <div class="panel-heading">
-          <h3 class="panel-title"><i class="fa fa-fw fa-code"></i> HTML代码工具</h3>
+          <h3 class="panel-title"><i class="fa fa-fw fa-code"></i> <?php echo _('HTML Toolbar')?></h3>
         </div>
         <div class="panel-body">
           <table class="table table-responsive table-bordered table-condensed table-striped">
             <thead>
             <tr>
-              <th>功能</th>
-              <th>代码</th>
+              <th><?php echo _('Function')?></th>
+              <th><?php echo _('Code')?></th>
             </tr>
             </thead>
             <tbody>
               <tr>
-                <td><button class="btn btn-default" id="tool_less">小于(&lt;)</button></td>
+                <td><button class="btn btn-default" id="tool_less"><?php echo _('Smaller than(&lt;)')?></button></td>
                 <td>&amp;lt;</td>
               </tr>
               <tr>
-                <td><button class="btn btn-default" id="tool_greater">大于(&gt;)</button></td>
+                <td><button class="btn btn-default" id="tool_greater"><?php echo _('Greater than(&gt;)')?></button></td>
                 <td>&amp;gt;</td>
               </tr>
               <tr>
-                <td><button class="btn btn-default" id="tool_img">图片</button></td>
+                <td><button class="btn btn-default" id="tool_img"><?php echo _('Image')?></button></td>
                 <td>&lt;img src=&quot;...&quot;&gt;</td>
               </tr>
               <tr>
-                <td><button class="btn btn-default" id="tool_sup">上标</button></td>
+                <td><button class="btn btn-default" id="tool_sup"><?php echo _('Superscript')?></button></td>
                 <td>&lt;sup&gt;...&lt;/sup&gt;</td>
               </tr>
               <tr>
-                <td><button class="btn btn-default" id="tool_sub">下标</button></td>
+                <td><button class="btn btn-default" id="tool_sub"><?php echo _('Subscript')?></button></td>
                 <td>&lt;sub&gt;...&lt;/sub&gt;</td>
               </tr>
               <tr>
-                <td><button class="btn btn-default" id="tool_samp">单间隔</button></td>
+                <td><button class="btn btn-default" id="tool_samp"><?php echo _('Monospace')?></button></td>
                 <td>&lt;samp&gt;...&lt;/samp&gt;</td>
               </tr>
               <tr>
-                <td><button class="btn btn-default" id="tool_inline">公式</button></td>
+                <td><button class="btn btn-default" id="tool_inline"><?php echo _('Inline TeX')?></button></td>
                 <td>[inline]...[/inline]</td>
               </tr>
               <tr>
-                <td><button class="btn btn-default" id="tool_tex">居中公式</button></td>
+                <td><button class="btn btn-default" id="tool_tex"><?php echo _('TeX')?></button></td>
                 <td>[tex]...[/tex]</td>
               </tr>
             </tbody>
           </table>
-          <div class="text-center" style="margin-top:10px">
-            <button class="btn btn-success" id="btn_upload">上传图片...</button>
-            <button class="btn btn-primary" id="btn_hide">隐藏工具栏<i class="fa fa-fw fa-angle-left"></i></button>
+          <div class="btn-group text-center" style="margin-top:10px">
+            <button class="btn btn-success" id="btn_upload"><?php echo _('Upload Image')?></button>
+            <button class="btn btn-primary" id="btn_hide"><?php echo _('Hide Toolbar')?><i class="fa fa-fw fa-angle-left"></i></button>
           </div>
         </div>
       </div>
@@ -225,12 +228,14 @@ $Title=$inTitle .' - '. $oj_name;
         var loffset=window.screenLeft+200;
         var toffset=window.screenTop+200;
         function show_help(way){
-          if(way=='cwoj')
+          if(way=='train')
             $('#input_cmp_help').html('<?php echo get_judgeway_destext(0);?>');
-          else if(way=='acm-like')
+          else if(way=='cwoj')
             $('#input_cmp_help').html('<?php echo get_judgeway_destext(1);?>');
-          else if(way=='oi-like')
+          else if(way=='acm-like')
             $('#input_cmp_help').html('<?php echo get_judgeway_destext(2);?>');
+          else if(way=='oi-like')
+            $('#input_cmp_help').html('<?php echo get_judgeway_destext(3);?>');
         }
         (function(){
             show_help($('#input_cmp').val());
@@ -268,7 +273,7 @@ $Title=$inTitle .' - '. $oj_name;
             data:$('#edit_form').serialize(),
             success:function(msg){
               if(/success/.test(msg)) window.location="contestpage.php?contest_id=<?php echo $cont_id?>";
-              else $('#alert_error').html('<i class="fa fa-fw fa-remove"></i> 错误: '+msg).slideDown();
+              else $('#alert_error').html('<i class="fa fa-fw fa-remove"></i> '+msg).slideDown();
             }
           });
           return false;
@@ -283,7 +288,7 @@ $Title=$inTitle .' - '. $oj_name;
           else if(op=="tool_less")
             InsertString(cur,'&lt;');
           else if(op=="tool_img"){
-            var url=prompt("请输入图片链接:","");
+            var url=prompt('<?php echo _('Please enter the image link')?>:','');
             if(url){
               InsertString(cur,slt+'<img src="'+url+'">');
             }

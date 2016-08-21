@@ -1,77 +1,92 @@
 <?php
+require 'inc/global.php';
 require 'inc/database.php';
 require 'inc/ojsettings.php';
 require 'inc/functions.php';
+require 'inc/mailsettings.php';
 session_start(); 
 
-if(!isset($_POST['type']))
-	die('Invalid argument.');
-
-if($_POST['type'] == 'match'){
-	if(!isset($_POST['usercode']))
-	    die('Invalid argument.');
-	if(!isset($_SESSION['resetpwd_code'])||empty($_SESSION['resetpwd_code']))
-		die('未知错误 =.=');
-	if($_POST['usercode']==$_SESSION['resetpwd_code']) {
-     $_SESSION['resetpwd_flag']=1;
-		echo 'success';
-    }
-	else {
-     $_SESSION['resetpwd_wrongnum']++;
-     if($_SESSION['resetpwd_wrongnum'] >= 3) echo 'fuckyou';
-		else echo 'fail';
-    }
+if(!isset($_POST['type'])){
+    echo _('Invalid Argument...');
+    exit();
 }
 
-else if($_POST['type'] == 'verify'){
-	if(!isset($_POST['user'],$_POST['email']))
-		die('Invalid argument.');
-	$user = mysqli_real_escape_string($con,$_POST['user']);
-	if(preg_match('/\W/',$user))
-		die('无效的用户名');
+if($_POST['type'] == 'verify'){
+	if(!isset($_POST['email'])){
+		echo _('Invalid Argument...');
+        exit();
+    }
 	$email = $_POST['email'];
-	$result=mysqli_query($con,"select email from users where user_id='$user'");
-	if(!($row=mysqli_fetch_row($result)) || !$row[0])
-		die('用户不存在!');
-	if($row[0] != $email)
-		die('邮箱错误!');
+    if(!preg_match("/^([0-9A-Za-z\\-_\\.]+)@([0-9a-z]+\\.[a-z]{2,3}(\\.[a-z]{2})?)$/i",$_POST['email'])){
+        echo _('Invalid Email...');
+        exit();
+    }
+	$result=mysqli_query($con,'select user_id from users where email="'.mysqli_real_escape_string($con,$_POST['email']).'" limit 1');
+	if(!($row=mysqli_fetch_row($result)) || !$row[0]){
+        echo _('Invalid Email...');
+        exit();
+    }
 	if(!isset($_SESSION['resetpwd_code'])||empty($_SESSION['resetpwd_code']))
 		die('timeout');
-	$code = $_SESSION['resetpwd_code'];
-   $_SESSION['resetpwd_user'] = $user;
-   $_SESSION['resetpwd_email'] = $email;
-	 echo resetpwd_mail();
+    $code = $_SESSION['resetpwd_code'];
+    $_SESSION['resetpwd_user'] = $row[0];
+    $_SESSION['resetpwd_email'] = $email;
+    echo resetpwd_mail();
 }
 
 else if($_POST['type'] == 'resend'){
 	echo resetpwd_mail();
 }
 
+else if($_POST['type'] == 'match'){
+	if(!isset($_POST['usercode'])){
+	    echo _('Invalid Argument...');
+        exit();
+    }
+	if(!isset($_SESSION['resetpwd_code'])||empty($_SESSION['resetpwd_code']))
+        die('timeout');
+	if($_POST['usercode']==$_SESSION['resetpwd_code']){
+        $_SESSION['resetpwd_flag']=1;
+        echo 'success';
+    }else{
+        $_SESSION['resetpwd_wrongnum']++;
+        if($_SESSION['resetpwd_wrongnum'] >= 3) 
+            echo 'fuckyou';
+		else
+            echo 'fail';
+    }
+}
+
 else if($_POST['type'] == 'update'){
-	if(!isset($_POST['newpwd']))
-	    die('Invalid argument.');
+	if(!isset($_POST['newpwd'])){
+	    echo _('Invalid Argument...');
+        exit();
+    }
 	if(!isset($_SESSION['resetpwd_user']) || empty($_SESSION['resetpwd_user']) || !isset($_SESSION['resetpwd_flag']) || $_SESSION['resetpwd_flag']!=1)
-		die('身份验证超时，请刷新页面重新开始...');
+		die('timeout');
 	if(!function_exists('my_rsa'))
 		require 'inc/checkpwd.php';
 	$user = $_SESSION['resetpwd_user'];
 	$len=strlen($_POST['newpwd']);
-	if($len<6||$len>50)
-		die('密码不符合要求(至少6位)');
+	if($len<6||$len>50){
+		echo _('Password too long or too short (6~50)...');
+        exit();
+    }
 	$query='update users set password=\''.mysqli_real_escape_string($con,my_rsa($_POST['newpwd'])).'\'';
 	$query.=" where user_id='$user'";
+    //Cleaning up
 	unset($_SESSION['resetpwd_code']);
 	unset($_SESSION['resetpwd_user']);
 	unset($_SESSION['resetpwd_email']);
 	unset($_SESSION['resetpwd_wrongnum']);
 	unset($_SESSION['resetpwd_flag']);
 	session_destroy();
-	if(mysqli_query($con,$query)){
+    
+	if(mysqli_query($con,$query))
 		echo 'success';
-	}
 	else
-		echo '未知错误，请刷新重试...';
-	}
+		echo _('Something went wrong...');
+}
 
-else die('Invalid argument.');
-?>
+else
+    echo _('Invalid Argument...');

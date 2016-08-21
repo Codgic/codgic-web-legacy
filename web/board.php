@@ -1,4 +1,5 @@
 <?php
+require 'inc/global.php';
 require 'inc/ojsettings.php';
 require 'inc/checklogin.php';
 
@@ -34,17 +35,16 @@ function get_pre_link($top)
   return $pre;
 }
 
-$inTitle='讨论';
+$inTitle=_('Board');
 $Title=$inTitle .' - '. $oj_name;
 ?>
 <!DOCTYPE html>
 <html>
-  <?php require 'head.php'; ?>
+  <?php require 'head.php';?>
+  
   <body>
     <script type="text/x-mathjax-config">
-    MathJax.Hub.Config({
-      skipStartupTypeset:true
-    });
+    MathJax.Hub.Config({skipStartupTypeset:true});
     </script>
     <?php require 'inc/mathjax_head.php';
 	require 'page_header.php'; ?>
@@ -56,32 +56,29 @@ $Title=$inTitle .' - '. $oj_name;
         <form class="form-horizontal" method="post" action="#" id="form_submit">
             <input type="text" style="display:none" id="msg_op" name="op" value="msg_create">
             <div class="form-group">
-              <label class="col-xs-2" for="msg_input">标题</label>
+              <label class="col-xs-2" for="msg_input"><?php echo _('Title')?></label>
 			  <div class="col-xs-10">
-				<input class="form-control" id="msg_input" name="message" placeholder="请输入消息标题...">
+				<input class="form-control" id="msg_input" name="message" placeholder="<?php echo _('Post Title...')?>">
 			  </div>
 		   </div>
-            <div class="form-group">
-              <label class="col-xs-2" for="detail_input">内容</label>
+            <div class="form-group" id="msg_content">
+              <label class="col-xs-2" for="detail_input"><?php echo _('Content')?></label>
 			  <div class="col-xs-10">
-				<textarea class="form-control" id="detail_input" rows="7" name="detail" placeholder="请输入消息内容..."></textarea>
+				<textarea class="form-control" id="detail_input" rows="7" name="detail" placeholder="<?php echo _('Post Content...')?>"></textarea>
 			  </div>
 			</div>
-            <div id="PreviewPopover" class="popover left" >
-              <div class="arrow"></div>
-              <div class="popover-inner">
-                <h3 class="popover-title">预览<a class="close" style="line-height: inherit">×</a></h3>
-                <div class="popover-content">
-                  <pre><div id="preview_content"></div></pre>
-                </div>
+            <div class="form-group" id="msg_preview">
+              <label class="col-xs-2" for="preview_content"><?php echo _('Preview')?></label>
+              <div class="col-xs-10">
+                <pre><div id="preview_content"></div></pre>
               </div>
             </div>
-            <div style="float:left">
-              <span id="post_preview" class="btn btn-default">预览</span>
+            <div class="pull-left">
+              <button id="post_preview" class="btn btn-default"><?php echo _('Preview')?></button>
             </div>
-            <div style="float:right">
-              <button type="submit" id="post_submit" style="margin-left:20px" class="btn btn-primary shortcut-hint" title="Alt+S">发表</button>
-              <button id="cancel_input" class="btn btn-default">取消</button>
+            <div class="pull-right">
+              <button type="submit" id="post_submit" style="margin-left:20px" class="btn btn-primary shortcut-hint" title="Alt+S"><?php echo _('Post')?></button>
+              <button id="cancel_input" class="btn btn-default"><?php echo _('Close')?></button>
             </div>
             <div class="text-center text-error"><strong id="post_status"></strong></div>
           <input type="hidden" name="message_id" id="msgid_input">
@@ -95,7 +92,7 @@ $Title=$inTitle .' - '. $oj_name;
     <div class="container">
       <div class="row">
         <div class="col-xs-12" id="board">
-		    <a href="#" title="Alt+N" class="btn btn-primary shortcut-hint" id="new_msg"><i class="fa fa-fw fa-commenting"></i> 新建讨论...</a>
+		    <a href="javascript:void(0)" title="Alt+N" class="btn btn-primary shortcut-hint" id="new_msg"><i class="fa fa-fw fa-commenting"></i> <?php echo _('New Post...')?></a>
 		  <?php
             $top=$query_id;
             if($range){
@@ -125,12 +122,12 @@ $Title=$inTitle .' - '. $oj_name;
                   echo '<div class="msg msg-box">';
                 echo '<div class="msg-container"><div class="media"><a class="msg-avatar pull-left" href="javascript:void(0)" onclick="return show_user(\''.$row[2].'\')"><img src="'.get_gravatar($row[8],40).'" class="img-circle media-object" width="40" height="40"></a><div class="media-body"><strong><a href="javascript:void(0)" onclick="return show_user(\''.$row[2].'\')">',$row[2],'</a></strong> ',$row[4];
                 if($row[3]==$row[5] && $deep>0)
-                  echo '&nbsp;<span class="label label-warning" style="font-size:12px">最新消息</span>';
+                  echo '&nbsp;<span class="label label-warning" style="font-size:12px">',_('Latest'),'</span>';
                 if($deep==0 && $row[6])
-                    echo '&nbsp;&nbsp;<a class="prob_link" href="problempage.php?problem_id=',$row[6],'">题目#',$row[6],'</a>';
-					echo '<div class="btn-group"><button onclick="open_replypanel(',$row[3],')" class="btn btn-default btn-sm"><i class="fa fa-fw fa-reply"></i> 回复</button>';
+                    echo '&nbsp;&nbsp;<a class="prob_link" href="problempage.php?problem_id=',$row[6],'">',_('Problem '),'#',$row[6],'</a>';
+					echo '<div class="btn-group"><button onclick="open_replypanel(',$row[3],')" class="btn btn-default btn-sm"><i class="fa fa-fw fa-reply"></i> ',_('Reply'),'</button>';
 					if(isset($_SESSION['user'])&&$row[2]==$_SESSION['user']) 
-					  echo ' <button onclick="open_editpanel(',$row[3],')" class="btn btn-default btn-sm"><i class="fa fa-fw fa-pencil"></i> 编辑</button>';
+					  echo ' <button onclick="open_editpanel(',$row[3],')" class="btn btn-default btn-sm"><i class="fa fa-fw fa-pencil"></i> ',_('Edit'),'</button>';
                     echo '</div></div>';
                 if($row[7])
                   echo '<p class="msg-content msg-detailed">';
@@ -150,7 +147,7 @@ $Title=$inTitle .' - '. $oj_name;
             <div class="text-center none-text none-center">
               <p><i class="fa fa-meh-o fa-4x"></i></p>
               <p><b>Whoops</b><br>
-              看起来这里什么也没有</p>
+              <?php echo _('Looks like there\'s nothing here')?></p>
             </div>
           <?php }?> 
         </div> 
@@ -158,10 +155,10 @@ $Title=$inTitle .' - '. $oj_name;
       <div class="row">
         <ul class="pager">
           <li>
-            <a class="pager-pre-link shortcut-hint" title="Alt+A" <?php if(get_pre_link($top)!='2100000000') echo 'href="board.php?'.$query_prob.'&amp;start_id='.get_pre_link($top).'"' ?>> <i class="fa fa-angle-left"></i> 较新的</a>
+            <a class="pager-pre-link shortcut-hint" title="Alt+A" <?php if(get_pre_link($top)!='2100000000') echo 'href="board.php?'.$query_prob.'&amp;start_id='.get_pre_link($top).'"' ?>> <i class="fa fa-angle-left"></i> <?php echo _('Newer')?></a>
           </li>
           <li>
-            <a class="pager-next-link shortcut-hint" title="Alt+D" <?php if($range&&$query_id>1020) echo 'href="board.php?',$query_prob,'&amp;start_id=',$range.'"'; ?>>较旧的 <i class="fa fa-angle-right"></i></a>
+            <a class="pager-next-link shortcut-hint" title="Alt+D" <?php if($range&&$query_id>1020) echo 'href="board.php?',$query_prob,'&amp;start_id=',$range.'"'; ?>><?php echo _('Older')?> <i class="fa fa-angle-right"></i></a>
           </li>
         </ul>
       </div>
@@ -170,19 +167,17 @@ $Title=$inTitle .' - '. $oj_name;
           <div class="modal-content">
             <div class="modal-header">
               <button type="button" class="close" data-dismiss="modal">&times;</button>
-              <h4 class="modal-title">用户信息</h4>
+              <h4 class="modal-title"><?php echo _('User Profile')?></h4>
             </div>
-            <div class="modal-body" id="user_status">
-              <p>信息不可用……</p>
-            </div>
+            <div class="modal-body" id="user_status"></div>
             <div class="modal-footer">
               <form action="mail.php" method="post">
                 <input type="hidden" name="touser" id="input_touser">
                 <?php if(isset($_SESSION['user'])){?>
-                <button type="submit" class="btn btn-default pull-left"><i class="fa fa-fw fa-envelope-o"></i> 发私信</button>
+                <button type="submit" class="btn btn-default pull-left"><i class="fa fa-fw fa-envelope-o"></i> <?php echo _('Send Mail')?></button>
                 <?php }?>
               </form>
-              <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+              <button type="button" class="btn btn-default" data-dismiss="modal"><?php echo _('Close')?></button>
             </div>
           </div>
         </div>
@@ -207,12 +202,12 @@ $Title=$inTitle .' - '. $oj_name;
         }
       function open_replypanel(msg_id){
           <?php if(isset($_SESSION['user'])){?>
-			var title = ((msg_id=='0')?'<i class="fa fa-fw fa-commenting"></i> 新建消息':'<i class="fa fa-fw fa-reply"></i> 新建回复: #'+msg_id);
+			var title = ((msg_id=='0')?'<i class="fa fa-fw fa-commenting"></i> <?php echo _('New Post')?>':'<i class="fa fa-fw fa-reply"></i> <?php echo _('New Reply')?>: #'+msg_id);
 			$('#msg_op').val('msg_create');
 			$('#msgid_input').val(msg_id);
 			$('#replypanel h4').html(title);
 			$('#post_status').html('');
-			$('#PreviewPopover').hide();
+			$('#msg_preview').hide();
 			$('#msg_input').val('');
 			$('#detail_input').val('');
 			$('#replypanel').fadeIn(300);
@@ -220,41 +215,41 @@ $Title=$inTitle .' - '. $oj_name;
           <?php }else{ ?>
 		    $('#alert_error').removeClass('alert-info');
 			$('#alert_error').addClass('alert-danger');
-			$('#alert_error').html('<i class="fa fa-fw fa-remove"></i> 您尚未登录...').fadeIn();
+			$('#alert_error').html('<i class="fa fa-fw fa-remove"></i> <?php echo _('Please login first...')?>').fadeIn();
             setTimeout(function(){$('#alert_error').fadeOut();},2000);
 		  <?php }?>
           return false;
         }
       function open_editpanel(msg_id){
           <?php if(isset($_SESSION['user'])){?>
-          var title = '<i class="fa fa-fw fa-pencil"></i> 编辑消息';
+          var title = '<i class="fa fa-fw fa-pencil"></i> <?php echo _('Edit Post')?>';
           $('#msg_op').val('msg_edit');
           $('#post_status').html('');
           $('#msg_input').val('');
           $('#detail_input').val('');
           $.ajax({
-                  type:"POST",
-                  url:"ajax_message.php",
-                  data:{"op":'get_message', "message_id":msg_id},
-                  success:function(data){
-                      $('#msg_input').val($('#msg'+msg_id).html());
-                      $('#detail_input').val(data);
-                   }
-              });
+            type:"POST",
+            url:"ajax_message.php",
+            data:{"op":'get_message', "message_id":msg_id},
+            success:function(data){
+              $('#msg_input').val($('#msg'+msg_id).html());
+              $('#detail_input').val(data);
+            }
+          });
           $('#msgid_input').val(msg_id);
           $('#replypanel h4').html(title);
           $('#replypanel').fadeIn(300);
-		  $('#PreviewPopover').hide();
+		  $('#msg_preview').hide();
           $('#msg_input').focus();
           <?php }else{ ?>
 		  $('#alert_error').removeClass('alert-info');
 		  $('#alert_error').addClass('alert-danger');
-		  $('#alert_error').html('<i class="fa fa-fw fa-remove"></i> 您尚未登录...').fadeIn();
+		  $('#alert_error').html('<i class="fa fa-fw fa-remove"></i> <?php echo _('Please login first...')?>').fadeIn();
 		  <?php }?>
           return false;
         }
         function show_user(usr){
-            $('#user_status').html("<p>正在加载...</p>").load("ajax_user.php?user_id="+usr);
+            $('#user_status').html('<i class="fa fa-fw fa-refresh fa-spin"></i> <?php echo _('Loading...')?>').load("ajax_user.php?user_id="+usr);
             $('#input_touser').val(usr);
             $('#UserModal').modal('show');
             return false;
@@ -287,7 +282,7 @@ $Title=$inTitle .' - '. $oj_name;
             }else{
 			  $('#alert_error').removeClass('alert-danger');
 			  $('#alert_error').addClass('alert-info');
-              $('#alert_error').html('<i class="fa fa-fw fa-info"></i> 本条消息内容为空...').fadeIn();
+              $('#alert_error').html('<i class="fa fa-fw fa-info"></i> <?php echo _('This post is empty...')?>').fadeIn();
               setTimeout(function(){$('#alert_error').fadeOut();},2000);
             }
           }
@@ -302,15 +297,15 @@ $Title=$inTitle .' - '. $oj_name;
         $('#replypanel form').submit(function(){
           var msg=$.trim($('#msg_input').val());
           if(msg.length==0){
-            $('#post_status').html('<i class="fa fa-fw fa-remove"></i> 消息不可为空！');
+            $('#post_status').html("<i class=\"fa fa-fw fa-remove\"></i> <?php echo _('Post title can\'t be empty...')?>");
             return false;
           }
           if(msg.length>150){
-            $('#post_status').html('<i class="fa fa-fw fa-remove"></i> 消息太长了！');
+            $('#post_status').html('<i class="fa fa-fw fa-remove"></i> <?php echo _('Post content too long...')?>');
             return false;
           }
           post_submit.setAttribute("disabled",true);
-          $('#post_status').html('<i class="fa fa-fw fa-spinner fa-spin"></i> 正在发表...');
+          $('#post_status').html('<i class="fa fa-fw fa-spinner fa-spin"></i> <?php echo _('Posting...')?>');
 		  $.ajax({
             type:"POST",
             url:"ajax_message.php",
@@ -320,7 +315,7 @@ $Title=$inTitle .' - '. $oj_name;
                 location.reload();
               else{
                 post_submit.removeAttribute("disabled");
-                $('#post_status').html('<i class="fa fa-fw fa-remove"></i> 发生错误:'+msg);
+                $('#post_status').html('<i class="fa fa-fw fa-remove"></i> '+msg);
                }
             }
           });
@@ -337,14 +332,20 @@ $Title=$inTitle .' - '. $oj_name;
           E.which==27 && $('#replypanel').fadeOut(300);
         });
         $('#post_preview').click(function(){
-          var data=$('#detail_input').val();
-          data=$('<div/>').text(data).html();
-          dealwithlinks( $('#preview_content').html(parseBBCode(data)));
-          $('#PreviewPopover').fadeIn(300);
-          MathJax.Hub.Queue(["Typeset",MathJax.Hub,('preview_content')]);
-        });
-        $('#PreviewPopover a.close').click(function(){
-          $('#PreviewPopover').fadeOut(300);
+          if($('#msg_content').is(":visible")){
+            var data=$('#detail_input').val();
+            data=$('<div/>').text(data).html();
+            dealwithlinks( $('#preview_content').html(parseBBCode(data)));
+            $('#msg_content').slideUp();
+            $('#msg_preview').slideDown();
+            $('#post_preview').html('<?php echo _('Back')?>');
+            MathJax.Hub.Queue(["Typeset",MathJax.Hub,('preview_content')]);
+          }else{
+            $('#msg_preview').slideUp();
+            $('#msg_content').slideDown();
+            $('#post_preview').html('<?php echo _('Preview')?>');
+          }
+          return false;
         });
         function move_handle(E){
           var w=origX-E.clientX+origW;

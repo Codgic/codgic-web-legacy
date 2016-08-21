@@ -20,10 +20,9 @@ function processOption($name)
 	mysqli_query($con,"insert into preferences(user_id,property,value) values ('$user','$name','$tmp') ON DUPLICATE KEY UPDATE value='$tmp'");
 
 }
+
 processOption('night');
 processOption('edrmode');
 processOption('sharecode');
 
 $_SESSION['pref']=serialize($pref);
-
-?>

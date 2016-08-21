@@ -2,7 +2,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
   <meta name="renderer" content="webkit">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="<?php echo $oj_name?> - 一个开源且毫无特色并且时刻受到水王洪水威胁的信息竞赛刷题系统, built for you to code your future. 愿你在<?php echo $oj_name?>玩(bei)耍(nve)愉快! NOIP NOI 信息竞赛 刷题 水王">
+  <meta name="description" content="<?php echo $oj_name, _(' - An Open-source Online Judge designed for OI trainings, built for you to code your future.');?>">
   <?php header("Content-Type:text/html;charset=utf-8");?>
   <link rel="shortcut icon" href="/assets/res/favicon.ico" type="image/x-icon" />
   <link rel="apple-touch-icon" href="/assets/res/ojlogo_ios.png" />

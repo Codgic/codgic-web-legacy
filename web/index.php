@@ -1,4 +1,5 @@
 <?php 
+require 'inc/global.php';
 require 'inc/ojsettings.php';
 require 'inc/privilege.php';
 
@@ -15,14 +16,14 @@ require 'inc/database.php';
 $res=mysqli_query($con,"select content from news where news_id=0 limit 1");
 $index_text=($row=mysqli_fetch_row($res)) ? $row[0] : '';
 if(!isset($_SESSION['user']))
-  $res=mysqli_query($con,"select news_id,title,importance,privilege from news where news_id>0 and privilege=0 order by importance desc, news_id desc limit 0,$news_num");
+  $res=mysqli_query($con,"select news_id,title,importance from news where news_id>0 and privilege=0 order by importance desc, news_id desc limit 0,$news_num");
 else{
   $i=$_SESSION['priv'];
-  $res=mysqli_query($con,"select news_id,title,importance,privilege from news where news_id>0 and ((privilege & $i)<>0 or privilege=0) order by importance desc, news_id desc limit 0,$news_num");
+  $res=mysqli_query($con,"select news_id,title,importance from news where news_id>0 and ((privilege & $i)<>0 or privilege=0) order by importance desc, news_id desc limit 0,$news_num");
 }
-$row=mysqli_fetch_row(mysqli_query($con,"select content from user_notes where id=0 limit 1"));
+$row=mysqli_fetch_row(mysqli_query($con,"select content from user_notes where problem_id=0 limit 1"));
 $category=$row[0];
-$inTitle='主页';
+$inTitle=_('Home');
 $Title=$inTitle .' - '. $oj_name;
 $num=0;
 ?>
@@ -39,7 +40,7 @@ $num=0;
           <div id="newspad" class="panel panel-default" style="background-color: transparent">
 			<div class="panel-body">
               <div class="text-center" style="cursor:pointer">
-				<h1>公告栏</h1>
+				<h1><?php echo _('Bulletin')?></h1>
               </div> 
               <div id="mainarea">
 				<?php echo $index_text?>
@@ -53,7 +54,7 @@ $num=0;
       </div>
 	  <div class="row">
 		<div class="col-xs-12 col-sm-6">
-	    <h1><i class="fa fa-fw fa-newspaper-o"></i> 新闻<?php if(mysqli_num_rows($res)!=0){?><a href="news.php" class="pull-right"><font size=2>更多历史新闻...</font></a></h1>
+	    <h1><i class="fa fa-fw fa-newspaper-o"></i> <?php echo _('News'); if(mysqli_num_rows($res)!=0){?><a href="news.php" class="pull-right"><font size=2><?php echo _('More News')?>...</font></a></h1>
 		  <ul class="list-group" style="margin-top:10px;font-size:16px">
             <?php 
              while($row=mysqli_fetch_row($res)){
@@ -61,7 +62,7 @@ $num=0;
 				$addt1='';
 				$addt2='';
 				if($row[2]=='1'){
-                    $row[1]='[顶置] '.$row[1];
+                    $row[1]=_('[Sticky] ').$row[1];
                     $addt1='<b>';
                     $addt2='</b>';
 				}
@@ -73,18 +74,18 @@ $num=0;
 		  <div class="text-center none-text none-center">
               <p><i class="fa fa-meh-o fa-4x"></i></p>
               <p><b>Whoops</b><br>
-              还什么大新闻呢</p>
+              <?php echo _('There\'s nothing new...')?></p>
           </div>
 		  <?php }?>
 	  </div>
       <div class="col-xs-12 col-sm-6">
-        <h1><i class="fa fa-fw fa-th"></i> 分类</h1>
+        <h1><i class="fa fa-fw fa-th-list"></i> <?php echo _('Categories');?></h1>
 		<div class="panel-group" id="accordion" style="margin-top:10px;font-size:16px">
 		<?php if(trim($category)!='') echo $category; else{?>
         <div class="text-center none-text none-center">
           <p><i class="fa fa-meh-o fa-4x"></i></p>
           <p><b>Whoops</b><br>
-          尚未发布分类信息</p>
+          <?php echo _('There\'s nothing to show here...')?></p>
         </div>
         <?php }?>
 		</div>
@@ -107,9 +108,9 @@ $num=0;
          <div class="modal-footer">
 			<text class="pull-left" id="newstime"></text>
 			<?php if(check_priv(PRIV_SYSTEM))
-		     echo '<a class="pull-left" href="admin.php#news">编辑</a>';
+		     echo '<a class="pull-left" href="admin.php#news">',_('Edit'),'</a>';
 			 ?> 
-            <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+            <button type="button" class="btn btn-default" data-dismiss="modal"><?php echo _('Close')?></button>
          </div>
 		</div>
 	  </div>
@@ -128,7 +129,7 @@ $num=0;
                 if(obj.type=='success'){
                   $('#newstitle').html(obj.title);
                   $('#newscontent').html(obj.content);
-                  $('#newstime').html('发布时间: '+obj.time+'&nbsp;&nbsp;权限: '+obj.priv+'&nbsp;&nbsp;');
+                  $('#newstime').html('<?php echo _('Date: ')?>'+obj.time+'&nbsp;&nbsp;'+'<?php echo _('Privilege: ')?>'+obj.priv+'&nbsp;&nbsp;');
                   $('#NewsModal').modal('show');
                 }else{
                   $('#alert_error').html('<i class="fa fa-fw fa-remove"></i> '+obj.content).fadeIn();

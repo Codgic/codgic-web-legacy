@@ -1,16 +1,19 @@
-<?php 
+<?php
+require 'inc/global.php';
 require 'inc/ojsettings.php';
 require 'inc/privilege.php';
 
+if(!check_priv(PRIV_PROBLEM))
+    require '403.php';
+else{
+$inTitle=_('Test Cases');
 if(!isset($_GET['problem_id']))
-    die('Wrong argument.');
+    $info=_('Please specify the problem id');
+else{
 $prob_id=intval($_GET['problem_id']);
 
 require 'inc/checklogin.php';
 
-if(!check_priv(PRIV_PROBLEM))
-  require '403.php';
-else{
 if(!isset($_SESSION['admin_tfa']) || !$_SESSION['admin_tfa']){
   $_SESSION['admin_retpage'] = "testcase.php?problem_id=$prob_id";
   header("Location: admin_auth.php");
@@ -18,13 +21,12 @@ if(!isset($_SESSION['admin_tfa']) || !$_SESSION['admin_tfa']){
 }
 
 require 'inc/database.php';
-
 $result=mysqli_query($con,"select title from problem where problem_id=$prob_id");
 $row=mysqli_fetch_row($result);
 if(!$row)
-  $info='看起来这道题不存在';
-
-$inTitle="#$prob_id 测试数据";
+  $info=_('There\'s no such problem');
+$inTitle.=" #$prob_id";
+}
 $Title=$inTitle .' - '. $oj_name;
 ?>
 <!DOCTYPE html>
@@ -46,19 +48,19 @@ $Title=$inTitle .' - '. $oj_name;
       </div>
       <?php }else{?>
         <div class="row text-center">
-          <h3>#<?php echo $prob_id,' ',$row[0]; ?> 测试数据</h3>
+          <h2><?php echo '#',$prob_id,' ',$row[0]; ?></h2>
         </div>
         <div class="row">
           <div class="col-xs-12" style="margin-bottom:10px">
 			<div class="btn-group">
-			  <button class="btn btn-default" id="btn_refresh"><i class="fa fa-refresh fa-spin"></i> 刷新</button>
-			  <button class="btn btn-default" id="btn_uploader" data-toggle="modal"><i class="fa fa-upload"></i> 上传</button>
+			  <button class="btn btn-default" id="btn_refresh"><i class="fa fa-refresh fa-spin"></i> <?php echo _('Refresh')?></button>
+			  <button class="btn btn-default" id="btn_uploader" data-toggle="modal"><i class="fa fa-upload"></i> <?php echo _('Upload')?></button>
 			</div>
           </div>
         </div>
         <div class="row">
           <div class="col-xs-12" id="uploader_wrap" style="margin-bottom:10px">
-            <div id="html5_uploader">你的浏览器不支持HTML5!</div>
+            <div id="html5_uploader"><?php echo _('Your browser does not support HTML5!')?></div>
           </div>
         </div>
         <div class="row">
@@ -89,7 +91,7 @@ $Title=$inTitle .' - '. $oj_name;
           if(obj.files){
             var $list = $('#file_list').html('');
             $.each(obj.files,function(index,val){
-              $list.append('<tr><td style="text-align:left">'+htmlEncode(val)+'</td><td><a href="#" class="text-error"><i class="fa fa-remove"></i></a></td></tr>');
+              $list.append('<tr><td style="text-align:left">'+htmlEncode(val)+'</td><td><a href="javascript:void(0)"><i class="fa fa-remove"></i></a></td></tr>');
             });
             $('#btn_refresh>i').removeClass('fa-spin');
           }
@@ -104,15 +106,14 @@ $Title=$inTitle .' - '. $oj_name;
         multipart_params: {
           "problem_id": problem_id
         },
-      //  max_retries: 2,
         rename : true,
-	    	dragdrop: true,
+        dragdrop: true,
         complete:function(){
           refresh_list();
           $('#uploader_wrap').slideUp();
         },
          filters : [
-            {title : "CWOJ钦定文件类型", extensions : "in,out,cpp"},
+            {title : "<?php echo _('CWOJ Approved Extensions')?>", extensions : "in,out,cpp"},
          ],
       });
         refresh_list();
@@ -128,7 +129,7 @@ $Title=$inTitle .' - '. $oj_name;
           var $obj = $(E.target);
           if($obj.is('i')){
             var name = $obj.parent().parent().prev().text();
-            if(!window.confirm("确认要删除 "+name))
+            if(!window.confirm("<?php echo _('Sure to delete ')?> "+name))
                 return false;
             $.get('ajax_testcase.php'+BuildUrlParms({'op':'del','problem_id':problem_id,'filename':name}), function(r){
               if(/success/.test(r))

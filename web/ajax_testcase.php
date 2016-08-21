@@ -1,10 +1,16 @@
 <?php
+require 'inc/global.php';
 require 'inc/privilege.php';
 session_start();
-if(!check_priv(PRIV_PROBLEM))
-	die('你没有权限...');
-if(!isset($_SESSION['admin_tfa']) || !$_SESSION['admin_tfa'])
-	die('No TFA');
+if(!check_priv(PRIV_PROBLEM)){
+	echo _('Permission Denied...');
+    exit();
+}
+if(!isset($_SESSION['admin_tfa']) || !$_SESSION['admin_tfa']){
+	echo _('Privilege not authorized...');
+    exit();
+}
+
 function get_extension($file)
 {
   return pathinfo($file, PATHINFO_EXTENSION);
@@ -41,12 +47,14 @@ function upload_file_handler($targetDir)
     
 	if($fileName=='' || $fileName=='.' || $fileName=='..' ){
 		header($_SERVER['SERVER_PROTOCOL'] . ' 500 Internal Server Error', true, 500);
-		die('{"jsonrpc" : "2.0", "error" : {"code": 104, "message": "无效的文件名"}, "id" : "id"}');
+        $info=_('Incorrect File name...');
+		echo '{"jsonrpc" : "2.0", "error" : {"code": 104, "message": "'.$info.'"}, "id" : "id"}';
     }
     $ext=get_extension($fileName);
     if($ext!="in" && $ext!="out" && $ext!="cpp"){
         header($_SERVER['SERVER_PROTOCOL'] . ' 500 Internal Server Error', true, 500);
-		die('{"jsonrpc" : "2.0", "error" : {"code": 104, "message": "无效的文件格式"}, "id" : "id"}');
+        $info=_('Incorrect File type...');
+		echo '{"jsonrpc" : "2.0", "error" : {"code": 104, "message": "'.$info.'"}, "id" : "id"}';
     }
 	$filePath = $targetDir . DIRECTORY_SEPARATOR . $fileName;
 
@@ -58,24 +66,28 @@ function upload_file_handler($targetDir)
 	// Open temp file
 	if (!$out = @fopen("{$filePath}.part", $chunks ? "ab" : "wb")) {
 		header($_SERVER['SERVER_PROTOCOL'] . ' 500 Internal Server Error', true, 500);
-		die('{"jsonrpc" : "2.0", "error" : {"code": 102, "message": "无法打开输出流"}, "id" : "id"}');
+        $info=_('Failed to launch output stream...');
+		echo '{"jsonrpc" : "2.0", "error" : {"code": 102, "message": "'.$info.'"}, "id" : "id"}';
 	}
 
 	if (!empty($_FILES)) {
 		if ($_FILES["file"]["error"] || !is_uploaded_file($_FILES["file"]["tmp_name"])) {
 			header($_SERVER['SERVER_PROTOCOL'] . ' 500 Internal Server Error', true, 500);
-			die('{"jsonrpc" : "2.0", "error" : {"code": 103, "message": "无法将已上传文件移动到指定位置"}, "id" : "id"}');
+            $info=_('Can\'t move the files to its place...');
+			echo '{"jsonrpc" : "2.0", "error" : {"code": 103, "message": "'.$info.'"}, "id" : "id"}';
 		}
 
 		// Read binary input stream and append it to temp file
 		if (!$in = @fopen($_FILES["file"]["tmp_name"], "rb")) {
 			header($_SERVER['SERVER_PROTOCOL'] . ' 500 Internal Server Error', true, 500);
-			die('{"jsonrpc" : "2.0", "error" : {"code": 101, "message": "无法打开输入流"}, "id" : "id"}');
+            $info=_('Can\'t launch input stream...');
+			echo '{"jsonrpc" : "2.0", "error" : {"code": 101, "message": "'.$info.'"}, "id" : "id"}';
 		}
 	} else {	
 		if (!$in = @fopen("php://input", "rb")) {
 			header($_SERVER['SERVER_PROTOCOL'] . ' 500 Internal Server Error', true, 500);
-			die('{"jsonrpc" : "2.0", "error" : {"code": 101, "message": "无法打开输入流"}, "id" : "id"}');
+            $info=_('Can\'t launch input stream...');
+			echo '{"jsonrpc" : "2.0", "error" : {"code": 101, "message": "'.$info.'"}, "id" : "id"}';
 		}
 	}
 
@@ -99,15 +111,18 @@ function upload_file_handler($targetDir)
 
 if(!isset($_SESSION['testcase_dir'])){
     $testcase_dir = get_testcase_dir();
-    if(FALSE === $testcase_dir)
-      die("无法访问测试数据路径");
-    else
+    if(FALSE === $testcase_dir){
+        echo _('Can\'t access data directory...');
+        exit();
+    }else
       $_SESSION['testcase_dir']=$testcase_dir;
 }
 
 if($_SERVER['REQUEST_METHOD']=='POST'){
-	if(!isset($_REQUEST['problem_id']))
-		die('{"jsonrpc" : "2.0", "error" : {"code": 104, "message": 没有指定问题ID"No problem specified."}, "id" : "id"}');
+	if(!isset($_REQUEST['problem_id'])){
+        $info=_('No problem ID specified...');
+		echo '{"jsonrpc" : "2.0", "error" : {"code": 104, "message": "'.$info.'"}, "id" : "id"}';
+    }
 	$prob_dir = $_SESSION['testcase_dir'].intval($_REQUEST['problem_id']);
 	upload_file_handler($prob_dir);
 }else{
@@ -127,10 +142,7 @@ if($_SERVER['REQUEST_METHOD']=='POST'){
 		if($name!='.' && $name!='..' && $name!='' && unlink($prob_dir.DIRECTORY_SEPARATOR.$name))
 			echo 'success';
 		else
-			echo '系统错误，删除失败...';
-	}else{
-		die('无效操作...');
-	}
-
+			echo _('Something went wrong...');
+	}else
+		echo _('Invalid Argument...');
 }
-?>

@@ -1,4 +1,5 @@
 <?php
+require 'inc/global.php';
 function show_alert($str)
 {
 	echo '<html><body><script>alert("';
@@ -8,10 +9,10 @@ function show_alert($str)
 session_start();
 
 if(!isset($_SESSION['user'])){
-	show_alert('您尚未登录');
+    $info=_('Please login first...');
+	show_alert($info);
 	exit;
 }
-
 require 'inc/database.php';
 require 'inc/preferences.php';
 require 'inc/lang_conf.php';
@@ -20,7 +21,8 @@ require 'inc/tgz.lib.php';
 $pref=unserialize($_SESSION['pref']);
 $now=time();
 if($now - $pref->backuptime < 604800){
-	show_alert('抱歉，一周只能备份一次源代码...');
+    $info=_('You can only backup your code not more than once a month...');
+	show_alert($info);
 	exit;
 }
 $archive="backup-$now";
@@ -47,4 +49,3 @@ while($row=mysql_fetch_row($res)){
 }
 
 $tar->Close();
-
