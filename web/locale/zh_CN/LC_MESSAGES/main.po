@@ -1,0 +1,2337 @@
+# Chinese translations for CWOJ-1.0 package.
+# Copyright (C) 2016 THE CWOJ-1.0'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the CWOJ-1.0 package.
+# Jimmy Zhang <info@cwoj.tk>, 2016.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: CWOJ-1.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2016-08-21 17:04+0800\n"
+"PO-Revision-Date: 2016-08-21 17:04+0800\n"
+"Last-Translator: Jimmy Zhang <info@cwoj.tk>\n"
+"Language-Team: CWOJ Team <info@cwoj.tk>\n"
+"Language: zh_CN\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.8.7.1\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-Basepath: ../../..\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Poedit-SearchPath-0: wait.php\n"
+"X-Poedit-SearchPath-1: upload.php\n"
+"X-Poedit-SearchPath-2: testcase.php\n"
+"X-Poedit-SearchPath-3: sourcecode.php\n"
+"X-Poedit-SearchPath-4: solved.php\n"
+"X-Poedit-SearchPath-5: signup.php\n"
+"X-Poedit-SearchPath-6: search.php\n"
+"X-Poedit-SearchPath-7: resetpwd.php\n"
+"X-Poedit-SearchPath-8: record.php\n"
+"X-Poedit-SearchPath-9: ranklist.php\n"
+"X-Poedit-SearchPath-10: proxy.php\n"
+"X-Poedit-SearchPath-11: profile.php\n"
+"X-Poedit-SearchPath-12: problemset.php\n"
+"X-Poedit-SearchPath-13: problempage.php\n"
+"X-Poedit-SearchPath-14: preferences.php\n"
+"X-Poedit-SearchPath-15: page_header.php\n"
+"X-Poedit-SearchPath-16: news.php\n"
+"X-Poedit-SearchPath-17: marked.php\n"
+"X-Poedit-SearchPath-18: mail.php\n"
+"X-Poedit-SearchPath-19: login.php\n"
+"X-Poedit-SearchPath-20: index.php\n"
+"X-Poedit-SearchPath-21: head.php\n"
+"X-Poedit-SearchPath-22: fuckie.php\n"
+"X-Poedit-SearchPath-23: editproblem.php\n"
+"X-Poedit-SearchPath-24: editcontest.php\n"
+"X-Poedit-SearchPath-25: contestpage.php\n"
+"X-Poedit-SearchPath-26: contest.php\n"
+"X-Poedit-SearchPath-27: board.php\n"
+"X-Poedit-SearchPath-28: backupcode.php\n"
+"X-Poedit-SearchPath-29: ajax_usernote.php\n"
+"X-Poedit-SearchPath-30: ajax_user.php\n"
+"X-Poedit-SearchPath-31: ajax_usage.php\n"
+"X-Poedit-SearchPath-32: ajax_testcase.php\n"
+"X-Poedit-SearchPath-33: ajax_submit.php\n"
+"X-Poedit-SearchPath-34: ajax_resetpwd.php\n"
+"X-Poedit-SearchPath-35: ajax_profile.php\n"
+"X-Poedit-SearchPath-36: ajax_preferences.php\n"
+"X-Poedit-SearchPath-37: ajax_opensource.php\n"
+"X-Poedit-SearchPath-38: ajax_message.php\n"
+"X-Poedit-SearchPath-39: ajax_mark.php\n"
+"X-Poedit-SearchPath-40: ajax_mailfunc.php\n"
+"X-Poedit-SearchPath-41: ajax_logoff.php\n"
+"X-Poedit-SearchPath-42: ajax_login.php\n"
+"X-Poedit-SearchPath-43: ajax_getnews.php\n"
+"X-Poedit-SearchPath-44: ajax_editproblem.php\n"
+"X-Poedit-SearchPath-45: ajax_editcontest.php\n"
+"X-Poedit-SearchPath-46: ajax_contest.php\n"
+"X-Poedit-SearchPath-47: ajax_admin.php\n"
+"X-Poedit-SearchPath-48: admin_auth.php\n"
+"X-Poedit-SearchPath-49: admin.php\n"
+"X-Poedit-SearchPath-50: about.php\n"
+"X-Poedit-SearchPath-51: 404.php\n"
+"X-Poedit-SearchPath-52: 403.php\n"
+"X-Poedit-SearchPath-53: inc/userlogin.php\n"
+"X-Poedit-SearchPath-54: inc/tgz.lib.php\n"
+"X-Poedit-SearchPath-55: inc/result_type.php\n"
+"X-Poedit-SearchPath-56: inc/problem_flags.php\n"
+"X-Poedit-SearchPath-57: inc/privilege.php\n"
+"X-Poedit-SearchPath-58: inc/preferences.php\n"
+"X-Poedit-SearchPath-59: inc/ojsettings.php\n"
+"X-Poedit-SearchPath-60: inc/mutex.php\n"
+"X-Poedit-SearchPath-61: inc/mathjax_head.php\n"
+"X-Poedit-SearchPath-62: inc/mail_flags.php\n"
+"X-Poedit-SearchPath-63: inc/lang_conf.php\n"
+"X-Poedit-SearchPath-64: inc/global.php\n"
+"X-Poedit-SearchPath-65: inc/functions.php\n"
+"X-Poedit-SearchPath-66: inc/eula.php\n"
+"X-Poedit-SearchPath-67: inc/database.php\n"
+"X-Poedit-SearchPath-68: inc/cookie.php\n"
+"X-Poedit-SearchPath-69: inc/class.smtp.php\n"
+"X-Poedit-SearchPath-70: inc/class.phpmailer.php\n"
+"X-Poedit-SearchPath-71: inc/checkpwd.php\n"
+"X-Poedit-SearchPath-72: inc/checklogin.php\n"
+
+#: 403.php:22 contestpage.php:150 problempage.php:126 sourcecode.php:20
+#: sourcecode.php:33
+msgid "Looks like you can't access this page"
+msgstr "看起来你无法访问该页面"
+
+#: 404.php:22
+msgid "Looks like this page is not found"
+msgstr "看起来该页面不存在"
+
+#: about.php:5 about.php:18 page_header.php:32
+msgid "About"
+msgstr "关于"
+
+#: about.php:21
+msgid ""
+"CWOJ is a Free, <a href=\"https://github.com/CDFLS/CWOJ\">Open-source</a> "
+"Online Judge Solution designed for OI trainings, based on Bashu OnlineJudge. "
+"Started on 11/20/2015, we keep seeking a better OJ solution for individuals, "
+"schools and other educational organizations."
+msgstr ""
+"CWOJ是一个免费，<a href=\"https://github.com/CDFLS/CWOJ\">开源</a>且为信息竞"
+"赛设计的在线评测系统，基于Bashu OnlineJudge二次开发。起始于2015年11月20日，我"
+"们一直致力于寻求一个更好的面向于个人，学校以及其他教育机构的在线评测解决方"
+"案。"
+
+#: about.php:25
+msgid "Version"
+msgstr "版本信息"
+
+#: about.php:29
+msgid "Web"
+msgstr "网页端"
+
+#: about.php:33
+msgid "Daemon"
+msgstr "评测端"
+
+#: about.php:38
+msgid "CWOJ Team"
+msgstr ""
+
+#: about.php:65
+msgid "Q&As"
+msgstr "问&答"
+
+#: about.php:68
+msgid "Q: What compiler are we using and what are the compile options?"
+msgstr "问: 本OJ采用什么编译器进行编译? 编译选项是什么?"
+
+#: about.php:69
+msgid ""
+"A: We are using GNU GCC/G++ for C/C++, Free Pascal for Pascal. The compile "
+"options are: "
+msgstr ""
+"答: 我们使用GNU GCC/G++来编译C/C++程序，用Free Pascal来编译Pascal程序。其中，"
+"编译选项为："
+
+#: about.php:93
+msgid "Q: Is it necessary to write File Operation codes?"
+msgstr "问: 有必要写文件操作吗？"
+
+#: about.php:94
+msgid ""
+"A: You can only use Standard Input/Output. File Operations are not allowed "
+"here, otherwise wish you a happy Runtime Error!"
+msgstr ""
+"答: 你只能使用标准输入输出。提交的程序中不允许进行文件操作，否则祝您RE愉快 "
+"(Runtime Error)。"
+
+#: about.php:98
+msgid "Q: What are the meanings of the judge's replies?"
+msgstr "问: 评测端返回的信息都是什么意思？"
+
+#: about.php:99
+msgid "A: Check out the form below:"
+msgstr "答: 看看下面的表格:"
+
+#: about.php:104
+msgid "Congratulations! Your code has passed all the test cases."
+msgstr "AC了! 恭喜你的程序通过了所有的测试点!"
+
+#: about.php:108
+msgid ""
+"The compiler could not compile your program. Of course, warning messages are "
+"not error messages."
+msgstr "你的程序无法被编译器编译。当然，在线编译过程中Warning是被忽略了的。"
+
+#: about.php:112
+msgid ""
+"Your code tried to use more memory than the problem limit. Try optimizing "
+"your algorithm."
+msgstr "你的程序爆内存限制啦，去优化一下你的算法吧。"
+
+#: about.php:116
+msgid ""
+"Your code failed during the execution (illegal file access, stack overflow, "
+"pointer reference out of range, floating point exception, divided by "
+"zero...)."
+msgstr ""
+"你的程序在运行过程中出现了错误 (如: 不合法的文件操作、爆栈、指针溢出、浮点数"
+"异常、傻逼地除以0等)。"
+
+#: about.php:120
+msgid ""
+"Your program consumed more time than the time limit. Try optimizing your "
+"algorithm."
+msgstr "你的程序运行慢如乌龟，去优化一下算法吧。"
+
+#: about.php:124
+msgid "The code has failed to produce the desired output."
+msgstr "你的程序输出了错误的答案。"
+
+#: about.php:128
+msgid ""
+"The checker program has exhibited abnormal behavior while validating the "
+"output of your code. Please contact the administrators."
+msgstr "检查程序在验证你的输出时表现出异常行为，请联系管理员。"
+
+#: admin.php:20 page_header.php:69
+msgid "Administration"
+msgstr "管理"
+
+#: admin.php:33 admin.php:55 index.php:26
+msgid "Home"
+msgstr "主页"
+
+#: admin.php:35 index.php:57 news.php:32
+msgid "News"
+msgstr "新闻"
+
+#: admin.php:36 admin.php:102 ajax_admin.php:109 ajax_admin.php:139
+#: ajax_admin.php:142
+msgid "Experience"
+msgstr "经验"
+
+#: admin.php:37 page_header.php:48 search.php:108
+msgid "Users"
+msgstr "用户"
+
+#: admin.php:45
+msgid "Getting Started"
+msgstr "开始"
+
+#: admin.php:47
+msgid "New Problem..."
+msgstr "新建题目..."
+
+#: admin.php:48
+msgid "New Contest..."
+msgstr "新建比赛..."
+
+#: admin.php:49
+msgid "Problem Categories..."
+msgstr "题目分类..."
+
+#: admin.php:50
+msgid "Rejudge..."
+msgstr "重新评测..."
+
+#: admin.php:63 admin.php:112 admin.php:169 admin.php:236 admin.php:298
+#: preferences.php:77 problempage.php:424 profile.php:80
+msgid "Save"
+msgstr "保存"
+
+#: admin.php:69
+msgid "System Information"
+msgstr "系统信息"
+
+#: admin.php:89
+msgid "Add News..."
+msgstr "新建新闻..."
+
+#: admin.php:92 admin.php:589 board.php:252 contestpage.php:236 mail.php:240
+#: ranklist.php:217 record.php:315 search.php:255 solved.php:79
+msgid "Loading..."
+msgstr "正在加载..."
+
+#: admin.php:103 ajax_admin.php:82 ajax_admin.php:110 board.php:59
+#: contest.php:129 editcontest.php:79 editproblem.php:84 mail.php:194
+#: news.php:55 problemset.php:131 ranklist.php:104 search.php:153
+#: search.php:155
+msgid "Title"
+msgstr "标题"
+
+#: admin.php:104
+msgid "Add"
+msgstr "添加"
+
+#: admin.php:122
+msgid "Send Email to All"
+msgstr "群发邮件"
+
+#: admin.php:127
+msgid "Search User..."
+msgstr "搜索用户..."
+
+#: admin.php:140 contest.php:184 contest.php:188 mail.php:169 marked.php:107
+#: news.php:84 problempage.php:148 problempage.php:149 problemset.php:169
+#: problemset.php:173 ranklist.php:135 record.php:244 search.php:209
+msgid "Previous"
+msgstr "上一页"
+
+#: admin.php:143 contest.php:195 contest.php:199 mail.php:174 marked.php:112
+#: news.php:89 problempage.php:153 problempage.php:154 problemset.php:180
+#: problemset.php:184 ranklist.php:138 record.php:247 resetpwd.php:30
+#: resetpwd.php:61 resetpwd.php:99 resetpwd.php:168 resetpwd.php:226
+#: resetpwd.php:233 search.php:214
+msgid "Next"
+msgstr "下一页"
+
+#: admin.php:159
+msgid "Problem Categories"
+msgstr "题目分类"
+
+#: admin.php:164
+msgid "Please input HTML code..."
+msgstr "请输入HTML代码..."
+
+#: admin.php:170 admin.php:195 admin.php:237 admin.php:265 admin.php:299
+#: admin.php:321 board.php:81 board.php:180 index.php:113 mail.php:208
+#: mail.php:225 news.php:107 problempage.php:390 problempage.php:425
+#: ranklist.php:158 record.php:266 search.php:234 signup.php:86 solved.php:62
+#: upload.php:60
+msgid "Close"
+msgstr "关闭"
+
+#: admin.php:182 admin.php:194
+msgid "Rejudge"
+msgstr "重新评测"
+
+#: admin.php:188
+msgid "Please enter the Problem ID:"
+msgstr "请输入题目ID:"
+
+#: admin.php:215
+msgid "Please enter News Title..."
+msgstr "请输入新闻标题..."
+
+#: admin.php:218
+msgid "Please enter News Content (Optional)..."
+msgstr "请输入新闻内容(可选)..."
+
+#: admin.php:224
+msgid "Sticky"
+msgstr "顶置"
+
+#: admin.php:227 contestpage.php:299 mail.php:144 marked.php:83
+#: problempage.php:303
+msgid "Delete"
+msgstr "删除"
+
+#: admin.php:228 editcontest.php:219 editproblem.php:269 upload.php:68
+msgid "Upload Image"
+msgstr "上传图片"
+
+#: admin.php:229
+msgid "Need Privilege"
+msgstr "需要权限"
+
+#: admin.php:231 admin.php:284 inc/privilege.php:19
+msgid "Insider"
+msgstr "校内"
+
+#: admin.php:232 admin.php:287 inc/privilege.php:18
+msgid "Source"
+msgstr "源码"
+
+#: admin.php:233 admin.php:290 contestpage.php:192 inc/privilege.php:17
+#: marked.php:65 page_header.php:28 page_header.php:46 problemset.php:71
+#: search.php:106
+msgid "Problems"
+msgstr "题库"
+
+#: admin.php:256
+msgid "Please enter Email Title..."
+msgstr "请输入邮件标题..."
+
+#: admin.php:259
+msgid "Please enter Email Content..."
+msgstr "请输入邮件内容..."
+
+#: admin.php:264 mail.php:207
+msgid "Send"
+msgstr "发送"
+
+#: admin.php:293 inc/privilege.php:16
+msgid "System"
+msgstr "系统"
+
+#: admin.php:311 board.php:170 mail.php:219 ranklist.php:147 ranklist.php:219
+#: record.php:256 search.php:224 solved.php:52
+msgid "User Profile"
+msgstr "用户信息"
+
+#: admin.php:318 board.php:177 ranklist.php:155 record.php:263 search.php:231
+#: solved.php:59
+msgid "Send Mail"
+msgstr "发送邮件"
+
+#: admin.php:366
+msgid "Running..."
+msgstr "正在运行..."
+
+#: admin.php:367
+msgid "Not Running..."
+msgstr "尚未运行..."
+
+#: admin.php:450
+msgid "Edit News"
+msgstr "编辑新闻"
+
+#: admin.php:474
+msgid "Add News"
+msgstr "添加新闻"
+
+#: admin.php:552
+msgid "Send Email: All Users"
+msgstr "发送邮件: 全体用户"
+
+#: admin.php:565
+msgid "Send Email"
+msgstr "发送邮件"
+
+#: admin.php:571
+msgid "Edit Privilege"
+msgstr "编辑权限"
+
+#: admin.php:633
+msgid "Saved successfully!"
+msgstr "保存成功!"
+
+#: admin.php:646
+msgid "Sending..."
+msgstr "正在发送..."
+
+#: admin_auth.php:28
+msgid "Admin Verification"
+msgstr "管理员验证"
+
+#: admin_auth.php:43
+msgid "Your pasword..."
+msgstr "你的密码..."
+
+#: admin_auth.php:45
+msgid "Go"
+msgstr "确认"
+
+#: ajax_admin.php:6 ajax_editcontest.php:18 ajax_editproblem.php:17
+#: ajax_getnews.php:19 ajax_getnews.php:25 ajax_mailfunc.php:79
+#: ajax_mailfunc.php:105 ajax_submit.php:89 ajax_testcase.php:5 ajax_user.php:6
+msgid "Permission Denied..."
+msgstr "你没有权限..."
+
+#: ajax_admin.php:10 ajax_testcase.php:9
+msgid "Privilege not authorized..."
+msgstr "尚未验证权限..."
+
+#: ajax_admin.php:14 ajax_admin.php:306 ajax_contest.php:5 ajax_contest.php:13
+#: ajax_contest.php:92 ajax_contest.php:127 ajax_editcontest.php:21
+#: ajax_editcontest.php:122 ajax_editcontest.php:144 ajax_editproblem.php:21
+#: ajax_editproblem.php:121 ajax_editproblem.php:134 ajax_getnews.php:9
+#: ajax_mailfunc.php:18 ajax_mailfunc.php:69 ajax_mark.php:16
+#: ajax_message.php:21 ajax_message.php:28 ajax_message.php:33
+#: ajax_message.php:49 ajax_message.php:105 ajax_message.php:129
+#: ajax_opensource.php:4 ajax_profile.php:6 ajax_profile.php:32
+#: ajax_profile.php:63 ajax_profile.php:108 ajax_resetpwd.php:9
+#: ajax_resetpwd.php:15 ajax_resetpwd.php:42 ajax_resetpwd.php:61
+#: ajax_resetpwd.php:91 ajax_submit.php:49 ajax_submit.php:63
+#: ajax_testcase.php:146 ajax_user.php:10 ajax_usernote.php:8
+msgid "Invalid Argument..."
+msgstr "指令无效..."
+
+#: ajax_admin.php:33 board.php:150 mail.php:119 marked.php:43 news.php:49
+#: ranklist.php:93 record.php:89
+msgid "Looks like there's nothing here"
+msgstr "看起来这里空空如也"
+
+#: ajax_admin.php:41 ajax_contest.php:54 inc/privilege.php:20 ranklist.php:101
+#: record.php:149 record.php:201 search.php:125 solved.php:27
+msgid "User"
+msgstr "用户"
+
+#: ajax_admin.php:42 ajax_admin.php:61 ajax_user.php:70
+msgid "Privilege"
+msgstr "权限"
+
+#: ajax_admin.php:43 ajax_user.php:69
+msgid "Last Seen"
+msgstr "最近访问"
+
+#: ajax_admin.php:44 ajax_user.php:77 problemset.php:132
+msgid "AC/Submit"
+msgstr "AC量/提交量"
+
+#: ajax_admin.php:45 ajax_admin.php:83 ajax_admin.php:111
+msgid "Operations"
+msgstr "操作"
+
+#: ajax_admin.php:54
+msgid "To Be Reviewed"
+msgstr "待审核"
+
+#: ajax_admin.php:55
+msgid "Disabled"
+msgstr "已禁用"
+
+#: ajax_admin.php:61 ajax_user.php:75 profile.php:67
+msgid "Email"
+msgstr "邮箱"
+
+#: ajax_admin.php:63
+msgid "Enable"
+msgstr "启用"
+
+#: ajax_admin.php:63
+msgid "Disable"
+msgstr "禁用"
+
+#: ajax_admin.php:73
+msgid "There's nothing here..."
+msgstr "这里空空如也..."
+
+#: ajax_admin.php:81 marked.php:82 news.php:56 solved.php:30
+msgid "Date"
+msgstr "日期"
+
+#: ajax_admin.php:92 index.php:65 news.php:64
+msgid "[Sticky] "
+msgstr "[顶置]"
+
+#: ajax_admin.php:106
+msgid "Titles"
+msgstr "头衔"
+
+#: ajax_admin.php:141 contestpage.php:256 editcontest.php:118
+#: editproblem.php:138 marked.php:81 problempage.php:256
+msgid "Level"
+msgstr "等级"
+
+#: ajax_admin.php:229 ajax_admin.php:246 ajax_admin.php:258 ajax_admin.php:264
+#: ajax_contest.php:122 ajax_contest.php:124 ajax_editcontest.php:40
+#: ajax_editcontest.php:128 ajax_editproblem.php:39 ajax_editproblem.php:139
+#: ajax_mark.php:29 ajax_message.php:43 ajax_message.php:98
+#: ajax_message.php:125 ajax_opensource.php:23 ajax_profile.php:104
+#: ajax_resetpwd.php:87 ajax_submit.php:27 ajax_testcase.php:144
+#: ajax_usernote.php:23 ajax_usernote.php:32
+msgid "Something went wrong..."
+msgstr "系统抽风咯..."
+
+#: ajax_admin.php:269 ajax_mailfunc.php:50
+msgid "Reciever can't be empty..."
+msgstr "收件人不可为空..."
+
+#: ajax_admin.php:274 ajax_admin.php:289 ajax_mailfunc.php:58
+#: ajax_mailfunc.php:109
+msgid "Title can't be empty..."
+msgstr "标题不可为空..."
+
+#: ajax_admin.php:279 ajax_admin.php:294
+msgid "Content can't be empty..."
+msgstr "内容不可为空..."
+
+#: ajax_contest.php:19 ajax_contest.php:98
+msgid "No such contest..."
+msgstr "该比赛不存在..."
+
+#: ajax_contest.php:46
+msgid "Looks like nobody enrolled in this contest..."
+msgstr "看起来还没有人参加该比赛..."
+
+#: ajax_contest.php:55 ranklist.php:105 record.php:203 solved.php:29
+msgid "Score"
+msgstr "分数"
+
+#: ajax_contest.php:56 contestpage.php:272
+msgid "Time Penalty"
+msgstr "罚时"
+
+#: ajax_contest.php:85 ajax_mailfunc.php:14 ajax_message.php:17
+#: ajax_opensource.php:9 ajax_profile.php:28 ajax_submit.php:8
+#: ajax_submit.php:45 ajax_usernote.php:4 backupcode.php:11 board.php:218
+#: board.php:247 contestpage.php:326 problempage.php:111 problempage.php:649
+msgid "Please login first..."
+msgstr "你尚未登录..."
+
+#: ajax_contest.php:102
+msgid "Contest has ended..."
+msgstr "比赛已经结束..."
+
+#: ajax_editcontest.php:29 ajax_editproblem.php:28 ajax_submit.php:57
+msgid "No such problem..."
+msgstr "该题目不存在..."
+
+#: ajax_editcontest.php:46
+msgid "Please enter start time..."
+msgstr "请输入开始时间..."
+
+#: ajax_editcontest.php:50
+msgid "Invalid start time..."
+msgstr "无效的开始时间..."
+
+#: ajax_editcontest.php:56
+msgid "Please enter end time..."
+msgstr "请输入结束时间..."
+
+#: ajax_editcontest.php:60
+msgid "Invalid end time..."
+msgstr "无效的结束时间..."
+
+#: ajax_editcontest.php:64
+msgid "Start time can't be greater than end time..."
+msgstr "开始时间不可以晚于结束时间..."
+
+#: ajax_editcontest.php:75
+msgid "Please enter title..."
+msgstr "请输入标题..."
+
+#: ajax_editcontest.php:81
+msgid "Please specify problems..."
+msgstr "请指明比赛题目..."
+
+#: ajax_editcontest.php:102 ajax_editcontest.php:106
+msgid "Problem #"
+msgstr "题目 #"
+
+#: ajax_editcontest.php:102
+msgid "does not exist..."
+msgstr "不存在..."
+
+#: ajax_editcontest.php:106
+msgid "is hidden. Please hide the contest to add it..."
+msgstr "已被隐藏，请先隐藏比赛再添加隐藏题目..."
+
+#: ajax_editproblem.php:49
+msgid "Invalid Time Limit..."
+msgstr "无效的时间限制..."
+
+#: ajax_editproblem.php:55
+msgid "Please enter Memory Limit..."
+msgstr "请输入内存限制..."
+
+#: ajax_editproblem.php:59
+msgid "Invalid Memory Limit..."
+msgstr "无效的内存限制..."
+
+#: ajax_editproblem.php:65
+msgid "Please enter Case Score..."
+msgstr "请输入单点分值..."
+
+#: ajax_editproblem.php:69
+msgid "Invalid Case Score..."
+msgstr "无效的单点分值..."
+
+#: ajax_editproblem.php:76
+msgid "Please enter Title..."
+msgstr "请输入标题..."
+
+#: ajax_getnews.php:30
+msgid "This piece of news is empty..."
+msgstr "此新闻内容为空..."
+
+#: ajax_login.php:6 ajax_login.php:16 inc/userlogin.php:17
+msgid "Wrong Username/Password..."
+msgstr "错误的用户名/密码..."
+
+#: ajax_mailfunc.php:54
+msgid "No such user..."
+msgstr "该用户不存在..."
+
+#: ajax_mailfunc.php:84
+msgid "This mail is empty..."
+msgstr "此私信内容为空..."
+
+#: ajax_message.php:60 ajax_message.php:113
+msgid "Post can't be empty..."
+msgstr "帖子不可为空..."
+
+#: ajax_message.php:64 ajax_message.php:117
+msgid "Post too long..."
+msgstr "帖子内容太长..."
+
+#: ajax_profile.php:10
+msgid "Nickname too long..."
+msgstr "昵称太长..."
+
+#: ajax_profile.php:14
+msgid "School name too long..."
+msgstr "学校名称太长..."
+
+#: ajax_profile.php:18
+msgid "Email too long..."
+msgstr "邮箱太长..."
+
+#: ajax_profile.php:22 ajax_resetpwd.php:20 ajax_resetpwd.php:25
+msgid "Invalid Email..."
+msgstr "邮箱无效..."
+
+#: ajax_profile.php:39
+msgid "Wrong Password..."
+msgstr "密码错误..."
+
+#: ajax_profile.php:43
+msgid "Motto too long..."
+msgstr "格言太长..."
+
+#: ajax_profile.php:50 ajax_profile.php:87 ajax_resetpwd.php:71
+msgid "Password too long or too short (6~50)..."
+msgstr "密码太长或太短 (6~50)..."
+
+#: ajax_profile.php:67
+msgid "Please agree the license agreement first..."
+msgstr "请先同意用户许可协议..."
+
+#: ajax_profile.php:74
+msgid "Username can't be empty..."
+msgstr "用户名不可为空..."
+
+#: ajax_profile.php:78
+msgid "Username too long..."
+msgstr "用户名太长..."
+
+#: ajax_profile.php:82
+msgid "Username can only contain alphabets, digits or \"_\""
+msgstr "用户名仅可包含字母，数字或下划线..."
+
+#: ajax_profile.php:102
+msgid "Username/Email already exists..."
+msgstr "用户名/邮箱已经存在..."
+
+#: ajax_submit.php:15
+msgid "Can't connect to daemon..."
+msgstr "无法连接至评测服务..."
+
+#: ajax_submit.php:68
+msgid "Unsupported language..."
+msgstr "不支持的语言..."
+
+#: ajax_submit.php:72
+msgid "Code too short..."
+msgstr "代码太短..."
+
+#: ajax_submit.php:77
+msgid "Code too long..."
+msgstr "代码太长..."
+
+#: ajax_submit.php:134
+msgid "Another rejudge thread is running, try again later..."
+msgstr "另一项重评正在运行中，请稍后再试..."
+
+#: ajax_testcase.php:49
+msgid "Incorrect File name..."
+msgstr "不正确的文件名..."
+
+#: ajax_testcase.php:55
+msgid "Incorrect File type..."
+msgstr "不正确的文件格式..."
+
+#: ajax_testcase.php:68
+msgid "Failed to launch output stream..."
+msgstr "无法打开输出流..."
+
+#: ajax_testcase.php:75
+msgid "Can't move the files to its place..."
+msgstr "无法将文件移动到指定位置..."
+
+#: ajax_testcase.php:82 ajax_testcase.php:88
+msgid "Can't launch input stream..."
+msgstr "无法打开输入流..."
+
+#: ajax_testcase.php:114
+msgid "Can't access data directory..."
+msgstr "无法访问数据路径..."
+
+#: ajax_testcase.php:122
+msgid "No problem ID specified..."
+msgstr "没有指定题目ID..."
+
+#: ajax_user.php:21 ranklist.php:116 search.php:138
+msgid "Online"
+msgstr "在线"
+
+#: ajax_user.php:24 ranklist.php:117 search.php:139
+msgid "Offline"
+msgstr "离线"
+
+#: ajax_user.php:45 inc/userlogin.php:12
+msgid "There's no such user..."
+msgstr "该用户不存在..."
+
+#: ajax_user.php:68 profile.php:51 ranklist.php:102 search.php:126
+msgid "Nickname"
+msgstr "昵称"
+
+#: ajax_user.php:72
+msgid "IP Address"
+msgstr "IP地址"
+
+#: ajax_user.php:74 profile.php:71
+msgid "School"
+msgstr "学校"
+
+#: ajax_user.php:76
+msgid "Reg Date"
+msgstr "注册日期"
+
+#: ajax_user.php:81
+msgid "Failed"
+msgstr "未解决"
+
+#: ajax_user.php:88
+msgid "Solved"
+msgstr "已解决"
+
+#: backupcode.php:23
+msgid "You can only backup your code not more than once a month..."
+msgstr "你一周最多只能备份一次代码..."
+
+#: board.php:38 page_header.php:29 problempage.php:291
+msgid "Board"
+msgstr "讨论"
+
+#: board.php:61
+msgid "Post Title..."
+msgstr "帖子标题..."
+
+#: board.php:65 mail.php:198
+msgid "Content"
+msgstr "内容"
+
+#: board.php:67
+msgid "Post Content..."
+msgstr "帖子内容..."
+
+#: board.php:71 board.php:77 board.php:346
+msgid "Preview"
+msgstr "预览"
+
+#: board.php:80
+msgid "Post"
+msgstr "发表"
+
+#: board.php:95
+msgid "New Post..."
+msgstr "新建帖子..."
+
+#: board.php:125
+msgid "Latest"
+msgstr "最新"
+
+#: board.php:127
+msgid "Problem "
+msgstr "题目"
+
+#: board.php:128 mail.php:143
+msgid "Reply"
+msgstr "回复"
+
+#: board.php:130 contestpage.php:298 index.php:111 mail.php:147 news.php:105
+#: problempage.php:301 problempage.php:316
+msgid "Edit"
+msgstr "编辑"
+
+#: board.php:158
+msgid "Newer"
+msgstr "较新的"
+
+#: board.php:161
+msgid "Older"
+msgstr "较旧的"
+
+#: board.php:205
+msgid "New Post"
+msgstr "新建帖子"
+
+#: board.php:205
+msgid "New Reply"
+msgstr "新建回复"
+
+#: board.php:225
+msgid "Edit Post"
+msgstr "编辑帖子"
+
+#: board.php:285
+msgid "This post is empty..."
+msgstr "此帖子内容为空..."
+
+#: board.php:300
+msgid "Post title can't be empty..."
+msgstr "帖子标题不可为空..."
+
+#: board.php:304
+msgid "Post content too long..."
+msgstr "帖子内容太长..."
+
+#: board.php:308
+msgid "Posting..."
+msgstr "正在发表..."
+
+#: board.php:341 upload.php:66
+msgid "Back"
+msgstr "返回"
+
+#: contest.php:31
+msgid "There's no contest of this level"
+msgstr "该等级下暂无题目"
+
+#: contest.php:55
+msgid "Looks like there's no contest here"
+msgstr "看起来这里暂无比赛"
+
+#: contest.php:70 marked.php:66 page_header.php:27 page_header.php:47
+#: search.php:107
+msgid "Contests"
+msgstr "比赛"
+
+#: contest.php:92 problemset.php:94
+msgid "Levels"
+msgstr "等级"
+
+#: contest.php:96 problemset.php:98 record.php:158 record.php:167
+msgid "All"
+msgstr "所有"
+
+#: contest.php:130 contestpage.php:252 search.php:156
+msgid "Start Time"
+msgstr "开始时间"
+
+#: contest.php:131 ranklist.php:103 search.php:127 search.php:156
+msgid "Status"
+msgstr "状态"
+
+#: contest.php:132 contestpage.php:255 editcontest.php:101
+msgid "Format"
+msgstr "赛制"
+
+#: contest.php:133 contestpage.php:226 editcontest.php:153 editproblem.php:203
+#: problempage.php:232 problempage.php:323 problempage.php:419
+#: problemset.php:134 search.php:158
+msgid "Tags"
+msgstr "标签"
+
+#: contest.php:141 contestpage.php:30 editcontest.php:103
+msgid "Training"
+msgstr "训练模式"
+
+#: contest.php:144 contestpage.php:33 editcontest.php:104
+msgid "CWOJ"
+msgstr "CWOJ赛制"
+
+#: contest.php:147 contestpage.php:36 editcontest.php:105
+msgid "ACM-like"
+msgstr "类ACM赛制"
+
+#: contest.php:150 contestpage.php:39 editcontest.php:106
+msgid "OI-like"
+msgstr "类OI赛制"
+
+#: contest.php:153 search.php:179
+msgid "Ended"
+msgstr "已经结束"
+
+#: contest.php:154 search.php:180
+msgid "Upcoming"
+msgstr "尚未开始"
+
+#: contest.php:155 search.php:181
+msgid "In Progress"
+msgstr "正在进行"
+
+#: contest.php:163 contestpage.php:179 problempage.php:174 problemset.php:147
+msgid "Deleted"
+msgstr "已删除"
+
+#: contestpage.php:27 editcontest.php:34
+msgid "There's no such contest"
+msgstr "该比赛不存在"
+
+#: contestpage.php:56
+msgid "Contest hasn't started"
+msgstr "比赛尚未开始"
+
+#: contestpage.php:62 problempage.php:151 problempage.php:459
+msgid "Contest has ended"
+msgstr "比赛已经结束"
+
+#: contestpage.php:95
+msgid "Contest in progress"
+msgstr "比赛正在进行"
+
+#: contestpage.php:152
+msgid "Contest"
+msgstr "比赛"
+
+#: contestpage.php:184 editcontest.php:147 editproblem.php:167
+#: problempage.php:180
+msgid "Description"
+msgstr "描述"
+
+#: contestpage.php:196
+msgid "You can't see me before the contest starts..."
+msgstr "在比赛开始前你无法查看题目..."
+
+#: contestpage.php:198
+msgid ""
+"Please <a href=\"javascript:void(0)\" onclick=\"return enroll_cont();"
+"\">enroll in the contest</a> first..."
+msgstr ""
+"请先<a href=\"javascript:void(0)\" onclick=\"return enroll_cont();\">参加比赛"
+"</a> ..."
+
+#: contestpage.php:207
+msgid "Accepted"
+msgstr "已AC"
+
+#: contestpage.php:208
+msgid "Not Accepted"
+msgstr "未AC"
+
+#: contestpage.php:234 contestpage.php:288
+msgid "Rankings"
+msgstr "排名"
+
+#: contestpage.php:242 problempage.php:242
+msgid "Hide Sidebar"
+msgstr "隐藏边栏"
+
+#: contestpage.php:253
+msgid "End Time"
+msgstr "结束时间"
+
+#: contestpage.php:254
+msgid "Duration"
+msgstr "比赛时长"
+
+#: contestpage.php:271
+msgid "Your Score"
+msgstr "你的得分"
+
+#: contestpage.php:274
+msgid "Your Rank"
+msgstr "你的排名"
+
+#: contestpage.php:276
+msgid "Competitors"
+msgstr "参赛人数"
+
+#: contestpage.php:287 contestpage.php:315
+msgid "Enroll"
+msgstr "参赛"
+
+#: contestpage.php:299 mail.php:153 problempage.php:303
+msgid "Recover"
+msgstr "恢复"
+
+#: contestpage.php:316 problempage.php:435
+msgid "Show Sidebar"
+msgstr "显示边栏"
+
+#: editcontest.php:21
+msgid "New Contest"
+msgstr "新建比赛"
+
+#: editcontest.php:29
+msgid "Edit Contest"
+msgstr "编辑比赛"
+
+#: editcontest.php:72 editproblem.php:77
+msgid "Show Toolbar"
+msgstr "显示工具"
+
+#: editcontest.php:85
+msgid "Problems (Format: a,b,c)"
+msgstr "题目 (格式: a,b,c)"
+
+#: editcontest.php:91
+msgid "Start Time (yyyy-mm-dd hh:mm:ss)"
+msgstr "开始时间 (yyyy-mm-dd hh:mm:ss)"
+
+#: editcontest.php:95
+msgid "End Time (yyyy-mm-dd hh:mm:ss)"
+msgstr "结束时间 (yyyy-mm-dd hh:mm:ss)"
+
+#: editcontest.php:137 editproblem.php:157
+msgid "Options"
+msgstr "选项"
+
+#: editcontest.php:140 editproblem.php:160
+msgid "Hide"
+msgstr "隐藏"
+
+#: editcontest.php:160 editproblem.php:210 problempage.php:289
+#: problempage.php:358 problempage.php:389 problempage.php:434 ranklist.php:107
+#: record.php:176 record.php:208 search.php:129 signup.php:59
+msgid "Submit"
+msgstr "提交"
+
+#: editcontest.php:173 editproblem.php:223
+msgid "HTML Toolbar"
+msgstr "HTML工具栏"
+
+#: editcontest.php:179 editproblem.php:229
+msgid "Function"
+msgstr "功能"
+
+#: editcontest.php:180 editproblem.php:230
+msgid "Code"
+msgstr "代码"
+
+#: editcontest.php:185 editproblem.php:235
+msgid "Smaller than(&lt;)"
+msgstr "小于(&lt;)"
+
+#: editcontest.php:189 editproblem.php:239
+msgid "Greater than(&gt;)"
+msgstr "大于(&gt;)"
+
+#: editcontest.php:193 editproblem.php:243
+msgid "Image"
+msgstr "图片"
+
+#: editcontest.php:197 editproblem.php:247
+msgid "Superscript"
+msgstr "上标"
+
+#: editcontest.php:201 editproblem.php:251
+msgid "Subscript"
+msgstr "下标"
+
+#: editcontest.php:205 editproblem.php:255
+msgid "Monospace"
+msgstr "代码"
+
+#: editcontest.php:209 editproblem.php:259
+msgid "Inline TeX"
+msgstr "内联公式"
+
+#: editcontest.php:213 editproblem.php:263
+msgid "TeX"
+msgstr "公式"
+
+#: editcontest.php:220 editproblem.php:270
+msgid "Hide Toolbar"
+msgstr "隐藏工具"
+
+#: editcontest.php:291 editproblem.php:365
+msgid "Please enter the image link"
+msgstr "请输入图片链接"
+
+#: editproblem.php:19
+msgid "New Problem"
+msgstr "新建题目"
+
+#: editproblem.php:27
+msgid "Edit Problem"
+msgstr "编辑题目"
+
+#: editproblem.php:32 problempage.php:19 problempage.php:49 sourcecode.php:17
+#: testcase.php:27
+msgid "There's no such problem"
+msgstr "该题目不存在"
+
+#: editproblem.php:90
+msgid "Time Limit (ms)"
+msgstr "时间限制 (ms)"
+
+#: editproblem.php:94
+msgid "Memory Limit (KB)"
+msgstr "内存限制 (KB)"
+
+#: editproblem.php:98
+msgid "Case Score (Full: 100)"
+msgstr "单点分值 (满分:100)"
+
+#: editproblem.php:104 problempage.php:255
+msgid "Comparison"
+msgstr "比较方式"
+
+#: editproblem.php:106 problempage.php:52
+msgid "Traditional"
+msgstr "传统"
+
+#: editproblem.php:107 problempage.php:58
+msgid "Integer"
+msgstr "整数"
+
+#: editproblem.php:108
+msgid "Real Number"
+msgstr "实数"
+
+#: editproblem.php:109 problempage.php:61
+msgid "Special Judge"
+msgstr "SPJ"
+
+#: editproblem.php:119
+msgid "Precision"
+msgstr "精度"
+
+#: editproblem.php:125
+msgid "Open Source to"
+msgstr "开源对象"
+
+#: editproblem.php:127
+msgid "Everyone"
+msgstr "所有人"
+
+#: editproblem.php:128
+msgid "Solved Users"
+msgstr "解决用户"
+
+#: editproblem.php:129
+msgid "Nobody"
+msgstr "没有人"
+
+#: editproblem.php:173 problempage.php:188
+msgid "Input"
+msgstr "输入"
+
+#: editproblem.php:179 problempage.php:196
+msgid "Output"
+msgstr "输出"
+
+#: editproblem.php:185 problempage.php:204
+msgid "Sample Input"
+msgstr "样例输入"
+
+#: editproblem.php:191 problempage.php:213
+msgid "Sample Output"
+msgstr "样例输出"
+
+#: editproblem.php:197 problempage.php:223
+msgid "Hints"
+msgstr "提示"
+
+#: editproblem.php:283
+msgid "Output can ONLY contain Real Numbers. Please select precision."
+msgstr "输出答案仅可包含实数，请选择精度。"
+
+#: editproblem.php:287
+msgid "Generic comparsion. Trailing space is ignored."
+msgstr "标准比较方式，忽略末尾空格。"
+
+#: editproblem.php:289
+msgid "Output can ONLY contain Integers."
+msgstr "输出答案仅可包含整数。"
+
+#: editproblem.php:291
+msgid "Please ensure there exists a \"spj.cpp\" in your data folder."
+msgstr "请确保数据目录下存在\"spj.cpp\"。"
+
+#: fuckie.php:8
+msgid "Please upgrade your browser before accessing CWOJ."
+msgstr "在继续访问CWOJ前请先升级你的浏览器。"
+
+#: fuckie.php:12
+msgid "Upgrade your browser"
+msgstr "升级你的浏览器"
+
+#: fuckie.php:30
+msgid "It's time to upgrade your browser"
+msgstr "是时候升级你的浏览器了"
+
+#: fuckie.php:31
+msgid ""
+"We're sorry to inform you that you're currently using an obsolete browser "
+"which cannot guarantee an enjoyable experience in CWOJ. You have to upgrade "
+"your browser before accessing CWOJ."
+msgstr ""
+"我们很遗憾地告诉你你正使用着一个无法保证愉悦CWOJ体验的老旧浏览器。在继续访问"
+"CWOJ前你将不得不升级你的浏览器。"
+
+#: fuckie.php:33
+msgid "Modern browsers"
+msgstr "现代浏览器"
+
+#: fuckie.php:34
+msgid ""
+"We strongly recommend you to try out one of the following modern browsers "
+"that will show you the beauty of web."
+msgstr ""
+"我们强烈建议你去尝试下列几款现代浏览器中的任一款，它们将向你展示网络之美。"
+
+#: fuckie.php:43
+msgid "What the heck is a browser?"
+msgstr "浏览器是什么东东?"
+
+#: fuckie.php:44
+msgid ""
+"That make things a lot easier. You just need to close this page, because "
+"CWOJ might be highly unsuitable for you."
+msgstr ""
+"这样事情就简单多了。你仅仅需要关闭此页面就行了，因为CWOJ极可能不适合你。"
+
+#: head.php:5
+msgid ""
+" - An Open-source Online Judge designed for OI trainings, built for you to "
+"code your future."
+msgstr "- 一个开源且为信息竞赛设计的在线评测系统，为你而建，编码未来。"
+
+#: inc/functions.php:84
+msgid ""
+"Final score is the sum of the highest score of each problem. Time Penalty "
+"records the latest submit time for solved problems and 1200s for unsolved "
+"problems."
+msgstr ""
+"总分即时间内每题最高分之和，罚时对AC的记录记最后提交时间，对未AC的记录记"
+"1200s。"
+
+#: inc/functions.php:85
+msgid ""
+"Based on the highest score, each non-first submit will let you lose 5 "
+"points. Time Penalty records the latest submit time for solved problems and "
+"1200s for unsolved problems."
+msgstr ""
+"每一次非第一次提交会使该道题分数扣5分，罚时对AC的记录记最后提交时间，对未AC的"
+"记录记1200s。"
+
+#: inc/functions.php:86
+msgid ""
+"Final score is the sum of the scores of SOLVED problems. Time Penalty "
+"records the latest submit time for SOLVED problems and 1200s for unsolved "
+"problems."
+msgstr ""
+"总分即AC题目分数之和，罚时对AC的记录记最后提交时间，对未AC的记录记1200s。"
+
+#: inc/functions.php:87
+msgid ""
+"Final score is the sum of the score of the FIRST submit of each problem. "
+"Time Penalty is the sum of the FIRST submit time of each problem."
+msgstr ""
+"总分即每题第一次提交分数之和，罚时即第一次提交时间之和，非第一次提交记录无"
+"效。"
+
+#: inc/functions.php:123 inc/functions.php:132
+msgid "Unknown"
+msgstr "未知"
+
+#: inc/userlogin.php:14
+msgid "Your account is still being reviewed..."
+msgstr "你的账号仍在审核中..."
+
+#: index.php:43
+msgid "Bulletin"
+msgstr "公告栏"
+
+#: index.php:57
+msgid "More News"
+msgstr "更多新闻"
+
+#: index.php:77
+msgid "There's nothing new..."
+msgstr "这里没什么大新闻..."
+
+#: index.php:82
+msgid "Categories"
+msgstr "分类"
+
+#: index.php:88
+msgid "There's nothing to show here..."
+msgstr "这里暂无分类信息..."
+
+#: index.php:132 mail.php:131 news.php:129
+msgid "Date: "
+msgstr "日期: "
+
+#: index.php:132 news.php:129
+msgid "Privilege: "
+msgstr "权限: "
+
+#: login.php:16
+msgid "Welcome to "
+msgstr "欢迎来到"
+
+#: login.php:27
+msgid "Welcome Back"
+msgstr "欢迎回来"
+
+#: login.php:30 signup.php:31
+msgid "Username..."
+msgstr "用户名..."
+
+#: login.php:34 signup.php:39
+msgid "Password..."
+msgstr "密码..."
+
+#: login.php:39
+msgid "Say you remember me..."
+msgstr "记住我清秀的脸面..."
+
+#: login.php:44 page_header.php:76
+msgid "Log in"
+msgstr "登录"
+
+#: login.php:45 signup.php:27
+msgid "Sign up"
+msgstr "注册"
+
+#: login.php:46
+msgid "Forgot?"
+msgstr "忘记?"
+
+#: login.php:47
+msgid "Contact us..."
+msgstr "联系我们..."
+
+#: login.php:52 page_header.php:82 preferences.php:37 preferences.php:61
+#: resetpwd.php:36 resetpwd.php:68 resetpwd.php:104 signup.php:65
+msgid "Auto switch"
+msgstr "自动切换"
+
+#: login.php:59
+msgid "Contact mail:"
+msgstr "联系邮箱:"
+
+#: mail.php:28 marked.php:8 preferences.php:7 profile.php:7 sourcecode.php:9
+msgid "Please login first"
+msgstr "请先登录"
+
+#: mail.php:72 page_header.php:63
+msgid "Mails"
+msgstr "私信"
+
+#: mail.php:95
+msgid "Inbox"
+msgstr "收件箱"
+
+#: mail.php:96
+msgid "Sent"
+msgstr "已发送"
+
+#: mail.php:97
+msgid "Trash"
+msgstr "废纸篓"
+
+#: mail.php:101
+msgid "Send..."
+msgstr "发送..."
+
+#: mail.php:104
+msgid "Show starred"
+msgstr "显示星标"
+
+#: mail.php:106
+msgid "Show all"
+msgstr "显示所有"
+
+#: mail.php:140
+msgid "Recieved Date: "
+msgstr "接收日期:"
+
+#: mail.php:149
+msgid "Read"
+msgstr "已读"
+
+#: mail.php:150
+msgid "Unread"
+msgstr "未读"
+
+#: mail.php:184 mail.php:224 mail.php:326
+msgid "Send mail"
+msgstr "发送私信"
+
+#: mail.php:190
+msgid "To"
+msgstr "收件人"
+
+#: mail.php:292
+msgid "Edit mail"
+msgstr "编辑私信"
+
+#: marked.php:46 page_header.php:64
+msgid "Marked"
+msgstr "收藏"
+
+#: marked.php:80 problempage.php:127 record.php:140 record.php:200
+#: solved.php:28
+msgid "Problem"
+msgstr "题目"
+
+#: page_header.php:30 problempage.php:290 record.php:128
+msgid "Record"
+msgstr "记录"
+
+#: page_header.php:31 ranklist.php:57
+msgid "Rank"
+msgstr "排名"
+
+#: page_header.php:33 page_header.php:51
+msgid "Search..."
+msgstr "搜索..."
+
+#: page_header.php:36 resetpwd.php:31 signup.php:60 sourcecode.php:103
+msgid "Go Back..."
+msgstr "返回..."
+
+#: page_header.php:65 profile.php:14
+msgid "Profile"
+msgstr "档案"
+
+#: page_header.php:66 preferences.php:12 preferences.php:31
+msgid "Preferences"
+msgstr "设置"
+
+#: page_header.php:72
+msgid "Log off"
+msgstr "注销"
+
+#: page_header.php:91
+msgid "You have unread mails..."
+msgstr "你有未读私信..."
+
+#: preferences.php:35
+msgid "Theme"
+msgstr "主题"
+
+#: preferences.php:38
+msgid "Day mode"
+msgstr "日间模式"
+
+#: preferences.php:39
+msgid "Night mode"
+msgstr "夜间模式"
+
+#: preferences.php:46
+msgid "Code editor"
+msgstr "代码编辑器"
+
+#: preferences.php:48
+msgid "Default"
+msgstr "默认"
+
+#: preferences.php:52
+msgid "None"
+msgstr "不使用"
+
+#: preferences.php:59
+msgid "Website Language"
+msgstr "网页语言"
+
+#: preferences.php:74
+msgid "Share my code by default."
+msgstr "默认开源我的代码。"
+
+#: preferences.php:81
+msgid "Backup my code"
+msgstr "代码备份"
+
+#: preferences.php:84
+msgid ""
+"Here you can download your last accepted submit of every problem. However, "
+"you can execute this not more than once a week."
+msgstr ""
+"在这里你可以下载你每一道题最近一次AC的代码。但是，你每周最多只能执行该操作一"
+"次。"
+
+#: preferences.php:89
+msgid "Backup & Download"
+msgstr "备份并下载"
+
+#: preferences.php:93
+msgid "Open my source code"
+msgstr "开源我的代码"
+
+#: preferences.php:96
+msgid "Why open source?"
+msgstr "为什么开源?"
+
+#: preferences.php:98
+msgid ""
+"Open-source is an influential cultures which can date back to the early age "
+"of computer science's history; in addition, open-source softwares are the "
+"foundation of the web, the Internet, and our world."
+msgstr ""
+"开源是最有影响力且历史悠久的信息技术文化之一，开源软件丰富并奠基了我们的网"
+"站，网络以及世界。"
+
+#: preferences.php:99
+msgid ""
+"If one shares his code, everyone would have the chance to use, distribute, "
+"understand and improve the programs, and thus helps the author in return."
+msgstr ""
+"如果你公开了你的代码，大家便都可以阅读、使用、发布、理解并提升他们自己的程"
+"序，这也在无形中帮助原作者进步。"
+
+#: preferences.php:100
+msgid ""
+"Codes in OI are relatively short, nevertheless proned to be extremely "
+"obscure. Open-sourcing them can help other OIers struggling for solutions, "
+"whom we were once alike."
+msgstr ""
+"虽然OI题目的代码都相对较短，但其算法往往都不易理解。 开源代码可以让其它的OIer"
+"在奋斗过程中少一些烦恼，毕竟我们都曾一样。"
+
+#: preferences.php:103
+msgid "Open source all my code"
+msgstr "开源我所有的代码"
+
+#: preferences.php:133
+msgid "Thanks for making a great contribution!"
+msgstr "感谢您做出的伟大贡献!"
+
+#: problempage.php:55
+msgid "Real, precision: "
+msgstr "实数, 精度:"
+
+#: problempage.php:77
+msgid "Give it a try..."
+msgstr "快来试试吧..."
+
+#: problempage.php:81
+msgid "Congratulations!"
+msgstr "恭喜AC!"
+
+#: problempage.php:83
+msgid "Let's try again..."
+msgstr "再试一次吧..."
+
+#: problempage.php:92 problempage.php:625 problempage.php:636
+#: problempage.php:639
+msgid "Mark"
+msgstr "收藏"
+
+#: problempage.php:96 problempage.php:637
+msgid "Unmark"
+msgstr "取消收藏"
+
+#: problempage.php:150 sourcecode.php:90
+msgid "Problem: "
+msgstr "题目: "
+
+#: problempage.php:152
+msgid "Time Left: "
+msgstr "剩余时间:"
+
+#: problempage.php:175
+msgid "Contest Home"
+msgstr "比赛主页"
+
+#: problempage.php:205 problempage.php:214
+msgid "[Copy]"
+msgstr "[复制]"
+
+#: problempage.php:252
+msgid "Time Limit"
+msgstr "时间限制"
+
+#: problempage.php:253
+msgid "Memory Limit"
+msgstr "内存限制"
+
+#: problempage.php:254
+msgid "Case Score"
+msgstr "单点分数"
+
+#: problempage.php:270
+msgid "User Submitted"
+msgstr "提交用户"
+
+#: problempage.php:271
+msgid "User Accepted"
+msgstr "解决用户"
+
+#: problempage.php:272
+msgid "Total Submits"
+msgstr "提交总量"
+
+#: problempage.php:302 testcase.php:9
+msgid "Test Cases"
+msgstr "数据"
+
+#: problempage.php:315 problempage.php:404 search.php:154
+msgid "Notes"
+msgstr "笔记"
+
+#: problempage.php:330
+msgid "Add Notes/Tags"
+msgstr "添加笔记/标签"
+
+#: problempage.php:365
+msgid "Type your code here..."
+msgstr "在这里输入你的代码..."
+
+#: problempage.php:367
+msgid "Command: "
+msgstr "指令:"
+
+#: problempage.php:375 record.php:143
+msgid "Open Source"
+msgstr "开源"
+
+#: problempage.php:388
+msgid "Clear"
+msgstr "清空"
+
+#: problempage.php:409
+msgid "Write something here..."
+msgstr "在这里写些心得吧..."
+
+#: problempage.php:410
+msgid "Only you can read & edit your very own notes."
+msgstr "只有你才能阅读并编辑你自己的笔记。"
+
+#: problempage.php:467
+msgid "d"
+msgstr "日"
+
+#: problempage.php:468
+msgid "h"
+msgstr "时"
+
+#: problempage.php:469
+msgid "m"
+msgstr "分"
+
+#: problempage.php:470
+msgid "s"
+msgstr "秒"
+
+#: problempage.php:536 problempage.php:546 sourcecode.php:154
+msgid "Copied!"
+msgstr "复制成功!"
+
+#: problempage.php:541 problempage.php:551 sourcecode.php:159
+msgid "Failed..."
+msgstr "复制失败!"
+
+#: problempage.php:578
+msgid "Your code is too long or too short..."
+msgstr "你的代码太长或太短..."
+
+#: problemset.php:31
+msgid "There's no problem of this level"
+msgstr "该难度下暂无题目"
+
+#: problemset.php:56
+msgid "Looks like there's no problem here"
+msgstr "看起来这里暂无题目"
+
+#: problemset.php:133 ranklist.php:108
+msgid "AC Ratio"
+msgstr "AC率"
+
+#: profile.php:42
+msgid "Avatar powered by Gravatar."
+msgstr "头像由Gravatar驱动。"
+
+#: profile.php:52
+msgid "Your new cool nickname..."
+msgstr "你新的炫酷昵称..."
+
+#: profile.php:55
+msgid "Motto"
+msgstr "格言"
+
+#: profile.php:56
+msgid "Leave it blank if slience is gold..."
+msgstr "若沉默是金就留空吧..."
+
+#: profile.php:59 resetpwd.php:90
+msgid "New Password"
+msgstr "新密码"
+
+#: profile.php:60
+msgid "A new password if you like..."
+msgstr "如果你愿意的话..."
+
+#: profile.php:63 resetpwd.php:94
+msgid "Retype Password"
+msgstr "重复密码"
+
+#: profile.php:64
+msgid "Retype your brand new password..."
+msgstr "重新输入你的新密码..."
+
+#: profile.php:68
+msgid "A vaild email is required for convenience..."
+msgstr "一个有效的邮箱会为你带来很多便利..."
+
+#: profile.php:72
+msgid "Make your school proud..."
+msgstr "让你的学校为你骄傲..."
+
+#: profile.php:75
+msgid "Current password"
+msgstr "当前密码"
+
+#: profile.php:76
+msgid "Required before changing anything..."
+msgstr "在更改任何档案前请先输入当前密码..."
+
+#: profile.php:117
+msgid "Profile updated successfully!"
+msgstr "档案更新成功!"
+
+#: ranklist.php:71 solved.php:12
+msgid "Recent AC"
+msgstr "最近AC"
+
+#: ranklist.php:73
+msgid "Show Online"
+msgstr "显示在线"
+
+#: ranklist.php:75
+msgid "Show All"
+msgstr "显示所有"
+
+#: ranklist.php:78
+msgid "User Compare"
+msgstr "用户比较"
+
+#: ranklist.php:80
+msgid "User 1"
+msgstr "用户1"
+
+#: ranklist.php:81
+msgid "User 2"
+msgstr "用户2"
+
+#: ranklist.php:83
+msgid "Compare"
+msgstr "比较"
+
+#: ranklist.php:106 search.php:128
+msgid "AC"
+msgstr "AC量"
+
+#: ranklist.php:195
+msgid "Problems only solved by '+id1+'"
+msgstr "仅'+id1+'解决的题目"
+
+#: ranklist.php:197
+msgid "Problems only solved by '+id2+'"
+msgstr "仅'+id2+'解决的题目"
+
+#: ranklist.php:199
+msgid "Problems solved by both '+id1+' and '+id2+'"
+msgstr "'+id1+' 和 '+id2+'都解决的题目"
+
+#: ranklist.php:204
+msgid "Problems only '+id1+' tried but failed"
+msgstr "仅'+id1+'提交了但失败的题目"
+
+#: ranklist.php:206
+msgid "Problems only '+id2+' tried but failed"
+msgstr "仅'+id2+'提交了但失败的题目"
+
+#: ranklist.php:208
+msgid "Problems both '+id1+' and '+id2+' tried but failed"
+msgstr "'+id1+' 和 '+id2+'都提交了但失败的题目"
+
+#: ranklist.php:232
+msgid "There's only one user..."
+msgstr "只有一位用户..."
+
+#: ranklist.php:237
+msgid "That's meaningless..."
+msgstr "才不陪你玩呢..."
+
+#: ranklist.php:243
+msgid "User \"'+user1+'\" does not exist..."
+msgstr "用户\"'+user1+'\"不存在..."
+
+#: ranklist.php:249
+msgid "User \"'+user2+'\" does not exist..."
+msgstr "用户\"'+user2+'\"不存在..."
+
+#: record.php:152
+msgid "Me"
+msgstr "我"
+
+#: record.php:156 record.php:202 wait.php:33
+msgid "Result"
+msgstr "结果"
+
+#: record.php:165 record.php:207
+msgid "Language"
+msgstr "语言"
+
+#: record.php:174
+msgid "Order by"
+msgstr "排序"
+
+#: record.php:177 record.php:204 wait.php:33
+msgid "Time"
+msgstr "时间"
+
+#: record.php:178 record.php:205 wait.php:33
+msgid "Memory"
+msgstr "内存"
+
+#: record.php:182
+msgid "Operation"
+msgstr "操作"
+
+#: record.php:183
+msgid "Reset"
+msgstr "重置"
+
+#: record.php:206
+msgid "Size"
+msgstr "大小"
+
+#: resetpwd.php:11 resetpwd.php:21 resetpwd.php:51 resetpwd.php:86
+#: resetpwd.php:128
+msgid "Reset Password"
+msgstr "重置密码"
+
+#: resetpwd.php:25 signup.php:47
+msgid "Email..."
+msgstr "邮箱..."
+
+#: resetpwd.php:54
+msgid "We've just sent a verification code to your email..."
+msgstr "我们发送了一封带有验证码的邮件至你的邮箱..."
+
+#: resetpwd.php:56
+msgid "Verification Code"
+msgstr "验证码"
+
+#: resetpwd.php:62 resetpwd.php:123 resetpwd.php:196
+msgid "Resend"
+msgstr "重新发送"
+
+#: resetpwd.php:63
+msgid "Can't Recieve?"
+msgstr "无法收到?"
+
+#: resetpwd.php:74
+msgid ""
+"<p>Our email will arrive in a few minutes.<br>If you can't recieve, these "
+"steps might help:</p><ul><li>Resend an email.</li><li>Check out your junk "
+"mail folder.</li><li>Contact Administrators.</li></ul>"
+msgstr ""
+"<p>我们的邮件将在数分钟内到达。<br>如果你无法收到，这些步骤可能有所帮助: </"
+"p><ul><li>重新发送一封邮件;</li><li>看看垃圾邮箱文件夹;</li><li>联系管理员。"
+"</li></ul>"
+
+#: resetpwd.php:161 resetpwd.php:181 resetpwd.php:212
+msgid "Please wait..."
+msgstr "请稍后..."
+
+#: resetpwd.php:188
+msgid "Email resent successfully..."
+msgstr "重发邮件成功!"
+
+#: resetpwd.php:191 resetpwd.php:221 resetpwd.php:274
+msgid "Session expired..."
+msgstr "身份验证过期..."
+
+#: resetpwd.php:224
+msgid "Wrong Verification Code..."
+msgstr "验证码错误..."
+
+#: resetpwd.php:228
+msgid "Too many failed attempts..."
+msgstr "错误尝试次数过多..."
+
+#: resetpwd.php:270
+msgid "Password reset successfully!"
+msgstr "密码重置成功!"
+
+#: search.php:43
+msgid "Please enter a keyword first"
+msgstr "请先输入一个关键字"
+
+#: search.php:45
+msgid "The keyword entered is too long"
+msgstr "关键字太长"
+
+#: search.php:92
+msgid "Looks like we can't find what you want"
+msgstr "看起来我们找不到你想要的"
+
+#: search.php:94
+msgid "Search Result"
+msgstr "搜索结果"
+
+#: signup.php:16
+msgid "Sign up "
+msgstr "注册"
+
+#: signup.php:35
+msgid "Nickname..."
+msgstr "昵称..."
+
+#: signup.php:43
+msgid "Retype password..."
+msgstr "重复密码..."
+
+#: signup.php:51
+msgid "School..."
+msgstr "学校..."
+
+#: signup.php:55
+msgid "I accept the "
+msgstr "我已阅读并同意"
+
+#: signup.php:55
+msgid "Licence Agreement."
+msgstr "用户许可"
+
+#: signup.php:80
+msgid "End User Licence Agreement"
+msgstr "终端用户许可"
+
+#: signup.php:124
+msgid "Your sign-up will be reviewed"
+msgstr "你的注册申请将被管理员审核"
+
+#: signup.php:127
+msgid "Great! Let's get started"
+msgstr "好的! 让我们现在开始..."
+
+#: sourcecode.php:22
+msgid "This solution is not open-source"
+msgstr "这份代码尚未开源"
+
+#: sourcecode.php:29
+msgid "You can't see me before solving it"
+msgstr "在解决该题前你无法查看开源代码"
+
+#: sourcecode.php:38
+msgid "Sourcecode"
+msgstr "源码"
+
+#: sourcecode.php:40
+msgid "Please specify the solution id"
+msgstr "请指明源码ID"
+
+#: sourcecode.php:62
+msgid "Sourcecode not available"
+msgstr "源码不可用"
+
+#: sourcecode.php:87
+msgid "User: "
+msgstr "用户: "
+
+#: sourcecode.php:91
+msgid "Result: "
+msgstr "结果: "
+
+#: sourcecode.php:94
+msgid "Size: "
+msgstr "大小: "
+
+#: sourcecode.php:95
+msgid "Language: "
+msgstr "语言: "
+
+#: sourcecode.php:98
+msgid "Time: "
+msgstr "时间: "
+
+#: sourcecode.php:99
+msgid "Memory: "
+msgstr "内存: "
+
+#: sourcecode.php:105
+msgid "Fullscreen"
+msgstr "全屏"
+
+#: sourcecode.php:106 upload.php:59
+msgid "Copy"
+msgstr "复制"
+
+#: testcase.php:11
+msgid "Please specify the problem id"
+msgstr "请指明题目ID"
+
+#: testcase.php:56
+msgid "Refresh"
+msgstr "刷新"
+
+#: testcase.php:57 upload.php:41 upload.php:81
+msgid "Upload"
+msgstr "上传"
+
+#: testcase.php:63
+msgid "Your browser does not support HTML5!"
+msgstr "你的浏览器不支持HTML5!"
+
+#: testcase.php:116
+msgid "CWOJ Approved Extensions"
+msgstr "CWOJ钦定文件"
+
+#: testcase.php:132
+msgid "Sure to delete "
+msgstr "确认删除"
+
+#: upload.php:12 upload.php:96
+msgid "Unsupported File type..."
+msgstr "不支持的文件类型..."
+
+#: upload.php:14
+msgid "Error: "
+msgstr "错误: "
+
+#: upload.php:18
+msgid "Invalid File name..."
+msgstr "无效的文件名..."
+
+#: upload.php:24
+msgid "File "
+msgstr "文件"
+
+#: upload.php:24
+msgid " exists already, try another name..."
+msgstr "已经存在，请换个名字..."
+
+#: upload.php:27
+msgid "Can't access upload directory..."
+msgstr "无法访问上传目录..."
+
+#: upload.php:32
+msgid "Upload Failed!"
+msgstr "上传失败!"
+
+#: upload.php:52
+msgid "Uploaded Successfully!"
+msgstr "上传成功!"
+
+#: upload.php:55
+msgid "HTML Code"
+msgstr "HTML代码!"
+
+#: upload.php:63
+msgid "Error!"
+msgstr "错误!"
+
+#: upload.php:72
+msgid "Select Image"
+msgstr "选择图片"
+
+#: upload.php:76
+msgid "Image Name (Without extension)"
+msgstr "图片名称 (不带拓展)"
+
+#: wait.php:9
+msgid "Judging"
+msgstr "正在评测"
+
+#: wait.php:20
+msgid "Results"
+msgstr "结果"
+
+#: wait.php:22
+msgid ""
+"We're judging your submitted code, please don't close or refresh this page."
+msgstr "我们正在评测你提交的代码，请不要关闭或刷新该页面。"
+
+#: wait.php:22
+msgid "This page will be updated automatically."
+msgstr "页面上的内容将会自动更新。"
+
+#: wait.php:25
+msgid "Queueing... Sit back and relax."
+msgstr "正在等待... 请坐和放宽。"
+
+#: wait.php:26
+msgid "Judging..."
+msgstr "正在评测..."
+
+#: wait.php:33
+msgid "Case"
+msgstr "测试点"
+
+#: wait.php:41
+msgid "Problem Page"
+msgstr "题目页面"
+
+#: wait.php:42
+msgid "Submit Records"
+msgstr "提交记录"
+
+#: wait.php:64
+msgid "Whoops! Something went wrong...<br>Please contact the administrator."
+msgstr "糟糕! 系统出了一些问题...<br>请联系管理员。"
+
+#: wait.php:86
+msgid "This page has expired. Check your score in Records."
+msgstr "此页面已过期。请到记录里查看你的得分。"
+
+#: wait.php:132
+msgid "All Done! Go back to Problem Page or check out the Records."
+msgstr "评测完成! 你可以返回题目页面或查看记录。"
+
+#~ msgid "Nickname:"
+#~ msgstr "昵称:"
+
+#~ msgid "Last Seen:"
+#~ msgstr "最近访问:"
+
+#~ msgid "Privilege:"
+#~ msgstr "权限:"
+
+#~ msgid "IP Address:"
+#~ msgstr "IP地址:"
+
+#~ msgid "School:"
+#~ msgstr "学校:"
+
+#~ msgid "Email:"
+#~ msgstr "邮箱:"
+
+#~ msgid "Reg Date:"
+#~ msgstr "注册日期:"
+
+#~ msgid "AC/Submit:"
+#~ msgstr "AC量/提交量:"
+
+#~ msgid "Start Time: "
+#~ msgstr "开始时间:"
+
+#~ msgid "End Time: "
+#~ msgstr "结束时间:"
+
+#~ msgid "Duration: "
+#~ msgstr "比赛时长:"
+
+#~ msgid "Format: "
+#~ msgstr "比赛赛制:"
+
+#~ msgid "Level: "
+#~ msgstr "比赛等级:"
+
+#~ msgid "Your Score: "
+#~ msgstr "你的分数:"
+
+#~ msgid "Time Penalty: "
+#~ msgstr "你的罚时:"
+
+#~ msgid "Your Rank: "
+#~ msgstr "你的排名:"
+
+#~ msgid "Competitors: "
+#~ msgstr "参赛人数:"
+
+#~ msgid "Time Limit: "
+#~ msgstr "时间限制:"
+
+#~ msgid "Memory Limit: "
+#~ msgstr "内存限制:"
+
+#~ msgid "Case Score: "
+#~ msgstr "单点分值:"
+
+#~ msgid "Comparison: "
+#~ msgstr "比较方式:"
+
+#~ msgid "User Submitted: "
+#~ msgstr "提交用户:"
+
+#~ msgid "User Accepted: "
+#~ msgstr "解决用户:"
+
+#~ msgid "Total Submits: "
+#~ msgstr "提交总量:"
+
+#~ msgid ""
+#~ "Final score is the sum of the scores of solved problems. Time Penalty "
+#~ "records the latest submit time for solved problems and 1200s for unsolved "
+#~ "problems."
+#~ msgstr ""
+#~ "总分即AC题目分数之和，罚时对AC的记录记最后提交时间，对未AC的记录记1200s。"
+
+#~ msgid ""
+#~ "Full score is the sum of the highest score of each problem. Time Penalty "
+#~ "records the latest submit time for solved problems and 1200s for unsolved "
+#~ "problems."
+#~ msgstr ""
+#~ "总分即时间内每题最高分之和，罚时对AC的记录记最后提交时间，对未AC的记录记"
+#~ "1200s。"
+
+#~ msgid ""
+#~ "Your program tried to use more memory than the problem limit. Try "
+#~ "optimizing your algorithm."
+#~ msgstr ")你的程序爆内存限制啦，去优化一下你的算法吧。"
+
+#~ msgid ""
+#~ " - An open-source online judge designed for OI trainings, built for you "
+#~ "to code your future."
+#~ msgstr "- 一个开源且为信息竞赛设计的在线评测系统，为你而建，编码未来。"
+
+#~ msgid ""
+#~ "<p>CWOJ is a Free, <a href=\"https://github.com/CDFLS/CWOJ\">Open-Source</"
+#~ "a> Online Judge Solution designed for OI trainings, based on Bashu "
+#~ "OnlineJudge. Started on 11/20/2015, we keep seeking a better OJ solution "
+#~ "for individuals, schools and other educational organizations.</p>"
+#~ msgstr "<p>"
+
+#~ msgid "Queueing...Sit back and relax."
+#~ msgstr "正在等待...请坐和放宽。"
+
+#~ msgid "Recent AC..."
+#~ msgstr "最近AC..."
+
+#~ msgid "Go Back"
+#~ msgstr "返回"
+
+#~ msgid "Go back"
+#~ msgstr "返回"
+
+#~ msgid "Forgot Password"
+#~ msgstr "忘记密码"
+
+#~ msgid "Look's like there's nothing here"
+#~ msgstr "看起来"
+
+#~ msgid "New password"
+#~ msgstr "新密码"
+
+#~ msgid "Repeat password"
+#~ msgstr "重复密码"
+
+#~ msgid "Code Submit "
+#~ msgstr "代码提交"
+
+#~ msgid "Discuss"
+#~ msgstr "讨论"
+
+#~ msgid "Records"
+#~ msgstr "记录"
+
+#~ msgid "Settings"
+#~ msgstr "设置"
+
+#~ msgid "Sign in"
+#~ msgstr "登录"
+
+#~ msgid "More recent news"
+#~ msgstr "更多新闻"
+
+#~ msgid "No such contest"
+#~ msgstr "该比赛不存在"
+
+#~ msgid "Rankings "
+#~ msgstr "排名`"
+
+#~ msgid "This piece of news contains no content..."
+#~ msgstr "该条新闻内容为空..."
+
+#~ msgid "Access denied..."
+#~ msgstr "无权访问..."
