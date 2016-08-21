@@ -3,7 +3,6 @@ require 'inc/global.php';
 require 'inc/database.php';
 require 'inc/ojsettings.php';
 
-if(!isset($_SESSION)) session_start();
 if(isset($_SESSION['user'])){
     header("Location: /");
     exit();
@@ -31,7 +30,6 @@ $Title=_('Welcome to ').$oj_name;
                 <input class="form-control" autofocus="autofocus" type="text" id="input_uid" name="uid" placeholder="<?php echo _('Username...')?>">
                 <span class="form-control-feedback"><i class="fa fa-fw fa-user"></i></span>
               </div>
-
               <div class="form-group has-feedback" id="pwd_ctl">
                 <input class="form-control" id="input_pwd" name="pwd" type="password" placeholder="<?php echo _('Password...')?>">
                 <span class="form-control-feedback"><i class="fa fa-fw fa-lock"></i></span>
@@ -42,16 +40,24 @@ $Title=_('Welcome to ').$oj_name;
                 </div>
               </div>
               <div id="login_res" class="alert alert-danger collapse"></div>
-              <div class="form-group center">
+              <div class="dropdown form-group">
                 <button type="submit" class="btn btn-primary"><?php echo _('Log in')?></button>
                 <a href="signup.php" style="margin-left:8px"><?php echo _('Sign up')?></a>
                 <a href="resetpwd.php" style="margin-left:8px"><?php echo _('Forgot?')?></a>
                 <a href="javascript:void(0)" onclick="return $('#contact').slideToggle();" style="margin-left:8px"><?php echo _('Contact us...')?></a>
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                  <i class="fa fa-fw fa-globe"></i>
+                </a>
+                <ul class="dropdown-menu dropdown-menu-right" id="nav_lang">
+                  <li><a href="javascript:void(0)" onclick="return change_i18n('auto')"><?php echo _('Auto switch')?></a></li>
+                  <li><a href="javascript:void(0)" onclick="return change_i18n('en_US')">English</a></li>
+                  <li><a href="javascript:void(0)" onclick="return change_i18n('zh_CN')">简体中文</a></li>
+                </ul>
               </div>
             </div>
 		  	<div class="collapse" id="contact">
-		  	    <p class="text-center"><b><?php echo _('Contact mail:')?> <a href="mailto:<?php echo $contact_email?>"><?php echo $contact_email?></a></b></p>
-		      </div>
+              <p class="text-center"><b><?php echo _('Contact mail:')?> <a href="mailto:<?php echo $contact_email?>"><?php echo $contact_email?></a></b></p>
+            </div>
 		  	<br>
             </form>
           </div>
@@ -59,6 +65,9 @@ $Title=_('Welcome to ').$oj_name;
       </div>
 	</div>
     <script type="text/javascript">
+    function change_i18n(e){
+        $.post('/ajax_globe.php',{i18n:e},function(msg){if(msg=='success') window.location.reload();});
+    }
       $(document).ready(function(){
         var r="<?php if(isset($_SESSION['login_redirect'])) echo $_SESSION['login_redirect'];
         else echo 'index.php';?>";

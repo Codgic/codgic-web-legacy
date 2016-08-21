@@ -13,7 +13,6 @@ function CMP_TYPE($way, $precision)
 		return 3 << 16;
 	return 0;
 }
-session_start();
 if(!check_priv(PRIV_PROBLEM)){
 	echo _('Permission Denied...');
     exit();

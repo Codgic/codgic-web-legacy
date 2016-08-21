@@ -5,7 +5,6 @@ if(!isset($_POST['id'])){
     exit();
 }
 
-session_start();
 if(!isset($_SESSION['user'])){
 	echo _('Please login first...');
     exit();

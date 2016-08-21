@@ -4,7 +4,6 @@ require 'inc/database.php';
 require 'inc/ojsettings.php';
 require 'inc/functions.php';
 require 'inc/mailsettings.php';
-session_start(); 
 
 if(!isset($_POST['type'])){
     echo _('Invalid Argument...');

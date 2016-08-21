@@ -1,7 +1,6 @@
 <?php 
 require 'inc/global.php';
 require 'inc/ojsettings.php';
-session_start(); 
 $_SESSION['resetpwd_flag']=0; 
 $_SESSION['resetpwd_wrongnum']=0; //Incorrect Tries
 $_SESSION['resetpwd_code']=rand(10000000,99999999); //Random verification code
@@ -27,9 +26,17 @@ require 'head.php';
                 <span class="form-control-feedback"><i class="fa fa-fw fa-envelope"></i></span>
               </div>
               <div id="ajax_emailresult" class="collapse alert alert-danger"></div>
-              <div class="form-group">
+              <div class="dropdown form-group">
 			    <input type="button" id="email_nxt" class="btn btn-primary" value="<?php echo _('Next')?>"/>
 				<a href="login.php" style="margin-left:8px"><?php echo _('Go Back...')?></a>
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                  <i class="fa fa-fw fa-globe"></i>
+                </a>
+                <ul class="dropdown-menu dropdown-menu-right" id="nav_lang">
+                  <li><a href="javascript:void(0)" onclick="return change_i18n('auto')"><?php echo _('Auto switch')?></a></li>
+                  <li><a href="javascript:void(0)" onclick="return change_i18n('en_US')">English</a></li>
+                  <li><a href="javascript:void(0)" onclick="return change_i18n('zh_CN')">简体中文</a></li>
+                </ul>
               </div>
 			</div>
           </form>
@@ -50,10 +57,18 @@ require 'head.php';
 				  <span class="form-control-feedback"><i class="fa fa-fw fa-key"></i></span>
                 </div>
                 <div id="ajax_verifyresult" class="collapse alert alert-danger"></div>
-                <div class="form-group">
+                <div class="dropdown form-group">
                   <input type="button" id="verify_nxt" class="btn btn-primary" value="<?php echo _('Next')?>"/>
 				  <input type="button" id="resend_btn" class="btn btn-danger" style="margin-left:8px" value="<?php echo _('Resend')?>"/>
                   <a href="javascript:void(0)" onclick="return show_tip();" style="margin-left:8px"><?php echo _('Can\'t Recieve?')?></a>
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                    <i class="fa fa-fw fa-globe"></i>
+                  </a>
+                  <ul class="dropdown-menu dropdown-menu-right" id="nav_lang">
+                    <li><a href="javascript:void(0)" onclick="return change_i18n('auto')"><?php echo _('Auto switch')?></a></li>
+                    <li><a href="javascript:void(0)" onclick="return change_i18n('en_US')">English</a></li>
+                    <li><a href="javascript:void(0)" onclick="return change_i18n('zh_CN')">简体中文</a></li>
+                  </ul>
                 </div>
                 <div class="collapse" id="emailtip" style="text-align:left">
                   <?php echo _('<p>Our email will arrive in a few minutes.<br>If you can\'t recieve, these steps might help:</p><ul><li>Resend an email.</li><li>Check out your junk mail folder.</li><li>Contact Administrators.</li></ul>');?>
@@ -80,8 +95,16 @@ require 'head.php';
                   <span class="form-control-feedback"><i class="fa fa-fw fa-refresh"></i></span>
                 </div>
                 <div id="ajax_pwdresult" class="collapse alert alert-danger"></div>
-                <div class="form-group">
+                <div class="dropdown form-group">
                   <span id="pwd_save" class="btn btn-primary"><?php echo _('Next')?></span>
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                    <i class="fa fa-fw fa-globe"></i>
+                  </a>
+                  <ul class="dropdown-menu dropdown-menu-right" id="nav_lang">
+                    <li><a href="javascript:void(0)" onclick="return change_i18n('auto')"><?php echo _('Auto switch')?></a></li>
+                    <li><a href="javascript:void(0)" onclick="return change_i18n('en_US')">English</a></li>
+                    <li><a href="javascript:void(0)" onclick="return change_i18n('zh_CN')">简体中文</a></li>
+                  </ul>
                 </div>
               </div>
             </form> 
@@ -90,9 +113,9 @@ require 'head.php';
       </div>
 	</div>
     <script type="text/javascript">
-	function get_rand(begin, end) {
-		return Math.floor(Math.random()*(end-begin))+begin;
-		}
+    function change_i18n(e){
+        $.post('/ajax_globe.php',{i18n:e},function(msg){if(msg=='success') window.location.reload();});
+    }
 	var ct=60; 
 	function settime(e){
         if(ct == 0){

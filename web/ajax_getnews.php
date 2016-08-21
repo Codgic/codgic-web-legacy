@@ -3,7 +3,6 @@ require 'inc/global.php';
 require 'inc/database.php';
 require 'inc/ojsettings.php';
 require 'inc/privilege.php';
-session_start();
 $arr=array('type'=>'fail','title'=>'','content'=>'','time'=>'','priv'=>'');
 
 if(!isset($_POST['newsid'])){

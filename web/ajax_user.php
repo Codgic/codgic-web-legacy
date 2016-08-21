@@ -2,7 +2,6 @@
 require 'inc/global.php';
 require 'inc/ojsettings.php';
 require 'inc/privilege.php';
-session_start();
 if($require_auth==1&&!isset($_SESSION['user'])) {
     echo _('Permission Denied...');
     exit();
@@ -66,27 +65,27 @@ if(isset($_GET['type'])&&$_GET['type']=='json'){
 		<col style="width:80%">
 	</colgroup>
 	<tbody>
-    <tr><td colspan="2"><?php echo _('Nickname:')?></td><td><?php echo $row[8];?></td></tr>
-	<tr><td colspan="2"><?php echo _('Last Seen:')?></td><td><?php echo $row[2];?></td></tr>
-    <tr><td colspan="2"><?php echo _('Privilege:')?></td><td><?php echo list_priv($row[9]);?></td></tr>
+    <tr><td colspan="2"><?php echo _('Nickname')?></td><td><?php echo $row[8];?></td></tr>
+	<tr><td colspan="2"><?php echo _('Last Seen')?></td><td><?php echo $row[2];?></td></tr>
+    <tr><td colspan="2"><?php echo _('Privilege')?></td><td><?php echo list_priv($row[9]);?></td></tr>
 <?php if(check_priv(PRIV_SYSTEM)){?>
-	<tr><td colspan="2"><?php echo _('IP Address:')?></td><td><?php echo $row[1].' '.get_ipgeo($row[1]);?></td></tr>
+	<tr><td colspan="2"><?php echo _('IP Address')?></td><td><?php echo $row[1].' '.get_ipgeo($row[1]);?></td></tr>
 <?php }?>
-	<tr><td colspan="2"><?php echo _('School:')?></td><td><?php echo htmlspecialchars($row[3]);?></td></tr>
-	<tr><td colspan="2"><?php echo _('Email:')?></td><td><?php echo htmlspecialchars($row[0]);?></td></tr>
-	<tr><td colspan="2"><?php echo _('Reg Date:')?></td><td><?php echo $row[4];?></td></tr>
-	<tr><td colspan="2"><?php echo _('AC/Submit:')?></td><td><?php echo $row[6],'/',$row[5];?></td></tr>
+	<tr><td colspan="2"><?php echo _('School')?></td><td><?php echo htmlspecialchars($row[3]);?></td></tr>
+	<tr><td colspan="2"><?php echo _('Email')?></td><td><?php echo htmlspecialchars($row[0]);?></td></tr>
+	<tr><td colspan="2"><?php echo _('Reg Date')?></td><td><?php echo $row[4];?></td></tr>
+	<tr><td colspan="2"><?php echo _('AC/Submit')?></td><td><?php echo $row[6],'/',$row[5];?></td></tr>
 	<?php
 		$failed=mysqli_query($con,"select problem_id from solution where user_id='$user' group by problem_id having min(result)>0");
 		$number=mysqli_num_rows($failed);
-		echo '<tr><td colspan="2">',_('Failed'),"($number):",'</td><td><samp>';
+		echo '<tr><td colspan="2">',_('Failed'),"($number)",'</td><td><samp>';
 		while($row=mysqli_fetch_row($failed)){
 			echo '<span style="display:inline-block"><a href="problempage.php?problem_id=',$row[0],'">',$row[0],'</a></span>&nbsp;';
 		}
 		echo '</samp></td></tr>';
 		$solved=mysqli_query($con,"select problem_id from solution where result=0 and user_id='$user' group by problem_id");
 		$number=mysqli_num_rows($solved);
-		echo '<tr><td colspan="2">',_('Solved'),"($number):",'</td><td><samp>';
+		echo '<tr><td colspan="2">',_('Solved'),"($number)",'</td><td><samp>';
 		while($row=mysqli_fetch_row($solved)){
 			echo '<span style="display:inline-block"><a href="problempage.php?problem_id=',$row[0],'">',$row[0],'</a></span>&nbsp;';
 		}

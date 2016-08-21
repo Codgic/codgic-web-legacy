@@ -55,9 +55,17 @@ $Title=_('Sign up ').$oj_name;
                 <label><input type="checkbox" name="lic" id="chk_lic"><?php echo _('I accept the ')?><a href="javascript:void(0)" onclick="return $('#EULAModal').modal('show');"><?php echo _('Licence Agreement.')?></a></label>
               </div>
               <div id="reg_res" class="alert collapse"></div>
-              <div class="form-group center">
+              <div class="dropdown form-group">
                 <button type="submit" class="btn btn-primary"><?php echo _('Submit')?></button>
                 <a href="login.php" style="margin-left:8px"><?php echo _('Go Back...')?></a>
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                  <i class="fa fa-fw fa-globe"></i>
+                </a>
+                <ul class="dropdown-menu dropdown-menu-right" id="nav_lang">
+                  <li><a href="javascript:void(0)" onclick="return change_i18n('auto')"><?php echo _('Auto switch')?></a></li>
+                  <li><a href="javascript:void(0)" onclick="return change_i18n('en_US')">English</a></li>
+                  <li><a href="javascript:void(0)" onclick="return change_i18n('zh_CN')">简体中文</a></li>
+                </ul>
               </div>
           </form>
 		</div>
@@ -81,6 +89,9 @@ $Title=_('Sign up ').$oj_name;
 	  </div>
 	</div>
     <script type="text/javascript">
+    function change_i18n(e){
+        $.post('/ajax_globe.php',{i18n:e},function(msg){if(msg=='success') window.location.reload();});
+    }
       $(document).ready(function(){
         $('body .row').fadeIn();
         $('#form_reg').submit(function(){

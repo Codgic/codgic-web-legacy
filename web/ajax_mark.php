@@ -1,5 +1,4 @@
 <?php
-session_start();
 require 'inc/global.php';
 require 'inc/database.php';
 

@@ -249,11 +249,11 @@ $Title=$inTitle .' - '. $oj_name;
 				<div class="panel-body">
                   <table class="table table-condensed table-striped" style="margin-bottom:0px">
 					<tbody>
-					  <tr><td style="text-align:left"><?php echo _('Time Limit: ')?></td><td><?php echo $row_prob[8]?> ms</td></tr>
-                      <tr><td style="text-align:left"><?php echo _('Memory Limit: ')?></td><td><?php echo $row_prob[9]?> KB</td></tr>
-                      <tr><td style="text-align:left"><?php echo _('Case Score: ')?></td><td><?php echo $row_prob[10]?></td></tr>
-                      <tr><td style="text-align:left"><?php echo _('Comparison: ')?></td><td><?php echo $comparison?></td></tr>
-                      <tr><td style="text-align:left"><?php echo _('Level: ')?></td><td><?php echo $prob_level?></td></tr>
+					  <tr><td style="text-align:left"><?php echo _('Time Limit')?></td><td><?php echo $row_prob[8]?> ms</td></tr>
+                      <tr><td style="text-align:left"><?php echo _('Memory Limit')?></td><td><?php echo $row_prob[9]?> KB</td></tr>
+                      <tr><td style="text-align:left"><?php echo _('Case Score')?></td><td><?php echo $row_prob[10]?></td></tr>
+                      <tr><td style="text-align:left"><?php echo _('Comparison')?></td><td><?php echo $comparison?></td></tr>
+                      <tr><td style="text-align:left"><?php echo _('Level')?></td><td><?php echo $prob_level?></td></tr>
                     </tbody>
                   </table>
 				</div>
@@ -267,9 +267,9 @@ $Title=$inTitle .' - '. $oj_name;
                   <table class="table table-condensed table-striped" style="margin-bottom:0px">
                     <tbody>
                     <?php echo $s_info ?>
-                    <tr><td style="text-align:left"><?php echo _('User Submitted: ')?></td><td><?php echo $submit_user?></td></tr>
-                    <tr><td style="text-align:left"><?php echo _('User Accepted: ')?></td><td><?php echo $solved_user?></td></tr>
-                    <tr><td style="text-align:left"><?php echo _('Total Submits: ')?></td><td><?php echo $total_submit?></td></tr>
+                    <tr><td style="text-align:left"><?php echo _('User Submitted')?></td><td><?php echo $submit_user?></td></tr>
+                    <tr><td style="text-align:left"><?php echo _('User Accepted')?></td><td><?php echo $solved_user?></td></tr>
+                    <tr><td style="text-align:left"><?php echo _('Total Submits')?></td><td><?php echo $total_submit?></td></tr>
                     <?php
                       foreach ($arr as $type => $cnt) {
 						if(isset($RESULT_TYPE[$type]))

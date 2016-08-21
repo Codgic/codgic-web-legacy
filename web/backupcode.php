@@ -6,7 +6,6 @@ function show_alert($str)
 	echo htmlspecialchars($str);
 	echo '");</script></body></html>';
 }
-session_start();
 
 if(!isset($_SESSION['user'])){
     $info=_('Please login first...');

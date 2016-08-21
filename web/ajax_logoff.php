@@ -3,4 +3,6 @@ session_start();
 session_unset();
 session_destroy();
 
-setcookie('SID', '', 31415926);
+setcookie('SID', '', time()-3600,'/','.cwoj.org');
+
+?>

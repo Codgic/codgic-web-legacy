@@ -55,6 +55,17 @@ $Title=$inTitle .' - '. $oj_name;
 			  $('#slt_edrmode').val("<?php echo $pref->edrmode?>");
 		    </script>
 		  </div>
+          <div class="form-group col-xs-6 col-sm-3">
+			<label for="i18n"><?php echo _('Website Language')?></label>
+			<select class="form-control" name="i18n" id="slt_i18n">
+			  <option value="auto"><?php echo _('Auto switch')?></option>
+		  	  <option value="en_US">English</option>
+		 	  <option value="zh_CN">简体中文</option>
+		    </select>
+		    <script>
+			  $('#slt_i18n').val("<?php echo $pref->i18n?>");
+		    </script>
+		  </div>
 		</div>
 		<div class="row">
 		  <div class="col-xs-12"> 

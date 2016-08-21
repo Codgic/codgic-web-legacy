@@ -1,7 +1,6 @@
 <?php
 require 'inc/global.php';
 require 'inc/functions.php';
-session_start();
 if(!isset($_POST['op'])){
     echo _('Invalid Argument...');
     exit();

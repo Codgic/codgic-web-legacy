@@ -40,14 +40,14 @@ if(!isset($_SESSION['user'])){
         <input type="hidden" name="t" id="search_type" value="0">
 		  <div class="form-group">
             <div class="input-group">
-              <span class="input-group-btn dropdown" id="search_span">
+              <div class="input-group-btn dropdown" id="search_span">
                 <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown"><span id="search_select"><i class="fa fa-fw fa-coffee"></i></span></button>
                 <ul class="dropdown-menu">
                   <li><a href="javascript:void(0)" onclick="return change_type(1)"><span id="type1"><i class="fa fa-fw fa-coffee"></i></span> <?php echo _('Problems');?></a></li>
                   <li><a href="javascript:void(0)" onclick="return change_type(2)"><span id="type2"><i class="fa fa-fw fa-compass"></i></span> <?php echo _('Contests');?></a></li>
                   <li><a href="javascript:void(0)" onclick="return change_type(3)"><span id="type3"><i class="fa fa-fw fa-user"></i></span> <?php echo _('Users');?></a></li>
                 </ul>
-              </span>
+              </div>
             <input id="search_input" name="q" type="text" class="form-control" autocomplete="off" placeholder="<?php echo _('Search...');?>">
           </div>
         </div>
@@ -74,6 +74,16 @@ if(!isset($_SESSION['user'])){
 		  </li>
 		  <?php }else{?>
 		  <li><a id="nav_login" title="Alt+L" href="/login.php"><i class="fa fa-fw fa-sign-in"></i> <?php echo _('Log in');?></a></li>
+          <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+              <i class="fa fa-fw fa-globe"></i>
+            </a>
+            <ul class="dropdown-menu dropdown-menu-right" id="nav_lang">
+              <li><a href="javascript:void(0)" onclick="return change_i18n('auto')"><?php echo _('Auto switch')?></a></li>
+              <li><a href="javascript:void(0)" onclick="return change_i18n('en_US')">English</a></li>
+              <li><a href="javascript:void(0)" onclick="return change_i18n('zh_CN')">简体中文</a></li>
+            </ul>
+          </li>
 		  <?php }?>
 	  </ul>  
     </div> 

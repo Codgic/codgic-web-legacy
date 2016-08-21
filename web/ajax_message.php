@@ -13,7 +13,6 @@ function getNextMsgID(){
 	}
 	return $ID;
 }
-session_start();
 if($require_auth&&!isset($_SESSION['user'])){
     echo _('Please login first...');
     exit();

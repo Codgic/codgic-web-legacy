@@ -249,11 +249,11 @@ $Title=$inTitle .' - '. $oj_name;
 				<div class="panel-body">
                   <table class="table table-condensed table-striped" style="margin-bottom:0px">
 					<tbody>
-                      <tr><td style="text-align:left"><?php echo _('Start Time: ')?></td><td><?php echo $row[3]?></td></tr>
-                      <tr><td style="text-align:left"><?php echo _('End Time: ')?></td><td><?php echo $row[4]?></td></tr>
-                      <tr><td style="text-align:left"><?php echo _('Duration: ')?></td><td><?php echo get_time_text(strtotime($row[4])-strtotime($row[3]))?></td></tr>
-                      <tr><td style="text-align:left"><?php echo _('Format: ')?></td><td><?php echo $judge_way?></td></tr>
-                      <tr><td style="text-align:left"><?php echo _('Level: ')?></td><td><?php echo $cont_level?></td></tr>
+                      <tr><td style="text-align:left"><?php echo _('Start Time')?></td><td><?php echo $row[3]?></td></tr>
+                      <tr><td style="text-align:left"><?php echo _('End Time')?></td><td><?php echo $row[4]?></td></tr>
+                      <tr><td style="text-align:left"><?php echo _('Duration')?></td><td><?php echo get_time_text(strtotime($row[4])-strtotime($row[3]))?></td></tr>
+                      <tr><td style="text-align:left"><?php echo _('Format')?></td><td><?php echo $judge_way?></td></tr>
+                      <tr><td style="text-align:left"><?php echo _('Level')?></td><td><?php echo $cont_level?></td></tr>
                     </tbody>
                   </table>
 				</div>
@@ -268,12 +268,12 @@ $Title=$inTitle .' - '. $oj_name;
                     <tbody>
                     <?php echo $s_info ?>
                     <?php if(isset($_SESSION['user'])&&isset($row[12])){?>
-                    <tr><td style="text-align:left"><?php echo _('Your Score: ')?></td><td><?php echo $tot_scores?></td></tr>
-					<tr><td style="text-align:left"><?php echo _('Time Penalty: ')?></td><td><?php echo get_time_text($tot_times)?></td></tr>
+                    <tr><td style="text-align:left"><?php echo _('Your Score')?></td><td><?php echo $tot_scores?></td></tr>
+					<tr><td style="text-align:left"><?php echo _('Time Penalty')?></td><td><?php echo get_time_text($tot_times)?></td></tr>
                     <?php if($cont_status==2){?>
-                    <tr><td style="text-align:left"><?php echo _('Your Rank: ')?></td><td><?php echo $row[14]?></td></tr>
+                    <tr><td style="text-align:left"><?php echo _('Your Rank')?></td><td><?php echo $row[14]?></td></tr>
                     <?php }}?>
-                    <tr><td style="text-align:left"><?php echo _('Competitors: ')?></td><td><?php echo $row[10]?></td></tr>
+                    <tr><td style="text-align:left"><?php echo _('Competitors')?></td><td><?php echo $row[10]?></td></tr>
                     </tbody>
                   </table>
 			    </div>

@@ -14,7 +14,6 @@ function JUDGE_TYPE($way)
     else if($way=='oi-like')
       return 3;
 }
-session_start();
 if(!check_priv(PRIV_PROBLEM)){
     echo _('Permission Denied...');
 	exit();

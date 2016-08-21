@@ -1,6 +1,5 @@
 <?php
 require 'inc/global.php';
-session_start();
 if(!isset($_SESSION['user'])){
     echo _('Please login first...');
     exit();
