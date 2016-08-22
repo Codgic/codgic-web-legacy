@@ -4,6 +4,7 @@ class preferences{
 	public $night;
 	public $edrmode;
 	public $backuptime;
+	public $i18n;
 
 	function __construct()
 	{
