@@ -39,7 +39,7 @@ if($_POST['type']=='profile'){
 		echo _('Wrong Password...');
         exit();
     }
-    if(strlen($_POST['motto'])>200)
+    if(strlen($_POST['motto'])>200){
         echo _('Motto too long...');
         exit();
     }
