@@ -31,6 +31,21 @@ function write_cookie($remember)
 	else setcookie('SID', $data);
 }
 
+function check_i18n_cookie(){
+    if(!isset($_COOKIE['i18n']))
+        return false;
+    $cookie = decrypt(cookie_key, $_COOKIE['i18n']);
+    if($cookie === false)
+        return false;
+    return substr($cookie,0,5);
+}
+
+function write_i18n_cookie($value){
+    $data=encrypt(cookie_key, $value.time());
+    setcookie('i18n',$data,time()+cookie_expire);
+    $_COOKIE['i18n']=$data;
+}
+
 function encrypt($key, $plain_text) {
 	$iv='7284565820000000';
 	$key=hash('sha256',$key,true);

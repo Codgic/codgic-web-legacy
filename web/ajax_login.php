@@ -9,7 +9,6 @@ if(!isset($_POST['uid']) || !isset($_POST['pwd'])){
 
 require 'inc/database.php';
 require 'inc/userlogin.php';
-require 'inc/cookie.php';
 
 $user=trim($_POST['uid']);
 if((preg_match('/\W/',$user) && !preg_match("/^([0-9A-Za-z\\-_\\.]+)@([0-9a-z]+\\.[a-z]{2,3}(\\.[a-z]{2})?)$/i",$user)) || strlen($user)==0){
@@ -17,7 +16,6 @@ if((preg_match('/\W/',$user) && !preg_match("/^([0-9A-Za-z\\-_\\.]+)@([0-9a-z]+\
     exit();
 }
 
-session_start();
 $ret=login($user, FALSE, $_POST['pwd']);
 
 if($ret !== TRUE) die($ret);

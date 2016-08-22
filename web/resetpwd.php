@@ -33,7 +33,6 @@ require 'head.php';
                   <i class="fa fa-fw fa-globe"></i>
                 </a>
                 <ul class="dropdown-menu dropdown-menu-right" id="nav_lang">
-                  <li><a href="javascript:void(0)" onclick="return change_i18n('auto')"><?php echo _('Auto switch')?></a></li>
                   <li><a href="javascript:void(0)" onclick="return change_i18n('en_US')">English</a></li>
                   <li><a href="javascript:void(0)" onclick="return change_i18n('zh_CN')">简体中文</a></li>
                 </ul>

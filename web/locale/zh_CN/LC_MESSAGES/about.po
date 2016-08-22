@@ -1,0 +1,36 @@
+# Chinese translations for CWOJ-1.0 package.
+# Copyright (C) 2016 THE CWOJ-1.0'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the CWOJ-1.0 package.
+# Jimmy Zhang <info@cwoj.tk>, 2016.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: CWOJ-1.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2016-08-22 23:10+0800\n"
+"PO-Revision-Date: 2016-08-22 23:21+0800\n"
+"Language-Team: CWOJ Team <info@cwoj.tk>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.8.7.1\n"
+"Last-Translator: \n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"Language: zh_CN\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+
+#: about.php:43
+msgid "Main Developer & Maintainer."
+msgstr "主要开发与维护者。"
+
+#: about.php:47
+msgid "Main Content (Problems & Contests) Manager."
+msgstr "主要内容(题库和比赛)管理者。"
+
+#: about.php:51
+msgid "Reverse Proxy & Temporary Server Provider, CWOJ Daemon Developer."
+msgstr "反向代理，临时服务器提供者，CWOJ评测端开发者。"
+
+#: about.php:55
+msgid "An exported Salted Fish."
+msgstr "一条出口咸鱼"

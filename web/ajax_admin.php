@@ -1,6 +1,5 @@
 <?php
 require 'inc/global.php';
-session_start();
 require 'inc/privilege.php';
 if(!check_priv(PRIV_SYSTEM)){
     echo _('Permission Denied...');

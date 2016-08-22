@@ -7,9 +7,11 @@ if(!isset($_POST['i18n'])){
     exit();
 }
 
+$_SESSION['i18n']=$_POST['i18n'];
+
+if(!function_exists('write_i18n_cookie')) 
+    require 'inc/cookie.php';
 setcookie('i18n','',time()-3600);
-$pref->i18n=$_POST['i18n'];
-$_SESSION['pref']=serialize($pref);
-setcookie('i18n',$pref->i18n,time()+31536000);
+write_i18n_cookie($_SESSION['i18n']);
 
 echo 'success';

@@ -9,29 +9,23 @@
   <title><?php echo $Title?></title>
   <?php 
     $hour = date('H',time());
-    if(!class_exists('preferences')) 
-		require 'inc/preferences.php';
-    if(isset($_SESSION['pref']))
-	    $pref=unserialize($_SESSION['pref']);
-    else
-	    $pref=new preferences();
     if($pref->night=='on') $t_night='on';
 	else if($pref->night=='off') $t_night='off';
     else{
-      if($hour>=$daystart && $hour<$nightstart)
-        $t_night='off';
-      else
-        $t_night='on';
+        if($hour>=$daystart && $hour<$nightstart)
+            $t_night='off';
+        else
+            $t_night='on';
     }
-	if($t_night=='on') {
+	if($t_night=='on'){
 		$loginimg='/assets/res/loginbg_dark.png';
 		echo '<link href="/assets/css/bootstrap_slate.min.css" rel="stylesheet" type="text/css" />';
 		echo '<link href="/assets/css/docs_dark.css?v='.$web_ver.'" rel="stylesheet" type="text/css" />';
-   }else{
+    }else{
 		$loginimg='/assets/res/loginbg.png';
 		echo '<link href="/assets/css/bootstrap_cerulean.min.css" rel="stylesheet" type="text/css" />';
 		echo '<link href="/assets/css/docs.css?v='.$web_ver.'" rel="stylesheet" type="text/css" />';
-	};
+    }
   ?>
   <link href="/assets/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
   <script src="/assets/js/jquery.min.js?v=310"></script>

@@ -1,5 +1,7 @@
 <?php
 require 'inc/global.php';
+bindtextdomain("about", "locale"); 
+bind_textdomain_codeset("about", 'UTF-8');
 require 'inc/ojsettings.php';
 require 'inc/checklogin.php';
 $inTitle=_('About');
@@ -40,19 +42,19 @@ $Title=$inTitle .' - '. $oj_name;
               <tbody>
                 <tr>
                   <td style="width:20%">jimmy19990</td>
-                  <td>主要开发与维护</td>
+                  <td><?php echo dgettext('about', 'Main Developer & Maintainer.')?></td>
                 </tr>
                 <tr>
                   <td>Void</td>
-                  <td>比赛与题库的主要组织管理者</td>
+                  <td><?php echo dgettext('about', 'Main Content (Problems & Contests) Manager.')?></td>
                 </tr>
                 <tr>
                   <td>t123yh</td>
-                  <td>反向代理，临时服务器与评测端维护者</td>
+                  <td><?php echo dgettext('about', 'Reverse Proxy & Temporary Server Provider, CWOJ Daemon Developer.')?></td>
                 </tr>
                 <tr>
                   <td>dreamfly</td>
-                  <td>一条出口咸鱼</td>
+                  <td><?php echo dgettext('about', 'An exported Salted Fish.')?></td>
                 </tr>
               </tbody>
             </table>

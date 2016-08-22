@@ -2,17 +2,10 @@
 require 'inc/global.php';
 require 'inc/database.php';
 require 'inc/ojsettings.php';
-
-if(isset($_SESSION['user'])){
+if(isset($_SESSION['user'])||check_cookie()){
     header("Location: /");
     exit();
 }
-require 'inc/database.php';
-require 'inc/cookie.php';
-if(check_cookie()){
-    header("Location: /");
-    exit();
-};
 $Title=_('Welcome to ').$oj_name;
 ?>
 <!DOCTYPE html>
@@ -49,7 +42,6 @@ $Title=_('Welcome to ').$oj_name;
                   <i class="fa fa-fw fa-globe"></i>
                 </a>
                 <ul class="dropdown-menu dropdown-menu-right" id="nav_lang">
-                  <li><a href="javascript:void(0)" onclick="return change_i18n('auto')"><?php echo _('Auto switch')?></a></li>
                   <li><a href="javascript:void(0)" onclick="return change_i18n('en_US')">English</a></li>
                   <li><a href="javascript:void(0)" onclick="return change_i18n('zh_CN')">简体中文</a></li>
                 </ul>
