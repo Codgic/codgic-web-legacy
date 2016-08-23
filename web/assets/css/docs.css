@@ -20,15 +20,32 @@ footer {
 }
 
 @media (max-width: 767px) {
-  #search_form {
-    width: 100%;
-  }
+    #search_form {
+        width: 100%;
+    }
 }
 
-@media (min-width: 1200px) {
-  #search_form {
-    width: 300px;
-  }
+@media (min-width: 768px) {
+    #search_form {
+        width: 300px;
+    }
+
+    .dropdown .dropdown-menu {
+        -webkit-transition: all 0.3s;
+        -moz-transition: all 0.3s;
+        -ms-transition: all 0.3s;
+        -o-transition: all 0.3s;
+        transition: all 0.3s;
+        max-height: 0;
+        display: block;
+        overflow: hidden;
+        opacity: 0;
+    }
+
+    .dropdown.open .dropdown-menu {
+        max-height: 300px;
+        opacity: 1;
+    }
 }
 
 .CodeMirror {
@@ -62,24 +79,6 @@ footer {
 
 .msg-avatar{
     margin-top:7px
-}
-
-.dropdown .dropdown-menu {
-    -webkit-transition: all 0.3s;
-    -moz-transition: all 0.3s;
-    -ms-transition: all 0.3s;
-    -o-transition: all 0.3s;
-    transition: all 0.3s;
-
-    max-height: 0;
-    display: block;
-    overflow: hidden;
-    opacity: 0;
-}
-
-.dropdown.open .dropdown-menu {
-    max-height: 300px;
-    opacity: 1;
 }
 
 .margin-0 {

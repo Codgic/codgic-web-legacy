@@ -25,6 +25,7 @@ else $remember=0;
 
 write_cookie($remember);
 
-if(isset($_SESSION['login_redirect'])) unset($_SESSION['login_redirect']);
+if(isset($_SESSION['login_redirect'])) 
+    unset($_SESSION['login_redirect']);
 
 echo 'success';

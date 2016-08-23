@@ -14,7 +14,7 @@ CWOJ基于Bashu Onilnejudge二次开发，这个项目也可以在github上被�
 # 特性
 相比原始的 Bashu Online Judge, 我们做了如下提升:
 - [X] <b>完全兼容PHP7</b>
-- [X] 页面完全汉化 + 细节升级
+- [X] 多语言支持 (Alpha) + 细节升级
 - [X] 针对移动设备优化, 升级到Bootstrap 3。
 - [X] 日间/夜间模式 + 自动切换
 - [X] CodeMirror 代码高亮
@@ -24,7 +24,6 @@ CWOJ基于Bashu Onilnejudge二次开发，这个项目也可以在github上被�
 - [X] 用户在线/离线状态    
 - [X] 重写的用户权限    
 - [X] 比赛 (Beta) 
-- [X] 多语言框架 (Alpha)
 
 # 其它    
 您现在可以在Wiki下找到0.x的搭建指导。至于1.x的搭建指导，很遗憾短期内不会有，但至少在正式版发布前会发布。

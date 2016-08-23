@@ -1,5 +1,5 @@
 <?php
-define("cookie_key","Hello_World_CWOJ"); //Please enter a random string
+define("cookie_key","random string 133 "); //Please enter a random string
 define("cookie_expire",31536000); //about one year
 
 function check_cookie()
@@ -42,6 +42,7 @@ function check_i18n_cookie(){
 
 function write_i18n_cookie($value){
     $data=encrypt(cookie_key, $value.time());
+    setcookie('i18n','',time()-3600);
     setcookie('i18n',$data,time()+cookie_expire);
     $_COOKIE['i18n']=$data;
 }

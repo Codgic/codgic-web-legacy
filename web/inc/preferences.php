@@ -3,8 +3,8 @@ class preferences{
 	public $hidehotkey;
 	public $night;
 	public $edrmode;
+    public $i18n;
 	public $backuptime;
-	public $i18n;
 
 	function __construct()
 	{
@@ -12,5 +12,6 @@ class preferences{
 		$this->night='auto';
 		$this->sharecode='off';
 		$this->edrmode='default';
+        $this->i18n='auto';
 	}
 }

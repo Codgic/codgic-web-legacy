@@ -14,7 +14,7 @@ Notes: 1.x is still in an early development stage, which means it contains loads
 # Features
 Compared with the original Bashu Online Judge, we have also done some improvements:    
 - [X] <b>PHP7 Ready</b>    
-- [X] Translated to Chinese + Improvements on UX.    
+- [X] Mullti-Languages Support + Improvements on UX.    
 - [X] Optimized for mobile devices + Upgraded to Bootstrap 3.    
 - [X] Day/Night Mode + Auto switch.
 - [X] CodeMirror      
@@ -24,7 +24,6 @@ Compared with the original Bashu Online Judge, we have also done some improvemen
 - [X] User online/offline status.    
 - [X] Written user privilege system.    
 - [X] Contest (Beta)
-- [X] Multi-Languages (Alpha)
 
 # Notes    
 You can now find the deployment guide for 0.x under the wiki section. As for 1.x, regretfully the guide won't be released in a short time. But, at least, you will be able to see it before 1.0 final.
