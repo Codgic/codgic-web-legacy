@@ -284,7 +284,7 @@ $Title=$inTitle .' - '. $oj_name;
 		    <div class="col-xs-12 text-center">
 		      <div id="function" class="panel panel-default problem-operation" style="margin-top:10px">
 			    <div class="panel-body">
-			      <a href="#" title="Alt+S" class="btn btn-primary shortcut-hint" id="btn_submit"><?php echo _('Enroll')?></a>
+			      <a href="#" title="Alt+S" class="btn btn-primary shortcut-hint" id="btn_submit"><?php if(!isset($row[12])) echo _('Enroll'); else echo _('Leave')?></a>
                   <a href="#" class="btn btn-success" id="btn_rank"><?php echo _('Rankings')?></a>
                 </div>
               </div>
@@ -312,7 +312,7 @@ $Title=$inTitle .' - '. $oj_name;
     </div>
 	
     <div id="show_tool" class="bottom-right collapse">
-	  <span id="btn_submit2" title="Alt+S" class="btn btn-primary shortcut-hint"><?php echo _('Enroll')?></span>
+	  <span id="btn_submit2" title="Alt+S" class="btn btn-primary shortcut-hint"><?php if(!isset($row[12])) echo _('Enroll'); else echo _('Leave')?></span>
 	  <span id="btn_show" title="Alt+H" class="btn btn btn-primary shortcut-hint"><i class="fa fa-fw fa-toggle-off"></i> <?php echo _('Show Sidebar')?></span>
     </div>
     
@@ -325,10 +325,22 @@ $Title=$inTitle .' - '. $oj_name;
       <?php if(!isset($_SESSION['user'])){?>
         $('#alert_error').html('<i class="fa fa-fw fa-remove"></i> <?php echo _('Please login first...')?>').fadeIn();
         setTimeout(function(){$('#alert_error').fadeOut();},2000);
-      <?php }else{?>
+      <?php }else if($cont_status==2){?>
+        $('#alert_error').html('<i class="fa fa-fw fa-remove"></i> <?php echo _('Contest has ended...')?>').fadeIn();
+        setTimeout(function(){$('#alert_error').fadeOut();},2000);
+      <?php }else if(!isset($row[12])){?>
         $.post('ajax_contest.php', {op:'enroll',contest_id:cont}, function(msg){
           if(/success/.test(msg)){
             window.location.href='problempage.php?contest_id='+cont;
+          }else{
+            $('#alert_error').html('<i class="fa fa-fw fa-remove"></i> '+msg).fadeIn();
+            setTimeout(function(){$('#alert_error').fadeOut();},2000);
+          }
+        });
+      <?php }else{?>
+        $.post('ajax_contest.php', {op:'leave',contest_id:cont}, function(msg){
+          if(/success/.test(msg)){
+            window.location.reload();
           }else{
             $('#alert_error').html('<i class="fa fa-fw fa-remove"></i> '+msg).fadeIn();
             setTimeout(function(){$('#alert_error').fadeOut();},2000);

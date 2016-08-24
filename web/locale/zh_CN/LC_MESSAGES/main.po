@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: CWOJ-1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-08-21 17:04+0800\n"
-"PO-Revision-Date: 2016-08-21 17:04+0800\n"
+"POT-Creation-Date: 2016-08-24 23:15+0800\n"
+"PO-Revision-Date: 2016-08-24 23:16+0800\n"
 "Last-Translator: Jimmy Zhang <info@cwoj.tk>\n"
 "Language-Team: CWOJ Team <info@cwoj.tk>\n"
 "Language: zh_CN\n"
@@ -102,11 +102,11 @@ msgstr "看起来你无法访问该页面"
 msgid "Looks like this page is not found"
 msgstr "看起来该页面不存在"
 
-#: about.php:5 about.php:18 page_header.php:32
+#: about.php:7 about.php:20 page_header.php:32
 msgid "About"
 msgstr "关于"
 
-#: about.php:21
+#: about.php:23
 msgid ""
 "CWOJ is a Free, <a href=\"https://github.com/CDFLS/CWOJ\">Open-source</a> "
 "Online Judge Solution designed for OI trainings, based on Bashu OnlineJudge. "
@@ -118,31 +118,31 @@ msgstr ""
 "们一直致力于寻求一个更好的面向于个人，学校以及其他教育机构的在线评测解决方"
 "案。"
 
-#: about.php:25
+#: about.php:27
 msgid "Version"
 msgstr "版本信息"
 
-#: about.php:29
+#: about.php:31
 msgid "Web"
 msgstr "网页端"
 
-#: about.php:33
+#: about.php:35
 msgid "Daemon"
 msgstr "评测端"
 
-#: about.php:38
+#: about.php:40
 msgid "CWOJ Team"
 msgstr ""
 
-#: about.php:65
+#: about.php:67
 msgid "Q&As"
 msgstr "问&答"
 
-#: about.php:68
+#: about.php:70
 msgid "Q: What compiler are we using and what are the compile options?"
 msgstr "问: 本OJ采用什么编译器进行编译? 编译选项是什么?"
 
-#: about.php:69
+#: about.php:71
 msgid ""
 "A: We are using GNU GCC/G++ for C/C++, Free Pascal for Pascal. The compile "
 "options are: "
@@ -150,11 +150,11 @@ msgstr ""
 "答: 我们使用GNU GCC/G++来编译C/C++程序，用Free Pascal来编译Pascal程序。其中，"
 "编译选项为："
 
-#: about.php:93
+#: about.php:95
 msgid "Q: Is it necessary to write File Operation codes?"
 msgstr "问: 有必要写文件操作吗？"
 
-#: about.php:94
+#: about.php:96
 msgid ""
 "A: You can only use Standard Input/Output. File Operations are not allowed "
 "here, otherwise wish you a happy Runtime Error!"
@@ -162,31 +162,31 @@ msgstr ""
 "答: 你只能使用标准输入输出。提交的程序中不允许进行文件操作，否则祝您RE愉快 "
 "(Runtime Error)。"
 
-#: about.php:98
+#: about.php:100
 msgid "Q: What are the meanings of the judge's replies?"
 msgstr "问: 评测端返回的信息都是什么意思？"
 
-#: about.php:99
+#: about.php:101
 msgid "A: Check out the form below:"
 msgstr "答: 看看下面的表格:"
 
-#: about.php:104
+#: about.php:106
 msgid "Congratulations! Your code has passed all the test cases."
 msgstr "AC了! 恭喜你的程序通过了所有的测试点!"
 
-#: about.php:108
+#: about.php:110
 msgid ""
 "The compiler could not compile your program. Of course, warning messages are "
 "not error messages."
 msgstr "你的程序无法被编译器编译。当然，在线编译过程中Warning是被忽略了的。"
 
-#: about.php:112
+#: about.php:114
 msgid ""
 "Your code tried to use more memory than the problem limit. Try optimizing "
 "your algorithm."
 msgstr "你的程序爆内存限制啦，去优化一下你的算法吧。"
 
-#: about.php:116
+#: about.php:118
 msgid ""
 "Your code failed during the execution (illegal file access, stack overflow, "
 "pointer reference out of range, floating point exception, divided by "
@@ -195,17 +195,17 @@ msgstr ""
 "你的程序在运行过程中出现了错误 (如: 不合法的文件操作、爆栈、指针溢出、浮点数"
 "异常、傻逼地除以0等)。"
 
-#: about.php:120
+#: about.php:122
 msgid ""
 "Your program consumed more time than the time limit. Try optimizing your "
 "algorithm."
 msgstr "你的程序运行慢如乌龟，去优化一下算法吧。"
 
-#: about.php:124
+#: about.php:126
 msgid "The code has failed to produce the desired output."
 msgstr "你的程序输出了错误的答案。"
 
-#: about.php:128
+#: about.php:130
 msgid ""
 "The checker program has exhibited abnormal behavior while validating the "
 "output of your code. Please contact the administrators."
@@ -223,8 +223,8 @@ msgstr "主页"
 msgid "News"
 msgstr "新闻"
 
-#: admin.php:36 admin.php:102 ajax_admin.php:109 ajax_admin.php:139
-#: ajax_admin.php:142
+#: admin.php:36 admin.php:102 ajax_admin.php:108 ajax_admin.php:138
+#: ajax_admin.php:141
 msgid "Experience"
 msgstr "经验"
 
@@ -270,7 +270,7 @@ msgstr "新建新闻..."
 msgid "Loading..."
 msgstr "正在加载..."
 
-#: admin.php:103 ajax_admin.php:82 ajax_admin.php:110 board.php:59
+#: admin.php:103 ajax_admin.php:81 ajax_admin.php:109 board.php:59
 #: contest.php:129 editcontest.php:79 editproblem.php:84 mail.php:194
 #: news.php:55 problemset.php:131 ranklist.php:104 search.php:153
 #: search.php:155
@@ -298,8 +298,8 @@ msgstr "上一页"
 #: admin.php:143 contest.php:195 contest.php:199 mail.php:174 marked.php:112
 #: news.php:89 problempage.php:153 problempage.php:154 problemset.php:180
 #: problemset.php:184 ranklist.php:138 record.php:247 resetpwd.php:30
-#: resetpwd.php:61 resetpwd.php:99 resetpwd.php:168 resetpwd.php:226
-#: resetpwd.php:233 search.php:214
+#: resetpwd.php:60 resetpwd.php:98 resetpwd.php:167 resetpwd.php:225
+#: resetpwd.php:232 search.php:214
 msgid "Next"
 msgstr "下一页"
 
@@ -314,7 +314,7 @@ msgstr "请输入HTML代码..."
 #: admin.php:170 admin.php:195 admin.php:237 admin.php:265 admin.php:299
 #: admin.php:321 board.php:81 board.php:180 index.php:113 mail.php:208
 #: mail.php:225 news.php:107 problempage.php:390 problempage.php:425
-#: ranklist.php:158 record.php:266 search.php:234 signup.php:86 solved.php:62
+#: ranklist.php:158 record.php:266 search.php:234 signup.php:79 solved.php:62
 #: upload.php:60
 msgid "Close"
 msgstr "关闭"
@@ -440,18 +440,18 @@ msgstr "你的密码..."
 msgid "Go"
 msgstr "确认"
 
-#: ajax_admin.php:6 ajax_editcontest.php:18 ajax_editproblem.php:17
+#: ajax_admin.php:5 ajax_editcontest.php:18 ajax_editproblem.php:17
 #: ajax_getnews.php:19 ajax_getnews.php:25 ajax_mailfunc.php:79
 #: ajax_mailfunc.php:105 ajax_submit.php:89 ajax_testcase.php:5 ajax_user.php:6
 msgid "Permission Denied..."
 msgstr "你没有权限..."
 
-#: ajax_admin.php:10 ajax_testcase.php:9
+#: ajax_admin.php:9 ajax_testcase.php:9
 msgid "Privilege not authorized..."
 msgstr "尚未验证权限..."
 
-#: ajax_admin.php:14 ajax_admin.php:306 ajax_contest.php:5 ajax_contest.php:13
-#: ajax_contest.php:92 ajax_contest.php:127 ajax_editcontest.php:21
+#: ajax_admin.php:13 ajax_admin.php:305 ajax_contest.php:5 ajax_contest.php:13
+#: ajax_contest.php:90 ajax_contest.php:141 ajax_editcontest.php:21
 #: ajax_editcontest.php:122 ajax_editcontest.php:144 ajax_editproblem.php:21
 #: ajax_editproblem.php:121 ajax_editproblem.php:134 ajax_getnews.php:9
 #: ajax_mailfunc.php:18 ajax_mailfunc.php:69 ajax_mark.php:16
@@ -465,97 +465,97 @@ msgstr "尚未验证权限..."
 msgid "Invalid Argument..."
 msgstr "指令无效..."
 
-#: ajax_admin.php:33 board.php:150 mail.php:119 marked.php:43 news.php:49
+#: ajax_admin.php:32 board.php:150 mail.php:119 marked.php:43 news.php:49
 #: ranklist.php:93 record.php:89
 msgid "Looks like there's nothing here"
 msgstr "看起来这里空空如也"
 
-#: ajax_admin.php:41 ajax_contest.php:54 inc/privilege.php:20 ranklist.php:101
+#: ajax_admin.php:40 ajax_contest.php:54 inc/privilege.php:20 ranklist.php:101
 #: record.php:149 record.php:201 search.php:125 solved.php:27
 msgid "User"
 msgstr "用户"
 
-#: ajax_admin.php:42 ajax_admin.php:61 ajax_user.php:70
+#: ajax_admin.php:41 ajax_admin.php:60 ajax_user.php:70
 msgid "Privilege"
 msgstr "权限"
 
-#: ajax_admin.php:43 ajax_user.php:69
+#: ajax_admin.php:42 ajax_user.php:69
 msgid "Last Seen"
 msgstr "最近访问"
 
-#: ajax_admin.php:44 ajax_user.php:77 problemset.php:132
+#: ajax_admin.php:43 ajax_user.php:77 problemset.php:132
 msgid "AC/Submit"
 msgstr "AC量/提交量"
 
-#: ajax_admin.php:45 ajax_admin.php:83 ajax_admin.php:111
+#: ajax_admin.php:44 ajax_admin.php:82 ajax_admin.php:110
 msgid "Operations"
 msgstr "操作"
 
-#: ajax_admin.php:54
+#: ajax_admin.php:53
 msgid "To Be Reviewed"
 msgstr "待审核"
 
-#: ajax_admin.php:55
+#: ajax_admin.php:54
 msgid "Disabled"
 msgstr "已禁用"
 
-#: ajax_admin.php:61 ajax_user.php:75 profile.php:67
+#: ajax_admin.php:60 ajax_user.php:75 profile.php:67
 msgid "Email"
 msgstr "邮箱"
 
-#: ajax_admin.php:63
+#: ajax_admin.php:62
 msgid "Enable"
 msgstr "启用"
 
-#: ajax_admin.php:63
+#: ajax_admin.php:62
 msgid "Disable"
 msgstr "禁用"
 
-#: ajax_admin.php:73
+#: ajax_admin.php:72
 msgid "There's nothing here..."
 msgstr "这里空空如也..."
 
-#: ajax_admin.php:81 marked.php:82 news.php:56 solved.php:30
+#: ajax_admin.php:80 marked.php:82 news.php:56 solved.php:30
 msgid "Date"
 msgstr "日期"
 
-#: ajax_admin.php:92 index.php:65 news.php:64
+#: ajax_admin.php:91 index.php:65 news.php:64
 msgid "[Sticky] "
 msgstr "[顶置]"
 
-#: ajax_admin.php:106
+#: ajax_admin.php:105
 msgid "Titles"
 msgstr "头衔"
 
-#: ajax_admin.php:141 contestpage.php:256 editcontest.php:118
+#: ajax_admin.php:140 contestpage.php:256 editcontest.php:118
 #: editproblem.php:138 marked.php:81 problempage.php:256
 msgid "Level"
 msgstr "等级"
 
-#: ajax_admin.php:229 ajax_admin.php:246 ajax_admin.php:258 ajax_admin.php:264
-#: ajax_contest.php:122 ajax_contest.php:124 ajax_editcontest.php:40
-#: ajax_editcontest.php:128 ajax_editproblem.php:39 ajax_editproblem.php:139
-#: ajax_mark.php:29 ajax_message.php:43 ajax_message.php:98
-#: ajax_message.php:125 ajax_opensource.php:23 ajax_profile.php:104
-#: ajax_resetpwd.php:87 ajax_submit.php:27 ajax_testcase.php:144
-#: ajax_usernote.php:23 ajax_usernote.php:32
+#: ajax_admin.php:228 ajax_admin.php:245 ajax_admin.php:257 ajax_admin.php:263
+#: ajax_contest.php:123 ajax_contest.php:125 ajax_contest.php:139
+#: ajax_editcontest.php:40 ajax_editcontest.php:128 ajax_editproblem.php:39
+#: ajax_editproblem.php:139 ajax_mark.php:29 ajax_message.php:43
+#: ajax_message.php:98 ajax_message.php:125 ajax_opensource.php:23
+#: ajax_profile.php:104 ajax_resetpwd.php:87 ajax_submit.php:27
+#: ajax_testcase.php:144 ajax_usernote.php:23 ajax_usernote.php:32
 msgid "Something went wrong..."
 msgstr "系统抽风咯..."
 
-#: ajax_admin.php:269 ajax_mailfunc.php:50
+#: ajax_admin.php:268 ajax_mailfunc.php:50
 msgid "Reciever can't be empty..."
 msgstr "收件人不可为空..."
 
-#: ajax_admin.php:274 ajax_admin.php:289 ajax_mailfunc.php:58
+#: ajax_admin.php:273 ajax_admin.php:288 ajax_mailfunc.php:58
 #: ajax_mailfunc.php:109
 msgid "Title can't be empty..."
 msgstr "标题不可为空..."
 
-#: ajax_admin.php:279 ajax_admin.php:294
+#: ajax_admin.php:278 ajax_admin.php:293
 msgid "Content can't be empty..."
 msgstr "内容不可为空..."
 
-#: ajax_contest.php:19 ajax_contest.php:98
+#: ajax_contest.php:19 ajax_contest.php:98 ajax_contest.php:129
 msgid "No such contest..."
 msgstr "该比赛不存在..."
 
@@ -578,7 +578,7 @@ msgstr "罚时"
 msgid "Please login first..."
 msgstr "你尚未登录..."
 
-#: ajax_contest.php:102
+#: ajax_contest.php:102 ajax_contest.php:133 contestpage.php:329
 msgid "Contest has ended..."
 msgstr "比赛已经结束..."
 
@@ -654,7 +654,7 @@ msgstr "请输入标题..."
 msgid "This piece of news is empty..."
 msgstr "此新闻内容为空..."
 
-#: ajax_login.php:6 ajax_login.php:16 inc/userlogin.php:17
+#: ajax_login.php:6 ajax_login.php:15 inc/userlogin.php:17
 msgid "Wrong Username/Password..."
 msgstr "错误的用户名/密码..."
 
@@ -1043,6 +1043,10 @@ msgstr "参赛人数"
 msgid "Enroll"
 msgstr "参赛"
 
+#: contestpage.php:287 contestpage.php:315
+msgid "Leave"
+msgstr "退出"
+
 #: contestpage.php:299 mail.php:153 problempage.php:303
 msgid "Recover"
 msgstr "恢复"
@@ -1085,7 +1089,7 @@ msgstr "隐藏"
 
 #: editcontest.php:160 editproblem.php:210 problempage.php:289
 #: problempage.php:358 problempage.php:389 problempage.php:434 ranklist.php:107
-#: record.php:176 record.php:208 search.php:129 signup.php:59
+#: record.php:176 record.php:208 search.php:129 signup.php:53
 msgid "Submit"
 msgstr "提交"
 
@@ -1361,48 +1365,43 @@ msgstr "日期: "
 msgid "Privilege: "
 msgstr "权限: "
 
-#: login.php:16
+#: login.php:9
 msgid "Welcome to "
 msgstr "欢迎来到"
 
-#: login.php:27
+#: login.php:20
 msgid "Welcome Back"
 msgstr "欢迎回来"
 
-#: login.php:30 signup.php:31
+#: login.php:23 signup.php:25
 msgid "Username..."
 msgstr "用户名..."
 
-#: login.php:34 signup.php:39
+#: login.php:27 signup.php:33
 msgid "Password..."
 msgstr "密码..."
 
-#: login.php:39
+#: login.php:32
 msgid "Say you remember me..."
 msgstr "记住我清秀的脸面..."
 
-#: login.php:44 page_header.php:76
+#: login.php:37 page_header.php:76
 msgid "Log in"
 msgstr "登录"
 
-#: login.php:45 signup.php:27
+#: login.php:38 signup.php:21
 msgid "Sign up"
 msgstr "注册"
 
-#: login.php:46
+#: login.php:39
 msgid "Forgot?"
 msgstr "忘记?"
 
-#: login.php:47
+#: login.php:40
 msgid "Contact us..."
 msgstr "联系我们..."
 
-#: login.php:52 page_header.php:82 preferences.php:37 preferences.php:61
-#: resetpwd.php:36 resetpwd.php:68 resetpwd.php:104 signup.php:65
-msgid "Auto switch"
-msgstr "自动切换"
-
-#: login.php:59
+#: login.php:51
 msgid "Contact mail:"
 msgstr "联系邮箱:"
 
@@ -1483,7 +1482,7 @@ msgstr "排名"
 msgid "Search..."
 msgstr "搜索..."
 
-#: page_header.php:36 resetpwd.php:31 signup.php:60 sourcecode.php:103
+#: page_header.php:36 resetpwd.php:31 signup.php:54 sourcecode.php:103
 msgid "Go Back..."
 msgstr "返回..."
 
@@ -1499,13 +1498,17 @@ msgstr "设置"
 msgid "Log off"
 msgstr "注销"
 
-#: page_header.php:91
+#: page_header.php:90
 msgid "You have unread mails..."
 msgstr "你有未读私信..."
 
 #: preferences.php:35
 msgid "Theme"
 msgstr "主题"
+
+#: preferences.php:37 preferences.php:61 resetpwd.php:67 resetpwd.php:103
+msgid "Auto switch"
+msgstr "自动切换"
 
 #: preferences.php:38
 msgid "Day mode"
@@ -1624,7 +1627,7 @@ msgstr "题目: "
 
 #: problempage.php:152
 msgid "Time Left: "
-msgstr "剩余时间:"
+msgstr "剩余时间: "
 
 #: problempage.php:175
 msgid "Contest Home"
@@ -1695,19 +1698,19 @@ msgid "Only you can read & edit your very own notes."
 msgstr "只有你才能阅读并编辑你自己的笔记。"
 
 #: problempage.php:467
-msgid "d"
+msgid "d "
 msgstr "日"
 
 #: problempage.php:468
-msgid "h"
+msgid "h "
 msgstr "时"
 
 #: problempage.php:469
-msgid "m"
+msgid "m "
 msgstr "分"
 
 #: problempage.php:470
-msgid "s"
+msgid "s "
 msgstr "秒"
 
 #: problempage.php:536 problempage.php:546 sourcecode.php:154
@@ -1750,7 +1753,7 @@ msgstr "格言"
 msgid "Leave it blank if slience is gold..."
 msgstr "若沉默是金就留空吧..."
 
-#: profile.php:59 resetpwd.php:90
+#: profile.php:59 resetpwd.php:89
 msgid "New Password"
 msgstr "新密码"
 
@@ -1758,7 +1761,7 @@ msgstr "新密码"
 msgid "A new password if you like..."
 msgstr "如果你愿意的话..."
 
-#: profile.php:63 resetpwd.php:94
+#: profile.php:63 resetpwd.php:93
 msgid "Retype Password"
 msgstr "重复密码"
 
@@ -1894,32 +1897,32 @@ msgstr "重置"
 msgid "Size"
 msgstr "大小"
 
-#: resetpwd.php:11 resetpwd.php:21 resetpwd.php:51 resetpwd.php:86
-#: resetpwd.php:128
+#: resetpwd.php:11 resetpwd.php:21 resetpwd.php:50 resetpwd.php:85
+#: resetpwd.php:127
 msgid "Reset Password"
 msgstr "重置密码"
 
-#: resetpwd.php:25 signup.php:47
+#: resetpwd.php:25 signup.php:41
 msgid "Email..."
 msgstr "邮箱..."
 
-#: resetpwd.php:54
+#: resetpwd.php:53
 msgid "We've just sent a verification code to your email..."
 msgstr "我们发送了一封带有验证码的邮件至你的邮箱..."
 
-#: resetpwd.php:56
+#: resetpwd.php:55
 msgid "Verification Code"
 msgstr "验证码"
 
-#: resetpwd.php:62 resetpwd.php:123 resetpwd.php:196
+#: resetpwd.php:61 resetpwd.php:122 resetpwd.php:195
 msgid "Resend"
 msgstr "重新发送"
 
-#: resetpwd.php:63
+#: resetpwd.php:62
 msgid "Can't Recieve?"
 msgstr "无法收到?"
 
-#: resetpwd.php:74
+#: resetpwd.php:73
 msgid ""
 "<p>Our email will arrive in a few minutes.<br>If you can't recieve, these "
 "steps might help:</p><ul><li>Resend an email.</li><li>Check out your junk "
@@ -1929,27 +1932,27 @@ msgstr ""
 "p><ul><li>重新发送一封邮件;</li><li>看看垃圾邮箱文件夹;</li><li>联系管理员。"
 "</li></ul>"
 
-#: resetpwd.php:161 resetpwd.php:181 resetpwd.php:212
+#: resetpwd.php:160 resetpwd.php:180 resetpwd.php:211
 msgid "Please wait..."
 msgstr "请稍后..."
 
-#: resetpwd.php:188
+#: resetpwd.php:187
 msgid "Email resent successfully..."
 msgstr "重发邮件成功!"
 
-#: resetpwd.php:191 resetpwd.php:221 resetpwd.php:274
+#: resetpwd.php:190 resetpwd.php:220 resetpwd.php:273
 msgid "Session expired..."
 msgstr "身份验证过期..."
 
-#: resetpwd.php:224
+#: resetpwd.php:223
 msgid "Wrong Verification Code..."
 msgstr "验证码错误..."
 
-#: resetpwd.php:228
+#: resetpwd.php:227
 msgid "Too many failed attempts..."
 msgstr "错误尝试次数过多..."
 
-#: resetpwd.php:270
+#: resetpwd.php:269
 msgid "Password reset successfully!"
 msgstr "密码重置成功!"
 
@@ -1969,39 +1972,39 @@ msgstr "看起来我们找不到你想要的"
 msgid "Search Result"
 msgstr "搜索结果"
 
-#: signup.php:16
+#: signup.php:10
 msgid "Sign up "
 msgstr "注册"
 
-#: signup.php:35
+#: signup.php:29
 msgid "Nickname..."
 msgstr "昵称..."
 
-#: signup.php:43
+#: signup.php:37
 msgid "Retype password..."
 msgstr "重复密码..."
 
-#: signup.php:51
+#: signup.php:45
 msgid "School..."
 msgstr "学校..."
 
-#: signup.php:55
+#: signup.php:49
 msgid "I accept the "
 msgstr "我已阅读并同意"
 
-#: signup.php:55
+#: signup.php:49
 msgid "Licence Agreement."
 msgstr "用户许可"
 
-#: signup.php:80
+#: signup.php:73
 msgid "End User Licence Agreement"
 msgstr "终端用户许可"
 
-#: signup.php:124
+#: signup.php:117
 msgid "Your sign-up will be reviewed"
 msgstr "你的注册申请将被管理员审核"
 
-#: signup.php:127
+#: signup.php:120
 msgid "Great! Let's get started"
 msgstr "好的! 让我们现在开始..."
 
@@ -2177,6 +2180,18 @@ msgstr "此页面已过期。请到记录里查看你的得分。"
 #: wait.php:132
 msgid "All Done! Go back to Problem Page or check out the Records."
 msgstr "评测完成! 你可以返回题目页面或查看记录。"
+
+#~ msgid "d"
+#~ msgstr "日"
+
+#~ msgid "h"
+#~ msgstr "时"
+
+#~ msgid "m"
+#~ msgstr "分"
+
+#~ msgid "s"
+#~ msgstr "秒"
 
 #~ msgid "Nickname:"
 #~ msgstr "昵称:"

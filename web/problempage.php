@@ -464,10 +464,10 @@ $Title=$inTitle .' - '. $oj_name;
           if(nM<10) nM='0'+nM;
           if(nS<10) nS='0'+nS;
           if(nD==0) $("#tday").hide();
-          else $("#tday").text(nD+'<?php echo _('d')?> ');
-          $("#thour").text(nH+'<?php echo _('h')?> ');
-          $("#tmin").text(nM+ '<?php echo _('m')?> ');
-          $("#tsec").text(nS+'<?php echo _('s')?> ');
+          else $("#tday").text(nD+'<?php echo _('d ')?>');
+          $("#thour").text(nH+'<?php echo _('h ')?>');
+          $("#tmin").text(nM+ '<?php echo _('m ')?>');
+          $("#tsec").text(nS+'<?php echo _('s ')?>');
 		}
       }
 	<?php };if($pref->edrmode!='off'){?>

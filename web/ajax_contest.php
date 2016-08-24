@@ -80,19 +80,19 @@ if($op=='get_rank_table'){
       </tbody>
     </table>
 <?php 
-}else if($op=='enroll'){
+}else{
     if(!isset($_SESSION['user'])){
         echo _('Please login first...');
         exit();
     }
     $uid=$_SESSION['user'];
+    if(!isset($_POST['contest_id'])){
+        echo _('Invalid Argument...');
+        exit();
+    }
+    $cont_id=intval($_POST['contest_id']);
     
     if($op=='enroll'){
-        if(!isset($_POST['contest_id'])){
-            echo _('Invalid Argument...');
-            exit();
-        }
-        $cont_id=intval($_POST['contest_id']);
         $row=mysqli_fetch_row(mysqli_query($con,"select end_time,problems,num,enroll_user from contest where contest_id=$cont_id"));
         if(!$row){
             echo _('No such contest...');
@@ -102,6 +102,7 @@ if($op=='get_rank_table'){
             echo _('Contest has ended...');
             exit();
         }
+        //Check if already enrolled.
         if(mysqli_num_rows(mysqli_query($con,"select 1 from contest_status where user_id='$uid' and contest_id=$cont_id limit 1"))){
             echo 'success';
             exit();
@@ -122,6 +123,20 @@ if($op=='get_rank_table'){
                 echo _('Something went wrong...');
         }else
             echo _('Something went wrong...');
-    }
-}else
-    echo _('Invalid Argument...');
+    }else if($op=='leave'){
+        $row=mysqli_fetch_row(mysqli_query($con,"select end_time,enroll_user from contest where contest_id=$cont_id"));
+        if(!$row){
+            echo _('No such contest...');
+            exit();
+        }
+        if(strtotime($row[0])<=time()){
+            echo _('Contest has ended...');
+            exit();
+        }
+        if(mysqli_query($con,"DELETE from contest_status where user_id='$uid' and contest_id=$cont_id"))
+            echo 'success';
+        else
+            echo _('Something went wrong...');
+    }else
+        echo _('Invalid Argument...');
+}
