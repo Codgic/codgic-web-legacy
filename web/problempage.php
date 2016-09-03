@@ -142,20 +142,6 @@ $Title=$inTitle .' - '. $oj_name;
 	  require 'page_header.php';
     ?>
     <div class="alert collapse text-center alert-popup alert-danger" id="alert_error"></div>
-	<?php if($is_contest){?>
-	<div class="alert alert-danger text-center" style="top:50px;height:50px;width:100%;position:fixed;z-index:100;border-radius:0">
-    <?php
-        if($prob_num>1) echo '<a href="problempage.php?contest_id=',$cont_id,'&prob=',($prob_num-1),'" class="pull-left"><i class="fa fa-fw fa-angle-left"></i>',_('Previous'),'</a>';
-        else echo '<span class="pull-left"><i class="fa fa-fw fa-angle-left"></i>',_('Previous'),'</span>';
-        echo _('Problem: '),$prob_num,' / ',$row_cont[4],' &nbsp;&nbsp;';
-        if($rem_time<0) echo _('Contest has ended');
-        else echo '<span id="cont_st">',_('Time Left: '),'<span id="tday"></span><span id="thour"></span><span id="tmin"></span><span id="tsec"></span></span>';
-        if($prob_num<$row_cont[4]) echo '<a href="problempage.php?contest_id=',$cont_id,'&prob=',($prob_num+1),'" class="pull-right">',_('Next'),'<i class="fa fa-fw fa-angle-right"></i></a>';
-        else echo '<span class="pull-right">',_('Next'),'<i class="fa fa-fw fa-angle-right"></i></span>';
-	  ?>
-	</div>
-	<div style="height:50px"></div>
-	<?php }?>
     <div id="probdisp" class="container">
       <?php if(isset($info)){?>
         <div class="row">
@@ -170,9 +156,28 @@ $Title=$inTitle .' - '. $oj_name;
       <div class="row">
         <div class="col-xs-12 col-sm-9" id="leftside" style="font-size:16px">
           <div class="text-center">
-            <h2><?php echo '#'.$prob_id,' ',$row_prob[0];
-              if($row_prob[11]=='Y')echo ' <span style="vertical-align:middle;font-size:12px" class="label label-danger">',_('Deleted'),'</span>';
-              if($is_contest) echo '<a href="contestpage.php?contest_id=',$cont_id,'" class="btn btn-default pull-left"><i class="fa fa-fw fa-home"></i> ',_('Contest Home'),'</a>';?></h2>
+            <h2>
+            <?php 
+                echo '#'.$prob_id,' ',$row_prob[0];
+                if($row_prob[11]=='Y')
+                    echo ' <span style="vertical-align:middle;font-size:12px" class="label label-danger">',_('Deleted'),'</span>';
+                if($is_contest){
+                    echo '<a href="contestpage.php?contest_id=',$cont_id,'" class="btn btn-default pull-left"><i class="fa fa-fw fa-home"></i> ',_('Contest Home'),'</a>';
+                    echo '<div class="btn-group pull-right">';
+                    if($prob_num<2) 
+                        $addt='disabled';
+                    else 
+                        $addt='';
+                    echo '<a href="problempage.php?contest_id=',$cont_id,'&prob=',($prob_num-1),'" class="btn btn-default ',$addt,'"><i class="fa fa-fw fa-angle-left"></i>',_('Previous'),'</a>';
+                    if($prob_num>$row_cont[4]-1)
+                        $addt='disabled';
+                    else
+                        $addt='';
+                    echo '<a href="problempage.php?contest_id=',$cont_id,'&prob=',($prob_num+1),'" class="btn btn-default ',$addt,'">',_('Next'),'<i class="fa fa-fw fa-angle-right"></i></a>';
+                    echo '</div>';
+                  }
+              ?>
+            </h2>
           </div>
           <br>
           <div class="panel panel-default">
@@ -242,7 +247,30 @@ $Title=$inTitle .' - '. $oj_name;
 			  <button id="btn_hide" title="Alt+H" class="btn btn-primary shortcut-hint pull-right"><i class="fa fa-fw fa-toggle-on"></i> <?php echo _('Hide Sidebar')?></button>
 			</div>
 		  </div>
-		  <br> 
+		  <br>
+          <?php if($is_contest){?>
+          <div class="row">
+            <div class="col-xs-12">
+              <div class="panel panel-default">
+				<div class="panel-body">
+                  <h2 class="text-center">
+                    <?php
+                        if($rem_time<0) 
+                            echo _('Contest has ended');
+                        else
+                            echo '<span id="cont_st">','<span id="thour">--</span>:<span id="tmin">--</span>:<span id="tsec">--</span></span>';
+                    ?>
+                  </h2>
+                  <div class="text-center">
+                    <?php
+                        echo _('Problem: '),$prob_num,' / ',$row_cont[4];
+                    ?>
+                  </div>
+				</div>
+              </div>
+            </div>
+          </div>
+          <?php }?>
           <div class="row">
             <div class="col-xs-12">
               <div class="panel panel-default">
@@ -458,16 +486,13 @@ $Title=$inTitle .' - '. $oj_name;
 		if(nMS<0){
           $('#cont_st').html('<?php echo _('Contest has ended')?>');
 		}else{
-          var nD=Math.floor(nMS/86400000),nH=Math.floor(nMS/3600000)%24,nM=Math.floor(nMS/60000)%60,nS=Math.floor(nMS/1000)%60;
-          if(nD<10) nD='0'+nD;
+          var nH=Math.floor(nMS/3600000),nM=Math.floor(nMS/60000)%60,nS=Math.floor(nMS/1000)%60;
           if(nH<10) nH='0'+nH;
           if(nM<10) nM='0'+nM;
           if(nS<10) nS='0'+nS;
-          if(nD==0) $("#tday").hide();
-          else $("#tday").text(nD+'<?php echo _('d ')?>');
-          $("#thour").text(nH+'<?php echo _('h ')?>');
-          $("#tmin").text(nM+ '<?php echo _('m ')?>');
-          $("#tsec").text(nS+'<?php echo _('s ')?>');
+          $("#thour").text(nH);
+          $("#tmin").text(nM);
+          $("#tsec").text(nS);
 		}
       }
 	<?php };if($pref->edrmode!='off'){?>
