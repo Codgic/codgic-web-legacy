@@ -13,11 +13,9 @@ if(!isset($_GET['user_id'])){
 require 'inc/database.php';
 require 'inc/functions.php';
 $user=mysqli_real_escape_string($con,$_GET['user_id']);
-
-$query="select email,ip,accesstime,school,reg_time,submit,solved,motto,nick,privilege from users where user_id='$user'";
+$query="SELECT user_id,email,ip,accesstime,school,reg_time,submit,solved,motto,nick,privilege,t1.experience,experience_titles.title FROM (SELECT user_id,email,ip,accesstime,school,reg_time,submit,solved,motto,nick,privilege,t.experience,MAX(experience_titles.experience) AS m FROM (SELECT user_id,email,ip,accesstime,school,reg_time,submit,solved,motto,nick,privilege,experience from users)t,experience_titles where t.experience>=experience_titles.experience GROUP BY user_id)t1 LEFT JOIN experience_titles ON t1.m=experience_titles.experience where user_id='$user'";
 $row=mysqli_fetch_row(mysqli_query($con,$query));
-$nowtime=date('Y-m-d h:i:s',time());
-if(time()-strtotime($row[2])<=300){
+if(time()-strtotime($row[3])<=300){
     $status_text=_('Online');
     $status_col='success';
 }else{
@@ -32,8 +30,8 @@ if(isset($_GET['type'])&&$_GET['type']=='json'){
 		$failed=$solved="{";
 		$res=mysqli_query($con,"select problem_id,min(result) from solution where user_id='$user' group by problem_id");
 		while($row=mysqli_fetch_row($res)){
-			$id=$row[0];
-			if($row[1]==0)
+			$id=$row[1];
+			if($row[2]==0)
 				$solved.="\"$id\":0,";
 			else
 				$failed.="\"$id\":0,";
@@ -49,11 +47,11 @@ if(isset($_GET['type'])&&$_GET['type']=='json'){
 ?> 
 <div class="media">
   <a class="pull-left">
-    <img src="<?php echo get_gravatar($row[0],100)?>" class="media-object img-circle" width="100" height="100">
+    <img src="<?php echo get_gravatar($row[1],100)?>" class="media-object img-circle" width="100" height="100">
   </a>
   <div class="media-body">
     <h1 class="media-heading"><?php echo $user?></h1>
-    <p class="motto-text"><?php echo $row[7]?></p>
+    <p class="motto-text"><?php echo $row[8]?></p>
     <label class="label label-<?php echo $status_col?>"><?php echo $status_text?></label>
   </div>
 </div>
@@ -65,16 +63,17 @@ if(isset($_GET['type'])&&$_GET['type']=='json'){
 		<col style="width:80%">
 	</colgroup>
 	<tbody>
-    <tr><td colspan="2"><?php echo _('Nickname')?></td><td><?php echo $row[8];?></td></tr>
+    <tr><td colspan="2"><?php echo _('Nickname')?></td><td><?php echo $row[9];?></td></tr>
+    <tr><td colspan="2"><?php echo _('Level')?></td><td><?php echo $row[12],' (',$row[11],')';?></td></tr>
 	<tr><td colspan="2"><?php echo _('Last Seen')?></td><td><?php echo $row[2];?></td></tr>
-    <tr><td colspan="2"><?php echo _('Privilege')?></td><td><?php echo list_priv($row[9]);?></td></tr>
-<?php if(check_priv(PRIV_SYSTEM)){?>
-	<tr><td colspan="2"><?php echo _('IP Address')?></td><td><?php echo $row[1].' '.get_ipgeo($row[1]);?></td></tr>
-<?php }?>
-	<tr><td colspan="2"><?php echo _('School')?></td><td><?php echo htmlspecialchars($row[3]);?></td></tr>
-	<tr><td colspan="2"><?php echo _('Email')?></td><td><?php echo htmlspecialchars($row[0]);?></td></tr>
-	<tr><td colspan="2"><?php echo _('Reg Date')?></td><td><?php echo $row[4];?></td></tr>
-	<tr><td colspan="2"><?php echo _('AC/Submit')?></td><td><?php echo $row[6],'/',$row[5];?></td></tr>
+    <tr><td colspan="2"><?php echo _('Privilege')?></td><td><?php echo list_priv($row[10]);?></td></tr>
+    <?php if(check_priv(PRIV_SYSTEM)){?>
+	<tr><td colspan="2"><?php echo _('IP Address')?></td><td><?php echo $row[2].' '.get_ipgeo($row[2]);?></td></tr>
+    <?php }?>
+	<tr><td colspan="2"><?php echo _('School')?></td><td><?php echo htmlspecialchars($row[4]);?></td></tr>
+	<tr><td colspan="2"><?php echo _('Email')?></td><td><?php echo htmlspecialchars($row[1]);?></td></tr>
+	<tr><td colspan="2"><?php echo _('Reg Date')?></td><td><?php echo $row[5];?></td></tr>
+	<tr><td colspan="2"><?php echo _('AC/Submit')?></td><td><?php echo $row[7],'/',$row[6];?></td></tr>
 	<?php
 		$failed=mysqli_query($con,"select problem_id from solution where user_id='$user' group by problem_id having min(result)>0");
 		$number=mysqli_num_rows($failed);

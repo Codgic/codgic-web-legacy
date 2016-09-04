@@ -118,20 +118,19 @@ $Title=$inTitle .' - '. $oj_name;
               <?php echo $info?></p>
             </div>
             <?php }else{?>
-            <div class="table-responsive">
               <table class="table table-striped table-bordered" id="problemset_table">
                 <thead>
                 <tr>
-                  <th style="width:6%">ID</th>
+                  <th class="col-xs-2 col-sm-1">ID</th>
                   <?php 
                   if(isset($_SESSION['user']))
-                    echo '<th colspan="3">';
+                    echo '<th class="col-xs-8 col-sm-4 col-lg-5" colspan="3">';
                   else
                     echo '<th>';
                   echo _('Title'),'</th>';?>
-                  <th style="width:10%"><?php echo _('AC/Submit')?></th>
-                  <th style="width:10%"><?php echo _('AC Ratio')?></th>
-                  <th style="width:25%"><?php echo _('Tags')?></th>
+                  <th class="col-sm-2 col-lg-1 hidden-xs"><?php echo _('AC/Submit')?></th>
+                  <th class="col-xs-2 col-md-1"><?php echo _('AC Ratio')?></th>
+                  <th class="col-sm-3 col-md-4 hidden-xs"><?php echo _('Tags')?></th>
                 </tr>
               </thead>
               <tbody>
@@ -149,14 +148,13 @@ $Title=$inTitle .' - '. $oj_name;
                 if(isset($_SESSION['user'])){
 				  echo '<td class="width-for-2x-icon" style="border-left:0;"><i data-pid="',$row[0],'" class="', is_null($row[7]) ? 'fa fa-star-o' : 'fa fa-star', ' fa-2x text-warning save_problem" style="cursor:pointer;"></i></td>';
                 }
-                echo '</td><td><a href="record.php?result=0&amp;problem_id=',$row[0],'">',$row[2],'</a>/';
+                echo '</td><td class="hidden-xs"><a href="record.php?result=0&amp;problem_id=',$row[0],'">',$row[2],'</a>/';
                 echo '<a href="record.php?problem_id=',$row[0],'">',$row[3],'</a></td>';
                 echo '<td>',$row[3] ? intval($row[2]/$row[3]*100) : 0,'%</td>';
-                echo '<td style="text-align:left;">',$row[4],"</td></tr>\n";
+                echo '<td class="hidden-xs" style="text-align:left">',$row[4],"</td></tr>\n";
                 }?>
               </tbody>
             </table>
-          </div>
           <?php }?>
         </div>
       </div>

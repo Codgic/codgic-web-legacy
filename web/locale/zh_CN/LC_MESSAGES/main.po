@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: CWOJ-1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-09-03 20:36+0800\n"
-"PO-Revision-Date: 2016-09-03 20:36+0800\n"
+"POT-Creation-Date: 2016-09-04 10:25+0800\n"
+"PO-Revision-Date: 2016-09-04 10:25+0800\n"
 "Last-Translator: Jimmy Zhang <info@cwoj.tk>\n"
 "Language-Team: CWOJ Team <info@cwoj.tk>\n"
 "Language: zh_CN\n"
@@ -272,7 +272,7 @@ msgstr "正在加载..."
 
 #: admin.php:103 ajax_admin.php:81 ajax_admin.php:109 board.php:59
 #: contest.php:129 editcontest.php:79 editproblem.php:84 mail.php:194
-#: news.php:55 problemset.php:131 search.php:153 search.php:155
+#: news.php:55 problemset.php:130 search.php:153 search.php:155
 msgid "Title"
 msgstr "标题"
 
@@ -289,13 +289,13 @@ msgid "Search User..."
 msgstr "搜索用户..."
 
 #: admin.php:140 contest.php:184 contest.php:188 mail.php:169 marked.php:107
-#: news.php:84 problempage.php:171 problemset.php:169 problemset.php:173
+#: news.php:84 problempage.php:171 problemset.php:167 problemset.php:171
 #: ranklist.php:135 record.php:244 search.php:209
 msgid "Previous"
 msgstr "上一页"
 
 #: admin.php:143 contest.php:195 contest.php:199 mail.php:174 marked.php:112
-#: news.php:89 problempage.php:176 problemset.php:180 problemset.php:184
+#: news.php:89 problempage.php:176 problemset.php:178 problemset.php:182
 #: ranklist.php:138 record.php:247 resetpwd.php:30 resetpwd.php:60
 #: resetpwd.php:98 resetpwd.php:167 resetpwd.php:225 resetpwd.php:232
 #: search.php:214
@@ -474,15 +474,15 @@ msgstr "看起来这里空空如也"
 msgid "User"
 msgstr "用户"
 
-#: ajax_admin.php:41 ajax_admin.php:60 ajax_user.php:70
+#: ajax_admin.php:41 ajax_admin.php:60 ajax_user.php:69
 msgid "Privilege"
 msgstr "权限"
 
-#: ajax_admin.php:42 ajax_user.php:69
+#: ajax_admin.php:42 ajax_user.php:68
 msgid "Last Seen"
 msgstr "最近访问"
 
-#: ajax_admin.php:43 ajax_user.php:77 problemset.php:132
+#: ajax_admin.php:43 ajax_user.php:76 problemset.php:131
 msgid "AC/Submit"
 msgstr "AC量/提交量"
 
@@ -498,7 +498,7 @@ msgstr "待审核"
 msgid "Disabled"
 msgstr "已禁用"
 
-#: ajax_admin.php:60 ajax_user.php:75 profile.php:67
+#: ajax_admin.php:60 ajax_user.php:74 profile.php:67
 msgid "Email"
 msgstr "邮箱"
 
@@ -526,7 +526,7 @@ msgstr "[顶置]"
 msgid "Titles"
 msgstr "头衔"
 
-#: ajax_admin.php:140 contestpage.php:256 editcontest.php:118
+#: ajax_admin.php:140 ajax_user.php:67 contestpage.php:256 editcontest.php:118
 #: editproblem.php:138 marked.php:81 problempage.php:284 ranklist.php:104
 msgid "Level"
 msgstr "等级"
@@ -769,39 +769,39 @@ msgstr "无法访问数据路径..."
 msgid "No problem ID specified..."
 msgstr "没有指定题目ID..."
 
-#: ajax_user.php:21 ranklist.php:116 search.php:138
+#: ajax_user.php:19 ranklist.php:116 search.php:138
 msgid "Online"
 msgstr "在线"
 
-#: ajax_user.php:24 ranklist.php:117 search.php:139
+#: ajax_user.php:22 ranklist.php:117 search.php:139
 msgid "Offline"
 msgstr "离线"
 
-#: ajax_user.php:45 inc/userlogin.php:12
+#: ajax_user.php:43 inc/userlogin.php:12
 msgid "There's no such user..."
 msgstr "该用户不存在..."
 
-#: ajax_user.php:68 profile.php:51 ranklist.php:102 search.php:126
+#: ajax_user.php:66 profile.php:51 ranklist.php:102 search.php:126
 msgid "Nickname"
 msgstr "昵称"
 
-#: ajax_user.php:72
+#: ajax_user.php:71
 msgid "IP Address"
 msgstr "IP地址"
 
-#: ajax_user.php:74 profile.php:71
+#: ajax_user.php:73 profile.php:71
 msgid "School"
 msgstr "学校"
 
-#: ajax_user.php:76
+#: ajax_user.php:75
 msgid "Reg Date"
 msgstr "注册日期"
 
-#: ajax_user.php:81
+#: ajax_user.php:80
 msgid "Failed"
 msgstr "未解决"
 
-#: ajax_user.php:88
+#: ajax_user.php:87
 msgid "Solved"
 msgstr "已解决"
 
@@ -929,7 +929,7 @@ msgstr "赛制"
 
 #: contest.php:133 contestpage.php:226 editcontest.php:153 editproblem.php:203
 #: problempage.php:237 problempage.php:351 problempage.php:447
-#: problemset.php:134 search.php:158
+#: problemset.php:133 search.php:158
 msgid "Tags"
 msgstr "标签"
 
@@ -961,7 +961,7 @@ msgstr "尚未开始"
 msgid "In Progress"
 msgstr "正在进行"
 
-#: contest.php:163 contestpage.php:179 problempage.php:163 problemset.php:147
+#: contest.php:163 contestpage.php:179 problempage.php:163 problemset.php:146
 msgid "Deleted"
 msgstr "已删除"
 
@@ -1712,7 +1712,7 @@ msgstr "该难度下暂无题目"
 msgid "Looks like there's no problem here"
 msgstr "看起来这里暂无题目"
 
-#: problemset.php:133 ranklist.php:108
+#: problemset.php:132 ranklist.php:108
 msgid "AC Ratio"
 msgstr "AC率"
 
