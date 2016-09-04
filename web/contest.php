@@ -116,21 +116,20 @@ $Title=$inTitle .' - '. $oj_name;
               <?php echo $info?></p>
             </div>
           <?php }else{?>
-		  <div class="table-responsive">
 		    <table class="table table-striped table-bordered" id="contest_table">
 			  <thead>
               <tr>
-				<th style="width:6%">ID</th>
+				<th class="col-xs-2 col-sm-1">ID</th>
 				<?php 
 				if(isset($_SESSION['user']))
-				  echo '<th colspan="3">';
+				  echo '<th class="col-xs-8 col-sm-4" colspan="3">';
 				else
 				  echo '<th>';
                 echo _('Title'),'</th>';?>
-				<th style="width:15%"><?php echo _('Start Time')?></th>  
-				<th style="width:5%"><?php echo _('Status')?></th>  
-                <th style="width:10%"><?php echo _('Format')?></th>
-				<th style="width:25%"><?php echo _('Tags')?></th>
+				<th class="col-md-2 hidden-xs hidden-sm"><?php echo _('Start Time')?></th>  
+				<th class="col-xs-2 col-sm-1"><?php echo _('Status')?></th>  
+                <th class="col-sm-2 col-md-1 hidden-xs"><?php echo _('Format')?></th>
+				<th class="col-sm-4 col-md-3 hidden-xs"><?php echo _('Tags')?></th>
               </tr>
               </thead>
               <tbody>
@@ -164,14 +163,13 @@ $Title=$inTitle .' - '. $oj_name;
                 echo '</a>';
                 if(isset($_SESSION['user']))
 				  echo '<td class="width-for-2x-icon" style="border-left:0;"><i data-pid="',$row[0],'" class="', is_null($row[10]) ? 'fa fa-star-o' : 'fa fa-star', ' fa-fw fa-2x text-warning save_problem" style="cursor:pointer;"></i></td>';
-                echo'</td><td>',$row[2],'</a></td>';
+                echo'</td><td class="hidden-xs hidden-sm">',$row[2],'</a></td>';
                 echo '<td>',$cont_status,'</td>';
-                echo '<td>',$judge_way,'</td>';
-                echo '<td>',$row[6],"</td></tr>\n";
+                echo '<td class="hidden-xs">',$judge_way,'</td>';
+                echo '<td class="hidden-xs" style="text-align:left">',$row[6],"</td></tr>\n";
               }?>
               </tbody>
 		    </table>
-          </div>
           <?php }?>
         </div>
       </div>

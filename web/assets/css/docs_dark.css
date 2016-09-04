@@ -536,5 +536,5 @@ input.error {
 }
 
 .width-for-2x-icon {
-	width: 26px
+	max-width: 26px
 }
