@@ -61,9 +61,9 @@ if(isset($_GET['level'])){
   $range="between $page_id"."00 and $page_id".'99';
   if(isset($_SESSION['user'])){
     $user_id=$_SESSION['user'];
-    $result=mysqli_query($con,"SELECT contest_id,title,start_time,end_time,defunct,num,source,judge_way,has_tex,joined.res,saved.cid from contest LEFT JOIN (select contest_id as cid,1 as res from contest_status where user_id='$user_id' group by contest_id) as joined on (joined.cid=contest_id) left join (select contest_id as cid from saved_contest where user_id='$user_id') as saved on(saved.cid=contest_id) where $addt_cond contest_id $range order by contest_id desc");
+    $result=mysqli_query($con,"SELECT contest_id,title,start_time,end_time,defunct,num,source,has_tex,joined.res,saved.cid from contest LEFT JOIN (select contest_id as cid,1 as res from contest_status where user_id='$user_id' group by contest_id) as joined on (joined.cid=contest_id) left join (select contest_id as cid from saved_contest where user_id='$user_id') as saved on(saved.cid=contest_id) where $addt_cond contest_id $range order by contest_id desc");
   }else{
-    $result=mysqli_query($con,"select contest_id,title,start_time,end_time,defunct,num,source,judge_way from contest where $addt_cond contest_id $range order by contest_id desc");
+    $result=mysqli_query($con,"select contest_id,title,start_time,end_time,defunct,num,source from contest where $addt_cond contest_id $range order by contest_id desc");
   }
 }
 
@@ -122,50 +122,34 @@ $Title=$inTitle .' - '. $oj_name;
 				<th class="col-xs-2 col-sm-1">ID</th>
 				<?php 
 				if(isset($_SESSION['user']))
-				  echo '<th class="col-xs-8 col-sm-4" colspan="3">';
+				  echo '<th class="col-xs-8 col-sm-5" colspan="3">';
 				else
 				  echo '<th>';
                 echo _('Title'),'</th>';?>
 				<th class="col-md-2 hidden-xs hidden-sm"><?php echo _('Start Time')?></th>  
 				<th class="col-xs-2 col-sm-1"><?php echo _('Status')?></th>  
-                <th class="col-sm-2 col-md-1 hidden-xs"><?php echo _('Format')?></th>
-				<th class="col-sm-4 col-md-3 hidden-xs"><?php echo _('Tags')?></th>
+				<th class="col-sm-5 col-md-3 hidden-xs"><?php echo _('Tags')?></th>
               </tr>
               </thead>
               <tbody>
               <?php 
               while($row=mysqli_fetch_row($result)){
-                switch ($row[7]){
-                  case 0:
-                    $judge_way=_('Training');
-                    break;
-                  case 1:
-                    $judge_way=_('CWOJ');
-                    break;
-                  case 2:
-                    $judge_way=_('ACM-like');
-                    break;
-                  case 3:
-                    $judge_way=_('OI-like');
-                    break;
-                }
                 if(time()>strtotime($row[3])) $cont_status='<span class="label label-wa">'._('Ended').'</span>';
                 else if(time()<strtotime($row[2])) $cont_status='<span class="label label-re">'._('Upcoming').'</span>';
                 else $cont_status='<span class="label label-ac">'._('In Progress').'</span>';
                 echo '<tr>';
                 echo '<td>',$row[0],'</td>';
                 if(isset($_SESSION['user'])){
-				  echo '<td class="width-for-2x-icon"><i class=', is_null($row[9]) ? '"fa fa-fw fa-remove fa-2x" style="visibility:hidden"' : '"fa fa-fw fa-2x fa-paper-plane" style="color:steelblue"', '></i>', '</td>';
+				  echo '<td><i class=', is_null($row[8]) ? '"fa fa-fw fa-remove fa-2x" style="visibility:hidden"' : '"fa fa-fw fa-2x fa-paper-plane" style="color:steelblue"', '></i>', '</td>';
 				  echo '<td style="text-align:left;border-left:0;">';
                 }else echo '<td style="text-align:left">';
                 echo '<a href="contestpage.php?contest_id=',$row[0],'">',$row[1];
                 if($row[4]=='Y')echo '&nbsp;&nbsp;<span class="label label-danger">',_('Deleted'),'</span>';
                 echo '</a>';
                 if(isset($_SESSION['user']))
-				  echo '<td class="width-for-2x-icon" style="border-left:0;"><i data-pid="',$row[0],'" class="', is_null($row[10]) ? 'fa fa-star-o' : 'fa fa-star', ' fa-fw fa-2x text-warning save_problem" style="cursor:pointer;"></i></td>';
+				  echo '<td style="border-left:0;"><i data-pid="',$row[0],'" class="', is_null($row[9]) ? 'fa fa-star-o' : 'fa fa-star', ' fa-fw fa-2x text-warning save_problem" style="cursor:pointer;"></i></td>';
                 echo'</td><td class="hidden-xs hidden-sm">',$row[2],'</a></td>';
                 echo '<td>',$cont_status,'</td>';
-                echo '<td class="hidden-xs">',$judge_way,'</td>';
                 echo '<td class="hidden-xs" style="text-align:left">',$row[6],"</td></tr>\n";
               }?>
               </tbody>

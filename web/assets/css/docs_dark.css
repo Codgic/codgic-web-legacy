@@ -534,7 +534,3 @@ input.error {
 .shortcut-hint-active:after {
 	visibility: visible
 }
-
-.width-for-2x-icon {
-	max-width: 26px
-}

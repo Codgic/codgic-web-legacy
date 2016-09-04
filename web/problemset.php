@@ -124,11 +124,11 @@ $Title=$inTitle .' - '. $oj_name;
                   <th class="col-xs-2 col-sm-1">ID</th>
                   <?php 
                   if(isset($_SESSION['user']))
-                    echo '<th class="col-xs-8 col-sm-4 col-lg-5" colspan="3">';
+                    echo '<th class="col-xs-8 col-sm-5" colspan="3">';
                   else
                     echo '<th>';
                   echo _('Title'),'</th>';?>
-                  <th class="col-sm-2 col-lg-1 hidden-xs"><?php echo _('AC/Submit')?></th>
+                  <th class="col-sm-2 col-md-1 hidden-xs"><?php echo _('AC/Submit')?></th>
                   <th class="col-xs-2 col-md-1"><?php echo _('AC Ratio')?></th>
                   <th class="col-sm-3 col-md-4 hidden-xs"><?php echo _('Tags')?></th>
                 </tr>
@@ -137,7 +137,7 @@ $Title=$inTitle .' - '. $oj_name;
                 <?php while($row=mysqli_fetch_row($result)){
                 echo '<tr><td>',$row[0],'</td>';
                 if(isset($_SESSION['user'])){
-                  echo '<td class="width-for-2x-icon"><i class=', is_null($row[6]) ? '"fa fa-fw fa-2x fa-remove" style="visibility:hidden"' : ($row[6]? '"fa fa-fw fa-2x fa-remove" style="color:red"' : '"fa fa-fw fa-2x fa-check" style="color:green"'), '></i>', '</td>';
+                  echo '<td><i class=', is_null($row[6]) ? '"fa fa-fw fa-2x fa-remove" style="visibility:hidden"' : ($row[6]? '"fa fa-fw fa-2x fa-remove" style="color:red"' : '"fa fa-fw fa-2x fa-check" style="color:green"'), '></i>', '</td>';
 				  echo '<td style="text-align:left;border-left:0;">';
                 }else{
 				  echo '<td style="text-align:left">';
@@ -146,7 +146,7 @@ $Title=$inTitle .' - '. $oj_name;
                 if($row[5]=='Y')echo '&nbsp;&nbsp;<span class="label label-danger">',_('Deleted'),'</span>';
                   echo '</a>';
                 if(isset($_SESSION['user'])){
-				  echo '<td class="width-for-2x-icon" style="border-left:0;"><i data-pid="',$row[0],'" class="', is_null($row[7]) ? 'fa fa-star-o' : 'fa fa-star', ' fa-2x text-warning save_problem" style="cursor:pointer;"></i></td>';
+				  echo '<td style="border-left:0;"><i data-pid="',$row[0],'" class="', is_null($row[7]) ? 'fa fa-star-o' : 'fa fa-star', ' fa-2x text-warning save_problem" style="cursor:pointer;"></i></td>';
                 }
                 echo '</td><td class="hidden-xs"><a href="record.php?result=0&amp;problem_id=',$row[0],'">',$row[2],'</a>/';
                 echo '<a href="record.php?problem_id=',$row[0],'">',$row[3],'</a></td>';
