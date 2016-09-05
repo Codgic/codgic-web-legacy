@@ -181,14 +181,14 @@ $(document).ready(function(){
 }).keyup(hotkey_hint_dismiss);
 $('#search_input').keyup(hotkey_hint_dismiss);
 $('#nav_searchbtn').click(function(){
-	$('#search_form').addClass("visible-xs-inline-block visible-sm-inline-block visible-md-inline-block");
-       $('#nav_back').removeClass("hidden-xs hidden-sm hidden-md");
+	$('#search_form').addClass("visible-inline-block");
+        $('#nav_back').show();
 	$('#nav_left').addClass('hidden-xs hidden-sm hidden-md');
 	$('#search_input').focus();
 });
-$('#btn_clrsearch').click(function(){
+$('#nav_clrsearch').click(function(){
 	$('#search_input').val('');
-       $('#nav_back').addClass("hidden-xs hidden-sm hidden-md");
-	$('#search_form').removeClass("visible-xs-inline-block visible-sm-inline-block visible-md-inline-block");
+       	$('#nav_back').hide();
+	$('#search_form').removeClass("visible-inline-block");
 	$('#nav_left').removeClass('hidden-xs hidden-sm hidden-md');
 });

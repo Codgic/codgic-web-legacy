@@ -256,7 +256,6 @@ $Title=$inTitle .' - '. $oj_name;
         };
       $(document).ready(function(){
         $('#nav_bbs').parent().addClass('active');
-		$('#nav_bbs_text').removeClass('hidden-sm');
         $('#board').click(function(E){
           if(! $(E.target).is("a.msg-link"))
             return;

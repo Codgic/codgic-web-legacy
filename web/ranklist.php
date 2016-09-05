@@ -101,7 +101,7 @@ $Title=$inTitle .' - '. $oj_name;
                 <th style="width:15%"><?php echo _('User')?></th>
                 <th style="width:32%"><?php echo _('Nickname')?></th>
                 <th style="width:8%"><?php echo _('Status')?></th>
-                <th style="width:8%"><?php echo _('Title')?></th>
+                <th style="width:8%"><?php echo _('Level')?></th>
                 <th style="width:8%"><?php echo _('Score')?></th>
                 <th style="width:8%"><?php echo _('AC')?></th>
                 <th style="width:8%"><?php echo _('Submit')?></th>
@@ -261,7 +261,6 @@ $Title=$inTitle .' - '. $oj_name;
           });
         });
         $('#nav_rank').parent().addClass('active');
-        $('#nav_rank_text').removeClass('hidden-sm');
       }); 
     </script>
   </body>

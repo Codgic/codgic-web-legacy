@@ -145,7 +145,6 @@ $Title=$inTitle .' - '. $oj_name;
     <script type="text/javascript"> 
         $(document).ready(function(){
             $('#nav_about').parent().addClass('active');
-            $('#nav_about_text').removeClass('hidden-sm');
         });
     </script>
   </body>

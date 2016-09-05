@@ -194,7 +194,6 @@ $Title=$inTitle .' - '. $oj_name;
         change_type(2);
         var cur_page=<?php echo $page_id ?>;
         $('#nav_cont').parent().addClass('active');
-		$('#nav_cont_text').removeClass("hidden-sm");
         $('#contest_table').click(function(E){
           var $target = $(E.target);
           if($target.is('i.save_problem')){

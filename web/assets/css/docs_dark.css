@@ -12,6 +12,7 @@ h1,h2,h3,h4,h5,h6,.h1,.h2,.h3,.h4,.h5,.h6 {
     font-family: Arial,"Microsoft YaHei","微软雅黑",Helvetica Neue
 }
 
+
 footer {
 	text-align: center;
 	color: #999;
@@ -20,13 +21,22 @@ footer {
 
 @media (max-width: 767px) {
     #search_form {
-        width: 100%;
+        display: none;
+        width: 100%
     }
 }
 
 @media (min-width: 768px) {
     #search_form {
-        width: 300px;
+        display: none;
+        width: 300px
+    }   
+    .nav-text {
+        display:none
+    }
+    
+    .active .nav-text{
+        display:inline
     }
 
     .dropdown .dropdown-menu {
@@ -38,13 +48,32 @@ footer {
         max-height: 0;
         display: block;
         overflow: hidden;
-        opacity: 0;
+        opacity: 0
     }
 
     .dropdown.open .dropdown-menu {
         max-height: 300px;
-        opacity: 1;
+        opacity: 1
     }
+}
+
+@media (min-width: 992px) {
+    .nav-text {
+        display:inline;
+    }
+}
+
+@media (min-width: 1200px) {
+    #search_form {
+        display: inline-block;
+    }
+    #nav_searchbtn,#nav_clrsearch {
+        display: none
+    }
+}
+
+.visible-inline-block {
+    display: inline-block !important;
 }
 
 .navbar-img {

@@ -24,19 +24,19 @@ if(!isset($_SESSION['user'])){
    </div>
    <div class="collapse navbar-collapse" id="nav_menus">
       <ul class="nav navbar-nav navbar-left" id="nav_left">
-		<li><a id="nav_cont" class="shortcut-hint" title="Alt+C" href="/contest.php"><i class="fa fa-fw fa-compass"></i><span id="nav_cont_text" class="hidden-sm"> <?php echo _('Contests');?></span></a></li>
-		<li><a id="nav_set" href="/problemset.php" class="shortcut-hint" title="Alt+P"><i class="fa fa-fw fa-coffee"></i><span id="nav_set_text" class="hidden-sm"> <?php echo _('Problems');?></span></a></li>
-		<li><a id="nav_bbs" class="shortcut-hint" title="Alt+B" href="/board.php"><i class="fa fa-fw fa-comment"></i><span id="nav_bbs_text" class="hidden-sm"> <?php echo _('Board');?></span></a></li>
-		<li><a id="nav_record" class="shortcut-hint" title="Alt+R" href="/record.php"><i class="fa fa-fw fa-university"></i><span id="nav_record_text" class="hidden-sm"> <?php echo _('Record');?></span></a></li>
-		<li><a id="nav_rank" href="/ranklist.php"><i class="fa fa-fw fa-pie-chart"></i><span id="nav_rank_text" class="hidden-sm"> <?php echo _('Rank');?></span></a></li>
-		<li><a id="nav_about" href="/about.php"><i class="fa fa-fw fa-magic"></i><span id="nav_about_text" class="hidden-sm"> <?php echo _('About');?></span></a></li>
-		<li><a id="nav_searchbtn" class="visible-xs visible-sm visible-md" href="javascript:void(0)" title="Alt+I"><i class="fa fa-fw fa-search"></i><span class="hidden-sm"> <?php echo _('Search...');?></span></a></li>
+		<li><a id="nav_cont" class="shortcut-hint" title="Alt+C" href="/contest.php"><i class="fa fa-fw fa-compass"></i><span class="nav-text"> <?php echo _('Contests');?></span></a></li>
+		<li><a id="nav_set" href="/problemset.php" class="shortcut-hint" title="Alt+P"><i class="fa fa-fw fa-coffee"></i><span class="nav-text"> <?php echo _('Problems');?></span></a></li>
+		<li><a id="nav_bbs" class="shortcut-hint" title="Alt+B" href="/board.php"><i class="fa fa-fw fa-comment"></i><span class="nav-text"> <?php echo _('Board');?></span></a></li>
+		<li><a id="nav_record" class="shortcut-hint" title="Alt+R" href="/record.php"><i class="fa fa-fw fa-university"></i><span class="nav-text"> <?php echo _('Record');?></span></a></li>
+		<li><a id="nav_rank" href="/ranklist.php"><i class="fa fa-fw fa-pie-chart"></i><span class="nav-text"> <?php echo _('Rank');?></span></a></li>
+		<li><a id="nav_about" href="/about.php"><i class="fa fa-fw fa-magic"></i><span class="nav-text"> <?php echo _('About');?></span></a></li>
+		<li><a id="nav_searchbtn"  href="javascript:void(0)" title="Alt+I"><i class="fa fa-fw fa-search"></i><span class="nav-text"> <?php echo _('Search...');?></span></a></li>
       </ul>
-      <ul class="nav navbar-nav hidden-xs hidden-sm hidden-md hidden-lg" id="nav_back">
-        <li><a id="btn_clrsearch" class="visible-xs visible-sm visible-md" href="javascript:void(0)"><i class="fa fa-fw fa-arrow-left"></i> <?php echo _('Go Back...');?></a></li>
+      <ul class="nav navbar-nav collapse" id="nav_back">
+        <li><a id="nav_clrsearch" href="javascript:void(0)"><i class="fa fa-fw fa-arrow-left"></i> <?php echo _('Go Back...');?></a></li>
       </ul>
       
-      <form class= "navbar-form visible-lg-inline-block shortcut-hint" id="search_form" title="Alt+I" action="/search.php" method="get">
+      <form class= "navbar-form shortcut-hint" id="search_form" title="Alt+I" action="/search.php" method="get">
         <input type="hidden" name="t" id="search_type" value="0">
 		  <div class="form-group">
             <div class="input-group">

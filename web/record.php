@@ -280,7 +280,6 @@ $Title=$inTitle .' - '. $oj_name;
         $('#slt_result>option[value=<?php echo $result?>]').prop('selected',true);
         $('#slt_way>option[value="<?php echo $way?>"]').prop('selected',true);
         $('#nav_record').parent().addClass('active');
-        $('#nav_record_text').removeClass('hidden-sm');
 
         function toggle_s(obj){
           if(obj.hasClass('fa-eye-slash')){
