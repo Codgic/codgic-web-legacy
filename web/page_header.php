@@ -38,11 +38,11 @@ if(!isset($_SESSION['user'])){
       
       <form class= "navbar-form shortcut-hint" id="search_form" title="Alt+I" action="/search.php" method="get">
         <input type="hidden" name="t" id="search_type" value="0">
-		  <div class="form-group">
+	  <div class="form-group">
             <div class="input-group">
               <div class="input-group-btn dropdown" id="search_span">
                 <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown"><span id="search_select"><i class="fa fa-fw fa-coffee"></i></span></button>
-                <ul class="dropdown-menu">
+                <ul class="dropdown-menu" style="margin-top:-1px">
                   <li><a href="javascript:void(0)" onclick="return change_type(1)"><span id="type1"><i class="fa fa-fw fa-coffee"></i></span> <?php echo _('Problems');?></a></li>
                   <li><a href="javascript:void(0)" onclick="return change_type(2)"><span id="type2"><i class="fa fa-fw fa-compass"></i></span> <?php echo _('Contests');?></a></li>
                   <li><a href="javascript:void(0)" onclick="return change_type(3)"><span id="type3"><i class="fa fa-fw fa-user"></i></span> <?php echo _('Users');?></a></li>
