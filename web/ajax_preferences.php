@@ -28,4 +28,5 @@ processOption('i18n');
 $_SESSION['pref']=serialize($pref);
 //Refresh language.
 unset($_SESSION['i18n']);
-setcookie('i18n','',time()-3600);
+require 'inc/cookie.php';
+clear_cookie('i18n');

@@ -3,4 +3,5 @@ session_start();
 session_unset();
 session_destroy();
 
-setcookie('SID', '', 31415926);
+require 'inc/cookie.php';
+clear_cookie('SID');

@@ -47,6 +47,10 @@ function write_i18n_cookie($value){
     $_COOKIE['i18n']=$data;
 }
 
+function clear_cookie($name){
+	setcookie("$name",'',time()-3600);
+}
+
 function encrypt($key, $plain_text) {
 	$iv='7284565820000000';
 	$key=hash('sha256',$key,true);
