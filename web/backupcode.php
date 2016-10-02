@@ -1,7 +1,7 @@
 <?php
-require 'inc/global.php';
-function show_alert($str)
-{
+require __DIR__.'/inc/init.php';
+
+function show_alert($str){
 	echo '<html><body><script>alert("';
 	echo htmlspecialchars($str);
 	echo '");</script></body></html>';
@@ -12,10 +12,9 @@ if(!isset($_SESSION['user'])){
 	show_alert($info);
 	exit;
 }
-require 'inc/database.php';
-require 'inc/preferences.php';
-require 'inc/lang_conf.php';
-require 'inc/tgz.lib.php';
+require __DIR__.'/conf/database.php';
+require __DIR__.'/lib/lang.php';
+require __DIR__.'/lib/tgz.lib.php';
 
 $pref=unserialize($_SESSION['pref']);
 $now=time();

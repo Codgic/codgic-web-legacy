@@ -129,13 +129,10 @@ function change_type(e){
 	$('#search_select').html($('#type'+e).html());
 	$('#search_input').focus();
 }
-function change_i18n(e){
-	$.post('/ajax_globe.php',{i18n:e},function(msg){if(msg=='success') window.location.reload();});
-}
 $(document).ready(function(){
 	var $notifier=$('.notifier'),msgnum=0;
-	$('#nav_logoff').click(function(){$.ajax({url:"/ajax_logoff.php",dataType:"html",success:function(){location.reload();}});});
-       $('#search_span').hover(function(){ 
+	$('#nav_logoff').click(function(){$.ajax({url:"/api/ajax_logoff.php",dataType:"html",success:function(){location.reload();}});});
+	$('#search_span').hover(function(){ 
             $(this).addClass('open'); 
        },function(){
             $(this).removeClass('open'); 
@@ -145,19 +142,18 @@ $(document).ready(function(){
 			return false;
 		return true;
 	});
-	function checkMail()
-	{
-		$.get("/ajax_mailfunc.php?op=check",function(data){
-                      if(data=='-1')
-                            window.location.reload();
+	function checkMail(){
+		$.get("/api/ajax_mailfunc.php?op=check",function(data){
+			if(data=='-1')
+				window.location.reload();
 			else if(isNaN(data)||data=='0')
 				return;
-                      $notifier.html(data);
-                      if(data>msgnum){
-                      msgnum=data;
-                      $('#alert_newmsg').fadeIn();  
-			setTimeout(function(){$('#alert_newmsg').fadeOut()},2000);  
-                    }           
+			$notifier.html(data);
+			if(data>msgnum){
+				msgnum=data;
+				$('#alert_newmsg').fadeIn();  
+				setTimeout(function(){$('#alert_newmsg').fadeOut()},2000);  
+			}           
 		});
 	}
         checkMail();
