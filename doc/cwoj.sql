@@ -20,6 +20,9 @@ SET time_zone = "+00:00";
 -- Database: `cwoj`
 --
 
+CREATE DATABASE cwoj CHARACTER SET utf8mb4;
+use cwoj;
+
 DELIMITER $$
 --
 -- Functions

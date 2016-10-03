@@ -264,18 +264,21 @@ if(!isset($_POST['title'])||!isset($_POST['content']))
 	else
 		echo _('Something went wrong...');
 }else if($op=='sendemail'){
-    require 'inc/mailsettings.php';
-    if(isset($_POST['to_user'])&&!empty($_POST['to_user'])) $uid=mysqli_real_escape_string($con,trim($_POST['to_user']));
+    require __DIR__.'/../conf/mailsettings.php';
+    if(isset($_POST['to_user'])&&!empty($_POST['to_user'])) 
+		$uid=mysqli_real_escape_string($con,trim($_POST['to_user']));
 	else {
         echo _('Reciever can\'t be empty...');
         exit();
     }
-    if(isset($_POST['title'])&&!empty($_POST['title'])) $title=mysqli_real_escape_string($con,trim($_POST['title']));
+    if(isset($_POST['title'])&&!empty($_POST['title']))
+		$title=mysqli_real_escape_string($con,trim($_POST['title']));
     else {
         echo _('Title can\'t be empty...');
         exit();
     }
-    if(isset($_POST['content'])&&!empty($_POST['content'])) $content=mysqli_real_escape_string($con,trim(str_replace(array("\r\n", "\r", "\n"), "<br>", $_POST['content'])));
+    if(isset($_POST['content'])&&!empty($_POST['content'])) 
+		$content=mysqli_real_escape_string($con,trim(nl2br($_POST['content'])));
     else {
         echo _('Content can\'t be empty...');
         exit();
@@ -283,14 +286,16 @@ if(!isset($_POST['title'])||!isset($_POST['content']))
     $row=mysqli_fetch_row(mysqli_query($con,"select email from users where user_id='$uid'"));
     echo postmail($row[0],$title,$content);
 }else if($op=='sendemail_all'){
-    require 'inc/mailsettings.php';
+    require __DIR__.'/../conf/mailsettings.php';
     ignore_user_abort(true);
-    if(isset($_POST['title'])&&!empty($_POST['title'])) $title=mysqli_real_escape_string($con,trim($_POST['title']));
+    if(isset($_POST['title'])&&!empty($_POST['title'])) 
+		$title=mysqli_real_escape_string($con,trim($_POST['title']));
     else {
         echo _('Title can\'t be empty...');
         exit();
     }
-    if(isset($_POST['content'])&&!empty($_POST['content'])) $content=mysqli_real_escape_string($con,trim(str_replace(array("\r\n", "\r", "\n"), "<br>", $_POST['content'])));
+    if(isset($_POST['content'])&&!empty($_POST['content'])) 
+		$content=mysqli_real_escape_string($con,trim(nl2br($_POST['content'])));
     else {
         echo _('Content can\'t be empty...');
         exit();
