@@ -24,6 +24,12 @@ footer {
         display: none;
         width: 100%
     }
+	.nav-text-alt {
+		display: none
+	}
+	.active .nav-text-alt {
+		display: inline
+	}
 }
 
 @media (min-width: 768px) {
@@ -31,11 +37,10 @@ footer {
         display: none;
         width: 300px
     }   
-    .nav-text {
+    .nav-text, .nav-text-alt {
         display:none
     }
-    
-    .active .nav-text{
+    .active .nav-text, .active .nav-text-alt {
         display:inline
     }
 
@@ -58,8 +63,8 @@ footer {
 }
 
 @media (min-width: 992px) {
-    .nav-text {
-        display:inline;
+	.nav-text, .nav-text-alt {
+        display:inline
     }
 }
 

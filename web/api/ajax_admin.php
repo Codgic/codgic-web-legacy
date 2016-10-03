@@ -278,7 +278,7 @@ if(!isset($_POST['title'])||!isset($_POST['content']))
         exit();
     }
     if(isset($_POST['content'])&&!empty($_POST['content'])) 
-		$content=mysqli_real_escape_string($con,trim(nl2br($_POST['content'])));
+		$content=mysqli_real_escape_string($con,trim(str_replace(array("\r\n", "\r", "\n"), "<br>", $_POST['content'])));
     else {
         echo _('Content can\'t be empty...');
         exit();
@@ -295,7 +295,7 @@ if(!isset($_POST['title'])||!isset($_POST['content']))
         exit();
     }
     if(isset($_POST['content'])&&!empty($_POST['content'])) 
-		$content=mysqli_real_escape_string($con,trim(nl2br($_POST['content'])));
+		$content=mysqli_real_escape_string($con,trim(str_replace(array("\r\n", "\r", "\n"), "<br>", $_POST['content'])));
     else {
         echo _('Content can\'t be empty...');
         exit();

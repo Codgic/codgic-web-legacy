@@ -193,18 +193,18 @@ $Title=$inTitle .' - '. $oj_name;
 									if($row_prob[11]=='Y')
 										echo ' <span style="vertical-align:middle;font-size:12px" class="label label-danger">',_('Deleted'),'</span>';
 									if($is_contest){
-										echo '<a href="contestpage.php?contest_id=',$cont_id,'" class="btn btn-default pull-left"><i class="fa fa-fw fa-home"></i> ',_('Contest Home'),'</a>';
+										echo '<a href="contestpage.php?contest_id=',$cont_id,'" class="btn btn-default pull-left"><i class="fa fa-fw fa-home"></i> <span class="nav-text-alt">',_('Contest Home'),'</span></a>';
 										echo '<div class="btn-group pull-right">';
 										if($prob_num<2) 
 											$addt='disabled';
 										else 
 											$addt='';
-										echo '<a href="problempage.php?contest_id=',$cont_id,'&prob=',($prob_num-1),'" class="btn btn-default ',$addt,'"><i class="fa fa-fw fa-angle-left"></i>',_('Previous'),'</a>';
+										echo '<a href="problempage.php?contest_id=',$cont_id,'&prob=',($prob_num-1),'" class="btn btn-default ',$addt,'"><i class="fa fa-fw fa-angle-left"></i> <span class="nav-text-alt">',_('Previous'),'</span></a>';
 										if($prob_num>$row_cont[4]-1)
 											$addt='disabled';
 										else
 											$addt='';
-										echo '<a href="problempage.php?contest_id=',$cont_id,'&prob=',($prob_num+1),'" class="btn btn-default ',$addt,'">',_('Next'),'<i class="fa fa-fw fa-angle-right"></i></a>';
+										echo '<a href="problempage.php?contest_id=',$cont_id,'&prob=',($prob_num+1),'" class="btn btn-default ',$addt,'"><span class="nav-text-alt">',_('Next'),'</span> <i class="fa fa-fw fa-angle-right"></i></a>';
 										echo '</div>';
 									}
 								?>
