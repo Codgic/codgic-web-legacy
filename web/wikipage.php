@@ -102,7 +102,7 @@ $Title=$inTitle .' - '. $oj_name;
                                 <div class="panel panel-default problem-operation" style="margin-top:10px">
                                     <div class="panel-body">
                                         <a href="editwiki.php?wiki_id=<?php echo $wiki_id?>" class="btn btn-primary"><?php echo _('Edit')?></a>
-                                        <span id="action_delete" class="btn btn-danger"><?php echo $row[8]=='N' ? _('Delete') : _('Recover');?></span>
+                                        <span id="action_delete" class="btn btn-danger"><?php echo $row[7]=='N' ? _('Delete') : _('Recover');?></span>
                                     </div>
                                 </div>
                             </div>

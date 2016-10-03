@@ -52,8 +52,8 @@ if(isset($_GET['level'])){
         $view_arr=unserialize($_SESSION['view']);
         $page_id=intval($view_arr['cont']/100);
     }else
-        $page_id=$maxpage;
-   
+        $page_id=10;
+
     if($page_id<10){
         header("Location: contest.php");
         exit();

@@ -163,13 +163,14 @@ $Title=$inTitle .' - '. $oj_name;
 						<label>
 							<?php echo _('User')?>
 						</label>
-						<div class="input-group">
-							<input type="text" class="form-control" name="user_id" id="ipt_user_id" value="<?php echo $user_id?>">
-							<?php 
-								if(isset($_SESSION['user']))
-									echo'<span class="input-group-addon btn btn-default" id="filter_me" data-myuid="',$_SESSION['user'],'">',_('Me'),'</span>';
-							?>
-						</div>  
+                        <?php if(isset($_SESSION['user'])){?>
+                            <div class="input-group">
+                                <input type="text" class="form-control" name="user_id" id="ipt_user_id" value="<?php echo $user_id?>">
+                                <span class="input-group-addon btn btn-default" id="filter_me" data-myuid="<?php echo $_SESSION['user'];?>"><?php echo _('Me');?></span>
+                            </div>  
+                        <?php }else{?>
+                            <input type="text" class="form-control" name="user_id" id="ipt_user_id" value="<?php echo $user_id?>">
+                        <?php }?>
 					</div>
 					<div class="form-group col-xs-4 col-sm-4 col-md-2 col-lg-2">
 						<label>

@@ -29,7 +29,6 @@ else{
             exit();
         }
         $result=mysqli_query($con,"SELECT saved_problem.problem_id,title,savetime from saved_problem inner join problem using (problem_id) where user_id='$user_id' order by savetime desc limit ".(($page_id-1)*20).",20");
-        $t=1;
     }else if($type=='contest'){
         $row=mysqli_fetch_row(mysqli_query($con,"select count(1) from saved_contest where user_id='$user_id'"));
         $maxpage=intval($row[0]/20)+1;
@@ -38,7 +37,6 @@ else{
             exit();
         }
         $result=mysqli_query($con,"SELECT saved_contest.contest_id,title,savetime from saved_contest inner join contest using (contest_id) where user_id='$user_id' order by savetime desc limit ".(($page_id-1)*20).",20");
-        $t=2;
     }else{
         $row=mysqli_fetch_row(mysqli_query($con,"select count(1) from saved_wiki where user_id='$user_id'"));
         $maxpage=intval($row[0]/20)+1;
@@ -47,7 +45,6 @@ else{
             exit();
         }
         $result=mysqli_query($con,"SELECT saved_wiki.wiki_id,title,savetime from saved_wiki inner join wiki using (wiki_id) where user_id='$user_id' order by savetime desc limit ".(($page_id-1)*20).",20");
-        $t=2;
     }
     if(mysqli_num_rows($result)==0) $info=_('Looks like there\'s nothing here');
 }
@@ -103,7 +100,7 @@ $Title=$inTitle .' - '. $oj_name;
 										while($row=mysqli_fetch_row($result)){?>
 											<tr>
 												<td><?php echo $row[0] ?></td>
-												<td style="text-align:left"><a href="<?php echo $type?>page.php?problem_id=<?php echo $row[0]?>" ><?php echo $row[1] ?></a></td>
+												<td style="text-align:left"><a href="<?php echo $type?>page.php?<?php echo $type?>_id=<?php echo $row[0]?>" ><?php echo $row[1] ?></a></td>
 												<td class="hidden-xs"><?php echo $row[2] ?></td>
 												<td><i data-pid="<?php echo $row[0] ?>" style="cursor:pointer;" class="text-error fa fa-remove"></i></td>
 											</tr>
