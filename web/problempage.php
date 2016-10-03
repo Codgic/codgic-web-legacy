@@ -476,7 +476,7 @@ $Title=$inTitle .' - '. $oj_name;
 								<div class="form-group col-xs-6 col-sm-7">
 									<div class="input-group pull-left">
 										<span class="input-group-addon"><b><?php echo _('Tags')?></b></span>
-										<input class="form-control" id="tags_edit" type="text" name="tags">
+										<input class="form-control" id="tags_edit" type="text" name="tags" value="<?php echo $tags?>">
 									</div>
 								</div>
 								<div class="form-group col-xs-6 col-sm-5">
@@ -663,18 +663,25 @@ $Title=$inTitle .' - '. $oj_name;
 					var data = $(this).serializeArray();
 					$.post('api/ajax_usernote.php', data, function(res){
 						if(/success/.test(res)){
+                            var notag=0;
 							for(var i=data.length-1; i>=0; i--){
-								if(data[i].name=='content'){
-									if($.trim(data[i].value)==''){
-										$('#btn_note').show();
+                                if(data[i].name=='tags'){
+                                    if($.trim(data[i].value)=='')
+                                        notag=1;
+                                    else{
+                                        notag=0;
+                                        $('#user_tags').html(data[i].value);
+                                    }
+								}else if(data[i].name=='content'){
+									if($.trim(data[i].value)==''&&notag==1){
+										$('#btn_note').css('display','inline-block');
 										$('#note_panel').hide();
 									}else{
 										$('#note_content').html(data[i].value);
 										$('#note_panel').show();
-										$('#btn_note').hide();
+										$('#btn_note').css('display','none');
 									}
-								}else if(data[i].name=='tags')
-									$('#user_tags').html(data[i].value);
+								}
 							};
 							$('#NoteModal').modal('hide');
 						}else

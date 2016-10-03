@@ -168,7 +168,7 @@ $Title=$inTitle .' - '. $oj_name;
 											if(isset($_SESSION['user'])){
 												echo '<th class="col-xs-8 col-sm-5" colspan="2">',_('Title'),'</th>'; 
 												if($type==1)
-													echo '<th class="col-sm-2 hidden-xs">',_('Notes'),'</th>';
+													echo '<th class="col-sm-2 hidden-xs">',_('User Tags'),'</th>';
 											}else
 												echo '<th class="col-xs-8 col-sm-5">',_('Title'),'</th>';
 											if($type==1)

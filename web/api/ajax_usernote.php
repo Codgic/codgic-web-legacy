@@ -18,7 +18,7 @@ $tags = mysqli_real_escape_string($con,$_POST['tags']);
 $problem_id = intval($_POST['problem_id']);
 $user=$_SESSION['user'];
 
-if(empty($content)==1){
+if(empty($content)==1&&empty($tags)==1){
     $res=mysqli_query($con,"DELETE FROM user_notes where problem_id=$problem_id and user_id='$user'");
     if($res)
         echo 'success';
