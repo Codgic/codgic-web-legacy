@@ -61,13 +61,13 @@ else{
             check_id($req,$type);
             if(isset($_SESSION['user'])){
                 $user_id=$_SESSION['user'];
-                $result=mysqli_query($con,"SELECT problem_id,title,source,res,tags from
-                (select problem.problem_id,title,source,tags,defunct from problem left join user_notes on (user_id='$user_id' and user_notes.problem_id=problem.problem_id)  )pt
+                $result=mysqli_query($con,"SELECT problem_id,title,source,accepted,submit,res,tags from
+                (select problem.problem_id,title,source,tags,defunct,accepted,submit from problem left join user_notes on (user_id='$user_id' and user_notes.problem_id=problem.problem_id))pt
                 LEFT JOIN (select problem_id as pid,MIN(result) as res from solution where user_id='$user_id' and problem_id group by problem_id) as temp on(pid=problem_id)
                 where ".$addt_cond."(title like '%$keyword%' or source like '%$keyword%' or tags like '%$keyword%')
                 order by problem_id limit ".(($page_id-1)*20).",20");
             }else{
-                $result=mysqli_query($con,"SELECT problem_id,title,source,defunct from
+                $result=mysqli_query($con,"SELECT problem_id,title,source,accepted,submit,defunct from
                 problem
                 where defunct='N' and (title like '%$keyword%' or source like '%$keyword%')
                 order by problem_id limit ".(($page_id-1)*20).",20");
@@ -130,16 +130,16 @@ $Title=$inTitle .' - '. $oj_name;
 						</p>
 					</div>
 				<?php }else{?>
-					<div class="col-xs-12 table-responsive">
+					<div class="col-xs-12">
 						<?php if($type==3){?>
 							<table class="table table-hover table-bordered" style="margin-bottom:0">
 								<thead>
 									<tr>
-										<th style="width:25%"><?php echo _('User')?></th>
-										<th><?php echo _('Nickname')?></th>
-										<th style="width:10%"><?php echo _('Status')?></th>
-										<th style="width:10%"><?php echo _('AC')?></th>
-										<th style="width:10%"><?php echo _('Submit')?></th>
+										<th class="col-xs-3 col-sm-3"><?php echo _('User')?></th>
+										<th class="col-xs-3 col-sm-5"><?php echo _('Nickname')?></th>
+										<th class="col-xs-2 col-sm-2"><?php echo _('Status')?></th>
+										<th class="col-xs-2 col-sm-1"><?php echo _('AC')?></th>
+										<th class="col-xs-2 col-sm-1"><?php echo _('Submit')?></th>
 									</tr>
 								</thead>
 								<tbody id="userlist">
@@ -163,18 +163,22 @@ $Title=$inTitle .' - '. $oj_name;
 							<table class="table table-hover table-bordered" style="margin-bottom:0">
 								<thead>
 									<tr>
-										<th style="width:7%">ID</th>
+										<th class="col-xs-2 col-sm-1">ID</th>
 										<?php
 											if(isset($_SESSION['user'])){
-												echo '<th colspan="2">',_('Title'),'</th>'; 
+												echo '<th class="col-xs-8 col-sm-5" colspan="2">',_('Title'),'</th>'; 
 												if($type==1)
-													echo '<th style="width:20%">',_('Notes'),'</th>';
+													echo '<th class="col-sm-2 hidden-xs">',_('Notes'),'</th>';
 											}else
-												echo '<th>',_('Title'),'</th>';
-											if($type==2)
-												echo '<th style="width:20%">',_('Start Time'),'</th><th style="width:5%">',_('Status'),'</th>';  
+												echo '<th class="col-xs-8 col-sm-5">',_('Title'),'</th>';
+											if($type==1)
+												echo '<th class="col-xs-2 col-sm-1">',_('AC Ratio'),'</th>';
+											else if($type==2){
+												echo '<th class="col-sm-2 hidden-xs">',_('Start Time'),'</th>';
+												echo '<th class="col-xs-2 col-sm-1">',_('Status'),'</th>';
+											}
 										?>
-										<th style="width:30%"><?php echo _('Tags')?></th>
+										<th class="col-sm-3 hidden-xs"><?php echo _('Tags')?></th>
 									</tr>
 								</thead>
 								<tbody>
@@ -183,14 +187,15 @@ $Title=$inTitle .' - '. $oj_name;
 											while($row=mysqli_fetch_row($result)){
 												echo '<tr><td>',$row[0],'</td>';
 												if(isset($_SESSION['user'])){
-													echo '<td style="width:36px"><i class=', is_null($row[3]) ? '"fa fa-fw fa-remove fa-2x" style="visibility:hidden"' : (($type==1&&$row[3])? '"fa fa-fw fa-remove fa-2x" style="color:red"' : '"fa fa-fw fa-2x fa-check" style="color:green"'), '></i>', '</td>';
+													echo '<td><i class=', is_null($row[5]) ? '"fa fa-fw fa-remove fa-2x" style="visibility:hidden"' : (($type==1&&$row[5])? '"fa fa-fw fa-remove fa-2x" style="color:red"' : '"fa fa-fw fa-2x fa-check" style="color:green"'), '></i>', '</td>';
 													echo '<td style="text-align:left;border-left:0;">';
 												}else
 													echo '<td style="text-align:left;">';
 												echo '<a href="problempage.php?problem_id=',$row[0],'">',$row[1],'</a></td>';
 												if(isset($_SESSION['user']))
-													echo '<td>',htmlspecialchars($row[4]),'</td>';
-												echo '<td>',$row[2],'</td>';
+													echo '<td class="hidden-xs">',htmlspecialchars($row[6]),'</td>';
+												echo '<td>',$row[4] ? intval($row[3]/$row[4]*100) : 0,'%</td>';
+												echo '<td class="hidden-xs">',$row[2],'</td>';
 												echo "</tr>\n";
 											}
 										}else{  
@@ -203,15 +208,15 @@ $Title=$inTitle .' - '. $oj_name;
 													$cont_status='<span class="label label-re">'._('In Progress').'</span>';
 												echo '<tr><td>',$row[0],'</td>';
 												if(isset($_SESSION['user'])){
-													echo '<td style="width:36px"><i class=', is_null($row[3]) ? '"fa fa-fw fa-remove fa-2x" style="visibility:hidden"' : (($type==1&&$row[3])? '"fa fa-fw fa-remove fa-2x" style="color:red"' : '"fa fa-fw fa-2x fa-check" style="color:green"'), '></i>', '</td>';
+													echo '<td><i class=', is_null($row[3]) ? '"fa fa-fw fa-remove fa-2x" style="visibility:hidden"' : (($type==1&&$row[3])? '"fa fa-fw fa-remove fa-2x" style="color:red"' : '"fa fa-fw fa-2x fa-check" style="color:green"'), '></i>', '</td>';
 													echo '<td style="text-align:left;border-left:0;">';
 												}else
 													echo '<td style="text-align:left;">';
 												echo '<a href="contestpage.php?contest_id=',$row[0],'">',$row[1],'</a></td>';
 												if(isset($_SESSION['user']))
-													echo '<td>',htmlspecialchars($row[4]),'</td>';
+													echo '<td class="hidden-xs">',htmlspecialchars($row[4]),'</td>';
 												echo '<td>',$cont_status.'</td>';
-												echo '<td>',$row[2],'</td>';
+												echo '<td class="hidden-xs">',$row[2],'</td>';
 												echo "</tr>\n";
 											}
 										}

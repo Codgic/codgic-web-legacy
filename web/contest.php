@@ -24,13 +24,12 @@ if(isset($_GET['level'])){
     $range="limit ".(($page_id-1)*100).",100";
     if(isset($_SESSION['user'])){
         $user_id=$_SESSION['user'];
-        $result=mysqli_query($con,"SELECT contest_id,title,start_time,end_time,defunct,num,text.source,judge_way,has_tex,joined.res,saved.cid from contest
+        $result=mysqli_query($con,"SELECT contest_id,title,start_time,end_time,defunct,num,source,judge_way,has_tex,joined.res,saved.cid from contest
         LEFT JOIN (select contest_id as cid,1 as res from contest_status where user_id='$user_id' group by contest_id) as joined on(joined.cid=contest_id) 
         left join (select contest_id as cid from saved_contest where user_id='$user_id') as saved on (saved.cid=contest_id) 
         where $addt_cond order by contest_id desc $range");
     }else{
-        $result=mysqli_query($con,"select contest_id,text.title,start_time,end_time,defunct,num,text.source,judge_way from contest
-        LEFT JOIN (select contest_id,title,source from contest_text group by contest_id) as text on (text.contest_id=contest_id)
+        $result=mysqli_query($con,"select contest_id,title,start_time,end_time,defunct,num,source,judge_way from contest
         where $addt_cond order by contest_id desc $range");
     }
     if(mysqli_num_rows($result)==0) $info=_('There\'s no contest of this level');
