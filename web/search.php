@@ -88,15 +88,18 @@ else{
             }
             break;
         case 3:
+            $result=mysqli_query($con,"select wiki_id,title,tags,revision,in_date from wiki 
+            where is_max='Y' and title like '%$keyword%' or tags like '%$keyword%'
+            order by wiki_id desc limit ".(($page_id-1)*20).",20");
+            break;
+        case 4:
             $result=mysqli_query($con,"select user_id,nick,solved,submit,accesstime from users 
             where user_id like '%$keyword%' or nick like '%$keyword%'
             order by solved desc limit ".(($page_id-1)*20).",20");
             break;
-        case 4:
-            die('Coming Soon...');
-            break;
     }
-    if(mysqli_num_rows($result)==0) $info=_('Looks like we can\'t find what you want');
+    if(mysqli_num_rows($result)==0) 
+        $info=_('Looks like we can\'t find what you want');
 }
 
 $inTitle=_('Search Result');
@@ -115,7 +118,8 @@ $Title=$inTitle .' - '. $oj_name;
 					<ul class="pagination">
 						<li <?php if($type==1) echo 'class="active"'?>><a href="search.php?t=1&q=<?php echo $req?>"><i class="fa fa-fw fa-coffee"></i> <?php echo _('Problems')?></a></li>
 						<li <?php if($type==2) echo 'class="active"'?>><a href="search.php?t=2&q=<?php echo $req?>"><i class="fa fa-fw fa-compass"></i> <?php echo _('Contests')?></a></li>
-						<li <?php if($type==3) echo 'class="active"'?>><a href="search.php?t=3&q=<?php echo $req?>"><i class="fa fa-fw fa-user"></i> <?php echo _('Users')?></a></li>
+                        <li <?php if($type==3) echo 'class="active"'?>><a href="search.php?t=3&q=<?php echo $req?>"><i class="fa fa-fw fa-magic"></i> <?php echo _('Wiki')?></a></li>
+                        <li <?php if($type==4) echo 'class="active"'?>><a href="search.php?t=4&q=<?php echo $req?>"><i class="fa fa-fw fa-user"></i> <?php echo _('Users')?></a></li>
 					</ul>
 				</div>
 			</div>
@@ -131,7 +135,9 @@ $Title=$inTitle .' - '. $oj_name;
 					</div>
 				<?php }else{?>
 					<div class="col-xs-12">
-						<?php if($type==3){?>
+						<?php if($type==4){
+                            //User Table
+                            ?>
 							<table class="table table-hover table-bordered" style="margin-bottom:0">
 								<thead>
 									<tr>
@@ -159,7 +165,36 @@ $Title=$inTitle .' - '. $oj_name;
 									?>
 								</tbody>
 							</table>
-						<?php }else{?>
+                        <?php }else if($type==3){
+                            //Wiki Table
+                            ?>
+                            <table class="table table-hover table-bordered" style="margin-bottom:0">
+								<thead>
+									<tr>
+                                        <th class="col-xs-2 col-sm-1">ID</th>
+                                        <th class="col-xs-8 col-sm-6 col-md-5"><?php echo _('Title');?></th>
+                                        <th class="col-xs-2 col-sm-1"><?php echo _('Revision');?></th>
+                                        <th class="col-md-2 hidden-xs hidden-sm"><?php echo _('Date');?></th>
+                                        <th class="col-sm-4 col-md-3 hidden-xs"><?php echo _('Tags');?></th>
+									</tr>
+								</thead>
+                                <tbody>
+                                    <?php
+                                        while($row=mysqli_fetch_row($result)){
+                                            echo '<tr>';
+                                            echo '<td>',$row[0],'</td>';
+                                            echo '<td style="text-align:left"><a href="wikipage.php?wiki_id=',$row[0],'">',$row[1],'</a></td>';
+                                            echo '<td>',$row[3],'</td>';
+                                            echo '<td>',$row[4],'</td>';
+                                            echo '<td style="text-align:left">',$row[2],'</td>';
+                                            echo "</tr>\n";
+                                        }
+                                    ?>
+                                </tbody>
+                            </table>
+						<?php }else{
+                            //Contest & Problem Table
+                            ?>
 							<table class="table table-hover table-bordered" style="margin-bottom:0">
 								<thead>
 									<tr>
@@ -185,7 +220,8 @@ $Title=$inTitle .' - '. $oj_name;
 									<?php 
 										if($type==1){
 											while($row=mysqli_fetch_row($result)){
-												echo '<tr><td>',$row[0],'</td>';
+												echo '<tr>';
+                                                echo '<td>',$row[0],'</td>';
 												if(isset($_SESSION['user'])){
 													echo '<td><i class=', is_null($row[5]) ? '"fa fa-fw fa-remove fa-2x" style="visibility:hidden"' : (($type==1&&$row[5])? '"fa fa-fw fa-remove fa-2x" style="color:red"' : '"fa fa-fw fa-2x fa-check" style="color:green"'), '></i>', '</td>';
 													echo '<td style="text-align:left;border-left:0;">';

@@ -26,7 +26,7 @@ static $temp_dir="/tmp/cwoj_postmessage.lock";
 static $i18n = 'zh_CN';
 static $oj_name = 'CWOJ'; 
 static $oj_copy = 'CWOJ Team'; 
-static $web_ver = '1.00.alpha-milestone-5';
+static $web_ver = '1.00.laverne-milestone-5';
 static $daemon_ver = '1.03.160801-2101';
 
 //2.2 User policy settings

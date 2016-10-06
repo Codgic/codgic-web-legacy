@@ -45,19 +45,19 @@ $Title=$inTitle .' - '. $oj_name;
 							<tbody>
 								<tr>
 									<td style="width:20%">jimmy19990</td>
-									<td><?php echo dgettext('about', 'Main Developer & Maintainer.')?></td>
+									<td><?php echo _('Main Developer & Maintainer.')?></td>
 								</tr>
 								<tr>
 									<td>Void</td>
-									<td><?php echo dgettext('about', 'Main Content (Problems & Contests) Manager.')?></td>
+									<td><?php echo _('Main Content (Problems & Contests) Manager.')?></td>
 								</tr>
 								<tr>
 									<td>t123yh</td>
-									<td><?php echo dgettext('about', 'Reverse Proxy & Temporary Server Provider, CWOJ Daemon Developer.')?></td>
+									<td><?php echo _('Reverse Proxy & Temporary Server Provider, CWOJ Daemon Developer.')?></td>
 								</tr>
 								<tr>
 									<td>dreamfly</td>
-									<td><?php echo dgettext('about', 'An exported Salted Fish.')?></td>
+									<td><?php echo _('An exported Salted Fish.')?></td>
 								</tr>
 							</tbody>
 						</table>

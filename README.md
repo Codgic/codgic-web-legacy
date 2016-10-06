@@ -1,29 +1,32 @@
-# CWOJ     
-注： 评测端在[这里](https://github.com/CDFLS/cwoj_daemon)。    
+# CWOJ Laverne (1.0)    
+The local daemon part can be found [HERE](https://github.com/CDFLS/cwoj_daemon).  
 
-一个被成都外国语学校采用的信息学竞赛在线评测系统。     
-CWOJ基于Bashu Onilnejudge二次开发，这个项目也可以在github上被找到。我们很感谢Bashu Onlinejudge的开发者让我们得以快速地为学校定制一个在线评测系统。     
-另外，我们也很感谢那些开源的网页框架。他们美妙的作品让开发过程轻松了许多。     
+An online judge system used by Chengdu Foreign Languages School.
+CWOJ is based on Bashu Onlinejudge, which could also be found on github. We appreciate Bashu Onlinejudge's authors for sharing their codes to push the development of the internet world.
+Plus, we would like to thank those open source projects that we've been using as the framework. Their great work has made the developing such projects so much easier.
+
+Laverne, the middle name of Judy Hopps from the movie "Zootopia", represents the spirit of trying everything and not fearing failures. That drives me through everything that seemed difficult or even impossible.
      
-注： 1.x仍然处于早期开发阶段，有大量只写了不到一半的代码，并且较0.x在数据库上有一定改动。目前仅建议用于尝鲜测试~     
+Notes: 1.x is still in an early development stage, which means it contains loads of half-done codes. Additionally, there're some changes in database. So anything else than evaluation is not recommended.
      
-# 分支
-- master: 当前开发分支(1.x)。
-- stable-0.x: 稳定版本分支(0.x)。
+#Branches
+- master: Current development branch.
+- stable: Release branch for stable versions.
 
-# 特性
-相比原始的 Bashu Online Judge, 我们做了如下提升:
-- [X] <b>完全兼容PHP7</b>
-- [X] 多语言支持 (Alpha) + 细节升级
-- [X] 针对移动设备优化, 升级到Bootstrap 3。
-- [X] 日间/夜间模式 + 自动切换
-- [X] CodeMirror 代码高亮
-- [X] 密码找回    
-- [X] 新闻中心
-- [X] Gravatar头像
-- [X] 用户在线/离线状态    
-- [X] 重写的用户权限    
-- [X] 比赛 (Beta) 
+# Features
+Compared with the original Bashu Online Judge, we have also done some improvements:    
+- [X] <b>PHP7 Ready</b>    
+- [X] Mullti-Languages Support + Improvements on UX.    
+- [X] Optimized for mobile devices + Upgraded to Bootstrap 3.    
+- [X] Day/Night Mode + Auto switch.
+- [X] CodeMirror      
+- [X] Reset password.    
+- [X] News Center.          
+- [X] Gravatar.    
+- [X] User online/offline status.    
+- [X] Written user privilege system.    
+- [X] Contest (Beta).
+- [ ] Wiki (Highly unfinished).
 
-# 其它    
-您现在可以在Wiki下找到0.x的搭建指导。至于1.x的搭建指导，很遗憾短期内不会有，但至少在正式版发布前会发布。
+# Notes    
+You can now find the deployment guide for 0.x under the wiki section. As for 1.x, regretfully the guide won't be released in a short time. But, at least, you will be able to see it before 1.0 final.

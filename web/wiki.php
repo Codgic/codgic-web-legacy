@@ -22,7 +22,7 @@ if(!isset($_GET['page_id'])){
         $rand_wiki=rand(1,$maxpage);
         $row=mysqli_fetch_row(mysqli_query($con,"select title,content from wiki where wiki_id=$rand_wiki and is_max='Y' limit 1"));
         require __DIR__.'/func/text.php';
-        $extract=limit_words($row[1],100);
+        $extract=limit_words($row[1],50);
         require __DIR__.'/lib/Parsedown.php';
         $extract=Parsedown::instance()->text($extract.' ...');
     }
@@ -53,6 +53,7 @@ if(!isset($_GET['page_id'])){
         where is_max='Y' order by wiki_id limit ".(($page_id-1)*20).",20");
     }
 }
+
 $inTitle=_('Wiki');
 $Title=$inTitle .' - '. $oj_name;
 ?>
@@ -138,7 +139,7 @@ $Title=$inTitle .' - '. $oj_name;
 									while($row=mysqli_fetch_row($result)){
 										echo '<tr>';
 										echo '<td>',$row[0],'</td>';
-										echo '<td><a href="wikipage.php?contest_id=',$row[0],'">',$row[1],'</a>';
+										echo '<td style="text-align:left"><a href="wikipage.php?wiki_id=',$row[0],'">',$row[1],'</a>';
 										if($row[5]=='Y')
 											echo '&nbsp;&nbsp;<span class="label label-danger">',_('Deleted'),'</span>';
 										echo '</a></td>';
