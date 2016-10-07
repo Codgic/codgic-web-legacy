@@ -219,6 +219,7 @@ $Title=$inTitle .' - '. $oj_name;
 								<tbody>
 									<?php 
 										if($type==1){
+											//Problem
 											while($row=mysqli_fetch_row($result)){
 												echo '<tr>';
                                                 echo '<td>',$row[0],'</td>';
@@ -234,7 +235,8 @@ $Title=$inTitle .' - '. $oj_name;
 												echo '<td class="hidden-xs">',$row[2],'</td>';
 												echo "</tr>\n";
 											}
-										}else{  
+										}else{
+											//Contest
 											while($row=mysqli_fetch_row($result)){
 												if(time()>strtotime($row[5]))
 													$cont_status='<span class="label label-ac">'._('Ended').'</span>';
@@ -249,8 +251,7 @@ $Title=$inTitle .' - '. $oj_name;
 												}else
 													echo '<td style="text-align:left;">';
 												echo '<a href="contestpage.php?contest_id=',$row[0],'">',$row[1],'</a></td>';
-												if(isset($_SESSION['user']))
-													echo '<td class="hidden-xs">',htmlspecialchars($row[4]),'</td>';
+												echo '<td class="hidden-xs">',htmlspecialchars($row[4]),'</td>';
 												echo '<td>',$cont_status.'</td>';
 												echo '<td class="hidden-xs">',$row[2],'</td>';
 												echo "</tr>\n";
@@ -277,7 +278,7 @@ $Title=$inTitle .' - '. $oj_name;
 					</li>
 				</ul>
 			</div>
-			<?php if($type==3){?>
+			<?php if($type==4){?>
 				<div class="modal fade" id="UserModal">
 					<div class="modal-dialog">
 						<div class="modal-content">
@@ -308,7 +309,7 @@ $Title=$inTitle .' - '. $oj_name;
 				change_type(<?php echo $type?>);
 				$('#search_input').val("<?php echo urldecode($req)?>");
 				$('#search_type').val("<?php echo $type?>");
-				<?php if($type==3){?>
+				<?php if($type==4){?>
 					$('#userlist').click(function(Event){
 						var $target=$(Event.target);
 						if($target.is('a') && $target.attr('href')=='#linkU'){
