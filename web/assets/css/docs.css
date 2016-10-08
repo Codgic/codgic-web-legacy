@@ -24,23 +24,18 @@ footer {
         display: none;
         width: 100%
     }
-	.nav-text-alt {
-		display: none
-	}
-	.active .nav-text-alt {
-		display: inline
-	}
 }
 
 @media (min-width: 768px) {
     #search_form {
         display: none;
         width: 300px
-    }
-    .nav-text, .nav-text-alt {
+    }   
+    .nav-text {
         display:none
     }
-    .active .nav-text, .active .nav-text-alt {
+    
+    .active .nav-text{
         display:inline
     }
 
@@ -63,8 +58,8 @@ footer {
 }
 
 @media (min-width: 992px) {
-	.nav-text, .nav-text-alt {
-        display:inline
+    .nav-text {
+        display:inline;
     }
 }
 
@@ -78,12 +73,11 @@ footer {
 }
 
 .visible-inline-block {
-    display: inline-block !important;
+    display: inline-block !important
 }
 
 .CodeMirror {
-    border: 1px solid #eee;
-    height: auto
+    border: 1px solid #eee
 }
 
 .navbar-img {
@@ -427,8 +421,7 @@ caption {
 .bottom-right {
 	position: fixed;
 	right: 10px;
-	bottom: 10px;
-	display: none
+	bottom: 10px
 }
 
 h1 {

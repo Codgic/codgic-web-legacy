@@ -45,15 +45,19 @@ $Title=$inTitle .' - '. $oj_name;
 							<tbody>
 								<tr>
 									<td style="width:20%">jimmy19990</td>
-									<td><?php echo _('Main Developer & Maintainer.')?></td>
+									<td><?php echo _('CWOJ Web Developer & Maintainer.')?></td>
 								</tr>
 								<tr>
 									<td>Void</td>
-									<td><?php echo _('Main Content (Problems & Contests) Manager.')?></td>
+									<td><?php echo _('CWOJ Content (Problems & Contests) Manager.')?></td>
 								</tr>
 								<tr>
 									<td>t123yh</td>
 									<td><?php echo _('Reverse Proxy & Temporary Server Provider, CWOJ Daemon Developer.')?></td>
+								</tr>
+								<tr>
+									<td>zhangyutong926</td>
+									<td><?php echo _('CWOJ Daemon Developer.')?></td>
 								</tr>
 								<tr>
 									<td>dreamfly</td>
@@ -135,7 +139,6 @@ $Title=$inTitle .' - '. $oj_name;
 							</tbody>
 						</table>
 					</div>
-					<hr>
 				</div>
 			</div>
 			<?php require __DIR__.'/inc/footer.php';?>

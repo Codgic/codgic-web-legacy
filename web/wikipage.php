@@ -50,18 +50,10 @@ $Title=$inTitle .' - '. $oj_name;
             <?php }else{?>
                 <div class="row">
                     <div class="col-xs-12" id="leftside" style="font-size:16px">
-                        <div class="text-center">
+                        <div class="page-header">
                             <h2><?php echo '#'.$wiki_id,' ',$row[0];if($row[7]=='Y')echo ' <span style="vertical-align:middle;font-size:12px" class="label label-danger">',_('Deleted'),'</span>';?></h2>
                         </div>
-                        <br>
-                        <div class="panel panel-default">
-                            <div class="panel-heading">
-                                <h5 class="panel-title"><?php echo _('Content')?></h5>
-                            </div>
-                            <div class="panel-body">
-                                <?php echo Parsedown::instance()->text($row[1]);?>
-                            </div>
-                        </div>
+                        <?php echo Parsedown::instance()->text($row[1]);?>
                     </div>
                     <div class="col-xs-12 col-sm-3 collapse" id="rightside">
                         <div class="row">

@@ -24,7 +24,7 @@ if(!isset($_GET['page_id'])){
         require __DIR__.'/func/text.php';
         $extract=limit_words($row[1],50);
         require __DIR__.'/lib/Parsedown.php';
-        $extract=Parsedown::instance()->text($extract.' ...');
+        $extract=Parsedown::instance()->text($extract.' ');
     }
 }else{
     $page_id=intval($_GET['page_id']);
