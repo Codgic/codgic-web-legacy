@@ -152,6 +152,7 @@ $Title=$inTitle .' - '. $oj_name;
 					</div>
 				</div>
 			</div>
+			<?php require __DIR__.'/inc/footer.php';?>
 		</div>
       
 		<div class="modal fade" id="CategoryModal">
@@ -200,7 +201,6 @@ $Title=$inTitle .' - '. $oj_name;
 					</form> 
 				</div>
 			</div>
-			<?php require __DIR__.'/inc/footer.php';?>
 		</div>
       
 		<?php if(check_priv(PRIV_SYSTEM)){?>
