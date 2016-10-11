@@ -44,8 +44,8 @@ if(!isset($_SESSION['user'])){
 							<ul class="dropdown-menu" style="margin-top:-1px">
 								<li><a href="javascript:void(0)" onclick="return change_type(1)"><span id="type1"><i class="fa fa-fw fa-coffee"></i></span> <?php echo _('Problems');?></a></li>
 								<li><a href="javascript:void(0)" onclick="return change_type(2)"><span id="type2"><i class="fa fa-fw fa-compass"></i></span> <?php echo _('Contests');?></a></li>
-								<li><a href="javascript:void(0)" onclick="return change_type(3)"><span id="type3"><i class="fa fa-fw fa-user"></i></span> <?php echo _('Users');?></a></li>
-								<li><a href="javascript:void(0)" onclick="return change_type(4)"><span id="type4"><i class="fa fa-fw fa-magic"></i></span> <?php echo _('Wiki');?></a></li>
+								<li><a href="javascript:void(0)" onclick="return change_type(3)"><span id="type3"><i class="fa fa-fw fa-magic"></i></span> <?php echo _('Wiki');?></a></li>
+								<li><a href="javascript:void(0)" onclick="return change_type(4)"><span id="type4"><i class="fa fa-fw fa-user"></i></span> <?php echo _('Users');?></a></li>
 							</ul>
 						</div>
 						<input id="search_input" name="q" type="text" class="form-control" autocomplete="off" placeholder="<?php echo _('Search...');?>">
