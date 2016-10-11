@@ -2,7 +2,6 @@
 require __DIR__.'/../conf/ojsettings.php';
 require __DIR__.'/../inc/init.php';
 require __DIR__.'/../conf/database.php';
-require __DIR__.'/../func/preferences.php';
 
 if(!isset($_SESSION['user']))
 	exit();
