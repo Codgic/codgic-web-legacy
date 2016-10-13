@@ -112,43 +112,44 @@ $Title=$inTitle .' - '. $oj_name;
     
     <script src="/assets/js/common.js?v=<?php echo $web_ver?>"></script>
     <script type="text/javascript">
-    var wiki=<?php echo $wiki_id?>,hide_info=1;
-    change_type(4);
-      $(document).ready(function(){
-        $('#action_delete').click(function(){
-          alert('Unfinished');
-          return;
-          $.ajax({
-            type:"POST",
-            url:"ajax_editwiki.php",
-            data:{op:'del',wiki_id:cont},
-            success:function(msg){
-              if(/success/.test(msg)){
-                location.reload();
-              }else{
-                $('#alert_error').html('<i class="fa fa-fw fa-remove"></i> '+msg).fadeIn();
-                setTimeout(function(){$('#alert_error').fadeOut();},2000);
-              }
+        var wiki=<?php echo $wiki_id?>,hide_info=1;
+        change_type(4);
+        $(document).ready(function(){
+            $('table').addClass('table');
+            $('#action_delete').click(function(){
+                alert('Unfinished');
+                return;
+                $.ajax({
+                    type:"POST",
+                    url:"ajax_editwiki.php",
+                    data:{op:'del',wiki_id:cont},
+                    success:function(msg){
+                        if(/success/.test(msg))
+                            location.reload();
+                        else{
+                            $('#alert_error').html('<i class="fa fa-fw fa-remove"></i> '+msg).fadeIn();
+                            setTimeout(function(){$('#alert_error').fadeOut();},2000);
+                        }
+                    }
+                });
+            });
+            function toggle_info(){
+                if(hide_info) {
+                    $('#leftside').addClass('col-sm-9');
+                    $('#rightside').fadeIn(300);
+                    $('#show_tool').fadeOut(300);
+                    hide_info=0;
+                }else{
+                    $('#rightside').fadeOut(300);
+                    $('#show_tool').fadeIn(300);
+                    setTimeout("$('#leftside').addClass('col-xs-12').removeClass('col-sm-9')", 300);
+                    hide_info=1;
+                }
             }
-          });
+            $('#btn_hide').click(toggle_info);
+            $('#btn_show').click(toggle_info);
+            reg_hotkey(72, toggle_info); //Alt+H
         });
-        function toggle_info(){
-          if(hide_info) {
-			$('#leftside').addClass('col-sm-9');
-            $('#rightside').fadeIn(300);
-            $('#show_tool').fadeOut(300);
-            hide_info=0;
-          }else {
-            $('#rightside').fadeOut(300);
-            $('#show_tool').fadeIn(300);
-			setTimeout("$('#leftside').addClass('col-xs-12').removeClass('col-sm-9')", 300);
-            hide_info=1;
-          }
-        }
-        $('#btn_hide').click(toggle_info);
-        $('#btn_show').click(toggle_info);
-        reg_hotkey(72, toggle_info); //Alt+H
-      });
-    </script>
-  </body>
+        </script>
+    </body>
 </html>

@@ -1,11 +1,12 @@
+body {
+    margin-top:70px;
+    font-size:14px;
+	font-family: Arial,"Microsoft YaHei","微软雅黑",Helvetica Neue
+}
+
 img {
     height: auto;
         max-width: 100%;
-}
-
-body {
-    margin-top:70px;
-	font-family: Arial,"Microsoft YaHei","微软雅黑",Helvetica Neue
 }
 
 h1,h2,h3,h4,h5,h6,.h1,.h2,.h3,.h4,.h5,.h6 {
@@ -72,8 +73,20 @@ footer {
     }
 }
 
+.page-header {
+    margin: 20px 0 20px;
+}
+
 .visible-inline-block {
     display: inline-block !important
+}
+
+.CodeMirror {
+    border: 1px solid #000
+}
+
+.cm-autoheight .CodeMirror {
+    height: auto
 }
 
 .navbar-img {

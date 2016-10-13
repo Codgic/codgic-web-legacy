@@ -11,7 +11,7 @@ $Title=$inTitle .' - '. $oj_name;
 	<body>
 		<?php require __DIR__.'/inc/navbar.php';?>  
       
-		<div class="container about-page">
+		<div class="container">
 			<div class="row">
 				<div class="col-xs-12" style="font-size:16px">
 					<div class="page-header">

@@ -40,11 +40,6 @@ else if(!isset($_SESSION['admin_tfa']) || !$_SESSION['admin_tfa']){
 <html>
 	<?php require __DIR__.'/inc/head.php'; ?>
 	<body>
-        <style>
-            .CodeMirror {
-                height: auto !important
-            }
-        </style>
 		<?php
 			//Load CodeMirror
 			if($pref->edrmode!='off'){
@@ -129,7 +124,9 @@ else if(!isset($_SESSION['admin_tfa']) || !$_SESSION['admin_tfa']){
 				echo '<script src="/assets/js/codemirror.js"></script>';
 				echo '<script src="/assets/js/codemirror.placeholder.js"></script>';
 				echo '<script src="/assets/js/codemirror.fullscreen.js"></script>';
-				echo '<script src="/assets/js/codemirror.markdown.js"></script>';
+                echo '<script src="/assets/js/codemirror.overlay.js"></script>';
+                echo '<script src="/assets/js/codemirror.markdown.js"></script>';
+				echo '<script src="/assets/js/codemirror.gfm.js"></script>';
 				if($pref->edrmode!='default')
 					echo '<script src="/assets/js/codemirror.'.$pref->edrmode.'.js"></script>';
 			}
@@ -138,7 +135,7 @@ else if(!isset($_SESSION['admin_tfa']) || !$_SESSION['admin_tfa']){
 			$(document).ready(function(){
                 var editor = CodeMirror.fromTextArea(document.getElementById('detail_input'),{
 					theme: "<?php if($t_night=='on') echo 'midnight'; else echo 'eclipse'?>",
-					mode: "text/x-markdown",
+					mode: "gfm",
 					<?php
 						if($pref->edrmode!='default'){
 							echo 'keyMap:"'.$pref->edrmode.'",';

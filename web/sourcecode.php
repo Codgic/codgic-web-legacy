@@ -79,13 +79,8 @@ $Title=$inTitle .' - '. $oj_name;
 	<link rel="stylesheet" href="/assets/css/codemirror.css"> 
 	<link rel="stylesheet" href="/assets/css/codemirror.fullscreen.css">
 	<body>
-		<style>
-            .CodeMirror {
-                height: auto !important
-            }
-        </style>
 		<?php require __DIR__.'/inc/navbar.php'; ?>  
-		<div class="container">
+		<div class="container cm-autoheight">
 			<?php if(isset($info)){?>
 				<div class="text-center none-text none-center">
 					<p><i class="fa fa-meh-o fa-4x"></i></p>
