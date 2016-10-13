@@ -130,14 +130,15 @@ if($_POST['op']=='del'){
         if(($row=mysqli_fetch_row($result)) && intval($row[0]))
             $id=intval($row[0])+1;
         $result=mysqli_query($con,"insert into problem (problem_id,title,description,input,output,sample_input,sample_output,hint,source,in_date,memory_limit,case_time_limit,case_score,has_tex,compare_way) values ($id,'$title','$des','$input','$output','$samp_in','$samp_out','$hint','$source',NOW(),$memory,$time,$score,$has_tex,$compare_way)");
-
     }else{
         echo _('Invalid Argument...');
         exit();
     }
 
-    if(!$result)
-        echo _('Something went wrong...');
-    else
+    if($result)
         echo 'success';
+    else{
+        echo _('Something went wrong...');
+        exit();
+    }
 }

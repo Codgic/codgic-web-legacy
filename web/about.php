@@ -21,7 +21,7 @@ $Title=$inTitle .' - '. $oj_name;
 						<p>
 							<?php
 								echo _('CWOJ is a Free, <a href="https://github.com/CDFLS/CWOJ">Open-source</a> Online Judge Solution designed for OI trainings, based on Bashu OnlineJudge. 
-								Started on 11/20/2015, we keep seeking a better OJ solution for individuals, schools and other educational organizations.');
+                                Started on 11/20/2015, we keep seeking a better OJ solution for individuals, schools and other educational organizations.');
 							?>
 						</p>
 					</div>

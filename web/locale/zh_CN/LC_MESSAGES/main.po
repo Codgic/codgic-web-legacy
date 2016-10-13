@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: CWOJ-1.0.Laverne\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-10-08 21:43+0800\n"
-"PO-Revision-Date: 2016-10-08 21:44+0800\n"
+"POT-Creation-Date: 2016-10-13 13:02+0800\n"
+"PO-Revision-Date: 2016-10-13 13:02+0800\n"
 "Last-Translator: Jimmy Zhang <info@cwoj.tk>\n"
 "Language-Team: CWOJ Team <info@cwoj.tk>\n"
 "Language: zh_CN\n"
@@ -105,8 +105,9 @@ msgid ""
 "CWOJ is a Free, <a href=\"https://github.com/CDFLS/CWOJ\">Open-source</a> "
 "Online Judge Solution designed for OI trainings, based on Bashu "
 "OnlineJudge. \n"
-"\t\t\t\t\t\t\t\tStarted on 11/20/2015, we keep seeking a better OJ solution "
-"for individuals, schools and other educational organizations."
+"                                Started on 11/20/2015, we keep seeking a "
+"better OJ solution for individuals, schools and other educational "
+"organizations."
 msgstr ""
 "CWOJ是一个免费，<a href=\"https://github.com/CDFLS/CWOJ\">开源</a>且为信息竞"
 "赛设计的在线评测系统，基于Bashu OnlineJudge二次开发。起始于2015年11月20日，我"
@@ -267,7 +268,7 @@ msgstr "题目分类..."
 msgid "Rejudge..."
 msgstr "重新评测..."
 
-#: admin.php:62 admin.php:111 admin.php:172 admin.php:240 admin.php:302
+#: admin.php:62 admin.php:111 admin.php:173 admin.php:240 admin.php:302
 #: preferences.php:73 problempage.php:483 profile.php:103
 msgid "Save"
 msgstr "保存"
@@ -286,7 +287,7 @@ msgid "Loading..."
 msgstr "正在加载..."
 
 #: admin.php:102 api/ajax_admin.php:85 api/ajax_admin.php:113 board.php:60
-#: contest.php:139 editcontest.php:82 editproblem.php:87 editwiki.php:81
+#: contest.php:139 editcontest.php:82 editproblem.php:87 editwiki.php:76
 #: mail.php:214 marked.php:93 news.php:59 problemset.php:140 search.php:175
 #: search.php:204 search.php:208 wiki.php:131
 msgid "Title"
@@ -318,15 +319,15 @@ msgstr "上一页"
 msgid "Next"
 msgstr "下一页"
 
-#: admin.php:162
+#: admin.php:163
 msgid "Problem Categories"
 msgstr "题目分类"
 
-#: admin.php:167
+#: admin.php:168
 msgid "Please input HTML code..."
 msgstr "请输入HTML代码..."
 
-#: admin.php:173 admin.php:198 admin.php:241 admin.php:269 admin.php:303
+#: admin.php:174 admin.php:199 admin.php:241 admin.php:269 admin.php:303
 #: admin.php:325 board.php:82 board.php:191 index.php:123 mail.php:231
 #: mail.php:248 news.php:115 problempage.php:449 problempage.php:484
 #: ranklist.php:163 record.php:304 search.php:297 signup.php:79 solved.php:67
@@ -334,11 +335,11 @@ msgstr "请输入HTML代码..."
 msgid "Close"
 msgstr "关闭"
 
-#: admin.php:185 admin.php:197
+#: admin.php:186 admin.php:198
 msgid "Rejudge"
 msgstr "重新评测"
 
-#: admin.php:191
+#: admin.php:192
 msgid "Please enter the Problem ID:"
 msgstr "请输入题目ID:"
 
@@ -455,7 +456,7 @@ msgstr "你的密码..."
 msgid "Go"
 msgstr "确认"
 
-#: api/ajax_admin.php:7 api/ajax_editcontest.php:17 api/ajax_editproblem.php:17
+#: api/ajax_admin.php:7 api/ajax_editcontest.php:18 api/ajax_editproblem.php:17
 #: api/ajax_editwiki.php:6 api/ajax_getnews.php:20 api/ajax_getnews.php:26
 #: api/ajax_mailfunc.php:81 api/ajax_mailfunc.php:107 api/ajax_submit.php:92
 #: api/ajax_testcase.php:7 api/ajax_user.php:7
@@ -466,9 +467,9 @@ msgstr "你没有权限..."
 msgid "Privilege not authorized..."
 msgstr "尚未验证权限..."
 
-#: api/ajax_admin.php:15 api/ajax_admin.php:307 api/ajax_contest.php:7
-#: api/ajax_contest.php:13 api/ajax_contest.php:157 api/ajax_editcontest.php:20
-#: api/ajax_editcontest.php:122 api/ajax_editcontest.php:144
+#: api/ajax_admin.php:15 api/ajax_admin.php:312 api/ajax_contest.php:7
+#: api/ajax_contest.php:13 api/ajax_contest.php:157 api/ajax_editcontest.php:21
+#: api/ajax_editcontest.php:123 api/ajax_editcontest.php:145
 #: api/ajax_editproblem.php:21 api/ajax_editproblem.php:122
 #: api/ajax_editproblem.php:135 api/ajax_editwiki.php:9
 #: api/ajax_editwiki.php:50 api/ajax_editwiki.php:72 api/ajax_getnews.php:10
@@ -552,8 +553,8 @@ msgstr "等级"
 
 #: api/ajax_admin.php:230 api/ajax_admin.php:247 api/ajax_admin.php:259
 #: api/ajax_admin.php:265 api/ajax_contest.php:139 api/ajax_contest.php:141
-#: api/ajax_contest.php:155 api/ajax_editcontest.php:40
-#: api/ajax_editcontest.php:128 api/ajax_editproblem.php:40
+#: api/ajax_contest.php:155 api/ajax_editcontest.php:41
+#: api/ajax_editcontest.php:129 api/ajax_editproblem.php:40
 #: api/ajax_editproblem.php:140 api/ajax_editwiki.php:30
 #: api/ajax_editwiki.php:56 api/ajax_mark.php:32 api/ajax_message.php:45
 #: api/ajax_message.php:100 api/ajax_message.php:127 api/ajax_opensource.php:22
@@ -563,16 +564,16 @@ msgstr "等级"
 msgid "Something went wrong..."
 msgstr "系统抽风咯..."
 
-#: api/ajax_admin.php:270 api/ajax_mailfunc.php:52
+#: api/ajax_admin.php:271 api/ajax_mailfunc.php:52
 msgid "Reciever can't be empty..."
 msgstr "收件人不可为空..."
 
-#: api/ajax_admin.php:275 api/ajax_admin.php:290 api/ajax_mailfunc.php:60
+#: api/ajax_admin.php:277 api/ajax_admin.php:294 api/ajax_mailfunc.php:60
 #: api/ajax_mailfunc.php:111
 msgid "Title can't be empty..."
 msgstr "标题不可为空..."
 
-#: api/ajax_admin.php:280 api/ajax_admin.php:295
+#: api/ajax_admin.php:283 api/ajax_admin.php:300
 msgid "Content can't be empty..."
 msgstr "内容不可为空..."
 
@@ -604,48 +605,48 @@ msgstr "你尚未登录..."
 msgid "Contest has ended..."
 msgstr "比赛已经结束..."
 
-#: api/ajax_editcontest.php:29 api/ajax_editproblem.php:29
+#: api/ajax_editcontest.php:30 api/ajax_editproblem.php:29
 #: api/ajax_submit.php:59
 msgid "No such problem..."
 msgstr "该题目不存在..."
 
-#: api/ajax_editcontest.php:46
+#: api/ajax_editcontest.php:47
 msgid "Please enter start time..."
 msgstr "请输入开始时间..."
 
-#: api/ajax_editcontest.php:50
+#: api/ajax_editcontest.php:51
 msgid "Invalid start time..."
 msgstr "无效的开始时间..."
 
-#: api/ajax_editcontest.php:56
+#: api/ajax_editcontest.php:57
 msgid "Please enter end time..."
 msgstr "请输入结束时间..."
 
-#: api/ajax_editcontest.php:60
+#: api/ajax_editcontest.php:61
 msgid "Invalid end time..."
 msgstr "无效的结束时间..."
 
-#: api/ajax_editcontest.php:64
+#: api/ajax_editcontest.php:65
 msgid "Start time can't be greater than end time..."
 msgstr "开始时间不可以晚于结束时间..."
 
-#: api/ajax_editcontest.php:75 api/ajax_editwiki.php:36
+#: api/ajax_editcontest.php:76 api/ajax_editwiki.php:36
 msgid "Please enter title..."
 msgstr "请输入标题..."
 
-#: api/ajax_editcontest.php:81
+#: api/ajax_editcontest.php:82
 msgid "Please specify problems..."
 msgstr "请指明比赛题目..."
 
-#: api/ajax_editcontest.php:102 api/ajax_editcontest.php:106
+#: api/ajax_editcontest.php:103 api/ajax_editcontest.php:107
 msgid "Problem #"
 msgstr "题目 #"
 
-#: api/ajax_editcontest.php:102
+#: api/ajax_editcontest.php:103
 msgid "does not exist..."
 msgstr "不存在..."
 
-#: api/ajax_editcontest.php:106
+#: api/ajax_editcontest.php:107
 msgid "is hidden. Please hide the contest to add it..."
 msgstr "已被隐藏，请先隐藏比赛再添加隐藏题目..."
 
@@ -845,7 +846,7 @@ msgstr "讨论"
 msgid "Post Title..."
 msgstr "帖子标题..."
 
-#: board.php:66 editwiki.php:101 mail.php:220
+#: board.php:66 editwiki.php:96 mail.php:220
 msgid "Content"
 msgstr "内容"
 
@@ -952,7 +953,7 @@ msgid "Status"
 msgstr "状态"
 
 #: contest.php:142 contestpage.php:262 editcontest.php:172 editproblem.php:236
-#: editwiki.php:110 problempage.php:268 problempage.php:382 problempage.php:478
+#: editwiki.php:105 problempage.php:268 problempage.php:382 problempage.php:478
 #: problemset.php:144 search.php:178 search.php:216 wiki.php:133
 msgid "Tags"
 msgstr "标签"
@@ -1107,7 +1108,7 @@ msgstr "新建比赛"
 msgid "Edit Contest"
 msgstr "编辑比赛"
 
-#: editcontest.php:74 editproblem.php:79 editwiki.php:73
+#: editcontest.php:74 editproblem.php:79 editwiki.php:68
 msgid "Show Toolbar"
 msgstr "显示工具"
 
@@ -1123,15 +1124,15 @@ msgstr "开始时间 (yyyy-mm-dd hh:mm:ss)"
 msgid "End Time (yyyy-mm-dd hh:mm:ss)"
 msgstr "结束时间 (yyyy-mm-dd hh:mm:ss)"
 
-#: editcontest.php:152 editproblem.php:176 editwiki.php:89
+#: editcontest.php:152 editproblem.php:176 editwiki.php:84
 msgid "Options"
 msgstr "选项"
 
-#: editcontest.php:156 editproblem.php:180 editwiki.php:93
+#: editcontest.php:156 editproblem.php:180 editwiki.php:88
 msgid "Hide"
 msgstr "隐藏"
 
-#: editcontest.php:180 editproblem.php:244 editwiki.php:118 problempage.php:348
+#: editcontest.php:180 editproblem.php:244 editwiki.php:113 problempage.php:348
 #: problempage.php:415 problempage.php:448 problempage.php:494 ranklist.php:107
 #: record.php:204 record.php:242 search.php:148 signup.php:59
 msgid "Submit"
@@ -1298,7 +1299,7 @@ msgstr "新建百科"
 msgid "Edit Wiki"
 msgstr "编辑百科"
 
-#: editwiki.php:104 problempage.php:424
+#: editwiki.php:99 problempage.php:424
 msgid "Command: "
 msgstr "指令:"
 
@@ -1414,7 +1415,7 @@ msgstr "百科"
 msgid "Search..."
 msgstr "搜索..."
 
-#: inc/navbar.php:35 resetpwd.php:33 signup.php:60 sourcecode.php:112
+#: inc/navbar.php:35 resetpwd.php:33 signup.php:60 sourcecode.php:111
 msgid "Go Back..."
 msgstr "返回..."
 
@@ -1680,7 +1681,7 @@ msgstr "比赛主页"
 msgid "[Copy]"
 msgstr "[复制]"
 
-#: problempage.php:297 sourcecode.php:99
+#: problempage.php:297 sourcecode.php:98
 msgid "Problem: "
 msgstr "题目: "
 
@@ -1740,11 +1741,11 @@ msgstr "在这里写些心得吧..."
 msgid "Only you can read & edit your very own notes."
 msgstr "只有你才能阅读并编辑你自己的笔记。"
 
-#: problempage.php:602 problempage.php:612 sourcecode.php:174
+#: problempage.php:602 problempage.php:612 sourcecode.php:173
 msgid "Copied!"
 msgstr "复制成功!"
 
-#: problempage.php:607 problempage.php:617 sourcecode.php:179
+#: problempage.php:607 problempage.php:617 sourcecode.php:178
 msgid "Failed..."
 msgstr "复制失败!"
 
@@ -2063,35 +2064,35 @@ msgstr "请指明源码ID"
 msgid "Sourcecode not available"
 msgstr "源码不可用"
 
-#: sourcecode.php:96
+#: sourcecode.php:95
 msgid "User: "
 msgstr "用户: "
 
-#: sourcecode.php:100
+#: sourcecode.php:99
 msgid "Result: "
 msgstr "结果: "
 
-#: sourcecode.php:103
+#: sourcecode.php:102
 msgid "Size: "
 msgstr "大小: "
 
-#: sourcecode.php:104
+#: sourcecode.php:103
 msgid "Language: "
 msgstr "语言: "
 
-#: sourcecode.php:107
+#: sourcecode.php:106
 msgid "Time: "
 msgstr "时间: "
 
-#: sourcecode.php:108
+#: sourcecode.php:107
 msgid "Memory: "
 msgstr "内存: "
 
-#: sourcecode.php:115
+#: sourcecode.php:114
 msgid "Fullscreen"
 msgstr "全屏"
 
-#: sourcecode.php:118 upload.php:69
+#: sourcecode.php:117 upload.php:69
 msgid "Copy"
 msgstr "复制"
 
@@ -2255,6 +2256,18 @@ msgstr "上次修改"
 #: wikipage.php:18
 msgid "There's no such wiki"
 msgstr "该百科不存在"
+
+#~ msgid ""
+#~ "CWOJ is a Free, <a href=\"https://github.com/CDFLS/CWOJ\">Open-source</a> "
+#~ "Online Judge Solution designed for OI trainings, based on Bashu "
+#~ "OnlineJudge. \n"
+#~ "\t\t\t\t\t\t\t\tStarted on 11/20/2015, we keep seeking a better OJ "
+#~ "solution for individuals, schools and other educational organizations."
+#~ msgstr ""
+#~ "CWOJ是一个免费，<a href=\"https://github.com/CDFLS/CWOJ\">开源</a>且为信息"
+#~ "竞赛设计的在线评测系统，基于Bashu OnlineJudge二次开发。起始于2015年11月20"
+#~ "日，我们一直致力于寻求一个更好的面向于个人，学校以及其他教育机构的在线评测"
+#~ "解决方案。"
 
 #~ msgid "Main Developer & Maintainer."
 #~ msgstr "主要开发与维护者。"
