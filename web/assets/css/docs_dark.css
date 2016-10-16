@@ -25,19 +25,24 @@ footer {
         display: none;
         width: 100%
     }
+    
+    .nav-text-alt {
+        display: none
+    }
 }
 
 @media (min-width: 768px) {
     #search_form {
         display: none;
         width: 300px
-    }   
-    .nav-text {
-        display:none
     }
     
-    .active .nav-text{
-        display:inline
+    .nav-text,.nav-text-alt {
+        display: none
+    }
+    
+    .active .nav-text, .active .nav-text-alt{
+        display: inline
     }
 
     .dropdown .dropdown-menu {
@@ -59,8 +64,8 @@ footer {
 }
 
 @media (min-width: 992px) {
-    .nav-text {
-        display:inline;
+    .nav-text,.nav-text-alt{
+        display: inline
     }
 }
 

@@ -7,11 +7,26 @@ require __DIR__.'/conf/database.php';
 
 if(isset($_GET['wiki_id']))
     $wiki_id=intval($_GET['wiki_id']);
-//else if(isset($_SESSION['view']))
-//    $wiki_id=$_SESSION['view'];
-else
+else if(isset($_SESSION['view'])){
+    $view_arr=unserialize($_SESSION['view']);
+    $wiki_id=$view_arr['wiki'];
+}else
     $wiki_id=1;
-$query="select title,content,tags,author,revision,in_date,privilege,defunct from wiki where wiki_id=$wiki_id and is_max='Y'";
+
+//If a revision is specified.
+$addt_cond="and is_max='Y'";
+if(isset($_GET['rev'])){
+    $rev=intval($_GET['rev']);
+    $row=mysqli_fetch_row(mysqli_query($con, "select max(revision) from wiki where wiki_id=$wiki_id"));
+    if(isset($row)&&$rev<=$row[0])
+        $addt_cond="and revision=$rev";
+	else if(isset($row)){
+		header("Location: wikipage.php?wiki_id=$wiki_id");
+		exit();
+	}
+}
+
+$query="select title,content,tags,author,revision,in_date,privilege,defunct from wiki where wiki_id=$wiki_id $addt_cond";
 $result=mysqli_query($con,$query);
 $row=mysqli_fetch_row($result);
 if(!$row)
@@ -25,11 +40,21 @@ if($row[7]=='Y' && !check_priv(PRIV_PROBLEM))
 if($forbidden)
     $info=_('Looks like you can\'t access this page');
     
+//Update last visited records.
+if(!isset($_SESSION['view']))
+    $view_arr=array('cont'=>1000,'prob'=>1000,'wiki'=>$wiki_id);
+else{
+    $view_arr=unserialize($_SESSION['view']);
+    $view_arr['wiki']=$wiki_id;
+}
+$_SESSION['view']=serialize($view_arr);
+    
 $inTitle=_('Wiki')." #$wiki_id";
 $Title=$inTitle .' - '. $oj_name;
 ?>
 <!DOCTYPE html>
 <html>
+    <link rel="stylesheet" href="/assets/css/prism.css"> 
     <?php require __DIR__.'/inc/head.php';?>
     <body>
         <?php require __DIR__.'/inc/navbar.php';?>
@@ -110,6 +135,7 @@ $Title=$inTitle .' - '. $oj_name;
         <span id="btn_show" title="Alt+H" class="btn btn btn-primary shortcut-hint"><i class="fa fa-fw fa-toggle-off"></i> <?php echo _('Show Sidebar')?></span>
     </div>
     
+    <script src="/assets/js/prism.js"></script>
     <script src="/assets/js/common.js?v=<?php echo $web_ver?>"></script>
     <script type="text/javascript">
         var wiki=<?php echo $wiki_id?>,hide_info=1;
@@ -121,7 +147,7 @@ $Title=$inTitle .' - '. $oj_name;
                 return;
                 $.ajax({
                     type:"POST",
-                    url:"ajax_editwiki.php",
+                    url:"api/ajax_editwiki.php",
                     data:{op:'del',wiki_id:cont},
                     success:function(msg){
                         if(/success/.test(msg))

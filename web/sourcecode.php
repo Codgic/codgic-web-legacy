@@ -69,14 +69,14 @@ $Title=$inTitle .' - '. $oj_name;
 ?>
 <!DOCTYPE html>
 <html>
-	<?php 
-		require __DIR__.'/inc/head.php'; 
+   <?php
+        require __DIR__.'/inc/head.php'; 
 		if($t_night=='on') 
 			echo '<link rel="stylesheet" href="/assets/css/codemirror.midnight.css">';
 		else
 			echo'<link rel="stylesheet" href="/assets/css/codemirror.eclipse.css">';
 	?>
-	<link rel="stylesheet" href="/assets/css/codemirror.css"> 
+    <link rel="stylesheet" href="/assets/css/codemirror.css"> 
 	<link rel="stylesheet" href="/assets/css/codemirror.fullscreen.css">
 	<body>
 		<?php require __DIR__.'/inc/navbar.php'; ?>  
@@ -130,9 +130,9 @@ $Title=$inTitle .' - '. $oj_name;
 		</div>
 		
 		<script src="/assets/js/codemirror.js"></script>
-		<script src="/assets/js/codemirror.fullscreen.js"></script>
-		<script src="/assets/js/codemirror.clike.js"></script>
-		<script src="/assets/js/codemirror.pascal.js"></script>
+		<script src="/assets/js/CodeMirror/addon/fullscreen.js"></script>
+		<script src="/assets/js/CodeMirror/mode/clike.js"></script>
+		<script src="/assets/js/CodeMirror/mode/pascal.js"></script>
 		<script src="/assets/js/clipboard.min.js"></script>
 		<script src="/assets/js/common.js?v=<?php echo $web_ver?>"></script>
 		<script type="text/javascript"> 
@@ -152,8 +152,6 @@ $Title=$inTitle .' - '. $oj_name;
 					echo 'text/x-c++src'
 				?>",
 				lineNumbers: true,
-				readOnly: 'nocursor',
-				viewportMargin: Infinity
 			});
 			function toggle_fullscreen(cm){
 				if(cm.getOption("fullScreen")){

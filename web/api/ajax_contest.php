@@ -69,7 +69,7 @@ if($op=='get_rank_table'){
     <table class="table table-condensed">
 		<thead>
 			<tr>
-				<th>No.</th>
+                <th>No.</th>
 				<th><?php echo _('User')?></th>
 				<th><?php echo _('Score')?></th>
 				<th><?php echo _('Time Penalty')?></th>
@@ -85,7 +85,11 @@ if($op=='get_rank_table'){
 				while($row=mysqli_fetch_row($q)){
 					$scr_arr=unserialize($row[1]);
 					$res_arr=unserialize($row[2]);
-					echo '<tr><td>',$row[5],'</td>';
+					echo '<tr>';
+                    if(time()>=$cont_starttime)
+                        echo '<td>',$row[5],'</td>';
+                    else
+                        echo '<td>-</td>';
 					echo '<td>',$row[0],'</td>';
 					echo '<td>',$row[3],'</td>';
 					echo '<td>',get_time_text($row[4]),'</td>';
@@ -109,12 +113,12 @@ if($op=='get_rank_table'){
     $uid=$_SESSION['user'];
     
     if($op=='enroll'){
-        $row=mysqli_fetch_row(mysqli_query($con,"select end_time,problems,num,enroll_user from contest where contest_id=$cont_id"));
+        $row=mysqli_fetch_row(mysqli_query($con,"select start_time,end_time,problems,num,enroll_user from contest where contest_id=$cont_id"));
         if(!$row){
             echo _('No such contest...');
             exit();
         }
-        if(strtotime($row[0])<=time()){
+        if(strtotime($row[1])<=time()){
             echo _('Contest has ended...');
             exit();
         }
@@ -124,18 +128,20 @@ if($op=='get_rank_table'){
             exit();
         }
 
-        $prob_arr=unserialize($row[1]);
+        $prob_arr=unserialize($row[2]);
         $newp_arr=array();
-        for($i=0;$i<$row[2];$i++){
+        for($i=0;$i<$row[3];$i++){
             $newp_arr["$prob_arr[$i]"]=0;
             $newr_arr["$prob_arr[$i]"]=NULL;
         }
         $problems=serialize($newp_arr);
         $results=serialize($newr_arr);
         if(mysqli_query($con,"insert into contest_status (user_id,contest_id,scores,results,times) VALUES ('$uid',$cont_id,'$problems','$results','$problems')")){
-            if(mysqli_query($con,'update contest set enroll_user='.($row[3]+1)." where contest_id=$cont_id"))
+            if(mysqli_query($con,'update contest set enroll_user='.($row[4]+1)." where contest_id=$cont_id")){
+                if(time()>strtotime($row[0]))
+                    update_cont_rank($cont_id);
                 echo 'success';
-            else
+            }else
                 echo _('Something went wrong...');
         }else
             echo _('Something went wrong...');
@@ -149,8 +155,13 @@ if($op=='get_rank_table'){
             echo _('Contest has ended...');
             exit();
         }
-        if(mysqli_query($con,"DELETE from contest_status where user_id='$uid' and contest_id=$cont_id"))
-            echo 'success';
+        if(mysqli_query($con,"DELETE from contest_status where user_id='$uid' and contest_id=$cont_id")){
+            $row[1]--;
+            if(mysqli_query($con, "UPDATE contest set enroll_user=$row[1] where contest_id=$cont_id"))
+                echo 'success';
+            else
+                echo _('Something went wrong...');
+        }
         else
             echo _('Something went wrong...');
     }else

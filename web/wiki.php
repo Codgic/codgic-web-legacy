@@ -16,15 +16,10 @@ require __DIR__.'/conf/database.php';
 if(!isset($_GET['page_id'])){
     $row=mysqli_fetch_row(mysqli_query($con,"select max(wiki_id) from wiki where $addt_cond"));
     $maxpage=intval($row[0]);
-    if($maxpage==0){
+    if($maxpage==0)
         $info=_('Looks like there\'s no wiki here');
-    }else{
-        $rand_wiki=rand(1,$maxpage);
-        $row=mysqli_fetch_row(mysqli_query($con,"select title,content from wiki where wiki_id=$rand_wiki and is_max='Y' limit 1"));
-        require __DIR__.'/func/text.php';
-        $extract=limit_words($row[1],50);
-        require __DIR__.'/lib/Parsedown.php';
-        $extract=Parsedown::instance()->text($extract.' ');
+    else{
+        $row=mysqli_fetch_row(mysqli_query($con,"select content from wiki where wiki_id=0 limit 1"));
     }
 }else{
     $page_id=intval($_GET['page_id']);
@@ -47,10 +42,10 @@ if(!isset($_GET['page_id'])){
         $user_id=$_SESSION['user'];
         $result=mysqli_query($con,"select wiki_id,title,content,tags,in_date,defunct,saved.wid from wiki
         LEFT JOIN (select wiki_id as wid from saved_wiki where user_id='$user_id') as saved on (saved.wid=wiki_id)
-        where is_max='Y' order by wiki_id limit ".(($page_id-1)*20).",20");
+        where wiki_id>0 and is_max='Y' order by wiki_id limit ".(($page_id-1)*20).",20");
     }else{
         $result=mysqli_query($con,"select wiki_id,title,content,tags,in_date,defunct from wiki
-        where is_max='Y' order by wiki_id limit ".(($page_id-1)*20).",20");
+        where wiki_id>0 and is_max='Y' order by wiki_id limit ".(($page_id-1)*20).",20");
     }
 }
 
@@ -69,7 +64,7 @@ $Title=$inTitle .' - '. $oj_name;
 						<div class="panel panel-default">
 							<div class="panel-heading">
 								<h5 class="panel-title">
-									<?php echo _('Random Article')?>
+									<?php echo _('Quick Access')?>
 								</h5>
 							</div>
 							<div class="panel-body">
@@ -83,11 +78,9 @@ $Title=$inTitle .' - '. $oj_name;
 										</p>
 									</div>
 								<?php }else{?>
-									<h2><a href="/wikipage.php?wiki_id=<?php echo $rand_wiki?>"><?php echo $row[0]?></a></h2>
 									<div>
-										<?php echo $extract?>
+										<?php echo $row[0]?>
 									</div>
-									<a href="/wikipage.php?wiki_id=<?php echo $rand_wiki?>"><?php echo _('Learn More...')?></a>
 								<?php }?>
 							</div>
 						</div>
@@ -144,7 +137,7 @@ $Title=$inTitle .' - '. $oj_name;
 											echo '&nbsp;&nbsp;<span class="label label-danger">',_('Deleted'),'</span>';
 										echo '</a></td>';
 										if(isset($_SESSION['user']))
-											echo '<td style="border-left:0;width:1%"><i data-pid="',$row[0],'" class="', is_null($row[8]) ? 'fa fa-star-o' : 'fa fa-star', ' fa-fw fa-2x text-warning save_problem" style="cursor:pointer;"></i></td>';
+											echo '<td style="border-left:0;width:1%"><i data-pid="',$row[0],'" class="', is_null($row[6]) ? 'fa fa-star-o' : 'fa fa-star', ' fa-fw fa-2x text-warning save_problem" style="cursor:pointer;"></i></td>';
 										echo '<td class="hidden-xs hidden-sm">',$row[4],'</td>';
 										echo '<td class="hidden-xs" style="text-align:left">',$row[3],"</td></tr>\n";
 									}
@@ -183,7 +176,7 @@ $Title=$inTitle .' - '. $oj_name;
 								op='rm_saved';
 							else
 								op='add_saved';
-							$.get('ajax_mark.php?type=3&prob='+pid+'&op='+op,function(result){
+							$.get('api/ajax_mark.php?type=3&prob='+pid+'&op='+op,function(result){
 								if(/success/.test(result)){
 									$target.toggleClass('fa-star-o')
 									$target.toggleClass('fa-star')

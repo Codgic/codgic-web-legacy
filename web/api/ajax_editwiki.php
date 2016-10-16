@@ -2,7 +2,7 @@
 require __DIR__.'/../inc/init.php';
 require __DIR__.'/../func/privilege.php';
 
-if(!check_priv(PRIV_PROBLEM)){
+if(!isset($_SESSION['user'])){
     echo _('Permission Denied...');
 	exit();
 }else if(!isset($_POST['op'])){
@@ -13,6 +13,10 @@ if(!check_priv(PRIV_PROBLEM)){
 require __DIR__.'/../conf/database.php';
 
 if($_POST['op']=='del'){
+    if(!check_priv(PRIV_PROBLEM)){
+        echo _('Permission Denied...');
+        exit();
+    }
     if(!isset($_POST['wiki_id'])){
         echo _('No such wiki...');
         exit();

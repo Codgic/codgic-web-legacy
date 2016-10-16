@@ -4,16 +4,11 @@ require __DIR__.'/inc/init.php';
 require __DIR__.'/func/privilege.php';
 require __DIR__.'/func/checklogin.php';
 
-if(!check_priv(PRIV_PROBLEM))
+if(!isset($_SESSION['user']))
     include __DIR__.'/inc/403.php';
-else if(!isset($_SESSION['admin_tfa']) || !$_SESSION['admin_tfa']){
-    $_SESSION['admin_retpage'] = $_SERVER['REQUEST_URI'];
-    header("Location: admin_auth.php");
-    exit();
-}else{
+else{
     require __DIR__.'/lib/problem_flags.php';
     require __DIR__.'/conf/database.php';
-    $level_max=(PROB_LEVEL_MASK>>PROB_LEVEL_SHIFT);
     if(!isset($_GET['wiki_id'])){
         $p_type='add';
         $inTitle=_('New Wiki');
@@ -23,18 +18,26 @@ else if(!isset($_SESSION['admin_tfa']) || !$_SESSION['admin_tfa']){
             $wiki_id=intval($row[0])+1;
     }else{
         $p_type='edit';
-        $wiki_id=intval($_GET['wiki_id']);  
+        $wiki_id=intval($_GET['wiki_id']);
         $inTitle=_('Edit Wiki')." #$wiki_id";
-        $query="select title,content,tags,privilege,defunct from wiki where wiki_id=$wiki_id and is_max='Y'";
-        $result=mysqli_query($con,$query);
-        $row=mysqli_fetch_row($result);
-        if($row[3]==1)
-            $option_hide=1;
-        else
-            $option_hide=0;
+        if($wiki_id<1)
+            $info=_('There\'s no such wiki');
+        else{
+            $query="select title,content,tags,privilege,defunct from wiki where wiki_id=$wiki_id and is_max='Y'";
+            $result=mysqli_query($con,$query);
+            $row=mysqli_fetch_row($result);
+            if(!$row)
+                $info=_('There\'s no such wiki');
+            else{
+                if($row[3]==1)
+                    $option_hide=1;
+                else
+                    $option_hide=0;
+            }
+        }
     }
 
-    $Title=$inTitle .' - '. $oj_name;
+$Title=$inTitle .' - '. $oj_name;
 ?>
 <!DOCTYPE html>
 <html>
@@ -64,9 +67,6 @@ else if(!isset($_SESSION['admin_tfa']) || !$_SESSION['admin_tfa']){
 					</p>
 				</div>
 			<?php }else{?>
-				<div class="collapse" id="showtools">
-					<p><button class="btn btn-primary" id="btn_show"><?php echo _('Show Toolbar')?><i class="fa fa-fw fa-angle-right"></i></button></p>
-				</div>
 				<form action="#" method="post" id="edit_form" style="padding-top:10px">
 					<input type="hidden" name="op" value="<?php echo $p_type?>">
 					<input type="hidden" name="wiki_id" value="<?php echo $wiki_id?>">
@@ -78,6 +78,7 @@ else if(!isset($_SESSION['admin_tfa']) || !$_SESSION['admin_tfa']){
 							<input type="text" class="form-control" name="title" id="input_title" value="<?php if($p_type=='edit') echo $row[0]?>">
 						</div>
 					</div>
+                    <?php if(check_priv(PRIV_PROBLEM)){?>
 					<div class="row">
 						<div class="form-group col-xs-6 col-sm-4">
 							<label>
@@ -90,6 +91,7 @@ else if(!isset($_SESSION['admin_tfa']) || !$_SESSION['admin_tfa']){
 							</div>  
 						</div>
 					</div>
+                    <?php }?>
 					<div class="row">
 						<div class="form-group col-xs-12">
 							<label>
@@ -122,11 +124,16 @@ else if(!isset($_SESSION['admin_tfa']) || !$_SESSION['admin_tfa']){
         <?php //Load CodeMirror
 			if($pref->edrmode!='off'){
 				echo '<script src="/assets/js/codemirror.js"></script>';
-				echo '<script src="/assets/js/codemirror.placeholder.js"></script>';
-				echo '<script src="/assets/js/codemirror.fullscreen.js"></script>';
-                echo '<script src="/assets/js/codemirror.overlay.js"></script>';
-                echo '<script src="/assets/js/codemirror.markdown.js"></script>';
-				echo '<script src="/assets/js/codemirror.gfm.js"></script>';
+				echo '<script src="/assets/js/CodeMirror/addon/placeholder.js"></script>';
+				echo '<script src="/assets/js/CodeMirror/addon/fullscreen.js"></script>';
+                echo '<script src="/assets/js/CodeMirror/addon/overlay.js"></script>';
+                echo '<script src="/assets/js/CodeMirror/mode/markdown.js"></script>';
+				echo '<script src="/assets/js/CodeMirror/mode/gfm.js"></script>';
+                echo '<script src="/assets/js/CodeMirror/mode/clike.js"></script>';
+                echo '<script src="/assets/js/CodeMirror/mode/pascal.js"></script>';
+                echo '<script src="/assets/js/CodeMirror/mode/css.js"></script>';
+                echo '<script src="/assets/js/CodeMirror/mode/javascript.js"></script>';
+                echo '<script src="/assets/js/CodeMirror/mode/htmlmixed.js"></script>';
 				if($pref->edrmode!='default')
 					echo '<script src="/assets/js/codemirror.'.$pref->edrmode.'.js"></script>';
 			}

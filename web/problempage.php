@@ -151,20 +151,21 @@ $Title=$inTitle .' - '. $oj_name;
 ?>
 <!DOCTYPE html>
 <html>
-<?php require __DIR__.'/inc/head.php';?>
-  
+    <?php
+        require __DIR__.'/inc/head.php';
+        //Load CodeMirror
+        if($pref->edrmode!='off'){
+            echo '<link rel="stylesheet" href="/assets/css/codemirror.css" type="text/css" />';
+            echo '<link rel="stylesheet" href="/assets/css/codemirror.fullscreen.css" type="text/css" />';
+            //Load CodeMirror Theme
+            if($t_night=='off') 
+                echo '<link rel="stylesheet" href="/assets/css/codemirror.eclipse.css" type="text/css" />';
+            else
+                echo '<link rel="stylesheet" href="/assets/css/codemirror.midnight.css" type="text/css" />';
+        }
+    ?>
 	<body>
 		<?php
-			//Load CodeMirror
-			if($pref->edrmode!='off'){
-				echo '<link rel="stylesheet" href="/assets/css/codemirror.css" type="text/css" />';
-				echo '<link rel="stylesheet" href="/assets/css/codemirror.fullscreen.css" type="text/css" />';
-				//Load CodeMirror Theme
-				if($t_night=='off') 
-					echo '<link rel="stylesheet" href="/assets/css/codemirror.eclipse.css" type="text/css" />';
-				else
-					echo '<link rel="stylesheet" href="/assets/css/codemirror.midnight.css" type="text/css" />';
-			}
 			require __DIR__.'/conf/mathjax.php';
 			require __DIR__.'/inc/navbar.php';
 		?>
@@ -193,18 +194,18 @@ $Title=$inTitle .' - '. $oj_name;
 									if($row_prob[11]=='Y')
 										echo ' <span style="vertical-align:middle;font-size:12px" class="label label-danger">',_('Deleted'),'</span>';
 									if($is_contest){
-										echo '<a href="contestpage.php?contest_id=',$cont_id,'" class="btn btn-default pull-left"><i class="fa fa-fw fa-home"></i> ',_('Contest Home'),'</a>';
+										echo '<a href="contestpage.php?contest_id=',$cont_id,'" class="btn btn-default pull-left"><i class="fa fa-fw fa-home"></i> <span class="nav-text-alt">',_('Contest Home'),'</span></a>';
 										echo '<div class="btn-group pull-right">';
 										if($prob_num<2) 
 											$addt='disabled';
 										else 
 											$addt='';
-										echo '<a href="problempage.php?contest_id=',$cont_id,'&prob=',($prob_num-1),'" class="btn btn-default ',$addt,'"><i class="fa fa-fw fa-angle-left"></i>',_('Previous'),'</a>';
+										echo '<a href="problempage.php?contest_id=',$cont_id,'&prob=',($prob_num-1),'" class="btn btn-default ',$addt,'"><i class="fa fa-fw fa-angle-left"></i> <span class="nav-text-alt">',_('Previous'),'</span></a>';
 										if($prob_num>$row_cont[4]-1)
 											$addt='disabled';
 										else
 											$addt='';
-										echo '<a href="problempage.php?contest_id=',$cont_id,'&prob=',($prob_num+1),'" class="btn btn-default ',$addt,'">',_('Next'),'<i class="fa fa-fw fa-angle-right"></i></a>';
+										echo '<a href="problempage.php?contest_id=',$cont_id,'&prob=',($prob_num+1),'" class="btn btn-default ',$addt,'"><span class="nav-text-alt">',_('Next'),'</span> <i class="fa fa-fw fa-angle-right"></i></a>';
 										echo '</div>';
 									}
 								?>
@@ -499,12 +500,12 @@ $Title=$inTitle .' - '. $oj_name;
 		<?php //Load CodeMirror
 			if($pref->edrmode!='off'){
 				echo '<script src="/assets/js/codemirror.js"></script>';
-				echo '<script src="/assets/js/codemirror.placeholder.js"></script>';
-				echo '<script src="/assets/js/codemirror.fullscreen.js"></script>';
-				echo '<script src="/assets/js/codemirror.clike.js"></script>';
-				echo '<script src="/assets/js/codemirror.pascal.js"></script>';
+				echo '<script src="/assets/js/CodeMirror/addon/placeholder.js"></script>';
+				echo '<script src="/assets/js/CodeMirror/addon/fullscreen.js"></script>';
+				echo '<script src="/assets/js/CodeMirror/mode/clike.js"></script>';
+				echo '<script src="/assets/js/CodeMirror/mode/pascal.js"></script>';
 				if($pref->edrmode!='default')
-					echo '<script src="/assets/js/codemirror.'.$pref->edrmode.'.js"></script>';
+					echo '<script src="/assets/js/CodeMirror/mode/'.$pref->edrmode.'.js"></script>';
 			}
 		?>
 		<script type="text/javascript">
@@ -537,7 +538,7 @@ $Title=$inTitle .' - '. $oj_name;
 					<?php
 						if($pref->edrmode!='default'){
 							echo 'keyMap:"'.$pref->edrmode.'",';
-						echo 'showCursorWhenSelecting: true,';
+                            echo 'showCursorWhenSelecting: true,';
 						}
 					?>
 					lineNumbers:true,
