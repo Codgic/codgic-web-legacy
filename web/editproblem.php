@@ -209,7 +209,7 @@ else if(!isset($_SESSION['admin_tfa']) || !$_SESSION['admin_tfa']){
 					<div class="row">
 						<div class="form-group col-xs-12 col-sm-9">
 							<label>
-								<?php echo _('Sample Input')?>\
+								<?php echo _('Sample Input')?>
 							</label>
 							<textarea class="form-control col-xs-12" name="sample_input" rows="8"><?php if($p_type=='edit') echo htmlspecialchars($row[4])?></textarea>
 						</div>

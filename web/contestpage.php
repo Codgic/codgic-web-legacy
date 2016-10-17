@@ -181,7 +181,8 @@ $Title=$inTitle .' - '. $oj_name;
 ?>
 <!DOCTYPE html>
 <html>
-	<?php require __DIR__.'/inc/head.php'; ?>
+	<?php require __DIR__.'/inc/head.php';?>
+    <link rel="stylesheet" href="/assets/css/prism.css"> 
 	<body>
 		<div class="alert collapse text-center alert-popup alert-danger" id="alert_error"></div>
 		<?php
@@ -363,6 +364,7 @@ $Title=$inTitle .' - '. $oj_name;
 		</div>
     
 		<script src="/assets/js/common.js?v=<?php echo $web_ver?>"></script>
+        <script src="/assets/js/prism.js"></script>
 		<script type="text/javascript">
 			var cont=<?php echo $cont_id?>,hide_info=0;
 			change_type(2);

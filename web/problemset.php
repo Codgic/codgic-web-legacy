@@ -19,7 +19,7 @@ if(isset($_GET['level'])){
         exit();
     }
     $addt_cond=" (has_tex&".PROB_LEVEL_MASK.")=".($level<<PROB_LEVEL_SHIFT);
-    if(check_priv(PRIV_PROBLEM))
+    if(!check_priv(PRIV_PROBLEM))
         $addt_cond.=" and defunct='N' ";
     $range="limit ".(($page_id-1)*100).",100";
     if(isset($_SESSION['user'])){

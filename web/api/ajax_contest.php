@@ -69,7 +69,7 @@ if($op=='get_rank_table'){
     <table class="table table-condensed">
 		<thead>
 			<tr>
-                <th>No.</th>
+				<th>No.</th>
 				<th><?php echo _('User')?></th>
 				<th><?php echo _('Score')?></th>
 				<th><?php echo _('Time Penalty')?></th>

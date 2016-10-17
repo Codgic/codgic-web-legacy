@@ -164,6 +164,7 @@ $Title=$inTitle .' - '. $oj_name;
                 echo '<link rel="stylesheet" href="/assets/css/codemirror.midnight.css" type="text/css" />';
         }
     ?>
+    <link rel="stylesheet" href="/assets/css/prism.css">
 	<body>
 		<?php
 			require __DIR__.'/conf/mathjax.php';
@@ -497,6 +498,7 @@ $Title=$inTitle .' - '. $oj_name;
 		</div>
 		<script src="/assets/js/common.js?v=<?php echo $web_ver?>"></script>
 		<script src="/assets/js/clipboard.min.js"></script>
+        <script src="/assets/js/prism.js"></script>
 		<?php //Load CodeMirror
 			if($pref->edrmode!='off'){
 				echo '<script src="/assets/js/codemirror.js"></script>';
