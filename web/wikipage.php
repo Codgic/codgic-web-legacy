@@ -54,8 +54,8 @@ $Title=$inTitle .' - '. $oj_name;
 ?>
 <!DOCTYPE html>
 <html>
-    <link rel="stylesheet" href="/assets/css/prism.css"> 
     <?php require __DIR__.'/inc/head.php';?>
+    <link rel="stylesheet" href="/assets/css/prism.css">
     <body>
         <?php require __DIR__.'/inc/navbar.php';?>
         <div id="probdisp" class="container">

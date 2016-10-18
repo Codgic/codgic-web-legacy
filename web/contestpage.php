@@ -399,11 +399,6 @@ $Title=$inTitle .' - '. $oj_name;
 			$(document).ready(function(){
 				var cont=<?php echo $cont_id?>;
 				$('#cont_rank').load('api/ajax_contest.php',{op:'get_rank_table',contest_id:cont});
-				<?php if($cont_status==0){?>
-					var t1=new Date(),t2=new Date(<?php echo time()*1000?>);
-					var t=<?php echo (strtotime($row[3])-time())*1000?>-t1.getTime()+t2.getTime();
-					setTimeout(function(){location.reload();},t);
-				<?php }?>
 				$('#action_delete').click(function(){
 					$.ajax({
 						type:"POST",

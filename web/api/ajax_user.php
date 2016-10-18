@@ -69,7 +69,7 @@ if(isset($_GET['type'])&&$_GET['type']=='json'){
 	<tbody>
 		<tr><td colspan="2"><?php echo _('Nickname')?></td><td><?php echo $row[9];?></td></tr>
 		<tr><td colspan="2"><?php echo _('Level')?></td><td><?php echo $row[12],' (',$row[11],')';?></td></tr>
-		<tr><td colspan="2"><?php echo _('Last Seen')?></td><td><?php echo $row[2];?></td></tr>
+		<tr><td colspan="2"><?php echo _('Last Seen')?></td><td><?php echo $row[3];?></td></tr>
 		<tr><td colspan="2"><?php echo _('Privilege')?></td><td><?php echo list_priv($row[10]);?></td></tr>
 		<?php if(check_priv(PRIV_SYSTEM)){?>
 			<tr><td colspan="2"><?php echo _('IP Address')?></td><td><?php echo $row[2].' '.get_ipgeo($row[2]);?></td></tr>

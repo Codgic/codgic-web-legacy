@@ -201,9 +201,9 @@ $Title=$inTitle .' - '. $oj_name;
 							<?php echo _('Order by')?>
 						</label>
 						<select class="form-control" name="way" id="slt_way">
-							<option value="none"><?php echo _('Submit')?></option>
-							<option value="time"><?php echo _('Time')?></option>
-							<option value="memory"><?php echo _('Memory')?></option>
+							<option value="none"><?php echo _('Date')?></option>
+							<option value="time"><?php echo _('Run Time')?></option>
+							<option value="memory"><?php echo _('Run Memory')?></option>
 						</select>
 					</div>
 					<div class="form-group col-xs-12 col-sm-2 col-md-1 col-lg-1" style="max-width:200px">
@@ -239,7 +239,7 @@ $Title=$inTitle .' - '. $oj_name;
 										<th style="width:10%"><?php echo _('Memory')?></th>
 										<th style="width:7%"><?php echo _('Size')?></th>
 										<th style="width:11%"><?php echo _('Language')?></th>
-										<th style="width:17%"><?php echo _('Submit')?></th>
+										<th style="width:17%"><?php echo _('Date')?></th>
 									</tr>
 								</thead>
 								<tbody id="tab_record">

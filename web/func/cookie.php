@@ -1,6 +1,6 @@
 <?php
-define("cookie_key","random string 133 "); //Please enter a random string
-define("cookie_expire",31536000); //about one year
+define("cookie_key","Hello_World_CWOJ"); //Please enter a random string.
+define("cookie_expire",31536000); //About one year.
 
 function check_cookie(){
 	if(!isset($_COOKIE['SID']))
@@ -25,8 +25,10 @@ function write_cookie($remember){
 	$arr['user']=$_SESSION['user'];
 
 	$data = encrypt(cookie_key, serialize($arr));
-	if($remember==1) setcookie('SID', $data, time()+cookie_expire);
-	else setcookie('SID', $data);
+	if($remember==1)
+        setcookie('SID', $data, time()+cookie_expire);
+	else 
+        setcookie('SID', $data);
 }
 
 function clear_cookie($name){

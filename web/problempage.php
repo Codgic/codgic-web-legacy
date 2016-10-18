@@ -348,7 +348,7 @@ $Title=$inTitle .' - '. $oj_name;
 								<div id="function" class="panel panel-default problem-operation" style="margin-top:10px">
 									<div class="panel-body">
 										<a href="#" title="Alt+S" class="btn btn-primary shortcut-hint" id="btn_submit"><?php echo _('Submit')?></a>
-										<a href="record.php?way=time&amp;problem_id=<?php echo $prob_id?>" class="btn btn-success"><?php echo _('Record')?></a>
+										<a href="record.php?problem_id=<?php echo $prob_id?>" class="btn btn-success"><?php echo _('Record')?></a>
 										<a href="board.php?problem_id=<?php echo $prob_id;?>" class="btn btn-warning"><?php echo _('Board')?></a>
 									</div>
 								</div>
@@ -507,7 +507,7 @@ $Title=$inTitle .' - '. $oj_name;
 				echo '<script src="/assets/js/CodeMirror/mode/clike.js"></script>';
 				echo '<script src="/assets/js/CodeMirror/mode/pascal.js"></script>';
 				if($pref->edrmode!='default')
-					echo '<script src="/assets/js/CodeMirror/mode/'.$pref->edrmode.'.js"></script>';
+					echo '<script src="/assets/js/CodeMirror/addon/'.$pref->edrmode.'.js"></script>';
 			}
 		?>
 		<script type="text/javascript">

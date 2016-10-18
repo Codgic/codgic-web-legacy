@@ -135,7 +135,7 @@ $Title=$inTitle .' - '. $oj_name;
                 echo '<script src="/assets/js/CodeMirror/mode/javascript.js"></script>';
                 echo '<script src="/assets/js/CodeMirror/mode/htmlmixed.js"></script>';
 				if($pref->edrmode!='default')
-					echo '<script src="/assets/js/codemirror.'.$pref->edrmode.'.js"></script>';
+					echo '<script src="/assets/js/CodeMirror/addon/'.$pref->edrmode.'.js"></script>';
 			}
 		?>
 		<script type="text/javascript">
