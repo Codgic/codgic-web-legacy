@@ -152,6 +152,8 @@ $Title=$inTitle .' - '. $oj_name;
 					echo 'text/x-c++src'
 				?>",
 				lineNumbers: true,
+				readOnly: 'nocursor',
+				viewportMargin: Infinity
 			});
 			function toggle_fullscreen(cm){
 				if(cm.getOption("fullScreen")){
