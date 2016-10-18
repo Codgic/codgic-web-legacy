@@ -1,7 +1,7 @@
 <?php
-define("cookie_key","Hello_World_CWOJ"); //Please enter a random string.
-define("cookie_expire",31536000); //About one year.
-
+if(!defined('cookie_key'))
+    require __DIR__.'/../conf/encsettings.php';
+    
 function check_cookie(){
 	if(!isset($_COOKIE['SID']))
 		return false;

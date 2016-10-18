@@ -1,7 +1,8 @@
 <?php
-define("PUBLIC_KEY", "-----BEGIN PUBLIC KEY-----\nMFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBAMa44v2O2oZIgXL2PtdoxjTJ4ASWfGTL\nd4VZ05MzsQAbNnQ+abT4otHnK7n6Ku4WKCbDAd3FKcsnNSv0eVhehxUCAwEAAQ==\n-----END PUBLIC KEY-----\n");
-function my_rsa($value)
-{
+if(!defined("PUBLIC_KEY"))
+    require __DIR__.'/../conf/encsettings.php';
+        
+function my_rsa($value){
 	$len=strlen($value);
 	if($len>64)
 		$value=substr($value,0,64);
