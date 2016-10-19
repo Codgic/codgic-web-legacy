@@ -4,10 +4,9 @@ require __DIR__.'/inc/init.php';
 require __DIR__.'/func/privilege.php';
 
 function check_permission($prob_id,$opened,$user){
-	if(!isset($_SESSION['user']))
-		return _('Please login first');
-	if(strcmp($user,$_SESSION['user'])==0 || check_priv(PRIV_SOURCE))
-		return TRUE;
+	if(isset($_SESSION['user']))
+        if(strcmp($user,$_SESSION['user'])==0 || check_priv(PRIV_SOURCE))
+            return TRUE;
 	require __DIR__.'/conf/database.php';
 	require __DIR__.'/lib/problem_flags.php';
 	if($opened){
@@ -20,11 +19,13 @@ function check_permission($prob_id,$opened,$user){
 		if($prob_flag & PROB_DISABLE_OPENSOURCE)
 			return _('This solution is not open-source');
 		else if($prob_flag & PROB_SOLVED_OPENSOURCE){
-			$query='select min(result) from solution where user_id=\''.$_SESSION['user']."' and problem_id=$prob_id group by problem_id";
-			$user_status=mysqli_query($con,$query);
-			$row=mysqli_fetch_row($user_status);
-			if($row && $row[0]==0)
-				return TRUE;
+            if(isset($_SESSION['user'])){
+                $query='select min(result) from solution where user_id=\''.$_SESSION['user']."' and problem_id=$prob_id group by problem_id";
+                $user_status=mysqli_query($con,$query);
+                $row=mysqli_fetch_row($user_status);
+                if($row && $row[0]==0)
+                    return TRUE;
+            }
 			return _('You can\'t see me before solving it');
 		}
 		return TRUE;
