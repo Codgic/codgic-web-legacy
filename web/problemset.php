@@ -4,10 +4,10 @@ require __DIR__.'/inc/init.php';
 require __DIR__.'/func/privilege.php';
 require __DIR__.'/func/checklogin.php';
 require __DIR__.'/conf/database.php';
+require __DIR__.'/lib/problem_flags.php';
 
 if(isset($_GET['level'])){
     //If request level page
-    require __DIR__.'/lib/problem_flags.php';
     $level_max=(PROB_LEVEL_MASK>>PROB_LEVEL_SHIFT);
     if(isset($_GET['page_id']))
         $page_id=intval($_GET['page_id']);
@@ -18,9 +18,13 @@ if(isset($_GET['level'])){
         header("Location: problemset.php");
         exit();
     }
+    
     $addt_cond=" (has_tex&".PROB_LEVEL_MASK.")=".($level<<PROB_LEVEL_SHIFT);
     if(!check_priv(PRIV_PROBLEM))
-        $addt_cond.=" and defunct='N' ";
+        $addt_cond.="and defunct='N' ";
+    if(!check_priv(PRIV_INSIDER))
+        $addt_cond.="and (has_tex&".PROB_IS_HIDE.")=0 ";
+        
     $range="limit ".(($page_id-1)*100).",100";
     if(isset($_SESSION['user'])){
         $user_id=$_SESSION['user'];
@@ -43,15 +47,14 @@ if(isset($_GET['level'])){
         $page_id=intval($view_arr['prob']/100);
     }else
         $page_id=10;
-    
-    if(check_priv(PRIV_PROBLEM)){
-        $addt_cond1='';
-        $addt_cond='';
-    }else{
-        $addt_cond1=" where defunct='N'";
-        $addt_cond=" defunct='N' and ";
-    }
-    $row=mysqli_fetch_row(mysqli_query($con,"select max(problem_id) from problem $addt_cond1"));
+        
+    $addt_cond='';
+    if(!check_priv(PRIV_PROBLEM))
+        $addt_cond.="and defunct='N'";
+    if(!check_priv(PRIV_INSIDER))
+        $addt_cond.="and (has_tex&".PROB_IS_HIDE.")=0 ";
+
+    $row=mysqli_fetch_row(mysqli_query($con,"select max(problem_id) from problem where 1=1 $addt_cond"));
 
     $maxpage=intval($row[0]/100);
     if($page_id<10){
@@ -69,9 +72,13 @@ if(isset($_GET['level'])){
     $range="between $page_id"."00 and $page_id".'99';
     if(isset($_SESSION['user'])){
         $user_id=$_SESSION['user'];
-        $result=mysqli_query($con,"SELECT problem_id,title,accepted,submit,source,defunct,res,saved.pid from problem LEFT JOIN (select problem_id as pid,MIN(result) as res from solution where user_id='$user_id' and problem_id $range group by problem_id) as solved on(solved.pid=problem_id) left join (select problem_id as pid from saved_problem where user_id='$user_id') as saved on(saved.pid=problem_id) where $addt_cond problem_id $range order by problem_id");
+        $result=mysqli_query($con,"SELECT problem_id,title,accepted,submit,source,defunct,res,saved.pid from problem 
+        LEFT JOIN (select problem_id as pid,MIN(result) as res from solution 
+        where user_id='$user_id' and problem_id $range group by problem_id) as solved on(solved.pid=problem_id) 
+        left join (select problem_id as pid from saved_problem where user_id='$user_id') as saved on(saved.pid=problem_id) 
+        where problem_id $range $addt_cond order by problem_id");
     }else{
-        $result=mysqli_query($con,"select problem_id,title,accepted,submit,source,defunct from problem where $addt_cond problem_id $range order by problem_id");
+        $result=mysqli_query($con,"select problem_id,title,accepted,submit,source,defunct from problem where problem_id $range $addt_cond order by problem_id");
     }
 }
 

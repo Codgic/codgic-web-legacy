@@ -12,12 +12,8 @@ function check_id(&$str,&$t){
     if(preg_match('/\D/',$str))
         return;
     $num=intval($str);
-    if(check_priv(PRIV_PROBLEM))
-        $addt_cond='';
-    else
-        $addt_cond="defunct='N' and ";
         
-    if(mysqli_num_rows(mysqli_query($con,'select '.$type.'_id from '.$type.' where '.$addt_cond.$type.'_id='.$num))){
+    if(mysqli_num_rows(mysqli_query($con,'select '.$type.'_id from '.$type.' where '.$type.'_id='.$num))){
         header('location: '.$type.'page.php?'.$type.'_id='.$num);
         exit();
     }
@@ -50,11 +46,15 @@ else if(strlen($req)>600)
 else{
     require __DIR__.'/func/checklogin.php';
     require __DIR__.'/conf/database.php';
+    require __DIR__.'/lib/problem_flags.php';
+    
     $keyword=mysqli_real_escape_string($con,trim(urldecode($req)));
-    if(check_priv(PRIV_PROBLEM))
-        $addt_cond='';
-    else
-        $addt_cond="defunct='N' and ";
+    
+    $addt_cond='';
+    if(!check_priv(PRIV_PROBLEM))
+        $addt_cond.="and defunct='N' ";
+    if(!check_priv(PRIV_INSIDER))
+        $addt_cond.="and (has_tex&".PROB_IS_HIDE.")=0 ";
     
     switch($type){
         case 1:
@@ -62,14 +62,14 @@ else{
             if(isset($_SESSION['user'])){
                 $user_id=$_SESSION['user'];
                 $result=mysqli_query($con,"SELECT problem_id,title,source,accepted,submit,res,tags from
-                (select problem.problem_id,title,source,tags,defunct,accepted,submit from problem left join user_notes on (user_id='$user_id' and user_notes.problem_id=problem.problem_id))pt
+                (select problem.problem_id,title,source,tags,defunct,accepted,submit,has_tex from problem left join user_notes on (user_id='$user_id' and user_notes.problem_id=problem.problem_id))pt
                 LEFT JOIN (select problem_id as pid,MIN(result) as res from solution where user_id='$user_id' and problem_id group by problem_id) as temp on(pid=problem_id)
-                where ".$addt_cond."(title like '%$keyword%' or source like '%$keyword%' or tags like '%$keyword%')
+                where (title like '%$keyword%' or source like '%$keyword%' or tags like '%$keyword%') ".$addt_cond."
                 order by problem_id limit ".(($page_id-1)*20).",20");
             }else{
                 $result=mysqli_query($con,"SELECT problem_id,title,source,accepted,submit,defunct from
                 problem
-                where defunct='N' and (title like '%$keyword%' or source like '%$keyword%')
+                where defunct='N' and (title like '%$keyword%' or source like '%$keyword%') ".$addt_cond."
                 order by problem_id limit ".(($page_id-1)*20).",20");
             }
             break;
@@ -79,11 +79,11 @@ else{
                 $user_id=$_SESSION['user'];
                 $result=mysqli_query($con,"SELECT contest_id,title,source,res,start_time,end_time,defunct from contest
                 LEFT JOIN (select contest_id as cid,1 as res from contest_status where user_id='$user_id') as fuckzk on (cid=contest_id)
-                where ".$addt_cond."(title like '%$keyword%' or source like '%$keyword%')
+                where (title like '%$keyword%' or source like '%$keyword%') ".$addt_cond."
                 order by contest_id limit ".(($page_id-1)*20).",20");
             }else{
                 $result=mysqli_query($con,"SELECT contest_id,title,source,defunct,start_time,end_time from contest
-                where ".$addt_cond."(title like '%$keyword%' or source like '%$keyword%')
+                where (title like '%$keyword%' or source like '%$keyword%') ".$addt_cond."
                 order by contest_id limit ".(($page_id-1)*20).",20");
             }
             break;
