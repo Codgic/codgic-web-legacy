@@ -24,7 +24,7 @@ Compared with the original Bashu Online Judge, we have also done some improvemen
 - [X] News Center.          
 - [X] Gravatar.    
 - [X] User online/offline status.    
-- [X] Written user privilege system.    
+- [X] Rewritten user privilege system.    
 - [X] Contest (Beta).
 - [ ] Wiki (Highly unfinished).
 
