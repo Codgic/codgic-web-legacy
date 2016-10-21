@@ -244,6 +244,7 @@ $Title=$inTitle .' - '. $oj_name;
 								</thead>
 								<tbody id="tab_record">
 									<?php
+                                        require __DIR__.'/func/sourcecode.php';
 										while($row=mysqli_fetch_row($res)){
 											if($row[0]<$min_solution)
 												$min_solution=$row[0];
@@ -261,8 +262,14 @@ $Title=$inTitle .' - '. $oj_name;
 												echo '<td>',$row[6],' KB</td>';
 											}
 											echo '<td>',round($row[7]/1024,2),' KB</td>';
-											echo '<td><a href="sourcecode.php?solution_id=',$row[0],'">',$LANG_NAME[$row[8]],'</a>';
-											echo ' <a href="#sw_open_',$row[0],'"><i class=', ($row[10] ? '"fa fa-eye text-success"' : '"fa fa-eye-slash muted"'), '></i></a> </td>';
+                                            if(sc_check_priv($row[1], $row[10], $row[2]) === TRUE)
+                                                echo '<td><a href="sourcecode.php?solution_id=',$row[0],'">',$LANG_NAME[$row[8]],'</a>';
+                                            else
+                                                echo '<td>',$LANG_NAME[$row[8]];
+                                            if($row[2]==$_SESSION['user'])
+                                                echo ' <a href="#sw_open_',$row[0],'"><i class=', ($row[10] ? '"fa fa-eye text-success"' : '"fa fa-eye-slash muted"'), '></i></a></td>';
+                                            else
+                                                echo ' <i class=', ($row[10] ? '"fa fa-eye text-success"' : '"fa fa-eye-slash muted"'), '></i></td>';
 											echo '<td>',$row[9],'</td>';
 											echo '</tr>';
 										}

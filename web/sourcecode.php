@@ -2,37 +2,7 @@
 require __DIR__.'/conf/ojsettings.php';
 require __DIR__.'/inc/init.php';
 require __DIR__.'/func/privilege.php';
-
-function check_permission($prob_id,$opened,$user){
-	if(isset($_SESSION['user']))
-        if(strcmp($user,$_SESSION['user'])==0 || check_priv(PRIV_SOURCE))
-            return TRUE;
-	require __DIR__.'/conf/database.php';
-	require __DIR__.'/lib/problem_flags.php';
-	if($opened){
-		$row = mysqli_fetch_row(mysqli_query($con,"select has_tex from problem where problem_id=$prob_id"));
-		if(!$row)
-			return _('There\'s no such problem');
-		$prob_flag = $row[0];
-		if(($prob_flag & PROB_IS_HIDE) && !check_priv(PRIV_INSIDER))
-			return _('Looks like you can\'t access this page');
-		if($prob_flag & PROB_DISABLE_OPENSOURCE)
-			return _('This solution is not open-source');
-		else if($prob_flag & PROB_SOLVED_OPENSOURCE){
-            if(isset($_SESSION['user'])){
-                $query='select min(result) from solution where user_id=\''.$_SESSION['user']."' and problem_id=$prob_id group by problem_id";
-                $user_status=mysqli_query($con,$query);
-                $row=mysqli_fetch_row($user_status);
-                if($row && $row[0]==0)
-                    return TRUE;
-            }
-			return _('You can\'t see me before solving it');
-		}
-		return TRUE;
-	}
-	return _('Looks like you can\'t access this page');
-}
-
+require __DIR__.'/func/sourcecode.php';
 require __DIR__.'/lib/result_type.php';
 require __DIR__.'/lib/lang.php';
 
@@ -48,7 +18,7 @@ else{
 	$row=mysqli_fetch_row($result);
 	if(!$row)
 		die('No such solution.');
-	$ret = check_permission($row[6], $row[7], $row[0]);
+	$ret = sc_check_priv($row[6], $row[7], $row[0]);
 	if($ret === TRUE)
 		$allowed = TRUE;
 	else{
