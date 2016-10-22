@@ -359,6 +359,7 @@ CREATE TABLE `solution` (
   `num` tinyint(4) NOT NULL DEFAULT '-1',
   `code_length` int(11) NOT NULL DEFAULT '0',
   `public_code` tinyint(1) NOT NULL DEFAULT '0'
+  `malicious` tinyint(1) NOT NULL DEFAULT '0'
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------

@@ -224,14 +224,6 @@ textarea.problem-sample {
 	line-height: inherit
 }
 
-.mail-item:nth-child(odd) {
-	background-color: #404040
-}
-
-.mail-item:nth-child(even) {
-	background-color: #404040
-}
-
 .mail-item {
 	padding-top: 1px;
 	margin-top: -2px
@@ -431,6 +423,11 @@ ul.msg-group {
 	max-width: none
 }
 
+.sc-info {
+    display: inline-block;
+    margin-right: 7px
+}
+
 caption {
 	font-size: 18px;
 	font-weight: 700
@@ -443,18 +440,15 @@ caption {
 }
 
 h1 {
-	font-size: 30px;
-	line-height: 40px
+	font-size: 32px
 }
 
 h2 {
-	font-size: 24px;
-	line-height: 36px
+	font-size: 26px
 }
 
 h3 {
-	font-size: 18px;
-	line-height: 27px
+	font-size: 20px
 }
 
 h1,h2,h3,h4,h5,h6 {

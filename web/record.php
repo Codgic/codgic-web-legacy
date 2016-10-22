@@ -144,7 +144,7 @@ $Title=$inTitle .' - '. $oj_name;
 	
 	<body style="margin-left:0; margin-right:0">
 		<?php require __DIR__.'/inc/navbar.php'; ?>
-		
+        <div class="alert alert-danger collapse text-center alert-popup" id="alert_error"></div>
 		<div class="container">
 			<div class="row">
 				<form action="record.php" method="get" id="form_filter">
@@ -347,11 +347,15 @@ $Title=$inTitle .' - '. $oj_name;
 					if(h.substr(0,9)=='#sw_open_'){
 						$.ajax({
 							type:"POST",
-							url:"api/ajax_opensource.php",
-							data:{"id":$target.attr('href').substr(9)},
+							url:"api/ajax_sourcecode.php",
+							data:{"op":'osc',"id":$target.attr('href').substr(9)},
 							success:function(msg){
 								if(/success/.test(msg))
 									toggle_s($target.find('i'));
+                                else{
+                                    $('#alert_error').html('<i class="fa fa-fw fa-remove"></i> '+msg).fadeIn();
+                                    setTimeout(function(){$('#alert_error').fadeOut();},2000);
+                                }
 							}
 						});
 						return false;

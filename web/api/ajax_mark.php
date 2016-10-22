@@ -2,7 +2,6 @@
 require __DIR__.'/../inc/init.php';
 require __DIR__.'/../conf/database.php';
 
-
 if(!isset($_SESSION['user'],$_GET['prob'],$_GET['op'],$_GET['type']))
     exit();
     

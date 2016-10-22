@@ -14,13 +14,7 @@ if(!isset($_SESSION['user'])){
 
 require __DIR__.'/conf/database.php';
 if(!isset($_GET['page_id'])){
-    $row=mysqli_fetch_row(mysqli_query($con,"select max(wiki_id) from wiki where $addt_cond"));
-    $maxpage=intval($row[0]);
-    if($maxpage==0)
-        $info=_('Looks like there\'s no wiki here');
-    else{
-        $row=mysqli_fetch_row(mysqli_query($con,"select content from wiki where wiki_id=0 limit 1"));
-    }
+    $row=mysqli_fetch_row(mysqli_query($con,"select content from wiki where wiki_id=0 limit 1"));
 }else{
     $page_id=intval($_GET['page_id']);
     if($page_id<1){

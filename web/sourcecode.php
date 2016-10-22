@@ -14,7 +14,7 @@ else{
 	$sol_id=intval($_GET['solution_id']);
 	require __DIR__.'/func/checklogin.php';
 	require __DIR__.'/conf/database.php';
-	$result=mysqli_query($con,"select user_id,time,memory,result,language,code_length,problem_id,public_code from solution where solution_id=$sol_id");
+	$result=mysqli_query($con,"select user_id,time,memory,result,language,code_length,problem_id,public_code,malicious from solution where solution_id=$sol_id");
 	$row=mysqli_fetch_row($result);
 	if(!$row)
 		die('No such solution.');
@@ -50,7 +50,8 @@ $Title=$inTitle .' - '. $oj_name;
     <link rel="stylesheet" href="/assets/css/codemirror.css"> 
 	<link rel="stylesheet" href="/assets/css/codemirror.fullscreen.css">
 	<body>
-		<?php require __DIR__.'/inc/navbar.php'; ?>  
+		<?php require __DIR__.'/inc/navbar.php'; ?>
+        <div class="alert alert-danger collapse text-center alert-popup" id="alert_error"></div>
 		<div class="container cm-autoheight">
 			<?php if(isset($info)){?>
 				<div class="text-center none-text none-center">
@@ -62,42 +63,96 @@ $Title=$inTitle .' - '. $oj_name;
 					</p>
 				</div>
 			<?php }else{?>
-				<div class="row text-center">
-					<?php echo _('User: '),$row[0];?>
-				</div>
-				<div class="row text-center">
-					<?php echo _('Problem: '),$row[6];?>&nbsp;&nbsp;
-					<?php echo _('Result: '),$RESULT_TYPE[$row[3]];?>
-				</div>
-				<div class="row text-center">
-					<?php echo _('Size: '),$row[5];?>&nbsp;&nbsp;
-					<?php echo _('Language: '),$LANG_NAME[$row[4]];?>
-				</div>
-				<div class="row text-center">
-					<?php echo _('Time: '),$row[1];?>&nbsp;ms&nbsp;
-					<?php echo _('Memory: '),$row[2];?>&nbsp;KB
-				</div>
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="page-header">
+                            <h2><?php echo _('Sourcecode').' #'.$sol_id?></h2>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12" style="font-size:16px">
+                        <?php echo '<span class="sc-info label '.$RESULT_STYLE[$row[3]].'" style="display:inline">'.$RESULT_TYPE[$row[3]].'</span>';?>
+                        <span class="sc-info"><i class="fa fa-fw fa-coffee"></i> <?php echo '<a href="problempage.php?problem_id=',$row[6],'">',$row[6],'</a>'?></span>
+                        <span class="sc-info"><i class="fa fa-fw fa-user"></i> <?php echo '<a href="javascript:void(0)" onclick="return show_user(\'',$row[0],'\');">',$row[0],'</a>'?></span>
+                        <span class="sc-info"><i class="fa fa-fw fa-code"></i> <?php echo $LANG_NAME[$row[4]];?></span>
+                        <span class="sc-info"><i class="fa fa-fw fa-clock-o"></i> <?php echo $row[1].' ms'?></span>
+                        <span class="sc-info"><i class="fa fa-fw fa-database"></i> <?php echo $row[2].' KB'?></span>
+                        <span class="sc-info"><i class="fa fa-fw fa-file-code-o"></i> <?php echo round($row[5]/1024,2).' KB'?></span>   
+                        <span class="sc-info">
+                            <?php 
+                                if($row[7])
+                                    echo '<i class="fa fa-fw fa-eye"></i> ',_('Open Source');
+                                else
+                                    echo '<i class="fa fa-fw fa-eye-slash"></i>', _('Close Source');
+                            ?>
+                        </span>
+                        <?php if($row[8]){?>
+                            <span class="sc-info" style="color:red"><i class="fa fa-fw fa-flag"></i> <?php echo _('Malicious!')?></span>
+                        <?php }?>
+                    </div>
+                </div>
+                <br>
 				<div class="row">
 					<div class="col-xs-12">
-						<a href="javascript:history.back(-1);" class="btn btn-primary"><i class="fa fa-angle-left"></i> <?php echo _('Go Back...')?></a>
 						<div class="btn-group">
-							<button class="btn btn-default" onclick="toggle_fullscreen(editor)">
-								<i class="fa fa-fw fa-expand"></i> <?php echo _('Fullscreen')?> (Ctrl+F11)
-							</button>
+                            <?php if(check_priv(PRIV_PROBLEM) || check_priv(PRIV_SYSTEM)){?>
+                                <button class="btn btn-default" id="btn_mark_mal">
+                                    <?php if(!$row[8]){?>
+                                        <i class="fa fa-fw fa-flag"></i> <?php echo _('Malicious!')?>
+                                    <?php }else{?>
+                                        <i class="fa fa-fw fa-flag-o"></i> <?php echo _('Not Malicious')?>
+                                    <?php }?>
+                                </button>
+                            <?php }if(isset($_SESSION['user'])&&$row[0]==$_SESSION['user']){?>
+                                <button class="btn btn-default" id="btn_osc">
+                                    <?php if($row[7]){
+                                        echo '<i class="fa fa-fw fa-eye-slash"></i> ',_('Close Source');
+                                    }else{
+                                        echo '<i class="fa fa-fw fa-eye"></i> ',_('Open Source');
+                                    }?>
+                                </button>
+                            <?php }?>
 							<button class="btn btn-default" data-clipboard-action="copy" data-toggle="tooltip" data-trigger="manual" id="btn_copy">
 								<i class="fa fa-fw fa-clipboard"></i> <?php echo _('Copy')?>
+							</button>
+                            <button class="btn btn-default" onclick="toggle_fullscreen(editor)">
+								<i class="fa fa-fw fa-expand"></i> <?php echo _('Fullscreen')?> <span class="hidden-xs">(Ctrl+F11)</span>
 							</button>
 						</div>
 					</div>
 				</div>
-				<hr>
+                <br>
 				<div class="row">
 					<div class="col-xs-12" id="div_code">
 						<textarea id="text_code"><?php echo htmlspecialchars($source);?></textarea>
 					</div>
 				</div>
+            </div>
+            </div>
 			<?php } 
 			require __DIR__.'/inc/footer.php';?>
+		</div>
+        
+        <div class="modal fade" id="UserModal">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal">&times;</button>
+						<h4 class="modal-title"><?php echo _('User Profile')?></h4>
+					</div>
+					<div class="modal-body" id="user_status"></div>
+					<div class="modal-footer">
+						<form action="mail.php" method="post">
+							<input type="hidden" name="touser" id="input_touser">
+							<?php if(isset($_SESSION['user'])){?>
+								<button type="submit" class="btn btn-default pull-left"><i class="fa fa-fw fa-envelope-o"></i> <?php echo _('Send Mail')?></button>
+							<?php }?>
+						</form>
+						<button type="button" class="btn btn-default" data-dismiss="modal"><?php echo _('Close')?></button>
+					</div>
+				</div>
+			</div>
 		</div>
 		
 		<script src="/assets/js/codemirror.js"></script>
@@ -106,7 +161,7 @@ $Title=$inTitle .' - '. $oj_name;
 		<script src="/assets/js/CodeMirror/mode/pascal.js"></script>
 		<script src="/assets/js/clipboard.min.js"></script>
 		<script src="/assets/js/common.js?v=<?php echo $web_ver?>"></script>
-		<script type="text/javascript"> 
+		<script type="text/javascript">
 			var editor = CodeMirror.fromTextArea(document.getElementById('text_code'), {
 				theme: "<?php 
 				if($t_night=='on') 
@@ -150,23 +205,51 @@ $Title=$inTitle .' - '. $oj_name;
 				$('#btn_copy').tooltip('show');
 				setTimeout("$('#btn_copy').tooltip('destroy')",800);
 			});
-			var solution_id=<?php echo $sol_id?>;
+            function show_user(usr){
+                $('#user_status').html('<i class="fa fa-fw fa-refresh fa-spin"></i> <?php echo _('Loading...')?>').load('api/ajax_user.php?user_id='+usr);
+                $('#input_touser').val(usr);
+                $('#UserModal').modal('show');
+                return false;
+            };
+			var sol_id=<?php echo $sol_id?>;
 			$(document).ready(function(){
+                $('#btn_osc').click(function(){
+                    $.ajax({
+                        type:"POST",
+                        url:"api/ajax_sourcecode.php",
+                        data:{op:'osc',id:sol_id},
+                        success:function(msg){
+                            if(/success/.test(msg))
+                                location.reload();
+                            else{
+                                $('#alert_error').html('<i class="fa fa-fw fa-remove"></i> '+msg).fadeIn();
+                                setTimeout(function(){$('#alert_error').fadeOut();},2000);
+                            }
+                        }
+                    });
+                });
+                <?php if(check_priv(PRIV_PROBLEM) || check_priv(PRIV_SYSTEM)){?>
+                    $('#btn_mark_mal').click(function(){
+                    $.ajax({
+                        type:"POST",
+                        url:"api/ajax_sourcecode.php",
+                        data:{"op":'mark_mal',"id":sol_id},
+                        success:function(msg){
+                            if(/success/.test(msg))
+                                location.reload();
+                            else{
+                                $('#alert_error').html('<i class="fa fa-fw fa-remove"></i> '+msg).fadeIn();
+                                setTimeout(function(){$('#alert_error').fadeOut();},2000);
+                            }
+                        }
+                    });
+                });
+                <?php }?>
 				$(document).keydown(function(e){
 					if(e.ctrlKey&&e.which==122)
 						toggle_fullscreen(editor);
 				});
 			});
-			function doajax(fun){
-				$.ajax({type:"GET",url:("sourcecode.php?raw=1&solution_id="+solution_id),success:fun});
-			}
-			function show_raw(){
-				return true; 
-				doajax(function(msg){
-					$('#div_code').html('<pre>'+htmlEncode(msg)+'</pre>');
-				});
-				return false;
-			}
 		</script>
 	</body>
 </html>

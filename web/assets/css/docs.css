@@ -94,7 +94,6 @@ footer {
     height: auto
 }
 
-
 .navbar-img {
     width:20px;
     height:20px
@@ -223,10 +222,6 @@ textarea.problem-sample {
 	box-sizing: border-box;
 	font-size: inherit;
 	line-height: inherit
-}
-
-.mail-item {
-	background-color: #F9F9F9
 }
 
 .mail-item {
@@ -421,6 +416,11 @@ ul.msg-group {
 	background-color: rgba(245,245,245,.5)
 }
 
+.sc-info {
+    display: inline-block;
+    margin-right: 7px
+}
+
 .tooltip-inner {
 	text-align: left;
 	white-space: pre-wrap;
@@ -440,18 +440,15 @@ caption {
 }
 
 h1 {
-	font-size: 30px;
-	line-height: 40px
+	font-size: 32px
 }
 
 h2 {
-	font-size: 24px;
-	line-height: 36px
+	font-size: 26px
 }
 
 h3 {
-	font-size: 18px;
-	line-height: 27px
+	font-size: 20px
 }
 
 h1,h2,h3,h4,h5,h6 {

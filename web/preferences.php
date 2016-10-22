@@ -121,7 +121,7 @@ $Title=$inTitle .' - '. $oj_name;
 					$('<iframe>').hide().attr('src','backupcode.php').appendTo('body');
 				});
 				$('#open_source').click(function(){
-					$.post('api/ajax_opensource.php',{id:'all'},function(msg){
+					$.post('api/ajax_sourcecode.php',{op:'osc',id:'all'},function(msg){
 						if(/success/.test(msg))
 							$('#opensource_res').removeClass('alert-danger').addClass('alert-success').html('<i class="fa fa-fw fa-check"></i> <?php echo _('Thanks for making a great contribution!')?>').slideDown();
 						else
