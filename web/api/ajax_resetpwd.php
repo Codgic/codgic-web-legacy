@@ -10,6 +10,11 @@ if(!isset($_POST['type'])){
 }
 
 if($_POST['type'] == 'verify'){
+    if(isset($_SESSION['last_send_time']))
+        if(time()-$_SESSION['last_send_time']<60){
+            echo _('Request too frequent...');
+            exit();
+        }
 	if(!isset($_POST['email'])){
 		echo _('Invalid Argument...');
         exit();
@@ -29,11 +34,22 @@ if($_POST['type'] == 'verify'){
     $code = $_SESSION['resetpwd_code'];
     $_SESSION['resetpwd_user'] = $row[0];
     $_SESSION['resetpwd_email'] = $email;
-    echo resetpwd_mail();
+    $res=resetpwd_mail();
+    if($res=='success')
+        $_SESSION['last_send_time'] = time();
+    echo $res;
 }
 
 else if($_POST['type'] == 'resend'){
-	echo resetpwd_mail();
+    if(isset($_SESSION['last_send_time']))
+        if(time()-$_SESSION['last_send_time']<60){
+            echo _('Request too frequent...');
+            exit();
+        }
+    $res=resetpwd_mail();
+    if($res=='success')
+        $_SESSION['last_send_time'] = time();
+    echo $res;
 }
 
 else if($_POST['type'] == 'match'){
@@ -44,7 +60,7 @@ else if($_POST['type'] == 'match'){
 	if(!isset($_SESSION['resetpwd_code'])||empty($_SESSION['resetpwd_code']))
         die('timeout');
 	if($_POST['usercode']==$_SESSION['resetpwd_code']){
-        $_SESSION['resetpwd_flag']=1;
+        $_SESSION['resetpwd_flag'] = 1;
         echo 'success';
     }else{
         $_SESSION['resetpwd_wrongnum']++;
@@ -79,6 +95,7 @@ else if($_POST['type'] == 'update'){
 	unset($_SESSION['resetpwd_email']);
 	unset($_SESSION['resetpwd_wrongnum']);
 	unset($_SESSION['resetpwd_flag']);
+    unset($_SESSION['last_send_time']);
 	session_destroy();
     
 	if(mysqli_query($con,$query))

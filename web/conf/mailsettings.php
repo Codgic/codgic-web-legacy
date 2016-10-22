@@ -62,7 +62,7 @@ function resetpwd_mail(){
     $email = $_SESSION['resetpwd_email'];
     $code = $_SESSION['resetpwd_code'];
     $subject = "$oj_name 密码重置验证";
-	require __DIR__.'/../func/userinfo.php';
+    require __DIR__.'/../func/userinfo.php';
     $ip = get_ip();
     $nowtime = date("Y/m/d H:i:s");
     $content = "<div>亲爱的 $user ,<br><p>我们收到了您在{$oj_name}重置密码的请求并发送了验证码来确认您的身份。</p><b><p>请求时间: $nowtime (UTC+08:00)</p><p>IP地址: $ip</p><p>验证码: $code</p></b><p>如果您没有在{$oj_name}有过重置密码的请求，您只需忽略这封邮件并不要把验证码告诉任何人。<br>如有任何问题，请回复该邮件来与管理员取得联系。</p><br>谢谢！<p>$oj_copy</p></div>";

@@ -17,16 +17,17 @@ $Title=$inTitle .' - '. $oj_name;
 				<div class="panel panel-default panel-login">
 					<div class="panel-body">
 						<form id="form_email" action="#" method="post">
+                            <input type="hidden" value="verify" name="type">
 							<h1 class="text-center">
 								<?php echo _('Reset Password')?>
 							</h1>
 							<hr>
-							<div id="email_ctl" class="form-group has-feedback">
-								<div class="form-group has-feedback" id="email_ctl">
+                            <div id="email_ctl" class="form-group has-feedback">
+                                <div class="form-group has-feedback" id="ctl_email">
 									<input class="form-control" type="text" name="email" id="input_email" placeholder="<?php echo _('Email...')?>">
 									<span class="form-control-feedback"><i class="fa fa-fw fa-envelope"></i></span>
 								</div>
-								<div id="ajax_emailresult" class="collapse alert alert-danger"></div>
+								<div id="ajax_emailres" class="collapse alert alert-danger"></div>
 								<div class="form-group">
 									<input type="button" id="email_nxt" class="btn btn-primary" value="<?php echo _('Next')?>"/>
 									<a href="login.php" style="margin-left:8px">
@@ -42,18 +43,19 @@ $Title=$inTitle .' - '. $oj_name;
 			<div class="row collapse" id="verifypage">
 				<div class="panel panel-default panel-login">
 					<div class="panel-body">
-						<form id="form_verify" action="#" method="post">
-							<h1 class="text-center">
-								<?php echo _('Reset Password')?>
-							</h1>
-							<hr>
+                        <h1 class="text-center">
+                            <?php echo _('Reset Password')?>
+                        </h1>
+                        <hr>
+                        <form id="form_verify" action="#" method="post">
+                            <input type="hidden" value="match" name="type">
 							<div id="verify_ctl" class="form-group has-feedback">
 								<p class="text-center"><?php echo _('We\'ve just sent a verification code to your email...')?></p>
-								<div class="form-group has-feedback" id="verify_ctl">
-									<input class="form-control" type="text" name="verifyid" id="input_verifyid" placeholder="<?php echo _('Verification Code')?>">
+								<div class="form-group has-feedback" id="ctl_vid">
+									<input class="form-control" type="text" name="usercode" id="input_vid" placeholder="<?php echo _('Verification Code')?>">
 									<span class="form-control-feedback"><i class="fa fa-fw fa-key"></i></span>
 								</div>
-								<div id="ajax_verifyresult" class="collapse alert alert-danger"></div>
+								<div id="ajax_verifyres" class="collapse alert alert-danger"></div>
 								<div class="form-group">
 									<input type="button" id="verify_nxt" class="btn btn-primary" value="<?php echo _('Next')?>"/>
 									<input type="button" id="resend_btn" class="btn btn-danger" style="margin-left:8px" value="<?php echo _('Resend')?>"/>
@@ -72,21 +74,22 @@ $Title=$inTitle .' - '. $oj_name;
 			<div id="pwdpage" class="row collapse">
 				<div class="panel panel-default panel-login">
 					<div class="panel-body">
-						<form id="form_pwd" action="#" method="post">
-							<h1 class="text-center">
-								<?php echo _('Reset Password')?>
-							</h1>
-							<hr>
+                        <h1 class="text-center">
+                            <?php echo _('Reset Password')?>
+                        </h1>
+                        <hr>
+                        <form id="form_pwd" action="#" method="post">
+                            <input type="hidden" value="update" name="type">
 							<div id="pwd_ctl" class="form-group has-feedback">
-								<div class="form-group has-feedback" id="newpwd_ctl">
-									<input class="form-control" type="password" id="input_newpwd" name="newpwd" placeholder="<?php echo _('New Password')?>">
+								<div class="form-group has-feedback" id="ctl_newpwd">
+									<input class="form-control" type="password" id="input_newpwd" name="newpwd" autocomplete="off" placeholder="<?php echo _('New Password')?>">
 									<span class="form-control-feedback"><i class="fa fa-fw fa-key"></i></span>
 								</div>
-								<div class="form-group has-feedback" id="reppwd_ctl">
-									<input class="form-control" type="password" id="input_reppwd" placeholder="<?php echo _('Retype Password')?>">
+								<div class="form-group has-feedback" id="ctl_reppwd">
+									<input class="form-control" type="password" id="input_reppwd" autocomplete="off" placeholder="<?php echo _('Retype Password')?>">
 									<span class="form-control-feedback"><i class="fa fa-fw fa-refresh"></i></span>
 								</div>
-								<div id="ajax_pwdresult" class="collapse alert alert-danger"></div>
+								<div id="ajax_pwdres" class="collapse alert alert-danger"></div>
 								<div class="form-group">
 									<span id="pwd_save" class="btn btn-primary"><?php echo _('Next')?></span>
 								</div>	
@@ -107,11 +110,11 @@ $Title=$inTitle .' - '. $oj_name;
 					return 0;
 				}else{
 					e.setAttribute("disabled", true); 
-					e.value = "<?php echo _('Reset Password')?> (" + ct + ")"; 
+					e.value = "<?php echo _('Resend')?> (" + ct + ")"; 
 					ct--; 
 				}
 				setTimeout(function(){settime(resend_btn)},1000);
-			} 
+			}
 			function switch_verify(){
 				$('#emailpage').hide();
 				$('#verifypage').fadeIn();
@@ -129,20 +132,20 @@ $Title=$inTitle .' - '. $oj_name;
 			$(document).ready(function() {
 				$('#emailpage').fadeIn();
 				$('#email_nxt').click(function(){
-					$('#ajax_emailresult').hide();
+					$('#ajax_emailres').slideUp();
 					var a=false;
 					if(!$.trim($('#input_email').val())){
-						$('#input_email').addClass('error');
+						$('#ctl_email').addClass('has-error');
 						a=true;
 					}else
-						$('#input_email').removeClass('error');
+						$('#ctl_email').removeClass('has-error');
 					if(!a){
 						email_nxt.setAttribute("disabled", true);
 						email_nxt.value = "<?php echo _('Please wait...')?>";
 						$.ajax({
 							type:"POST",
 							url:'api/ajax_resetpwd.php',
-							data:{"type":'verify',"user":$.trim($('#input_userid').val()),"email":$.trim($('#input_email').val())},
+							data:$('#form_email').serialize(),
 							success:function(msg){
 								email_nxt.removeAttribute("disabled");
 								email_nxt.value = "<?php echo _('Next')?>";
@@ -150,13 +153,13 @@ $Title=$inTitle .' - '. $oj_name;
 									switch_verify();
 									settime(resend_btn);
 								}else 
-									$('#ajax_emailresult').html('<i class="fa fa-fw fa-remove"></i> '+msg).slideDown();
+									$('#ajax_emailres').html('<i class="fa fa-fw fa-remove"></i> '+msg).slideDown();
 							}
 						});
 					};
 				});
 				$('#resend_btn').click(function(){
-					$('#ajax_verifyresult').hide();
+					$('#ajax_verifyres').slideUp();
 					resend_btn.setAttribute("disabled", true);
 					resend_btn.value = "<?php echo _('Please wait...')?>";
 					$.ajax({
@@ -165,13 +168,13 @@ $Title=$inTitle .' - '. $oj_name;
 						data:{"type":'resend'},
 						success:function(msg){
 							if(msg=='success'){
-								$('#ajax_verifyresult').html('<i class="fa fa-fw fa-check"></i> <?php echo _('Email resent successfully...')?>').slideDown();
+								$('#ajax_verifyres').html('<i class="fa fa-fw fa-check"></i> <?php echo _('Email resent successfully...')?>').slideDown();
 								settime(resend_btn);
 							}else if(msg=='timeout'){
-								$('#ajax_verifyresult').html('<i class="fa fa-fw fa-remove"></i> <?php echo _('Session expired...')?>').slideDown();
+								$('#ajax_verifyres').html('<i class="fa fa-fw fa-remove"></i> <?php echo _('Session expired...')?>').slideDown();
 								window.setTimeout("window.location='resetpwd.php'",2000); 
 							}else{
-								$('#ajax_verifyresult').html(msg).show();
+								$('#ajax_verifyres').html('<i class="fa fa-fw fa-remove"></i> '+msg).slideDown();
 								resend_btn.removeAttribute("disabled");
 								resend_btn.value = "<?php echo _('Resend')?>";
 							}
@@ -179,35 +182,35 @@ $Title=$inTitle .' - '. $oj_name;
 					});
 				});
 				$('#verify_nxt').click(function(){
-					$('#ajax_verifyresult').hide();
+					$('#ajax_verifyres').slideUp();
 					var a=false;
-					if(!$.trim($('#input_verifyid').val())){
-						$('#input_verifyid').addClass('error');
+					if(!$.trim($('#input_vid').val())){
+						$('#ctl_vid').addClass('has-error');
 						a=true;
 					}else
-						$('#input_verifyid').removeClass('error');
+						$('#ctl_vid').removeClass('has-error');
 					if(!a){
 						verify_nxt.setAttribute("disabled", true);
 						verify_nxt.value = '<?php echo _('Please wait...')?>';
 						$.ajax({
 							type:"POST",
 							url:'api/ajax_resetpwd.php',
-							data:{"type":'match',"usercode":$.trim($('#input_verifyid').val())},
+							data:$('#form_verify').serialize(),
 							success:function(msg){
 								if (msg=='success')
 									switch_pwd();
 								else if(msg=='timeout'){
-									$('#ajax_verifyresult').html('<i class="fa fa-fw fa-remove"></i> <?php echo _('Session expired...')?>').slideDown();
+									$('#ajax_verifyres').html('<i class="fa fa-fw fa-remove"></i> <?php echo _('Session expired...')?>').slideDown();
 									window.setTimeout("window.location='resetpwd.php'",2000); 
 								}else if(msg=='fail'){
-									$('#ajax_verifyresult').html('<i class="fa fa-fw fa-remove"></i> <?php echo _('Wrong Verification Code...')?>').slideDown();
+									$('#ajax_verifyres').html('<i class="fa fa-fw fa-remove"></i> <?php echo _('Wrong Verification Code...')?>').slideDown();
 									verify_nxt.removeAttribute("disabled");
 									verify_nxt.value = "<?php echo _('Next')?>";
 								}else if(msg=='fuckyou'){
-									$('#ajax_verifyresult').html('<i class="fa fa-fw fa-remove"></i> <?php echo _('Too many failed attempts...')?>').slideDown();
+									$('#ajax_verifyres').html('<i class="fa fa-fw fa-remove"></i> <?php echo _('Too many failed attempts...')?>').slideDown();
 									window.setTimeout("window.location='resetpwd.php'",2000); 
 								}else{
-									$('#ajax_verifyresult').html('<i class="fa fa-fw fa-remove"></i> '+msg).slideDown();
+									$('#ajax_verifyres').html('<i class="fa fa-fw fa-remove"></i> '+msg).slideDown();
 									verify_nxt.removeAttribute("disabled");
 									verify_nxt.value = "<?php echo _('Next')?>";
 								}
@@ -216,43 +219,34 @@ $Title=$inTitle .' - '. $oj_name;
 					};
 				});	
 				$('#pwd_save').click(function(){
-					$('#ajax_pwdresult').hide();
+					$('#ajax_pwdres').slideUp();
 					var b=false;
-					if(!$.trim($('#input_newpwd').val())) {
-						$('#input_newpwd').addClass('error');
+					var pwd=$('#input_newpwd').val();
+					if(pwd=='' || $('#input_reppwd').val()!=pwd){
 						b=true;
-					}else
-						$('#input_newpwd').removeClass('error');
-					if(!$.trim($('#input_reppwd').val())){
-						$('#input_reppwd').addClass('error');
-						b=true;
-					}else
-						$('#input_reppwd').removeClass('error');
-					if($('#input_newpwd').val()!='' && $('#input_reppwd').val() != $('#input_newpwd').val()){
-						b=true;
-						$('#newpwd_ctl').addClass('error');
-						$('#reppwd_ctl').addClass('error');
+						$('#ctl_newpwd').addClass('has-error');
+						$('#ctl_reppwd').addClass('has-error');
 					}else{
-						$('#newpwd_ctl').removeClass('error');
-						$('#reppwd_ctl').removeClass('error');
-					}
+						$('#ctl_newpwd').removeClass('has-error');
+						$('#ctl_reppwd').removeClass('has-error');
+                    }
 					if(!b){
 						$.ajax({
 							type:"POST",
 							url:'api/ajax_resetpwd.php',
-							data:{"type":'update',"newpwd":$.trim($('#input_newpwd').val())},
+							data:$('#form_pwd').serialize(),
 							success:function(msg){
 								if(msg == 'success'){
-									$('#ajax_pwdresult').removeClass('alert-danger').addClass('alert-success');
-									$('#ajax_pwdresult').html('<i class="fa fa-fw fa-check"></i> <?php echo _('Password reset successfully!')?>').slideDown();
-									window.setTimeout("window.location='index.php'",2000); 
+									$('#ajax_pwdres').removeClass('alert-danger').addClass('alert-success');
+									$('#ajax_pwdres').html('<i class="fa fa-fw fa-check"></i> <?php echo _('Password reset successfully!')?>').slideDown();
+									window.setTimeout("window.location='login.php'",2000); 
 								}else if(msg=='timeout'){
-									$('#ajax_pwdresult').removeClass('alert-success').addClass('alert-danger');
-									$('#ajax_pwdresult').html('<i class="fa fa-fw fa-remove"></i> <?php echo _('Session expired...')?>').slideDown();
+									$('#ajax_pwdres').removeClass('alert-success').addClass('alert-danger');
+									$('#ajax_pwdres').html('<i class="fa fa-fw fa-remove"></i> <?php echo _('Session expired...')?>').slideDown();
 									window.setTimeout("window.location='resetpwd.php'",2000); 
 								}else{
-									$('#ajax_pwdresult').removeClass('alert-success').addClass('alert-danger');
-									$('#ajax_pwdresult').html('<i class="fa fa-fw fa-remove"></i> '+msg).slideDown();
+									$('#ajax_pwdres').removeClass('alert-success').addClass('alert-danger');
+									$('#ajax_pwdres').html('<i class="fa fa-fw fa-remove"></i> '+msg).slideDown();
 								}
 							}
 						});	

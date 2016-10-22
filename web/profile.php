@@ -57,43 +57,43 @@ $Title=$inTitle .' - '. $oj_name;
 					<form id="form_profile" action="#" method="post">
 						<input type="hidden" value="profile" name="type">
 						<div class="form-group col-xs-12 col-sm-6">
-							<label>
+							<label class="control-label" for="input_nick">
 								<?php echo _('Nickname')?>
 							</label>
 							<input class="form-control" type="text" name="nick" id="input_nick" value="<?php echo htmlspecialchars($row[1])?>" placeholder="<?php echo _('Your new cool nickname...')?>">
 						</div>
 						<div class="form-group col-xs-12 col-sm-6">
-							<label>
+							<label class="control-label" for="input_motto">
 								<?php echo _('Motto')?>
 							</label>
 							<input class="form-control" id="input_motto" name="motto" type="text" value="<?php echo htmlspecialchars($row[3])?>" placeholder="<?php echo _('Leave it blank if slience is gold...')?>">
 						</div>
-						<div class="form-group col-xs-12 col-sm-6" id="newpwd_ctl">
-							<label>
+						<div class="form-group col-xs-12 col-sm-6" id="ctl_newpwd">
+							<label class="control-label" for="input_newpwd">
 								<?php echo _('New Password')?>
 							</label>
 							<input class="form-control" type="password" id="input_newpwd" name="newpwd" placeholder="<?php echo _('A new password if you like...')?>">
 						</div>
-						<div class="form-group col-xs-12 col-sm-6" id="reppwd_ctl">
-							<label>
+						<div class="form-group col-xs-12 col-sm-6" id="ctl_reppwd">
+							<label class="control-label" for="input_reppwd">
 								<?php echo _('Retype Password')?>
 							</label>
 							<input class="form-control" type="password" id="input_reppwd" placeholder="<?php echo _('Retype your brand new password...')?>">
 						</div>
-						<div class="form-group col-xs-12 col-sm-6">
-							<label>
+						<div class="form-group col-xs-12 col-sm-6" id="ctl_email">
+							<label class="control-label" for="input_email">
 								<?php echo _('Email')?>
 							</label>
 							<input class="form-control" type="text" name="email" id="input_email" value="<?php echo htmlspecialchars($row[0])?>" placeholder="<?php echo _('A vaild email is required for convenience...')?>">
 						</div>
 						<div class="form-group col-xs-12 col-sm-6">
-							<label>
+							<label class="control-label" for="input_school">
 								<?php echo _('School')?>
 							</label>
 							<input class="form-control" type="text" name="school" id="input_school" value="<?php echo htmlspecialchars($row[2])?>" placeholder="<?php echo _('Make your school proud...')?>">
 						</div>
-						<div class="form-group col-xs-12 col-sm-6" id="oldpwd_ctl">
-							<label>
+						<div class="form-group col-xs-12 col-sm-6" id="ctl_oldpwd">
+							<label class="control-label" for="input_oldpwd">
 								<?php echo _('Current password')?>(*)
 							</label>
 							<input class="form-control" id="input_oldpwd" name="oldpwd" type="password" placeholder="<?php echo _('Required before changing anything...')?>">
@@ -113,19 +113,24 @@ $Title=$inTitle .' - '. $oj_name;
 				$('#form_profile').submit(function(){
 					var b=false,pwd;
 					if($('#input_oldpwd').val()==''){
-						$('#input_oldpwd').addClass('error');
+						$('#ctl_oldpwd').addClass('has-error');
 						b=true;
 					}else
-						$('#input_oldpwd').removeClass('error');
+						$('#ctl_oldpwd').removeClass('has-error');
 					pwd=$('#input_newpwd').val();
 					if(pwd!='' && $('#input_reppwd').val()!=pwd){
 						b=true;
-						$('#input_newpwd').addClass('error');
-						$('#input_reppwd').addClass('error');
+						$('#ctl_newpwd').addClass('has-error');
+						$('#ctl_reppwd').addClass('has-error');
 					}else{
-						$('#input_newpwd').removeClass('error');
-						$('#input_reppwd').removeClass('error');
-					}
+						$('#ctl_newpwd').removeClass('has-error');
+						$('#ctl_reppwd').removeClass('has-error');
+                    }
+                    if($('#input_email').val()==''){
+						$('#ctl_email').addClass('has-error');
+						b=true;
+					}else
+						$('#ctl_email').removeClass('has-error');
 					if(!b){
 						$.ajax({
 							type:"POST",

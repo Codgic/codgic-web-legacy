@@ -22,11 +22,11 @@ $Title=_('Welcome to ').$oj_name;
 						<form id="form_login" method="post">
 							<h1 class="text-center"><?php echo _('Welcome Back')?></h1>
 							<hr>
-							<div class="form-group has-feedback" id="uid_ctl">
-								<input class="form-control" autofocus="autofocus" type="text" id="input_uid" name="uid" placeholder="<?php echo _('Username...')?>">
+							<div class="form-group has-feedback" id="ctl_uid">
+								<input class="form-control" autofocus="autofocus" id="input_uid" type="text" name="uid" placeholder="<?php echo _('Username...')?>">
 								<span class="form-control-feedback"><i class="fa fa-fw fa-user"></i></span>
 							</div>
-							<div class="form-group has-feedback" id="pwd_ctl">
+							<div class="form-group has-feedback" id="ctl_pwd">
 								<input class="form-control" id="input_pwd" name="pwd" type="password" placeholder="<?php echo _('Password...')?>">
 								<span class="form-control-feedback"><i class="fa fa-fw fa-lock"></i></span>
 							</div>
@@ -65,18 +65,18 @@ $Title=_('Welcome to ').$oj_name;
 				?>";
 				$('body .row').fadeIn();
 				$('#form_login').submit(function(){
-					$('#login_res').hide();
+					$('#login_res').slideUp();
 					var b=false,pwd;
 					if(!$.trim($('#input_uid').val())){
-						$('#input_uid').addClass('error');
+						$('#ctl_uid').addClass('has-error');
 						b=true;
 					}else
-						$('#input_uid').removeClass('error');
+						$('#ctl_uid').removeClass('has-error');
 					if(!$.trim($('#input_pwd').val())){
-						$('#input_pwd').addClass('error');
+						$('#ctl_pwd').addClass('has-error');
 						b=true;
 					}else
-						$('#input_pwd').removeClass('error');
+						$('#ctl_pwd').removeClass('has-error');
 					if(!b){
 						$.ajax({
 							type:"POST",

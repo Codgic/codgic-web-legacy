@@ -87,8 +87,8 @@ if($_POST['op']=='del'){
 
     require __DIR__.'/../lib/problem_flags.php';
     $has_tex=0;
-    if(isset($_POST['option_open_source'])){
-        switch(intval($_POST['option_open_source'])){
+    if(isset($_POST['option_osc'])){
+        switch(intval($_POST['option_osc'])){
             case 0:
                 break;
             case 1:

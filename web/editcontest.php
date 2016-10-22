@@ -77,38 +77,38 @@ else if(!isset($_SESSION['admin_tfa']) || !$_SESSION['admin_tfa']){
 					<input type="hidden" name="op" value="<?php echo $p_type?>">
 					<input type="hidden" name="contest_id" value="<?php echo $cont_id?>">
 					<div class="row">
-						<div class="form-group col-xs-12 col-sm-9">
-							<label>
+						<div class="form-group col-xs-12 col-sm-9" id="ctl_title">
+							<label class="control-label" for="input_title">
 								<?php echo _('Title')?>
 							</label>
 							<input type="text" class="form-control" name="title" id="input_title" value="<?php if($p_type=='edit') echo $row[0]?>">
 						</div>
 					</div>
 					<div class="row">
-						<div class="form-group col-xs-12 col-sm-9">
-							<label>
+						<div class="form-group col-xs-12 col-sm-9" id="ctl_probs">
+							<label class="control-label" for="input_probs">
 								<?php echo _('Problems (Format: a,b,c)')?>
 							</label>
-							<input type="text" class="form-control" name="problems" value="<?php if($p_type=='edit'){ $prob_arr=unserialize($row[3]);echo implode(',', $prob_arr);}?>">
+							<input type="text" class="form-control" name="problems" id="input_probs" value="<?php if($p_type=='edit'){ $prob_arr=unserialize($row[3]);echo implode(',', $prob_arr);}?>">
 						</div>
 					</div>
 					<div class="row">
-						<div class="form-group col-xs-6 col-sm-4">
-							<label>
+						<div class="form-group col-xs-6 col-sm-4" id="ctl_starttime">
+                            <label class="control-label" for="input_starttime">
 								<?php echo _('Start Time (yyyy-mm-dd hh:mm:ss)')?>
 							</label>
-							<input id="input_time" name="start_time" class="form-control" type="text" value="<?php if($p_type=='edit') echo $row[1]; else echo date("Y-m-d H:i:s",time())?>">
+							<input type="text" name="start_time" id="input_starttime" class="form-control" value="<?php if($p_type=='edit') echo $row[1]; else echo date("Y-m-d H:i:s",time())?>">
 						</div>
-						<div class="form-group col-xs-6 col-sm-4">
-							<label>
+						<div class="form-group col-xs-6 col-sm-4" id="ctl_endtime">
+							<label class="control-label" for="input_endtime">
 								<?php echo _('End Time (yyyy-mm-dd hh:mm:ss)')?>
 							</label>
-							<input id="input_memory" name="end_time" class="form-control" type="text" value="<?php if($p_type=='edit') echo $row[2]; else echo date("Y-m-d H:i:s",time()+10800)?>">
+							<input type="text" name="end_time" id="input_endtime" class="form-control" value="<?php if($p_type=='edit') echo $row[2]; else echo date("Y-m-d H:i:s",time()+14400)?>">
 						</div> 
 					</div>
 					<div class="row">
 						<div class="form-group col-xs-12 col-sm-9">
-							<label>
+							<label class="control-label" for="input_cmp">
 								<?php echo _('Format')?>
 							</label>
 							<select class="form-control" name="judge" id="input_cmp">
@@ -127,10 +127,10 @@ else if(!isset($_SESSION['admin_tfa']) || !$_SESSION['admin_tfa']){
 					</div>      
 					<div class="row">
 						<div class="form-group col-xs-6 col-sm-3">
-							<label>
+							<label class="control-label" for="input_level">
 								<?php echo _('Level')?>
 							</label>
-							<select class="form-control" name="option_level" id="option_level">
+							<select class="form-control" name="option_level" id="input_level">
 								<script>
 									<?php if($p_type=='add'){?>
 										for(var i=0;i<=<?php echo $level_max?>;i++){
@@ -148,7 +148,7 @@ else if(!isset($_SESSION['admin_tfa']) || !$_SESSION['admin_tfa']){
 							</select>
 						</div>
 						<div class="form-group col-xs-6 col-sm-4">
-							<label>
+							<label class="control-label">
 								<?php echo _('Options')?>
 							</label>
 							<div class="checkbox">
@@ -160,18 +160,18 @@ else if(!isset($_SESSION['admin_tfa']) || !$_SESSION['admin_tfa']){
 					</div>
 					<div class="row">
 						<div class="form-group col-xs-12 col-sm-9">
-							<label>
+							<label class="control-label" for="input_des">
 								<?php echo _('Description')?>
 							</label>
-							<textarea class="form-control col-xs-12" name="description" rows="13"><?php if($p_type=='edit') echo htmlspecialchars($row[4])?></textarea>
+							<textarea class="form-control col-xs-12" name="description" id="input_des" rows="13"><?php if($p_type=='edit') echo htmlspecialchars($row[4])?></textarea>
 						</div>
 					</div>       
 					<div class="row">
 						<div class="form-group col-xs-12 col-sm-9">
-							<label>
+							<label <label class="control-label" for="input_tags">
 								<?php echo _('Tags')?>
 							</label>
-							<input class="form-control col-xs-12" type="text" name="source" value="<?php if($p_type=='edit') echo htmlspecialchars($row[5])?>">
+							<input class="form-control col-xs-12" type="text" name="source" id="input_tags" value="<?php if($p_type=='edit') echo htmlspecialchars($row[5])?>">
 						</div>
 					</div>
 					<div class="row">
@@ -270,31 +270,44 @@ else if(!isset($_SESSION['admin_tfa']) || !$_SESSION['admin_tfa']){
 					window.open("upload.php",'upload_win2','left='+loffset+',top='+toffset+',width=400,height=300,toolbar=no,resizable=no,menubar=no,location=no,status=no');
 				});
 				$('#edit_form textarea').focus(function(e){cur=e.target;});
-				$('#edit_form input').blur(function(e){
-					e.target.value=$.trim(e.target.value);
-					var o=$(e.target);
-					if(!e.target.value)
-						o.addClass('error');
-					else
-						o.removeClass('error');
-				});
 				$('#edit_form').submit(function(){
-					var str=$('#input_title').val();
-					if(!str||str==''){
-						$('html, body').animate({scrollTop:0}, '200');
-						return false;
-					}
-					$.ajax({
-						type:"POST",
-						url:"api/ajax_editcontest.php",
-						data:$('#edit_form').serialize(),
-						success:function(msg){
-							if(/success/.test(msg)) 
-								window.location="contestpage.php?contest_id=<?php echo $cont_id?>";
-							else
-								$('#alert_error').html('<i class="fa fa-fw fa-remove"></i> '+msg).slideDown();
-							}
-					});
+                    var b=false;
+                    $('#alert_error').slideUp;
+					if(!$.trim($('#input_title').val())){
+                        $('#ctl_title').addClass('has-error');
+						b=true;
+                    }else
+                        $('#ctl_title').removeClass('has-error');
+                    if(!$.trim($('#input_probs').val())){
+                        $('#ctl_probs').addClass('has-error');
+						b=true;
+                    }else
+                        $('#ctl_probs').removeClass('has-error');
+                    if(!$.trim($('#input_starttime').val())){
+                        $('#ctl_starttime').addClass('has-error');
+						b=true;
+                    }else
+                        $('#ctl_starttime').removeClass('has-error');
+                    if(!$.trim($('#input_endtime').val())){
+                        $('#ctl_endtime').addClass('has-error');
+						b=true;
+                    }else
+                        $('#ctl_endtime').removeClass('has-error');
+                    if(b)
+                        $('html, body').animate({scrollTop:0}, '200');
+                    else{
+                        $.ajax({
+                            type:"POST",
+                            url:"api/ajax_editcontest.php",
+                            data:$('#edit_form').serialize(),
+                            success:function(msg){
+                                if(/success/.test(msg)) 
+                                    window.location="contestpage.php?contest_id=<?php echo $cont_id?>";
+                                else
+                                    $('#alert_error').html('<i class="fa fa-fw fa-remove"></i> '+msg).slideDown();
+                                }
+                        });
+                    }
 					return false;
 				});
 				$('#tools').click(function(e){

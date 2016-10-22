@@ -71,8 +71,8 @@ $Title=$inTitle .' - '. $oj_name;
 					<input type="hidden" name="op" value="<?php echo $p_type?>">
 					<input type="hidden" name="wiki_id" value="<?php echo $wiki_id?>">
 					<div class="row">
-						<div class="form-group col-xs-12">
-							<label>
+						<div class="form-group col-xs-12" id="ctl_title">
+							<label class="control-label" for="input_title">
 								<?php echo _('Title')?>
 							</label>
 							<input type="text" class="form-control" name="title" id="input_title" value="<?php if($p_type=='edit') echo $row[0]?>">
@@ -81,7 +81,7 @@ $Title=$inTitle .' - '. $oj_name;
                     <?php if(check_priv(PRIV_PROBLEM)){?>
 					<div class="row">
 						<div class="form-group col-xs-6 col-sm-4">
-							<label>
+							<label class="control-label">
 								<?php echo _('Options')?>
 							</label>
 							<div class="checkbox">
@@ -93,20 +93,20 @@ $Title=$inTitle .' - '. $oj_name;
 					</div>
                     <?php }?>
 					<div class="row">
-						<div class="form-group col-xs-12">
-							<label>
+						<div class="form-group col-xs-12" id="ctl_des">
+							<label class="control-label" for="input_des">
 								<?php echo _('Content')?>
 							</label>
-							<textarea class="form-control col-xs-12" name="content" rows="20" id="detail_input"><?php if($p_type=='edit') echo htmlspecialchars($row[1])?></textarea>
+							<textarea class="form-control col-xs-12" id="input_des" name="content" rows="20"><?php if($p_type=='edit') echo htmlspecialchars($row[1])?></textarea>
                             <?php if($pref->edrmode=='vim') echo '<samp>',_('Command: '),'<span id="vim_cmd"></span></samp>'?>
 						</div>
 					</div>       
 					<div class="row">
 						<div class="form-group col-xs-12">
-							<label>
+							 <label class="control-label" for="input_tags">
 								<?php echo _('Tags')?>
 							</label>
-							<input class="form-control col-xs-12" type="text" name="tags" value="<?php if($p_type=='edit') echo htmlspecialchars($row[2])?>">
+							<input class="form-control col-xs-12" id="input_tags" type="text" name="tags" value="<?php if($p_type=='edit') echo htmlspecialchars($row[2])?>">
 						</div>
 					</div>
 					<div class="row">
@@ -140,7 +140,7 @@ $Title=$inTitle .' - '. $oj_name;
 		?>
 		<script type="text/javascript">
 			$(document).ready(function(){
-                var editor = CodeMirror.fromTextArea(document.getElementById('detail_input'),{
+                var editor = CodeMirror.fromTextArea(document.getElementById('input_des'),{
 					theme: "<?php if($t_night=='on') echo 'midnight'; else echo 'eclipse'?>",
 					mode: "gfm",
 					<?php
@@ -189,31 +189,34 @@ $Title=$inTitle .' - '. $oj_name;
 					}
 				}
 				$('#edit_form textarea').focus(function(e){cur=e.target;});
-				$('#edit_form input').blur(function(e){
-					e.target.value=$.trim(e.target.value);
-					var o=$(e.target);
-					if(!e.target.value)
-						o.addClass('error');
-					else
-						o.removeClass('error');
-				});
 				$('#edit_form').submit(function(){
-					var str=$('#input_title').val();
-					if(!str||str==''){
-						$('html, body').animate({scrollTop:0}, '200');
-						return false;
-					}
-					$.ajax({
-						type:"POST",
-						url:"api/ajax_editwiki.php",
-						data:$('#edit_form').serialize(),
-						success:function(msg){
-							if(/success/.test(msg)) 
-								window.location="wikipage.php?wiki_id=<?php echo $wiki_id?>";
-							else
-								$('#alert_error').html('<i class="fa fa-fw fa-remove"></i> '+msg).slideDown();
-							}
-					});
+					var b=false;
+                    $('#alert_error').slideUp;
+					if(!$.trim($('#input_title').val())){
+                        $('#ctl_title').addClass('has-error');
+						b=true;
+                    }else
+                        $('#ctl_title').removeClass('has-error');
+                    if(!$.trim($('#input_des').val())){
+                        $('#ctl_des').addClass('has-error');
+						b=true;
+                    }else
+                        $('#ctl_des').removeClass('has-error');
+                    if(b)
+                        $('html, body').animate({scrollTop:0}, '200');
+                    else{
+                        $.ajax({
+                            type:"POST",
+                            url:"api/ajax_editwiki.php",
+                            data:$('#edit_form').serialize(),
+                            success:function(msg){
+                                if(/success/.test(msg)) 
+                                    window.location="wikipage.php?wiki_id=<?php echo $wiki_id?>";
+                                else
+                                    $('#alert_error').html('<i class="fa fa-fw fa-remove"></i> '+msg).slideDown();
+                                }
+                        });
+                    }
 					return false;
 				});
 			});

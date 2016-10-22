@@ -188,8 +188,10 @@ $Title=$inTitle .' - '. $oj_name;
 					<form action="#" method="post" id="form_rejudge">
 						<input type="hidden" name="op" value="rejudge">
 						<div class="modal-body">
-							<div class="form-group">
-								<label><?php echo _('Please enter the Problem ID:')?></label>
+							<div class="form-group" id="ctl_rejudge">
+								<label class="control-label" for="input_rejudge">
+                                    <?php echo _('Please enter the Problem ID:')?>
+                                </label>
 								<input class="form-control" id="input_rejudge" type="number" name="problem" placeholder="1000~9999">
 							</div>
 							<div class="alert alert-danger collapse" id="rejudge_res"></div>
@@ -215,7 +217,7 @@ $Title=$inTitle .' - '. $oj_name;
 							<input type="hidden" id="news_op" name="op" value="add_news">
 							<input type="hidden" id="news_id" name="news_id" value="0">  
 							<div class="modal-body">
-								<div class="form-group">
+								<div class="form-group" id="ctl_newstitle">
 									<input type="text" class="form-control" id="input_newstitle" name="title" placeholder="<?php echo _('Please enter News Title...')?>">
 								</div>
 								<div class="form-group">
@@ -399,9 +401,9 @@ $Title=$inTitle .' - '. $oj_name;
 			});
 			update_chart();
 			$('#form_rejudge').submit(function(){
-				$('#rejudge_res').hide();
+				$('#rejudge_res').slideUp();
 				if($.trim($('#input_rejudge').val())){
-					$('#input_rejudge').removeClass('error');   
+					$('#ctl_rejudge').removeClass('has-error');   
 					$.ajax({
 						type:"POST",
 						url:"api/ajax_submit.php",
@@ -414,7 +416,7 @@ $Title=$inTitle .' - '. $oj_name;
 						}
 					});
 				}else
-					$('#input_rejudge').addClass('error');  
+					$('#ctl_rejudge').addClass('has-error');  
 				return false;
 			});
 			<?php if(check_priv(PRIV_SYSTEM)){?>
@@ -489,10 +491,10 @@ $Title=$inTitle .' - '. $oj_name;
 					$('#news_res').hide();
 					var a=false;
 					if(!$.trim($('#input_newstitle').val())) {
-						$('#input_newstitle').addClass('error');
+						$('#ctl_newstitle').addClass('has-error');
 						a=true;
 					}else{
-						$('#input_newstitle').removeClass('error');
+						$('#ctl_newstitle').removeClass('has-error');
 					}
 					if(!a){
 						$.ajax({

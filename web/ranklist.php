@@ -209,7 +209,7 @@ $Title=$inTitle .' - '. $oj_name;
 				content+='</samp></td></tr></table>';
 			}
 			$(document).ready(function(){
-				change_type(3);
+				change_type(4);
 				$('#userlist').click(function(Event){
 					var $target=$(Event.target);
 					if($target.is('a') && $target.attr('href')=='#linkU'){
