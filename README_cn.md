@@ -5,19 +5,19 @@ Laverne，电影《疯狂动物城》中主人公Judy Hopps的中间名，代表
 
 注： 1.x仍然处于早期开发阶段，意味着它包含大量只写了不到一半的代码并且只适用于测试用途。
      
-# 分支
+## 分支
 - master: 当前开发分支 (1.0-Laverne)。
 - stable-0.x: 稳定版本分支 (0.x)。
 
-# 部署
+## 部署
 - 评测端在[这里](https://github.com/CDFLS/cwoj_daemon)。
 - 适用于CWOJ 0.x的部署指南可以在[Wiki](https://github.com/CDFLS/CWOJ/wiki)标签栏下找到。
 
-# 许可
+## 许可
 - CWOJ主要基于[Bashu OnlineJudge](https://github.com/593141477/bashu-onlinejudge).
 - CWOJ也引用了一下其它的开源项目, 其中大部分都基于MIT协议。
 
-# 特性
+## 特性
 相比原始的 Bashu Online Judge, 我们做了如下提升:
 - [X] <b>完全兼容PHP7</b>
 - [X] 多语言支持 (Alpha) + UX细节升级

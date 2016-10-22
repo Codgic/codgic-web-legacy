@@ -5,19 +5,19 @@ Laverne, the middle name of Judy Hopps from the movie "Zootopia", represents the
      
 Notes: 1.x is still in early development stage, meaning it contains loads of half-done codes and is for evaluation purpose only.
 
-# Branches
+## Branches
 - master: Current development branch (1.0-Laverne).
 - stable: Latest stable version (0.x).
 
-# Deployment
+## Deployment
 - The local daemon can be found [HERE](https://github.com/CDFLS/cwoj_daemon).
 - Deployment Guide for CWOJ 0.x could be found in the [Wiki](https://github.com/CDFLS/CWOJ/wiki) section.
 
-# Credits
+## Credits
 - CWOJ is mainly based on [Bashu OnlineJudge](https://github.com/593141477/bashu-onlinejudge).
 - CWOJ profits from other projects, most of them are licensed under the MIT license.
 
-# Features
+## Features
 Compared with the original Bashu OnlineJudge, we've made loads of improvements:
 - [X] <b>PHP7 Ready</b>
 - [X] Mullti-Languages Support + Improvements on UX.
