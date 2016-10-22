@@ -6,6 +6,7 @@ require __DIR__.'/func/privilege.php';
 function check_id(&$str,&$t){
     if($t==1) $type='problem';
     else if($t==2) $type='contest';
+    else if($t==3) $type='wiki';
     else return;
     
     require __DIR__.'/conf/database.php';
@@ -88,6 +89,7 @@ else{
             }
             break;
         case 3:
+            check_id($req,$type);
             $result=mysqli_query($con,"select wiki_id,title,tags,revision,in_date from wiki 
             where is_max='Y' and title like '%$keyword%' or tags like '%$keyword%'
             order by wiki_id desc limit ".(($page_id-1)*20).",20");

@@ -266,7 +266,7 @@ $Title=$inTitle .' - '. $oj_name;
                                                 echo '<td><a href="sourcecode.php?solution_id=',$row[0],'">',$LANG_NAME[$row[8]],'</a>';
                                             else
                                                 echo '<td>',$LANG_NAME[$row[8]];
-                                            if($row[2]==$_SESSION['user'])
+                                            if(isset($_SESSION['user'])&&$row[2]==$_SESSION['user'])
                                                 echo ' <a href="#sw_open_',$row[0],'"><i class=', ($row[10] ? '"fa fa-eye text-success"' : '"fa fa-eye-slash muted"'), '></i></a></td>';
                                             else
                                                 echo ' <i class=', ($row[10] ? '"fa fa-eye text-success"' : '"fa fa-eye-slash muted"'), '></i></td>';

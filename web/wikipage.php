@@ -57,7 +57,10 @@ $Title=$inTitle .' - '. $oj_name;
     <?php require __DIR__.'/inc/head.php';?>
     <link rel="stylesheet" href="/assets/css/prism.css">
     <body>
-        <?php require __DIR__.'/inc/navbar.php';?>
+        <?php
+            require __DIR__.'/conf/mathjax.php';
+            require __DIR__.'/inc/navbar.php';
+        ?>
         <div id="probdisp" class="container">
             <?php if(isset($info)){?>
                 <div class="row">
