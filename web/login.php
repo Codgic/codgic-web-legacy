@@ -33,7 +33,7 @@ $Title=_('Welcome to ').$oj_name;
 							<div class="form-group">
 								<div class="checkbox">
 									<label>
-										<input type="checkbox" name="remember" id="chk_remember"><?php echo _('Say you remember me...')?>
+										<input type="checkbox" name="remember" id="chk_remember"><?php echo _('Say you\'ll remember me...')?>
 									</label>
 								</div>
 							</div>

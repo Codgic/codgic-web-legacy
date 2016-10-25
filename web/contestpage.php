@@ -41,138 +41,139 @@ $result=mysqli_query($con,$query);
 $row=mysqli_fetch_row($result);
 if(!$row)
     $info=_('There\'s no such contest');
-switch ($row[8]) {
-    case 0:
-        $judge_way=_('Training');
-        break;
-    case 1:
-        $judge_way=_('CWOJ');
-        break;
-    case 2:
-        $judge_way=_('ACM-like');
-        break;
-    case 3:
-        $judge_way=_('OI-like');
-        break;
-}
-
-if($row[7]=='Y' && !check_priv(PRIV_PROBLEM))
-    $forbidden=true;
-else if($row[6]&PROB_IS_HIDE && !check_priv(PRIV_INSIDER))
-    $forbidden=true;
 else{
-    $forbidden=false;
-    //Update last visited records.
-    if(!isset($_SESSION['view']))
-        $view_arr=array('cont'=>$cont_id,'prob'=>1000,'wiki'=>1);
-    else{
-        $view_arr=unserialize($_SESSION['view']);
-        $view_arr['cont']=$cont_id;
-    }
-    $_SESSION['view']=serialize($view_arr);
-    
-    $prob_arr=unserialize($row[2]);
-    $tot_scores=0;
-    $tot_times=0;
-    if(strtotime($row[3])>time()){
-        //Contest hasn't started
-        $s_info = '<tr><td colspan="2" class="label-re text-center"><i class="fa fa-fw fa-car"></i> '._('Contest hasn\'t started').'</td></tr>';
-        $cont_status=0;
-    }else{
-        $prob_arr=unserialize($row[2]);
-        if(time()>strtotime($row[4])){
-            //Contest has ended
-            $s_info = '<tr><td colspan="2" class="label-wa text-center"><i class="fa fa-fw fa-ambulance"></i> '._('Contest has ended').'</td></tr>';
-            $cont_status=2;
-            if($row[11]==NULL){
-                //Contest needs updating
-                update_cont_rank($cont_id);
-                header("Location: contestpage.php?contest_id=$cont_id");
-                exit();
-            }else{
-                //Check if need updating
-                for($i=0;$i<$row[9];$i++){
-                    $s_row=mysqli_fetch_row(mysqli_query($con,'select title,rejudged from problem where problem_id='.$prob_arr[$i].' limit 1'));
-                    if($s_row[1]=='Y'){
-                        update_cont_rank($cont_id);
-                        header("Location: contestpage.php?contest_id=$cont_id");
-                        exit(); 
-                    }
-                    //Initialize arrays.
-                    $pname_arr[$i]=$s_row[0];
-                    $score_arr["$prob_arr[$i]"]=0;
-                    $res_arr["$prob_arr[$i]"]=NULL;
-                    $time_arr["$prob_arr[$i]"]=0;
-                }
-            }
-            //Get scores from database directly
-            if(isset($row[12])){
-                $score_arr=unserialize($row[12]);
-                $res_arr=unserialize($row[13]);
-                $time_arr=unserialize($row[15]);
-                $tot_scores=array_sum($score_arr);
-                $tot_times=array_sum($time_arr);
-            }
-        }else{
-            //Contest in progress: live data
-            $s_info = '<tr><td colspan="2" class="label-ac text-center"><i class="fa fa-fw fa-cog fa-spin"></i> '._('Contest in progress').'</td></tr>';
-            $cont_status=1;
-            if(isset($row[12])){
-                for($i=0;$i<$row[9];$i++){
-                    $s_row=mysqli_fetch_row(mysqli_query($con,'select title from problem where problem_id='.$prob_arr[$i].' limit 1'));
-                    $pname_arr[$i]=$s_row[0];
-                    if($row[8]==3){ 
-                        //For judge ways that only recognize the first submit
-                        $s_row=mysqli_fetch_row(mysqli_query($con, "select score,result,in_date from solution where user_id='$user_id' and in_date>'".$row[3]."' and in_date<'".$row[4]."' and problem_id=".$prob_arr[$i].' order by in_date limit 1'));
-                        //Process score
-                        if(!isset($s_row[0]))
-                            $s_row[0]=0;
-                        $score_arr["$prob_arr[$i]"]=$s_row[0];
-                        $tot_scores+=$score_arr["$prob_arr[$i]"];
-                        //Process result
-                        if(!isset($s_row[1]))
-                            $s_row[1]=NULL;
-                        $res_arr["$prob_arr[$i]"]=$s_row[1];
-                        //Process time
-                        if(!isset($s_row[2]))
-                            $s_row[2]=0;
-                        $time_arr["$prob_arr[$i]"]=$s_row[2];
-                        $tot_times+=$time_arr["$prob_arr[$i]"];
-                    }else{
-                        //For judge ways that recognize max scores
-                        $s_row=mysqli_fetch_row(mysqli_query($con,"select max(score),count(score),min(result),max(in_date) from solution where user_id='$user_id' and in_date>'".$row[3]."' and in_date<'".$row[4]."' and problem_id=".$prob_arr[$i]));
-                        //Process scores
-                        if(!isset($s_row[0]))
-                            $s_row[0]=0;
-                        if($s_row[0]!=100&&$row[8]==2)
-                            $s_row[0]=0;
-                        $score_arr["$prob_arr[$i]"]=$s_row[0];
-                        if($row[8]==1&&$s_row[1]!=0){
-                            $score_arr["$prob_arr[$i]"]-=5*($s_row[1]-1);
-                            if($score_arr["$prob_arr[$i]"]<0)
-                                $score_arr["$prob_arr[$i]"]=0;
-                        }
-                        $tot_scores+=$score_arr["$prob_arr[$i]"];
-                        //Process results
-                        if(!isset($s_row[2])) 
-                            $s_row[2]=NULL;
-                        $res_arr["$prob_arr[$i]"]=$s_row[2];
-                        //Process times
-                        if(!isset($s_row[3]))
-                            $s_row[3]=0;
-                        if($s_row[0]==100)
-                            $time_arr["$prob_arr[$i]"]=strtotime($s_row[3])-strtotime($row[3])+1200*($s_row[1]-1);
-                        else 
-                            $time_arr["$prob_arr[$i]"]=1200*$s_row[1];
-                            $tot_times+=$time_arr["$prob_arr[$i]"];
-                    }
-                }
-            }
-        }
-    }
-    $cont_level=($row[6]&PROB_LEVEL_MASK)>>PROB_LEVEL_SHIFT;
-}
+	switch ($row[8]) {
+		case 0:
+			$judge_way=_('Training');
+			break;
+		case 1:
+			$judge_way=_('CWOJ');
+			break;
+		case 2:
+			$judge_way=_('ACM-like');
+			break;
+		case 3:
+			$judge_way=_('OI-like');
+			break;
+	}
 
+	if($row[7]=='Y' && !check_priv(PRIV_PROBLEM))
+		$forbidden=true;
+	else if($row[6]&PROB_IS_HIDE && !check_priv(PRIV_INSIDER))
+		$forbidden=true;
+	else{
+		$forbidden=false;
+		//Update last visited records.
+		if(!isset($_SESSION['view']))
+			$view_arr=array('cont'=>$cont_id,'prob'=>1000,'wiki'=>1);
+		else{
+			$view_arr=unserialize($_SESSION['view']);
+			$view_arr['cont']=$cont_id;
+		}
+		$_SESSION['view']=serialize($view_arr);
+		
+		$prob_arr=unserialize($row[2]);
+		$tot_scores=0;
+		$tot_times=0;
+		if(strtotime($row[3])>time()){
+			//Contest hasn't started
+			$s_info = '<tr><td colspan="2" class="label-re text-center"><i class="fa fa-fw fa-car"></i> '._('Contest hasn\'t started').'</td></tr>';
+			$cont_status=0;
+		}else{
+			$prob_arr=unserialize($row[2]);
+			if(time()>strtotime($row[4])){
+				//Contest has ended
+				$s_info = '<tr><td colspan="2" class="label-wa text-center"><i class="fa fa-fw fa-ambulance"></i> '._('Contest has ended').'</td></tr>';
+				$cont_status=2;
+				if($row[11]==NULL){
+					//Contest needs updating
+					update_cont_rank($cont_id);
+					header("Location: contestpage.php?contest_id=$cont_id");
+					exit();
+				}else{
+					//Check if need updating
+					for($i=0;$i<$row[9];$i++){
+						$s_row=mysqli_fetch_row(mysqli_query($con,'select title,rejudged from problem where problem_id='.$prob_arr[$i].' limit 1'));
+						if($s_row[1]=='Y'){
+							update_cont_rank($cont_id);
+							header("Location: contestpage.php?contest_id=$cont_id");
+							exit(); 
+						}
+						//Initialize arrays.
+						$pname_arr[$i]=$s_row[0];
+						$score_arr["$prob_arr[$i]"]=0;
+						$res_arr["$prob_arr[$i]"]=NULL;
+						$time_arr["$prob_arr[$i]"]=0;
+					}
+				}
+				//Get scores from database directly
+				if(isset($row[12])){
+					$score_arr=unserialize($row[12]);
+					$res_arr=unserialize($row[13]);
+					$time_arr=unserialize($row[15]);
+					$tot_scores=array_sum($score_arr);
+					$tot_times=array_sum($time_arr);
+				}
+			}else{
+				//Contest in progress: live data
+				$s_info = '<tr><td colspan="2" class="label-ac text-center"><i class="fa fa-fw fa-cog fa-spin"></i> '._('Contest in progress').'</td></tr>';
+				$cont_status=1;
+				if(isset($row[12])){
+					for($i=0;$i<$row[9];$i++){
+						$s_row=mysqli_fetch_row(mysqli_query($con,'select title from problem where problem_id='.$prob_arr[$i].' limit 1'));
+						$pname_arr[$i]=$s_row[0];
+						if($row[8]==3){ 
+							//For judge ways that only recognize the first submit
+							$s_row=mysqli_fetch_row(mysqli_query($con, "select score,result,in_date from solution where user_id='$user_id' and in_date>'".$row[3]."' and in_date<'".$row[4]."' and problem_id=".$prob_arr[$i].' order by in_date limit 1'));
+							//Process score
+							if(!isset($s_row[0]))
+								$s_row[0]=0;
+							$score_arr["$prob_arr[$i]"]=$s_row[0];
+							$tot_scores+=$score_arr["$prob_arr[$i]"];
+							//Process result
+							if(!isset($s_row[1]))
+								$s_row[1]=NULL;
+							$res_arr["$prob_arr[$i]"]=$s_row[1];
+							//Process time
+							if(!isset($s_row[2]))
+								$s_row[2]=0;
+							$time_arr["$prob_arr[$i]"]=$s_row[2];
+							$tot_times+=$time_arr["$prob_arr[$i]"];
+						}else{
+							//For judge ways that recognize max scores
+							$s_row=mysqli_fetch_row(mysqli_query($con,"select max(score),count(score),min(result),max(in_date) from solution where user_id='$user_id' and in_date>'".$row[3]."' and in_date<'".$row[4]."' and problem_id=".$prob_arr[$i]));
+							//Process scores
+							if(!isset($s_row[0]))
+								$s_row[0]=0;
+							if($s_row[0]!=100&&$row[8]==2)
+								$s_row[0]=0;
+							$score_arr["$prob_arr[$i]"]=$s_row[0];
+							if($row[8]==1&&$s_row[1]!=0){
+								$score_arr["$prob_arr[$i]"]-=5*($s_row[1]-1);
+								if($score_arr["$prob_arr[$i]"]<0)
+									$score_arr["$prob_arr[$i]"]=0;
+							}
+							$tot_scores+=$score_arr["$prob_arr[$i]"];
+							//Process results
+							if(!isset($s_row[2])) 
+								$s_row[2]=NULL;
+							$res_arr["$prob_arr[$i]"]=$s_row[2];
+							//Process times
+							if(!isset($s_row[3]))
+								$s_row[3]=0;
+							if($s_row[0]==100)
+								$time_arr["$prob_arr[$i]"]=strtotime($s_row[3])-strtotime($row[3])+1200*($s_row[1]-1);
+							else 
+								$time_arr["$prob_arr[$i]"]=1200*$s_row[1];
+								$tot_times+=$time_arr["$prob_arr[$i]"];
+						}
+					}
+				}
+			}
+		}
+		$cont_level=($row[6]&PROB_LEVEL_MASK)>>PROB_LEVEL_SHIFT;
+	}
+}
 if($forbidden)
     $info=_('Looks like you can\'t access this page');
 

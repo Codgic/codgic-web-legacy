@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: CWOJ-1.0.Laverne\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-10-22 22:11+0800\n"
-"PO-Revision-Date: 2016-10-22 22:12+0800\n"
+"POT-Creation-Date: 2016-10-23 17:11+0800\n"
+"PO-Revision-Date: 2016-10-23 17:11+0800\n"
 "Last-Translator: Jimmy Zhang <info@cwoj.tk>\n"
 "Language-Team: CWOJ Team <info@cwoj.tk>\n"
 "Language: zh_CN\n"
@@ -49,14 +49,13 @@ msgstr ""
 "X-Poedit-SearchPath-27: contest.php\n"
 "X-Poedit-SearchPath-28: board.php\n"
 "X-Poedit-SearchPath-29: backupcode.php\n"
-"X-Poedit-SearchPath-30: admin_r.php\n"
-"X-Poedit-SearchPath-31: admin_auth.php\n"
-"X-Poedit-SearchPath-32: admin.php\n"
-"X-Poedit-SearchPath-33: about.php\n"
-"X-Poedit-SearchPath-34: api\n"
-"X-Poedit-SearchPath-35: func\n"
+"X-Poedit-SearchPath-30: admin_auth.php\n"
+"X-Poedit-SearchPath-31: admin.php\n"
+"X-Poedit-SearchPath-32: about.php\n"
+"X-Poedit-SearchPath-33: api\n"
+"X-Poedit-SearchPath-34: func\n"
+"X-Poedit-SearchPath-35: lib\n"
 "X-Poedit-SearchPath-36: inc\n"
-"X-Poedit-SearchPath-37: lib\n"
 
 #: about.php:5 about.php:18
 msgid "About"
@@ -189,228 +188,221 @@ msgid ""
 "output of your code. Please contact the administrators."
 msgstr "检查程序在验证你的输出时表现出异常行为，请联系管理员。"
 
-#: admin.php:20 admin_r.php:20 inc/navbar.php:69
+#: admin.php:20 inc/navbar.php:69
 msgid "Administration"
 msgstr "管理"
 
-#: admin.php:32 admin.php:54 admin_r.php:32 admin_r.php:54 index.php:19
+#: admin.php:32 admin.php:54 index.php:19
 msgid "Home"
 msgstr "主页"
 
-#: admin.php:34 admin_r.php:34 index.php:52 news.php:32
+#: admin.php:34 index.php:52 news.php:32
 msgid "News"
 msgstr "新闻"
 
-#: admin.php:35 admin.php:101 admin_r.php:35 admin_r.php:101
-#: api/ajax_admin.php:112 api/ajax_admin.php:141 api/ajax_admin.php:144
+#: admin.php:35 admin.php:101 api/ajax_admin.php:112 api/ajax_admin.php:141
+#: api/ajax_admin.php:144
 msgid "Experience"
 msgstr "经验"
 
-#: admin.php:36 admin_r.php:36 inc/navbar.php:48 search.php:124
+#: admin.php:36 inc/navbar.php:48 search.php:124
 msgid "Users"
 msgstr "用户"
 
-#: admin.php:44 admin_r.php:44
+#: admin.php:44
 msgid "Getting Started"
 msgstr "开始"
 
-#: admin.php:46 admin_r.php:46
+#: admin.php:46
 msgid "New Problem..."
 msgstr "新建题目..."
 
-#: admin.php:47 admin_r.php:47
+#: admin.php:47
 msgid "New Contest..."
 msgstr "新建比赛..."
 
-#: admin.php:48 admin_r.php:48
+#: admin.php:48
 msgid "Problem Categories..."
 msgstr "题目分类..."
 
-#: admin.php:49 admin_r.php:49
+#: admin.php:49
 msgid "Rejudge..."
 msgstr "重新评测..."
 
-#: admin.php:62 admin.php:111 admin.php:173 admin.php:240 admin.php:302
-#: admin_r.php:62 admin_r.php:111 admin_r.php:173 admin_r.php:240
-#: admin_r.php:302 preferences.php:73 problempage.php:485 profile.php:103
+#: admin.php:62 admin.php:111 admin.php:173 admin.php:242 admin.php:304
+#: preferences.php:73 problempage.php:485 profile.php:103
 msgid "Save"
 msgstr "保存"
 
-#: admin.php:68 admin_r.php:68
+#: admin.php:68
 msgid "System Information"
 msgstr "系统信息"
 
-#: admin.php:88 admin_r.php:88
+#: admin.php:88
 msgid "Add News..."
 msgstr "新建新闻..."
 
-#: admin.php:91 admin.php:593 admin_r.php:91 admin_r.php:593 board.php:259
-#: contestpage.php:274 mail.php:260 ranklist.php:216 record.php:363
-#: search.php:318 solved.php:80 sourcecode.php:209
+#: admin.php:91 admin.php:595 board.php:259 contestpage.php:274 mail.php:260
+#: ranklist.php:216 record.php:363 search.php:318 solved.php:80
+#: sourcecode.php:209
 msgid "Loading..."
 msgstr "正在加载..."
 
-#: admin.php:102 admin_r.php:102 api/ajax_admin.php:85 api/ajax_admin.php:113
-#: board.php:60 contest.php:148 editcontest.php:82 editproblem.php:87
-#: editwiki.php:76 mail.php:214 marked.php:93 news.php:59 problemset.php:147
-#: search.php:177 search.php:206 search.php:210 wiki.php:118
+#: admin.php:102 api/ajax_admin.php:85 api/ajax_admin.php:113 board.php:60
+#: contest.php:148 editcontest.php:82 editproblem.php:87 editwiki.php:76
+#: mail.php:214 marked.php:93 news.php:59 problemset.php:147 search.php:177
+#: search.php:206 search.php:210 wiki.php:118
 msgid "Title"
 msgstr "标题"
 
-#: admin.php:103 admin_r.php:103
+#: admin.php:103
 msgid "Add"
 msgstr "添加"
 
-#: admin.php:121 admin_r.php:121
+#: admin.php:121
 msgid "Send Email to All"
 msgstr "群发邮件"
 
-#: admin.php:126 admin_r.php:126
+#: admin.php:126
 msgid "Search User..."
 msgstr "搜索用户..."
 
-#: admin.php:140 admin_r.php:140 contest.php:192 contest.php:196 mail.php:187
-#: marked.php:117 news.php:88 problempage.php:204 problemset.php:187
-#: problemset.php:191 ranklist.php:138 record.php:286 search.php:273
-#: wiki.php:146
+#: admin.php:140 contest.php:192 contest.php:196 mail.php:187 marked.php:117
+#: news.php:88 problempage.php:204 problemset.php:187 problemset.php:191
+#: ranklist.php:138 record.php:286 search.php:273 wiki.php:146
 msgid "Previous"
 msgstr "上一页"
 
-#: admin.php:145 admin_r.php:145 contest.php:203 contest.php:207 mail.php:191
-#: marked.php:122 news.php:93 problempage.php:209 problemset.php:198
-#: problemset.php:202 ranklist.php:141 record.php:289 resetpwd.php:31
-#: resetpwd.php:58 resetpwd.php:91 resetpwd.php:148 resetpwd.php:205
-#: resetpwd.php:212 search.php:278 wiki.php:149
+#: admin.php:145 contest.php:203 contest.php:207 mail.php:191 marked.php:122
+#: news.php:93 problempage.php:209 problemset.php:198 problemset.php:202
+#: ranklist.php:141 record.php:289 resetpwd.php:32 resetpwd.php:60
+#: resetpwd.php:94 resetpwd.php:151 resetpwd.php:208 resetpwd.php:215
+#: search.php:278 wiki.php:149
 msgid "Next"
 msgstr "下一页"
 
-#: admin.php:163 admin_r.php:163
+#: admin.php:163
 msgid "Problem Categories"
 msgstr "题目分类"
 
-#: admin.php:168 admin_r.php:168
+#: admin.php:168
 msgid "Please input HTML code..."
 msgstr "请输入HTML代码..."
 
-#: admin.php:174 admin.php:199 admin.php:241 admin.php:269 admin.php:303
-#: admin.php:325 admin_r.php:174 admin_r.php:199 admin_r.php:241
-#: admin_r.php:269 admin_r.php:303 admin_r.php:325 board.php:82 board.php:191
-#: index.php:123 mail.php:231 mail.php:248 news.php:115 problempage.php:451
-#: problempage.php:486 ranklist.php:163 record.php:311 search.php:299
-#: signup.php:79 solved.php:67 sourcecode.php:152 upload.php:70
+#: admin.php:174 admin.php:201 admin.php:243 admin.php:271 admin.php:305
+#: admin.php:327 board.php:82 board.php:191 index.php:123 mail.php:231
+#: mail.php:248 news.php:115 problempage.php:451 problempage.php:486
+#: ranklist.php:163 record.php:311 search.php:299 signup.php:79 solved.php:67
+#: sourcecode.php:152 upload.php:70
 msgid "Close"
 msgstr "关闭"
 
-#: admin.php:186 admin.php:198 admin_r.php:186 admin_r.php:198
+#: admin.php:186 admin.php:200
 msgid "Rejudge"
 msgstr "重新评测"
 
-#: admin.php:192 admin_r.php:192
+#: admin.php:193
 msgid "Please enter the Problem ID:"
 msgstr "请输入题目ID:"
 
-#: admin.php:219 admin_r.php:219
+#: admin.php:221
 msgid "Please enter News Title..."
 msgstr "请输入新闻标题..."
 
-#: admin.php:222 admin_r.php:222
+#: admin.php:224
 msgid "Please enter News Content (Optional)..."
 msgstr "请输入新闻内容(可选)..."
 
-#: admin.php:228 admin_r.php:228
+#: admin.php:230
 msgid "Sticky"
 msgstr "顶置"
 
-#: admin.php:231 admin_r.php:231 contestpage.php:339 mail.php:156 marked.php:95
+#: admin.php:233 contestpage.php:339 mail.php:156 marked.php:95
 #: problempage.php:364 wikipage.php:125
 msgid "Delete"
 msgstr "删除"
 
-#: admin.php:232 admin_r.php:232 editcontest.php:237 editproblem.php:301
-#: upload.php:81
+#: admin.php:234 editcontest.php:237 editproblem.php:301 upload.php:81
 msgid "Upload Image"
 msgstr "上传图片"
 
-#: admin.php:233 admin_r.php:233
+#: admin.php:235
 msgid "Need Privilege"
 msgstr "需要权限"
 
-#: admin.php:235 admin.php:288 admin_r.php:235 admin_r.php:288
-#: func/privilege.php:19
+#: admin.php:237 admin.php:290 func/privilege.php:19
 msgid "Insider"
 msgstr "校内"
 
-#: admin.php:236 admin.php:291 admin_r.php:236 admin_r.php:291
-#: func/privilege.php:18
+#: admin.php:238 admin.php:293 func/privilege.php:18
 msgid "Source"
 msgstr "源码"
 
-#: admin.php:237 admin.php:294 admin_r.php:237 admin_r.php:294
-#: contestpage.php:224 func/privilege.php:17 inc/navbar.php:27
-#: inc/navbar.php:45 marked.php:74 problemset.php:85 search.php:121
+#: admin.php:239 admin.php:296 contestpage.php:224 func/privilege.php:17
+#: inc/navbar.php:27 inc/navbar.php:45 marked.php:74 problemset.php:85
+#: search.php:121
 msgid "Problems"
 msgstr "题目"
 
-#: admin.php:260 admin_r.php:260
+#: admin.php:262
 msgid "Please enter Email Title..."
 msgstr "请输入邮件标题..."
 
-#: admin.php:263 admin_r.php:263
+#: admin.php:265
 msgid "Please enter Email Content..."
 msgstr "请输入邮件内容..."
 
-#: admin.php:268 admin_r.php:268 mail.php:230
+#: admin.php:270 mail.php:230
 msgid "Send"
 msgstr "发送"
 
-#: admin.php:297 admin_r.php:297 func/privilege.php:16
+#: admin.php:299 func/privilege.php:16
 msgid "System"
 msgstr "系统"
 
-#: admin.php:315 admin_r.php:315 board.php:181 mail.php:242 ranklist.php:153
-#: ranklist.php:218 record.php:301 search.php:289 solved.php:57
-#: sourcecode.php:142
+#: admin.php:317 board.php:181 mail.php:242 ranklist.php:153 ranklist.php:218
+#: record.php:301 search.php:289 solved.php:57 sourcecode.php:142
 msgid "User Profile"
 msgstr "用户信息"
 
-#: admin.php:322 admin_r.php:322 board.php:188 ranklist.php:160 record.php:308
-#: search.php:296 solved.php:64 sourcecode.php:149
+#: admin.php:324 board.php:188 ranklist.php:160 record.php:308 search.php:296
+#: solved.php:64 sourcecode.php:149
 msgid "Send Mail"
 msgstr "发送邮件"
 
-#: admin.php:367 admin_r.php:367
+#: admin.php:369
 msgid "Running..."
 msgstr "正在运行..."
 
-#: admin.php:369 admin_r.php:369
+#: admin.php:371
 msgid "Not Running..."
 msgstr "尚未运行..."
 
-#: admin.php:451 admin_r.php:451
+#: admin.php:453
 msgid "Edit News"
 msgstr "编辑新闻"
 
-#: admin.php:479 admin_r.php:479
+#: admin.php:481
 msgid "Add News"
 msgstr "添加新闻"
 
-#: admin.php:556 admin_r.php:556
+#: admin.php:558
 msgid "Send Email: All Users"
 msgstr "发送邮件: 全体用户"
 
-#: admin.php:569 admin_r.php:569
+#: admin.php:571
 msgid "Send Email"
 msgstr "发送邮件"
 
-#: admin.php:575 admin_r.php:575
+#: admin.php:577
 msgid "Edit Privilege"
 msgstr "编辑权限"
 
-#: admin.php:637 admin_r.php:637
+#: admin.php:639
 msgid "Saved successfully!"
 msgstr "保存成功!"
 
-#: admin.php:649 admin_r.php:649
+#: admin.php:651
 msgid "Sending..."
 msgstr "正在发送..."
 
@@ -448,8 +440,8 @@ msgstr "尚未验证权限..."
 #: api/ajax_message.php:23 api/ajax_message.php:30 api/ajax_message.php:35
 #: api/ajax_message.php:51 api/ajax_message.php:107 api/ajax_message.php:131
 #: api/ajax_profile.php:6 api/ajax_profile.php:32 api/ajax_profile.php:67
-#: api/ajax_profile.php:113 api/ajax_resetpwd.php:8 api/ajax_resetpwd.php:14
-#: api/ajax_resetpwd.php:41 api/ajax_resetpwd.php:60 api/ajax_resetpwd.php:91
+#: api/ajax_profile.php:113 api/ajax_resetpwd.php:8 api/ajax_resetpwd.php:19
+#: api/ajax_resetpwd.php:57 api/ajax_resetpwd.php:76 api/ajax_resetpwd.php:108
 #: api/ajax_sourcecode.php:6 api/ajax_submit.php:50 api/ajax_submit.php:65
 #: api/ajax_testcase.php:144 api/ajax_user.php:11 api/ajax_usernote.php:10
 msgid "Invalid Argument..."
@@ -530,9 +522,10 @@ msgstr "等级"
 #: api/ajax_editproblem.php:40 api/ajax_editproblem.php:141
 #: api/ajax_editwiki.php:34 api/ajax_editwiki.php:86 api/ajax_mark.php:31
 #: api/ajax_message.php:45 api/ajax_message.php:100 api/ajax_message.php:127
-#: api/ajax_profile.php:111 api/ajax_resetpwd.php:87 api/ajax_sourcecode.php:24
-#: api/ajax_sourcecode.php:31 api/ajax_sourcecode.php:44 api/ajax_submit.php:28
-#: api/ajax_testcase.php:142 api/ajax_usernote.php:26 api/ajax_usernote.php:35
+#: api/ajax_profile.php:111 api/ajax_resetpwd.php:104
+#: api/ajax_sourcecode.php:24 api/ajax_sourcecode.php:31
+#: api/ajax_sourcecode.php:44 api/ajax_submit.php:28 api/ajax_testcase.php:142
+#: api/ajax_usernote.php:26 api/ajax_usernote.php:35
 msgid "Something went wrong..."
 msgstr "系统抽风咯..."
 
@@ -686,7 +679,7 @@ msgstr "学校名称太长..."
 msgid "Email too long..."
 msgstr "邮箱太长..."
 
-#: api/ajax_profile.php:22 api/ajax_resetpwd.php:19 api/ajax_resetpwd.php:24
+#: api/ajax_profile.php:22 api/ajax_resetpwd.php:24 api/ajax_resetpwd.php:29
 msgid "Invalid Email..."
 msgstr "邮箱无效..."
 
@@ -698,7 +691,7 @@ msgstr "密码错误..."
 msgid "Motto too long..."
 msgstr "格言太长..."
 
-#: api/ajax_profile.php:54 api/ajax_profile.php:93 api/ajax_resetpwd.php:71
+#: api/ajax_profile.php:54 api/ajax_profile.php:93 api/ajax_resetpwd.php:87
 msgid "Password too long or too short (6~50)..."
 msgstr "密码太长或太短 (6~50)..."
 
@@ -721,6 +714,10 @@ msgstr "用户名仅可包含字母，数字或下划线..."
 #: api/ajax_profile.php:109
 msgid "Username/Email already exists..."
 msgstr "用户名/邮箱已经存在..."
+
+#: api/ajax_resetpwd.php:15 api/ajax_resetpwd.php:46
+msgid "Request too frequent..."
+msgstr "请求过于频繁..."
 
 #: api/ajax_submit.php:16
 msgid "Can't connect to daemon..."
@@ -1158,7 +1155,7 @@ msgstr "公式"
 msgid "Hide Toolbar"
 msgstr "隐藏工具"
 
-#: editcontest.php:311 editproblem.php:398
+#: editcontest.php:324 editproblem.php:396
 msgid "Please enter the image link"
 msgstr "请输入图片链接"
 
@@ -1399,7 +1396,7 @@ msgstr "百科"
 msgid "Search..."
 msgstr "搜索..."
 
-#: inc/navbar.php:35 resetpwd.php:33 signup.php:60
+#: inc/navbar.php:35 resetpwd.php:34 signup.php:60
 msgid "Go Back..."
 msgstr "返回..."
 
@@ -1476,7 +1473,7 @@ msgid "Password..."
 msgstr "密码..."
 
 #: login.php:36
-msgid "Say you remember me..."
+msgid "Say you'll remember me..."
 msgstr "记住我清秀的脸面..."
 
 #: login.php:43 signup.php:24
@@ -1765,7 +1762,7 @@ msgstr "格言"
 msgid "Leave it blank if slience is gold..."
 msgstr "若沉默是金就留空吧..."
 
-#: profile.php:73 resetpwd.php:82
+#: profile.php:73 resetpwd.php:85
 msgid "New Password"
 msgstr "新密码"
 
@@ -1773,7 +1770,7 @@ msgstr "新密码"
 msgid "A new password if you like..."
 msgstr "如果你愿意的话..."
 
-#: profile.php:79 resetpwd.php:86
+#: profile.php:79 resetpwd.php:89
 msgid "Retype Password"
 msgstr "重复密码"
 
@@ -1797,7 +1794,7 @@ msgstr "当前密码"
 msgid "Required before changing anything..."
 msgstr "在更改任何档案前请先输入当前密码..."
 
-#: profile.php:136
+#: profile.php:141
 msgid "Profile updated successfully!"
 msgstr "档案更新成功!"
 
@@ -1917,32 +1914,31 @@ msgstr "内存"
 msgid "Size"
 msgstr "大小"
 
-#: resetpwd.php:8 resetpwd.php:21 resetpwd.php:47 resetpwd.php:77
-#: resetpwd.php:110
+#: resetpwd.php:8 resetpwd.php:22 resetpwd.php:47 resetpwd.php:78
 msgid "Reset Password"
 msgstr "重置密码"
 
-#: resetpwd.php:26 signup.php:45
+#: resetpwd.php:27 signup.php:45
 msgid "Email..."
 msgstr "邮箱..."
 
-#: resetpwd.php:51
+#: resetpwd.php:53
 msgid "We've just sent a verification code to your email..."
 msgstr "我们发送了一封带有验证码的邮件至你的邮箱..."
 
-#: resetpwd.php:53
+#: resetpwd.php:55
 msgid "Verification Code"
 msgstr "验证码"
 
-#: resetpwd.php:59 resetpwd.php:105 resetpwd.php:176
+#: resetpwd.php:61 resetpwd.php:108 resetpwd.php:113 resetpwd.php:179
 msgid "Resend"
 msgstr "重新发送"
 
-#: resetpwd.php:61
+#: resetpwd.php:63
 msgid "Can't Recieve?"
 msgstr "无法收到?"
 
-#: resetpwd.php:65
+#: resetpwd.php:67
 msgid ""
 "<p>Our email will arrive in a few minutes.<br>If you can't recieve, these "
 "steps might help:</p><ul><li>Resend an email.</li><li>Check out your junk "
@@ -1952,27 +1948,27 @@ msgstr ""
 "p><ul><li>重新发送一封邮件;</li><li>看看垃圾邮箱文件夹;</li><li>联系管理员。"
 "</li></ul>"
 
-#: resetpwd.php:141 resetpwd.php:161 resetpwd.php:191
+#: resetpwd.php:144 resetpwd.php:164 resetpwd.php:194
 msgid "Please wait..."
 msgstr "请稍后..."
 
-#: resetpwd.php:168
+#: resetpwd.php:171
 msgid "Email resent successfully..."
 msgstr "重发邮件成功!"
 
-#: resetpwd.php:171 resetpwd.php:200 resetpwd.php:251
+#: resetpwd.php:174 resetpwd.php:203 resetpwd.php:245
 msgid "Session expired..."
 msgstr "身份验证过期..."
 
-#: resetpwd.php:203
+#: resetpwd.php:206
 msgid "Wrong Verification Code..."
 msgstr "验证码错误..."
 
-#: resetpwd.php:207
+#: resetpwd.php:210
 msgid "Too many failed attempts..."
 msgstr "错误尝试次数过多..."
 
-#: resetpwd.php:247
+#: resetpwd.php:241
 msgid "Password reset successfully!"
 msgstr "密码重置成功!"
 
@@ -2028,11 +2024,11 @@ msgstr "用户许可"
 msgid "End User Licence Agreement"
 msgstr "终端用户许可"
 
-#: signup.php:114
+#: signup.php:119
 msgid "Your sign-up will be reviewed"
 msgstr "你的注册申请将被管理员审核"
 
-#: signup.php:117
+#: signup.php:122
 msgid "Great! Let's get started"
 msgstr "好的! 让我们现在开始..."
 
