@@ -35,8 +35,8 @@ if(isset($_GET['level'])){
     }else{
         $result=mysqli_query($con,"select problem_id,title,accepted,submit,source,defunct from problem where $addt_cond order by problem_id $range");
     }
-    if(mysqli_num_rows($result)==0) $info=_('There\'s no problem of this level');
-
+    if(mysqli_num_rows($result)==0) 
+		$info=_('There\'s no problem of this level');
 }else{
     //If request problemset page
     //Determine page_id

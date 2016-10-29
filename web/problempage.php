@@ -12,28 +12,31 @@ $is_contest=false;
 if(isset($_GET['contest_id'])){
     //If in contest mode
 	$cont_id=intval($_GET['contest_id']);
+	$inTitle=_('Contest')." #$cont_id";
 	$is_contest=true;
 	$query="select title,start_time,end_time,defunct,num,problems,description,source,has_tex from contest where contest_id=$cont_id";
 	$result=mysqli_query($con,$query);
 	$row_cont=mysqli_fetch_row($result);
     if(!$row_cont)
-        $info=_('There\'s no such problem');
-    if(time()<strtotime($row_cont[1])){
-        header("Location: contestpage.php?contest_id=$cont_id");
-        exit();
-    }
-	$rem_time=strtotime($row_cont[2])-time();
-	$prob_arr=unserialize($row_cont[5]);
-	$prob_num=0;
-	if(isset($_GET['prob'])){
-		$prob_num=intval($_GET['prob']);
-		if($prob_num<1||$prob_num>$row_cont[4]){
-            header("Location: problempage.php?contest_id=".$cont_id);
-            exit();
-        }else $prob_id=$prob_arr[$prob_num-1];
-	}else{
-		$prob_id=$prob_arr[0];
-        $prob_num=1;
+        $info=_('There\'s no such contest');
+	else{
+		if(time()<strtotime($row_cont[1])){
+			header("Location: contestpage.php?contest_id=$cont_id");
+			exit();
+		}
+		$rem_time=strtotime($row_cont[2])-time();
+		$prob_arr=unserialize($row_cont[5]);
+		$prob_num=0;
+		if(isset($_GET['prob'])){
+			$prob_num=intval($_GET['prob']);
+			if($prob_num<1||$prob_num>$row_cont[4]){
+				header("Location: problempage.php?contest_id=".$cont_id);
+				exit();
+			}else $prob_id=$prob_arr[$prob_num-1];
+		}else{
+			$prob_id=$prob_arr[0];
+			$prob_num=1;
+		}
 	}
 }
 
@@ -45,108 +48,112 @@ else if(isset($_SESSION['view'])){
 }else
     $prob_id=1000;
 
+if(!isset($inTitle))
+	$inTitle=_('Problem')." #$prob_id";
+
 $query="select title,description,input,output,sample_input,sample_output,hint,source,case_time_limit,memory_limit,case_score,defunct,has_tex,compare_way from problem where problem_id=$prob_id";
 $result=mysqli_query($con,$query);
 $row_prob=mysqli_fetch_row($result);
-if(!$row_prob)
+if(!$row_prob&&!isset($info))
     $info=_('There\'s no such problem');
-switch($row_prob[13] >> 16){
-    case 0:
-        $comparison=_('Traditional');
-        break;
-    case 1:
-        $comparison=_('Real, precision: ').($row_prob[13] & 65535);
-        break;
-    case 2:
-        $comparison=_('Integer');
-        break;
-    case 3:
-        $comparison=_('Special Judge');
-        break;
-}
+else if(!isset($info)){
+	switch($row_prob[13] >> 16){
+		case 0:
+			$comparison=_('Traditional');
+			break;
+		case 1:
+			$comparison=_('Real, precision: ').($row_prob[13] & 65535);
+			break;
+		case 2:
+			$comparison=_('Integer');
+			break;
+		case 3:
+			$comparison=_('Special Judge');
+			break;
+	}
 
-if($row_prob[11]=='Y' && !check_priv(PRIV_PROBLEM))
-    $forbidden=true;
-else if($row_prob[12] & PROB_IS_HIDE && !check_priv(PRIV_INSIDER))
-    $forbidden=true;
-else{
-    $forbidden=false;
-    //Update last visited records.
-    if(!isset($_SESSION['view'])){
-        if($is_contest)
-            $view_arr=array('cont'=>$cont_id,'prob'=>$prob_id,'wiki'=>1);
-        else
-            $view_arr=array('cont'=>1000,'prob'=>$prob_id,'wiki'=>1);
-        $_SESSION['view']=serialize($view_arr);
-    }else{
-        if(!isset($arr_view))
-            $view_arr=unserialize($_SESSION['view']);
-        if($is_contest)
-            $view_arr['cont']=$cont_id;
-        $view_arr['prob']=$prob_id;
-        $_SESSION['view']=serialize($view_arr);
-    }
+	if($row_prob[11]=='Y' && !check_priv(PRIV_PROBLEM))
+		$forbidden=true;
+	else if($row_prob[12] & PROB_IS_HIDE && !check_priv(PRIV_INSIDER))
+		$forbidden=true;
+	else{
+		$forbidden=false;
+		//Update last visited records.
+		if(!isset($_SESSION['view'])){
+			if($is_contest)
+				$view_arr=array('cont'=>$cont_id,'prob'=>$prob_id,'wiki'=>1);
+			else
+				$view_arr=array('cont'=>1000,'prob'=>$prob_id,'wiki'=>1);
+			$_SESSION['view']=serialize($view_arr);
+		}else{
+			if(!isset($arr_view))
+				$view_arr=unserialize($_SESSION['view']);
+			if($is_contest)
+				$view_arr['cont']=$cont_id;
+			$view_arr['prob']=$prob_id;
+			$_SESSION['view']=serialize($view_arr);
+		}
 
-    if(isset($_SESSION['user'])){
-        $user_id=$_SESSION['user'];
-        //Get problem status.
-        $query="select min(result) from solution where user_id='$user_id' and problem_id=$prob_id group by problem_id";
-        $user_status=mysqli_query($con,$query);
-        if(mysqli_num_rows($user_status)==0)
-            $s_info = '<tr><td colspan="2" class="label-re text-center"> '._('Give it a try...').'</td></tr>';
-        else{
-            $statis=mysqli_fetch_row($user_status);
-            if($statis[0]==0){
-                $s_info = '<tr><td colspan="2" class="label-ac text-center"><i class="fa fa-fw fa-check"></i> '._('Congratulations!').'</td></tr>';
-            }else{
-                $s_info = '<tr><td colspan="2" class="label-wa text-center"><i class="fa fa-fw fa-remove"></i> '._('Let\'s try again...').'</td></tr>';
-            }
-        }
-        //Check if problem marked.
-        $result=mysqli_query($con,"SELECT problem_id FROM saved_problem where user_id='$user_id' and problem_id=$prob_id");
-        $mark_flag=mysqli_fetch_row($result);
-        if(!($mark_flag)){
-            $mark_icon_class='fa fa-fw fa-star-o';
-            $mark_btn_class='btn btn-default form-control';
-            $mark_btn_html=_('Mark');
-        }else{
-            $mark_icon_class='fa fa-fw fa-star';
-            $mark_btn_class='btn btn-danger form-control';
-            $mark_btn_html=_('Unmark');
-        }
-        //Get notes.
-        $result=mysqli_query($con,"SELECT content,tags FROM user_notes where user_id='$user_id' and problem_id=$prob_id");
-        $row_note=mysqli_fetch_row($result);
-        if(!$row_note){
-            $note_content = '';
-            $tags = '';
-            $note_exist=false;
-        }else{
-            $note_content = $row_note[0];
-            $tags = $row_note[1];
-            $note_exist=true;
-        }
-    }else{
-        $s_info = '<tr><td colspan="2" class="text-center muted"> '._('Please login first...').'</td></tr>';
-    } 
-    //Get related info.
-    $result=mysqli_query($con,"select submit_user,solved,submit from problem where problem_id=$prob_id");
-    $statis=mysqli_fetch_row($result);
-    $submit_user=$statis[0];
-    $solved_user=$statis[1];
-    $total_submit=$statis[2];
-    $prob_level=($row_prob[12]&PROB_LEVEL_MASK)>>PROB_LEVEL_SHIFT;
+		if(isset($_SESSION['user'])){
+			$user_id=$_SESSION['user'];
+			//Get problem status.
+			$query="select min(result) from solution where user_id='$user_id' and problem_id=$prob_id group by problem_id";
+			$user_status=mysqli_query($con,$query);
+			if(mysqli_num_rows($user_status)==0)
+				$s_info = '<tr><td colspan="2" class="label-re text-center"> '._('Give it a try...').'</td></tr>';
+			else{
+				$statis=mysqli_fetch_row($user_status);
+				if($statis[0]==0){
+					$s_info = '<tr><td colspan="2" class="label-ac text-center"><i class="fa fa-fw fa-check"></i> '._('Congratulations!').'</td></tr>';
+				}else{
+					$s_info = '<tr><td colspan="2" class="label-wa text-center"><i class="fa fa-fw fa-remove"></i> '._('Let\'s try again...').'</td></tr>';
+				}
+			}
+			//Check if problem marked.
+			$result=mysqli_query($con,"SELECT problem_id FROM saved_problem where user_id='$user_id' and problem_id=$prob_id");
+			$mark_flag=mysqli_fetch_row($result);
+			if(!($mark_flag)){
+				$mark_icon_class='fa fa-fw fa-star-o';
+				$mark_btn_class='btn btn-default form-control';
+				$mark_btn_html=_('Mark');
+			}else{
+				$mark_icon_class='fa fa-fw fa-star';
+				$mark_btn_class='btn btn-danger form-control';
+				$mark_btn_html=_('Unmark');
+			}
+			//Get notes.
+			$result=mysqli_query($con,"SELECT content,tags FROM user_notes where user_id='$user_id' and problem_id=$prob_id");
+			$row_note=mysqli_fetch_row($result);
+			if(!$row_note){
+				$note_content = '';
+				$tags = '';
+				$note_exist=false;
+			}else{
+				$note_content = $row_note[0];
+				$tags = $row_note[1];
+				$note_exist=true;
+			}
+		}else{
+			$s_info = '<tr><td colspan="2" class="text-center muted"> '._('Please login first...').'</td></tr>';
+		} 
+		//Get related info.
+		$result=mysqli_query($con,"select submit_user,solved,submit from problem where problem_id=$prob_id");
+		$statis=mysqli_fetch_row($result);
+		$submit_user=$statis[0];
+		$solved_user=$statis[1];
+		$total_submit=$statis[2];
+		$prob_level=($row_prob[12]&PROB_LEVEL_MASK)>>PROB_LEVEL_SHIFT;
 
-    $result=mysqli_query($con,"select result,count(*) as sum from solution where problem_id=$prob_id group by result");
-    $arr=array();
-    while($statis=mysqli_fetch_row($result))
-        $arr[$statis[0]]=$statis[1];
-    ksort($arr);  
+		$result=mysqli_query($con,"select result,count(*) as sum from solution where problem_id=$prob_id group by result");
+		$arr=array();
+		while($statis=mysqli_fetch_row($result))
+			$arr[$statis[0]]=$statis[1];
+		ksort($arr);  
+	}
 }
 if($forbidden) 
     $info=_('Looks like you can\'t access this page');
     
-$inTitle=_('Problem')." #$prob_id";
 $Title=$inTitle .' - '. $oj_name;
 ?>
 <!DOCTYPE html>
