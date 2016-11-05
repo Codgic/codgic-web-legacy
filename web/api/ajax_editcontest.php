@@ -2,9 +2,9 @@
 require __DIR__.'/../inc/init.php';
 require __DIR__.'/../func/privilege.php';
 require __DIR__.'/../lib/problem_flags.php';
+header('Content-Type: application/json');
 
-function JUDGE_TYPE($way)
-{
+function JUDGE_TYPE($way){
 	if($way=='train')
       return 0;
     else if($way=='cwoj')
@@ -15,54 +15,48 @@ function JUDGE_TYPE($way)
       return 3;
 }
 if(!check_priv(PRIV_PROBLEM)){
-    echo _('Permission Denied...');
+    echo json_encode(array('success' => false, 'message' => _('Permission Denied...')));
 	exit();
 }else if(!isset($_POST['op'])){
-	echo _('Invalid Argument...');
+	echo json_encode(array('success' => false, 'message' => _('Invalid Argument...')));
     exit();
 }
 
 require __DIR__.'/../conf/database.php';
 
-
 if($_POST['op']=='del'){
     if(!isset($_POST['contest_id'])){
-        echo _('No such problem...');
+        echo json_encode(array('success' => false, 'message' => _('No such contest...')));
         exit();
     }
     $id=intval($_POST['contest_id']);
-    $result=mysqli_query($con,"select defunct from contest where contest_id=$id");
-    if($row=mysqli_fetch_row($result)){
-        if($row[0]=='N') $opr='Y';
-        else $opr='N';
-        if(mysqli_query($con,"update contest set defunct='$opr' where contest_id=$id"))
-            echo 'success';
-        else
-            echo _('Something went wrong...');
-    }
+    if(mysqli_query($con,"update contest set defunct=(!defunct) where contest_id=$id"))
+        echo json_encode(array('success' => true));
+    else
+        echo json_encode(array('success' => false, 'message' => _('Database operation failed...')));
 }else{
     if(isset($_POST['start_time'])&&!empty($_POST['start_time'])){
          $start_time = mysqli_real_escape_string($con,$_POST['start_time']);
     }else{
-        echo _('Please enter start time...');
+        echo json_encode(array('success' => false, 'message' => _('Please enter Start Time...')));
         exit();
     }
     if($start_time<0){
-        echo _('Invalid start time...');
+        echo json_encode(array('success' => false, 'message' => _('Invalid Start Time...')));
         exit();
     }
     if(isset($_POST['end_time'])&&!empty($_POST['end_time'])){
         $end_time=mysqli_real_escape_string($con,$_POST['end_time']);
     }else{
-        echo _('Please enter end time...');
+        echo json_encode(array('success' => false, 'message' => _('Please enter End Time...')));
         exit();
     }
     if($end_time<0){
-        echo _('Invalid end time...');
+        echo json_encode(array('success' => false, 'message' => _('Invalid End Time...')));
         exit();
     }
     if(strtotime($start_time)>strtotime($end_time)){
-        echo _('Start time can\'t be greater than end time...');
+        echo json_encode(array('success' => false, 'message' => _('Start time can\'t be greater than end time...')));
         exit();
     }
     if(isset($_POST['judge'])){
@@ -73,13 +67,13 @@ if($_POST['op']=='del'){
     if(isset($_POST['title'])&&!empty($_POST['title'])){
         $title=mysqli_real_escape_string($con,$_POST['title']);
     }else{
-        echo _('Please enter title...');
+        echo json_encode(array('success' => false, 'message' => _('Please enter Title...')));
         exit();
     }
     if(isset($_POST['problems'])&&!empty($_POST['problems'])){
         $problems=mysqli_real_escape_string($con,$_POST['problems']);
     }else{
-        echo _('Please specify problems...');
+        echo json_encode(array('success' => false, 'message' => _('Please specify problems...')));
         exit();
     }
     $num=substr_count($problems,',')+1;
@@ -100,11 +94,13 @@ if($_POST['op']=='del'){
     for($i=0;$i<$num;$i++){
         $r=mysqli_fetch_row(mysqli_query($con,'select has_tex from problem where problem_id='.$prob_arr[$i].' limit 1'));
         if(!$r){
-            echo _('Problem #'),$prob_arr[$i],_('does not exist...');
+            echo json_encode(array('success' => false, 'message' => _('Problem #').$prob_arr[$i]._('does not exist...')));
             exit();
         }
-        if($r[0] & PROB_IS_HIDE && !isset($_POST['hide_cont']))
-        echo _('Problem #'),$prob_arr[$i],_('is hidden. Please hide the contest to add it...');
+        if($r[0] & PROB_IS_HIDE && !isset($_POST['hide_cont'])){
+            echo json_encode(array('success' => false, 'message' => _('Problem #').$prob_arr[$i]._('is hidden. Please hide the contest to add it...')));
+            exit();
+        }
     } 
 
     if(isset($_POST['hide_cont'])){
@@ -113,14 +109,13 @@ if($_POST['op']=='del'){
     foreach ($_POST as $value) {
         if(strstr($value,'[tex]') || strstr($value,'[inline]')) {
             $has_tex|=PROB_HAS_TEX;
-            //echo $value;
             break;
         }
     }
 
     if($_POST['op']=='edit'){
         if(!isset($_POST['contest_id'])){
-            echo _('Invalid Argument...');
+            echo json_encode(array('success' => false, 'message' => _('Invalid Argument...')));
             exit();
         }
         $id=intval($_POST['contest_id']);
@@ -136,14 +131,12 @@ if($_POST['op']=='del'){
             $id=intval($row[0])+1;
         $result=mysqli_query($con,"insert into contest (contest_id,title,start_time,end_time,description,problems,num,source,in_date,has_tex,judge_way,enroll_user) values ($id,'$title','$start_time','$end_time','$des','$problems','$num','$source',NOW(),$has_tex,$judge_way,0)");
     }else{
-        echo _('Invalid Argument...');
+        echo json_encode(array('success' => false, 'message' => _('Invalid Argument...')));
         exit();
     }
 
     if($result)
-        echo 'success';
-    else{
-        echo _('Something went wrong...');
-        exit();
-    }
+        echo json_encode(array('success' => true, 'contestID' => $id));
+    else
+        echo json_encode(array('success' => false, 'message' => _('Unknown Error...')));
 }

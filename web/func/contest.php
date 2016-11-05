@@ -88,8 +88,7 @@ function update_cont_rank($cont_id){
         $pre_time=$row[2];
         mysqli_query($con, "update contest_status set rank=$tmp where user_id='$user_id' and contest_id=$cont_id");
     }
-    for($i=0;$i<$cont_num;$i++)
-      mysqli_query($con, "update problem set rejudged='N' where problem_id=".$prob_arr[$i]);
+
     mysqli_query($con, "update contest set last_rank_time=NOW() where contest_id=$cont_id");
 }
 

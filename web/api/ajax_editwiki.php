@@ -1,12 +1,13 @@
 <?php
 require __DIR__.'/../inc/init.php';
 require __DIR__.'/../func/privilege.php';
+header('Content-Type: application/json');
 
 if(!isset($_SESSION['user'])){
-    echo _('Permission Denied...');
+    echo json_encode(array('success' => false, 'message' => _('Permission Denied...')));
 	exit();
 }else if(!isset($_POST['op'])){
-	echo _('Invalid Argument...');
+	echo json_encode(array('success' => false, 'message' => _('Invalid Argument...')));
     exit();
 }
 
@@ -14,30 +15,23 @@ require __DIR__.'/../conf/database.php';
 
 if($_POST['op']=='del'){
     if(!check_priv(PRIV_PROBLEM)){
-        echo _('Permission Denied...');
+        echo json_encode(array('success' => false, 'message' => _('Permission Denied...')));
         exit();
     }
     if(!isset($_POST['wiki_id'])){
-        echo _('No such wiki...');
+        echo json_encode(array('success' => false, 'message' => _('No such wiki...')));
         exit();
     }
     $id=intval($_POST['wiki_id']);
-    $result=mysqli_query($con,"select defunct from wiki where wiki_id=$id and is_max='Y' limit 1");
-    if($row=mysqli_fetch_row($result)){
-        if($row[0]=='N') 
-            $opr='Y';
-        else 
-            $opr='N';
-        if(mysqli_query($con,"update wiki set defunct='$opr' where wiki_id=$id and is_max='Y' limit 1"))
-            echo 'success';
-        else
-            echo _('Something went wrong...');
-    }
+    if(mysqli_query($con,"update wiki set defunct=(!defunct) where wiki_id=$id"))
+        echo json_encode(array('success' => true));
+    else
+        echo json_encode(array('success' => false, 'message' => _('Database operation failed...')));
 }else{
     if(isset($_POST['title'])&&!empty($_POST['title'])){
         $title=mysqli_real_escape_string($con,$_POST['title']);
     }else{
-        echo _('Please enter title...');
+        echo json_encode(array('success' => false, 'message' => _('Please enter Title...')));
         exit();
     }
     $content=isset($_POST['content']) ? mysqli_real_escape_string($con,$_POST['content']) : '';
@@ -51,20 +45,20 @@ if($_POST['op']=='del'){
 
     if($_POST['op']=='edit'){
         if(!isset($_POST['wiki_id'])){
-            echo _('Invalid Argument...');
+            echo json_encode(array('success' => false, 'message' => _('Invalid Argument...')));
             exit();
         }
         $id=intval($_POST['wiki_id']);
         //Get current newest revision.
-        $row=mysqli_fetch_row(mysqli_query($con,"select revision from wiki where wiki_id=$id and is_max='Y'"));
+        $row=mysqli_fetch_row(mysqli_query($con,"select revision from wiki where wiki_id=$id and is_max=1"));
         //revision++.
         if(isset($row[0])){
             $revision=$row[0]+1;
             //Mark the current revision as not the newest.
-            $result=mysqli_query($con,"update wiki set is_max='N' where wiki_id=$id and is_max='Y'");
+            $result=mysqli_query($con,"update wiki set is_max=0 where wiki_id=$id and is_max=1");
             if($result)
                 //Create a new revision and mark it as the newest.
-                $result=mysqli_query($con,"insert into wiki (wiki_id,title,content,tags,author,revision,is_max,in_date,privilege,defunct) values ($id,'$title','$content','$tags','$author','$revision','Y',NOW(),$priv,'N')");
+                $result=mysqli_query($con,"insert into wiki (wiki_id,title,content,tags,author,revision,is_max,in_date,privilege,defunct) values ($id,'$title','$content','$tags','$author','$revision',1,NOW(),$priv,0)");
         }else
             //If getting current newest revision failed.
             $result=false;
@@ -74,16 +68,14 @@ if($_POST['op']=='del'){
         if(($row=mysqli_fetch_row($result)) && intval($row[0]))
             $id=intval($row[0])+1;
         //Create a new revision and mark it as the newest.
-        $result=mysqli_query($con,"insert into wiki (wiki_id,title,content,tags,author,revision,is_max,in_date,privilege,defunct) values ($id,'$title','$content','$tags','$author',0,'Y',NOW(),$priv,'N')");
+        $result=mysqli_query($con,"insert into wiki (wiki_id,title,content,tags,author,revision,is_max,in_date,privilege,defunct) values ($id,'$title','$content','$tags','$author',0,1,NOW(),$priv,0)");
     }else{
-        echo _('Invalid Argument...');
+        echo json_encode(array('success' => false, 'message' => _('Invalid Argument...')));
         exit();
     }
 
     if($result)
-        echo 'success';
-    else{
-        echo _('Something went wrong...');
-        exit();
-    }
+        echo json_encode(array('success' => true, 'wikiID' => $id));
+    else
+        echo json_encode(array('success' => false, 'message' => _('Unknown Error...')));
 }

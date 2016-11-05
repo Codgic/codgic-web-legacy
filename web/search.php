@@ -309,8 +309,7 @@ $Title=$inTitle .' - '. $oj_name;
 		<script type="text/javascript"> 
 			$(document).ready(function(){
 				change_type(<?php echo $type?>);
-				$('#search_input').val("<?php echo urldecode($req)?>");
-				$('#search_type').val("<?php echo $type?>");
+				$('#search_type').val('<?php echo $type?>');
 				<?php if($type==4){?>
 					$('#userlist').click(function(Event){
 						var $target=$(Event.target);

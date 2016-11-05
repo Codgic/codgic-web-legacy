@@ -146,7 +146,7 @@ $Title=$inTitle .' - '. $oj_name;
 		<script src="/assets/js/common.js?v=<?php echo $web_ver?>"></script>
 		<script type="text/javascript"> 
         $(document).ready(function(){
-			$('#nav_about').parent().addClass('active');
+			$('#nav_wiki').parent().addClass('active');
         });
 		</script>
 	</body>

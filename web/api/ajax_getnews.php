@@ -3,8 +3,9 @@ require __DIR__.'/../conf/ojsettings.php';
 require __DIR__.'/../inc/init.php';
 require __DIR__.'/../func/privilege.php';
 require __DIR__.'/../conf/database.php';
+header('Content-Type: application/json');
 
-$arr=array('type'=>'fail','title'=>'','content'=>'','time'=>'','priv'=>'');
+$arr=array('success'=>false,'title'=>'','content'=>'','time'=>'','priv'=>'');
 
 if(!isset($_POST['newsid'])){
     $arr['content']=_('Invalid Argument...');
@@ -28,8 +29,9 @@ if($row[3]!=0){
     }
 }
 
-if(empty($row[1])) $row[1]=_('This piece of news is empty...');
-$arr['type']='success';
+if(empty($row[1])) 
+    $row[1]=_('This piece of news is empty...');
+$arr['success']=true;
 $arr['title']=$row[0];
 $arr['content']=$row[1];
 $arr['time']=$row[2];

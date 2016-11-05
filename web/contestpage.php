@@ -172,10 +172,10 @@ else{
 			}
 		}
 		$cont_level=($row[6]&PROB_LEVEL_MASK)>>PROB_LEVEL_SHIFT;
-	}
+    }
+    if($forbidden)
+        $info=_('Looks like you can\'t access this page');
 }
-if($forbidden)
-    $info=_('Looks like you can\'t access this page');
 
 $inTitle=_('Contest')." #$cont_id";
 $Title=$inTitle .' - '. $oj_name;
@@ -185,12 +185,12 @@ $Title=$inTitle .' - '. $oj_name;
 	<?php require __DIR__.'/inc/head.php';?>
     <link rel="stylesheet" href="/assets/css/prism.css"> 
 	<body>
-		<div class="alert collapse text-center alert-popup alert-danger" id="alert_error"></div>
 		<?php
 			if($row[6]&PROB_HAS_TEX)
 				require __DIR__.'/conf/mathjax.php';
 			require __DIR__.'/inc/navbar.php';
 		?>
+        <div class="alert collapse text-center alert-popup alert-danger" id="alert_error"></div>
 		<div id="probdisp" class="container">
 			<?php if(isset($info)){?>
 				<div class="row">
@@ -406,10 +406,10 @@ $Title=$inTitle .' - '. $oj_name;
 						url:"api/ajax_editcontest.php",
 						data:{op:'del',contest_id:cont},
 						success:function(msg){
-							if(/success/.test(msg))
+							if(msg.success)
 								location.reload();
 							else{
-								$('#alert_error').html('<i class="fa fa-fw fa-remove"></i> '+msg).fadeIn();
+								$('#alert_error').html('<i class="fa fa-fw fa-remove"></i> '+msg.message).fadeIn();
 								setTimeout(function(){$('#alert_error').fadeOut();},2000);
 							}
 						}

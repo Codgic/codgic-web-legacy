@@ -18,10 +18,6 @@ else if(!isset($_SESSION['admin_tfa']) || !$_SESSION['admin_tfa']){
     if(!isset($_GET['contest_id'])){
         $p_type='add';
         $inTitle=_('New Contest');
-        $cont_id=1000;
-        $result=mysqli_query($con,'select max(contest_id) from contest');
-        if(($row=mysqli_fetch_row($result)) && intval($row[0]))
-            $cont_id=intval($row[0])+1;
     }else{
         $p_type='edit';
         $cont_id=intval($_GET['contest_id']);  
@@ -75,7 +71,9 @@ else if(!isset($_SESSION['admin_tfa']) || !$_SESSION['admin_tfa']){
 				</div>
 				<form action="#" method="post" id="edit_form" style="padding-top:10px">
 					<input type="hidden" name="op" value="<?php echo $p_type?>">
-					<input type="hidden" name="contest_id" value="<?php echo $cont_id?>">
+                    <?php if($p_type=='edit'){?>
+                        <input type="hidden" name="contest_id" value="<?php echo $cont_id?>">
+                    <?php }?>
 					<div class="row">
 						<div class="form-group col-xs-12 col-sm-9" id="ctl_title">
 							<label class="control-label" for="input_title">
@@ -301,11 +299,12 @@ else if(!isset($_SESSION['admin_tfa']) || !$_SESSION['admin_tfa']){
                             url:"api/ajax_editcontest.php",
                             data:$('#edit_form').serialize(),
                             success:function(msg){
-                                if(/success/.test(msg)) 
-                                    window.location="contestpage.php?contest_id=<?php echo $cont_id?>";
-                                else
-                                    $('#alert_error').html('<i class="fa fa-fw fa-remove"></i> '+msg).slideDown();
+                                if (msg.success){
+                                    window.location = "contestpage.php?contest_id=" + msg.contestID;
+                                }else{
+                                    $('#alert_error').html('<i class="fa fa-fw fa-remove"></i> '+msg.message).slideDown();
                                 }
+                            }
                         });
                     }
 					return false;

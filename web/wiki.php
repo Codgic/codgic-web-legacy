@@ -4,17 +4,19 @@ require __DIR__.'/inc/init.php';
 require __DIR__.'/func/checklogin.php';
 
 if(!isset($_SESSION['user'])){
-    $addt_cond="privilege=0 and defunct='N'";
+    $addt_cond="privilege=0 and defunct=0";
 }else{
     $addt_cond="((privilege & ".$_SESSION['priv'].")<>0 or privilege=0)";
     require __DIR__.'/func/privilege.php';
     if(!check_priv(PRIV_PROBLEM))
-        $addt_cond.=" and defunct='N'";
+        $addt_cond.=" and defunct=0";
 }
 
 require __DIR__.'/conf/database.php';
 if(!isset($_GET['page_id'])){
     $row=mysqli_fetch_row(mysqli_query($con,"select content from wiki where wiki_id=0 limit 1"));
+    if(!$row[0])
+        $info=_('Quick Access is not yet available');
 }else{
     $page_id=intval($_GET['page_id']);
     if($page_id<1){
@@ -36,10 +38,10 @@ if(!isset($_GET['page_id'])){
         $user_id=$_SESSION['user'];
         $result=mysqli_query($con,"select wiki_id,title,content,tags,in_date,defunct,saved.wid from wiki
         LEFT JOIN (select wiki_id as wid from saved_wiki where user_id='$user_id') as saved on (saved.wid=wiki_id)
-        where wiki_id>0 and is_max='Y' order by wiki_id limit ".(($page_id-1)*20).",20");
+        where wiki_id>0 and is_max=1 order by wiki_id limit ".(($page_id-1)*20).",20");
     }else{
         $result=mysqli_query($con,"select wiki_id,title,content,tags,in_date,defunct from wiki
-        where wiki_id>0 and is_max='Y' order by wiki_id limit ".(($page_id-1)*20).",20");
+        where wiki_id>0 and is_max=1 order by wiki_id limit ".(($page_id-1)*20).",20");
     }
 }
 
@@ -51,6 +53,7 @@ $Title=$inTitle .' - '. $oj_name;
 <?php require __DIR__.'/inc/head.php';?>
 	<body>
 		<?php require __DIR__.'/inc/navbar.php';?>
+        <div class="alert collapse text-center alert-popup alert-danger" id="alert_error"></div>
 		<div class="container">
 			<?php if(!isset($_GET['page_id'])){?>
 				<div class="row">
@@ -96,63 +99,74 @@ $Title=$inTitle .' - '. $oj_name;
 						</div>
 					</div>
 				</div>
-			<?php }else{?>
-				<div class="row">
-					<div class="col-xs-12">
-						<div class="form-group">
-							<a href="/wiki.php" class="btn btn-default"><i class="fa fa-fw fa-home"></i> <?php echo _('Wiki Home')?></a>
-						</div>
-					</div>	
-				</div>
-				<div class="row">
-					<div class="col-xs-12">
-						<table class="table table-striped table-bordered" id="wiki_table">
-							<thead>
-								<tr>
-									<th class="col-xs-2 col-sm-1">ID</th>
-									<?php 
-										if(isset($_SESSION['user']))
-											echo '<th class="col-xs-8 col-sm-5" colspan="2">';
-										else
-											echo '<th>';
-										echo _('Title'),'</th>';
-										echo '<th class="col-xs-2 col-sm-1 col-md-2 hidden-xs hidden-sm">',_('Last Modified'),'</th>';  
-										echo '<th class="col-sm-5 col-md-3 hidden-xs">',_('Tags'),'</th>';
-									?>
-								</tr>
-							</thead>
-							<tbody>
-								<?php 
-									while($row=mysqli_fetch_row($result)){
-										echo '<tr>';
-										echo '<td>',$row[0],'</td>';
-										echo '<td style="text-align:left"><a href="wikipage.php?wiki_id=',$row[0],'">',$row[1],'</a>';
-										if($row[5]=='Y')
-											echo '&nbsp;&nbsp;<span class="label label-danger">',_('Deleted'),'</span>';
-										echo '</a></td>';
-										if(isset($_SESSION['user']))
-											echo '<td style="border-left:0;width:1%"><i data-pid="',$row[0],'" class="', is_null($row[6]) ? 'fa fa-star-o' : 'fa fa-star', ' fa-fw fa-2x text-warning save_problem" style="cursor:pointer;"></i></td>';
-										echo '<td class="hidden-xs hidden-sm">',$row[4],'</td>';
-										echo '<td class="hidden-xs" style="text-align:left">',$row[3],"</td></tr>\n";
-									}
-								?>
-							</tbody>
-						</table>
-					</div>
-				</div>
-				<div class="row">
-					<ul class="pager">
-						<li>
-							<a class="pager-pre-link shortcut-hint" title="Alt+A" <?php if($page_id>1) echo 'href="wiki.php?page_id=',($page_id-1),'"'?>><i class="fa fa-fw fa-angle-left"></i> <?php echo _('Previous')?></a>
-						</li>
-						<li>
-							<a class="pager-next-link shortcut-hint" title="Alt+D" <?php if($page_id<$maxpage) echo'href="wiki.php?page_id',($page_id+1),'"'?>><?php echo _('Next')?> <i class="fa fa-fw fa-angle-right"></i></a>
-						</li>
-					</ul>
-				</div> 
-			<?php }
-			require __DIR__.'/inc/footer.php';?>
-		</div>
+			<?php }else{
+                    if(isset($info)){?>
+                    <div class="text-center none-text none-center">
+                        <p><i class="fa fa-meh-o fa-4x"></i></p>
+                        <p>
+                            <b>Whoops</b>
+                            <br>
+                            <?php echo $info?>
+                        </p>
+                    </div>
+                <?php }else{?>
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <div class="form-group">
+                                <a href="/wiki.php" class="btn btn-default"><i class="fa fa-fw fa-home"></i> <?php echo _('Wiki Home')?></a>
+                            </div>
+                        </div>	
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <table class="table table-striped table-bordered" id="wiki_table">
+                                <thead>
+                                    <tr>
+                                        <th class="col-xs-2 col-sm-1">ID</th>
+                                        <?php 
+                                            if(isset($_SESSION['user']))
+                                                echo '<th class="col-xs-8 col-sm-5" colspan="2">';
+                                            else
+                                                echo '<th>';
+                                            echo _('Title'),'</th>';
+                                            echo '<th class="col-xs-2 col-sm-1 col-md-2 hidden-xs hidden-sm">',_('Last Modified'),'</th>';  
+                                            echo '<th class="col-sm-5 col-md-3 hidden-xs">',_('Tags'),'</th>';
+                                        ?>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php 
+                                        while($row=mysqli_fetch_row($result)){
+                                            echo '<tr>';
+                                            echo '<td>',$row[0],'</td>';
+                                            echo '<td style="text-align:left"><a href="wikipage.php?wiki_id=',$row[0],'">',$row[1],'</a>';
+                                            if($row[5]==1)
+                                                echo '&nbsp;&nbsp;<span class="label label-danger">',_('Deleted'),'</span>';
+                                            echo '</a></td>';
+                                            if(isset($_SESSION['user']))
+                                                echo '<td style="border-left:0;width:1%"><i data-pid="',$row[0],'" class="', is_null($row[6]) ? 'fa fa-star-o' : 'fa fa-star', ' fa-fw fa-2x text-warning save_problem" style="cursor:pointer;"></i></td>';
+                                            echo '<td class="hidden-xs hidden-sm">',$row[4],'</td>';
+                                            echo '<td class="hidden-xs" style="text-align:left">',$row[3],"</td></tr>\n";
+                                        }
+                                    ?>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <ul class="pager">
+                            <li>
+                                <a class="pager-pre-link shortcut-hint" title="Alt+A" <?php if($page_id>1) echo 'href="wiki.php?page_id=',($page_id-1),'"'?>><i class="fa fa-fw fa-angle-left"></i> <?php echo _('Previous')?></a>
+                            </li>
+                            <li>
+                                <a class="pager-next-link shortcut-hint" title="Alt+D" <?php if($page_id<$maxpage) echo'href="wiki.php?page_id',($page_id+1),'"'?>><?php echo _('Next')?> <i class="fa fa-fw fa-angle-right"></i></a>
+                            </li>
+                        </ul>
+                    </div> 
+                <?php }
+                }
+            require __DIR__.'/inc/footer.php';?>
+        </div>
     
 		<script src="/assets/js/common.js?v=<?php echo $web_ver?>"></script>
 		<script type="text/javascript">

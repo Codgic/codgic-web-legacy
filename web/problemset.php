@@ -21,7 +21,7 @@ if(isset($_GET['level'])){
     
     $addt_cond=" (has_tex&".PROB_LEVEL_MASK.")=".($level<<PROB_LEVEL_SHIFT);
     if(!check_priv(PRIV_PROBLEM))
-        $addt_cond.="and defunct='N' ";
+        $addt_cond.="and defunct=0 ";
     if(!check_priv(PRIV_INSIDER))
         $addt_cond.="and (has_tex&".PROB_IS_HIDE.")=0 ";
         
@@ -50,7 +50,7 @@ if(isset($_GET['level'])){
         
     $addt_cond='';
     if(!check_priv(PRIV_PROBLEM))
-        $addt_cond.="and defunct='N'";
+        $addt_cond.="and defunct=0";
     if(!check_priv(PRIV_INSIDER))
         $addt_cond.="and (has_tex&".PROB_IS_HIDE.")=0 ";
 
@@ -162,7 +162,7 @@ $Title=$inTitle .' - '. $oj_name;
 											echo '<td style="text-align:left">';
 										}
 										echo '<a href="problempage.php?problem_id=',$row[0],'">',$row[1];
-										if($row[5]=='Y')
+										if($row[5]==1)
 											echo '&nbsp;&nbsp;<span class="label label-danger">',_('Deleted'),'</span>';
 										echo '</a>';
 										if(isset($_SESSION['user'])){

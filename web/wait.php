@@ -51,7 +51,7 @@ $Title=$inTitle .' - '. $oj_name;
 										<th><?php echo _('Result')?></th>
 										<th><?php echo _('Time')?></th>
 										<th><?php echo _('Memory')?></th>
-										<th><?php echo _('Score')?></th>
+										<th><?php echo-('Score')?></th>
 									</tr>
 								</thead>
 								<tbody style="color:white" id="ele_tbody"></tbody>

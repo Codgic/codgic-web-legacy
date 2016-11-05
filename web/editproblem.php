@@ -17,13 +17,6 @@ else if(!isset($_SESSION['admin_tfa']) || !$_SESSION['admin_tfa']){
     if(!isset($_GET['problem_id'])){
         $p_type='add';
         $inTitle=_('New Problem');
-        /*
-        $prob_id=1000;
-        $result=mysqli_query($con,'select max(problem_id) from problem');
-        if(($row=mysqli_fetch_row($result)) && intval($row[0]))
-            $prob_id=intval($row[0])+1;
-         */
-        $prob_id=-1;
     }else{
         $p_type='edit';
         $prob_id=intval($_GET['problem_id']);  
@@ -83,7 +76,9 @@ else if(!isset($_SESSION['admin_tfa']) || !$_SESSION['admin_tfa']){
 				</div>
 				<form action="#" method="post" id="edit_form" style="padding-top:10px">
 					<input type="hidden" name="op" value="<?php echo $p_type?>">
-					<input type="hidden" name="problem_id" value="<?php echo $prob_id?>">
+                    <?php if($p_type=='edit'){?>
+                        <input type="hidden" name="problem_id" value="<?php echo $prob_id?>">
+                    <?php }?>
 					<div class="row">
 						<div class="form-group col-xs-12 col-sm-9" id="ctl_title">
 							<label class="control-label" for="input_title">
@@ -376,20 +371,10 @@ else if(!isset($_SESSION['admin_tfa']) || !$_SESSION['admin_tfa']){
                             url:"api/ajax_editproblem.php",
                             data:$('#edit_form').serialize(),
                             success:function(msg){
-                                /*
-                                if(/success/.test(msg))
-                                    window.location="problempage.php?problem_id=<?php echo $prob_id?>";
-                                else
-                                    $('#alert_error').html('<i class="fa fa-fw fa-remove"></i> '+msg).slideDown();
-                                 */
-                                if (msg.success)
-                                {
+                                if (msg.success){
                                     window.location = "problempage.php?problem_id=" + msg.problemID;
-                                }
-                                else
-                                {
+                                }else{
                                     $('#alert_error').html('<i class="fa fa-fw fa-remove"></i> '+msg.message).slideDown();
-
                                 }
                             }
                         });

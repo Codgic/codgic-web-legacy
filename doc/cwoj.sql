@@ -1,12 +1,3 @@
--- phpMyAdmin SQL Dump
--- version 4.5.4.1deb2ubuntu2
--- http://www.phpmyadmin.net
---
--- Host: localhost
--- Generation Time: Oct 03, 2016 at 10:03 AM
--- Server version: 5.7.15-0ubuntu0.16.04.1
--- PHP Version: 7.0.8-0ubuntu0.16.04.2
-
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
 
@@ -42,50 +33,6 @@ DELIMITER ;
 -- --------------------------------------------------------
 
 --
--- Table structure for table `attend`
---
-
-CREATE TABLE `attend` (
-  `user_id` varchar(20) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `contest_id` int(11) NOT NULL DEFAULT '0',
-  `accepts` int(11) DEFAULT '0',
-  `penalty` int(11) DEFAULT '0',
-  `A_time` int(11) DEFAULT '0',
-  `A_WrongSubmits` int(11) DEFAULT '0',
-  `B_time` int(11) DEFAULT '0',
-  `B_WrongSubmits` int(11) DEFAULT '0',
-  `C_time` int(11) DEFAULT '0',
-  `C_WrongSubmits` int(11) DEFAULT '0',
-  `D_time` int(11) DEFAULT '0',
-  `D_WrongSubmits` int(11) DEFAULT '0',
-  `E_time` int(11) DEFAULT '0',
-  `E_WrongSubmits` int(11) DEFAULT '0',
-  `F_time` int(11) DEFAULT '0',
-  `F_WrongSubmits` int(11) DEFAULT '0',
-  `G_time` int(11) DEFAULT '0',
-  `G_WrongSubmits` int(11) DEFAULT '0',
-  `H_time` int(11) DEFAULT '0',
-  `H_WrongSubmits` int(11) DEFAULT '0',
-  `I_time` int(11) DEFAULT '0',
-  `I_WrongSubmits` int(11) DEFAULT '0',
-  `J_time` int(11) DEFAULT '0',
-  `J_WrongSubmits` int(11) DEFAULT '0',
-  `K_time` int(11) DEFAULT '0',
-  `K_WrongSubmits` int(11) DEFAULT '0',
-  `L_time` int(11) DEFAULT '0',
-  `L_WrongSubmits` int(11) DEFAULT '0',
-  `M_time` int(11) DEFAULT '0',
-  `M_WrongSubmits` int(11) DEFAULT '0',
-  `N_time` int(11) DEFAULT '0',
-  `N_WrongSubmits` int(11) DEFAULT '0',
-  `O_time` int(11) DEFAULT '0',
-  `O_WrongSubmits` int(11) DEFAULT '0',
-  `nick` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `compileinfo`
 --
 
@@ -105,7 +52,7 @@ CREATE TABLE `contest` (
   `title` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `start_time` datetime DEFAULT NULL,
   `end_time` datetime DEFAULT NULL,
-  `defunct` char(1) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'N',
+  `defunct` tinyint(1) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '0',
   `num` int(11) NOT NULL DEFAULT '0',
   `problems` varchar(400) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `description` longtext COLLATE utf8mb4_unicode_ci,
@@ -232,20 +179,20 @@ CREATE TABLE `message` (
 
 CREATE TABLE `news` (
   `news_id` int(11) NOT NULL DEFAULT '0',
-  `user_id` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  `author` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
   `title` varchar(200) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `content` longtext COLLATE utf8mb4_unicode_ci,
   `time` datetime DEFAULT NULL,
   `importance` tinyint(4) NOT NULL DEFAULT '0',
   `privilege` tinyint(4) NOT NULL DEFAULT '0',
-  `defunct` char(1) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'N'
+  `defunct` tinyint(1) NOT NULL DEFAULT '0'
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `news`
 --
 
-INSERT INTO `news` (`news_id`, `user_id`, `title`, `content`, `time`, `importance`, `privilege`, `defunct`) VALUES
+INSERT INTO `news` (`news_id`, `author`, `title`, `content`, `time`, `importance`, `privilege`, `defunct`) VALUES
 (0, 'root', '', '<div class="text-center"><text style="font-size:30px;font-weight:bold">Welcome to CWOJ</text>
 <text style="font-size:18px">Built for you to code your future.</text></div>', '2016-08-11 20:21:09', 0, 0, 'N'),
 (1, '', '欢迎来到CWOJ', '<b>CWOJ - 一个开源且毫无特色并且随时收到水王洪水威胁的信息竞赛刷题系统，现已向校内外同学开放~~~ 祝大家在这里玩得愉快！</b>', '2015-12-12 18:45:21', 0, 0, 'N');
@@ -282,7 +229,7 @@ CREATE TABLE `problem` (
   `time_limit` int(11) NOT NULL DEFAULT '0',
   `memory_limit` int(11) NOT NULL DEFAULT '0',
   `case_score` int(11) NOT NULL DEFAULT '0',
-  `defunct` char(1) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'N',
+  `defunct` tinyint(1) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '0',
   `accepted` int(11) DEFAULT '0',
   `submit` int(11) DEFAULT '0',
   `ratio` tinyint(4) NOT NULL DEFAULT '0',
@@ -291,15 +238,15 @@ CREATE TABLE `problem` (
   `submit_user` int(11) DEFAULT '0',
   `solved` int(11) DEFAULT '0',
   `case_time_limit` int(11) NOT NULL DEFAULT '0',
-  `rejudged` char(1) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'N'
+  `rejudge_time` datetime DEFAULT '1970-01-01 00:00:00'
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `problem`
 --
 
-INSERT INTO `problem` (`problem_id`, `title`, `description`, `input`, `output`, `sample_input`, `sample_output`, `hint`, `source`, `in_date`, `time_limit`, `memory_limit`, `case_score`, `defunct`, `accepted`, `submit`, `ratio`, `compare_way`, `has_tex`, `submit_user`, `solved`, `case_time_limit`, `rejudged`) VALUES
-(1000, 'A+B 问题', '计算 a+b', '两个整数 a,b (保证a+b在int范围内)', '输出 a+b', '1 2', '3', '请使用标准输入输出~\r\n\r\n', '基础语法', '2016-10-02 22:11:07', 1000, 30000, 10, 'N', 0, 0, 0, 0, 56, 0, 0, 1000, 'N');
+INSERT INTO `problem` (`problem_id`, `title`, `description`, `input`, `output`, `sample_input`, `sample_output`, `hint`, `source`, `in_date`, `time_limit`, `memory_limit`, `case_score`, `defunct`, `accepted`, `submit`, `ratio`, `compare_way`, `has_tex`, `submit_user`, `solved`, `case_time_limit`, `rejudge_time`) VALUES
+(1000, 'A+B 问题', '计算 a+b', '两个整数 a,b (保证a+b在int范围内)', '输出 a+b', '1 2', '3', '请使用标准输入输出~\r\n\r\n', '基础语法', '1970-01-01 00:00:00', 1000, 30000, 10, 'N', 0, 0, 0, 0, 56, 0, 0, 1000, '1970-01-01 00:00:00');
 
 -- --------------------------------------------------------
 
@@ -358,7 +305,7 @@ CREATE TABLE `solution` (
   `valid` tinyint(4) NOT NULL DEFAULT '1',
   `num` tinyint(4) NOT NULL DEFAULT '-1',
   `code_length` int(11) NOT NULL DEFAULT '0',
-  `public_code` tinyint(1) NOT NULL DEFAULT '0'
+  `public_code` tinyint(1) NOT NULL DEFAULT '0',
   `malicious` tinyint(1) NOT NULL DEFAULT '0'
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -441,10 +388,10 @@ CREATE TABLE `wiki` (
   `tags` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `author` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
   `revision` int(11) NOT NULL DEFAULT '0',
-  `is_max` char(1) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'Y',
+  `is_max` tinyint(1) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '1',
   `in_date` datetime NOT NULL,
   `privilege` tinyint(4) NOT NULL DEFAULT '0',
-  `defunct` char(1) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'N'
+  `defunct` tinyint(1) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
@@ -498,7 +445,8 @@ ALTER TABLE `message`
 -- Indexes for table `news`
 --
 ALTER TABLE `news`
-  ADD PRIMARY KEY (`news_id`);
+  ADD PRIMARY KEY (`news_id`),
+  ADD UNIQUE KEY `news_id` (`news_id`);
 
 --
 -- Indexes for table `preferences`

@@ -23,7 +23,7 @@ else{
         if($wiki_id<1)
             $info=_('There\'s no such wiki');
         else{
-            $query="select title,content,tags,privilege,defunct from wiki where wiki_id=$wiki_id and is_max='Y'";
+            $query="select title,content,tags,privilege,defunct from wiki where wiki_id=$wiki_id and is_max=1";
             $result=mysqli_query($con,$query);
             $row=mysqli_fetch_row($result);
             if(!$row)
@@ -210,11 +210,12 @@ $Title=$inTitle .' - '. $oj_name;
                             url:"api/ajax_editwiki.php",
                             data:$('#edit_form').serialize(),
                             success:function(msg){
-                                if(/success/.test(msg)) 
-                                    window.location="wikipage.php?wiki_id=<?php echo $wiki_id?>";
-                                else
-                                    $('#alert_error').html('<i class="fa fa-fw fa-remove"></i> '+msg).slideDown();
+                                if (msg.success){
+                                    window.location = "wikipage.php?wiki_id=" + msg.wikiID;
+                                }else{
+                                    $('#alert_error').html('<i class="fa fa-fw fa-remove"></i> '+msg.message).slideDown();
                                 }
+                            }
                         });
                     }
 					return false;

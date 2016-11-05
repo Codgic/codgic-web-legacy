@@ -135,14 +135,13 @@ $num=0;
 						url:"api/ajax_getnews.php",
 						data:{"newsid":newsid},
 						success:function(data){
-							var obj=eval("("+data+")");
-							if(obj.type=='success'){
-								$('#newstitle').html(obj.title);
-								$('#newscontent').html(obj.content);
-								$('#newstime').html('<?php echo _('Date: ')?>'+obj.time+'&nbsp;&nbsp;'+'<?php echo _('Privilege: ')?>'+obj.priv+'&nbsp;&nbsp;');
+							if(data.success){
+								$('#newstitle').html(data.title);
+								$('#newscontent').html(data.content);
+								$('#newstime').html('<?php echo _('Date: ')?>'+data.time+'&nbsp;&nbsp;'+'<?php echo _('Privilege: ')?>'+data.priv+'&nbsp;&nbsp;');
 								$('#NewsModal').modal('show');
 							}else{
-								$('#alert_error').html('<i class="fa fa-fw fa-remove"></i> '+obj.content).fadeIn();
+								$('#alert_error').html('<i class="fa fa-fw fa-remove"></i> '+data.content).fadeIn();
 								setTimeout(function(){$('#alert_error').fadeOut();},2000);
 							}
 						}

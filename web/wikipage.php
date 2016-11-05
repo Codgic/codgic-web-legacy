@@ -14,7 +14,7 @@ else if(isset($_SESSION['view'])){
     $wiki_id=1;
 
 //If a revision is specified.
-$addt_cond="and is_max='Y'";
+$addt_cond="and is_max=1";
 if(isset($_GET['rev'])){
     $rev=intval($_GET['rev']);
     $row=mysqli_fetch_row(mysqli_query($con, "select max(revision) from wiki where wiki_id=$wiki_id"));
@@ -31,23 +31,25 @@ $result=mysqli_query($con,$query);
 $row=mysqli_fetch_row($result);
 if(!$row)
     $info=_('There\'s no such wiki');
-require __DIR__.'/func/privilege.php';
-$forbidden=false;
-if($row[6]!=0 && !($_SESSION['priv'] & $row[6]))
-    $forbidden=true;
-if($row[7]=='Y' && !check_priv(PRIV_PROBLEM))
-    $forbidden=true;
-if($forbidden)
-    $info=_('Looks like you can\'t access this page');
-    
-//Update last visited records.
-if(!isset($_SESSION['view']))
-    $view_arr=array('cont'=>1000,'prob'=>1000,'wiki'=>$wiki_id);
 else{
-    $view_arr=unserialize($_SESSION['view']);
-    $view_arr['wiki']=$wiki_id;
+    require __DIR__.'/func/privilege.php';
+    $forbidden=false;
+    if($row[6]!=0 && !($_SESSION['priv'] & $row[6]))
+        $forbidden=true;
+    if($row[7]==1 && !check_priv(PRIV_PROBLEM))
+        $forbidden=true;
+    if($forbidden)
+        $info=_('Looks like you can\'t access this page');
+        
+    //Update last visited records.
+    if(!isset($_SESSION['view']))
+        $view_arr=array('cont'=>1000,'prob'=>1000,'wiki'=>$wiki_id);
+    else{
+        $view_arr=unserialize($_SESSION['view']);
+        $view_arr['wiki']=$wiki_id;
+    }
+    $_SESSION['view']=serialize($view_arr);
 }
-$_SESSION['view']=serialize($view_arr);
     
 $inTitle=_('Wiki')." #$wiki_id";
 $Title=$inTitle .' - '. $oj_name;
@@ -61,6 +63,7 @@ $Title=$inTitle .' - '. $oj_name;
             require __DIR__.'/conf/mathjax.php';
             require __DIR__.'/inc/navbar.php';
         ?>
+        <div class="alert collapse text-center alert-popup alert-danger" id="alert_error"></div>
         <div id="probdisp" class="container">
             <?php if(isset($info)){?>
                 <div class="row">
@@ -79,9 +82,9 @@ $Title=$inTitle .' - '. $oj_name;
                 <div class="row">
                     <div class="col-xs-12" id="leftside" style="font-size:16px">
                         <div class="page-header">
-                            <h2><?php echo '#'.$wiki_id,' ',$row[0];if($row[7]=='Y')echo ' <span style="vertical-align:middle;font-size:12px" class="label label-danger">',_('Deleted'),'</span>';?></h2>
+                            <h2><?php echo '#'.$wiki_id,' ',$row[0];if($row[7]==1)echo ' <span style="vertical-align:middle;font-size:12px" class="label label-danger">',_('Deleted'),'</span>';?></h2>
                         </div>
-                        <?php echo Parsedown::instance()->text($row[1]);?>
+                        <?php echo Parsedown::instance()->text(htmlspecialchars($row[1]));?>
                     </div>
                     <div class="col-xs-12 col-sm-3 collapse" id="rightside">
                         <div class="row">
@@ -122,7 +125,7 @@ $Title=$inTitle .' - '. $oj_name;
                                 <div class="panel panel-default problem-operation" style="margin-top:10px">
                                     <div class="panel-body">
                                         <a href="editwiki.php?wiki_id=<?php echo $wiki_id?>" class="btn btn-primary"><?php echo _('Edit')?></a>
-                                        <span id="action_delete" class="btn btn-danger"><?php echo $row[7]=='N' ? _('Delete') : _('Recover');?></span>
+                                        <span id="action_delete" class="btn btn-danger"><?php echo $row[7]==0 ? _('Delete') : _('Recover');?></span>
                                     </div>
                                 </div>
                             </div>
@@ -146,17 +149,15 @@ $Title=$inTitle .' - '. $oj_name;
         $(document).ready(function(){
             $('table').addClass('table');
             $('#action_delete').click(function(){
-                alert('Unfinished');
-                return;
                 $.ajax({
                     type:"POST",
                     url:"api/ajax_editwiki.php",
-                    data:{op:'del',wiki_id:cont},
+                    data:{op:'del',wiki_id:wiki},
                     success:function(msg){
-                        if(/success/.test(msg))
+                        if(msg.success)
                             location.reload();
                         else{
-                            $('#alert_error').html('<i class="fa fa-fw fa-remove"></i> '+msg).fadeIn();
+                            $('#alert_error').html('<i class="fa fa-fw fa-remove"></i> '+msg.message).fadeIn();
                             setTimeout(function(){$('#alert_error').fadeOut();},2000);
                         }
                     }
