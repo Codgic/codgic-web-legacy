@@ -17,10 +17,13 @@ else if(!isset($_SESSION['admin_tfa']) || !$_SESSION['admin_tfa']){
     if(!isset($_GET['problem_id'])){
         $p_type='add';
         $inTitle=_('New Problem');
+        /*
         $prob_id=1000;
         $result=mysqli_query($con,'select max(problem_id) from problem');
         if(($row=mysqli_fetch_row($result)) && intval($row[0]))
             $prob_id=intval($row[0])+1;
+         */
+        $prob_id=-1;
     }else{
         $p_type='edit';
         $prob_id=intval($_GET['problem_id']);  
@@ -373,10 +376,21 @@ else if(!isset($_SESSION['admin_tfa']) || !$_SESSION['admin_tfa']){
                             url:"api/ajax_editproblem.php",
                             data:$('#edit_form').serialize(),
                             success:function(msg){
+                                /*
                                 if(/success/.test(msg))
                                     window.location="problempage.php?problem_id=<?php echo $prob_id?>";
                                 else
                                     $('#alert_error').html('<i class="fa fa-fw fa-remove"></i> '+msg).slideDown();
+                                 */
+                                if (msg.success)
+                                {
+                                    window.location = "problempage.php?problem_id=" + msg.problemID;
+                                }
+                                else
+                                {
+                                    $('#alert_error').html('<i class="fa fa-fw fa-remove"></i> '+msg.message).slideDown();
+
+                                }
                             }
                         });
                     }

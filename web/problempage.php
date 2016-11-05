@@ -639,10 +639,12 @@ $Title=$inTitle .' - '. $oj_name;
 						url:"api/ajax_editproblem.php",
 						data:{op:'del',problem_id:prob},
 						success:function(msg){
-							if(/success/.test(msg))
+                                                    if (msg.success)
+                                                    {
 								location.reload();
-							else{
-								$('#alert_error').html('<i class="fa fa-fw fa-remove"></i> '+msg).fadeIn();
+                                                    }
+                                                    else{
+								$('#alert_error').html('<i class="fa fa-fw fa-remove"></i> '+msg.message).fadeIn();
 								setTimeout(function(){$('#alert_error').fadeOut();},2000);
 							}
 						}
