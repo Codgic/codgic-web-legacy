@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: CWOJ-1.0.Laverne\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-11-05 22:40+0800\n"
-"PO-Revision-Date: 2016-11-05 22:40+0800\n"
+"POT-Creation-Date: 2016-11-06 11:35+0800\n"
+"PO-Revision-Date: 2016-11-06 11:35+0800\n"
 "Last-Translator: Jimmy Zhang <info@cwoj.tk>\n"
 "Language-Team: CWOJ Team <info@cwoj.tk>\n"
 "Language: zh_CN\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 1.8.7.1\n"
+"X-Generator: Poedit 1.8.9\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 "X-Poedit-Basepath: ../../..\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
@@ -230,7 +230,7 @@ msgid "Rejudge..."
 msgstr "重新评测..."
 
 #: admin.php:62 admin.php:111 admin.php:173 admin.php:242 admin.php:304
-#: preferences.php:73 problempage.php:492 profile.php:103
+#: preferences.php:73 problempage.php:493 profile.php:103
 msgid "Save"
 msgstr "保存"
 
@@ -243,7 +243,7 @@ msgid "Add News..."
 msgstr "新建新闻..."
 
 #: admin.php:91 admin.php:595 board.php:259 contestpage.php:275 mail.php:260
-#: ranklist.php:216 record.php:363 search.php:318 solved.php:80
+#: ranklist.php:216 record.php:374 search.php:317 solved.php:80
 #: sourcecode.php:209
 msgid "Loading..."
 msgstr "正在加载..."
@@ -251,7 +251,7 @@ msgstr "正在加载..."
 #: admin.php:102 api/ajax_admin.php:85 api/ajax_admin.php:113 board.php:60
 #: contest.php:148 editcontest.php:80 editproblem.php:85 editwiki.php:76
 #: mail.php:214 marked.php:93 news.php:59 problemset.php:147 search.php:177
-#: search.php:206 search.php:210 wiki.php:130
+#: search.php:206 search.php:210 wiki.php:131
 msgid "Title"
 msgstr "标题"
 
@@ -268,16 +268,16 @@ msgid "Search User..."
 msgstr "搜索用户..."
 
 #: admin.php:140 contest.php:192 contest.php:196 mail.php:187 marked.php:117
-#: news.php:88 problempage.php:211 problemset.php:187 problemset.php:191
-#: ranklist.php:138 record.php:286 search.php:273 wiki.php:158
+#: news.php:88 problempage.php:212 problemset.php:187 problemset.php:191
+#: ranklist.php:138 record.php:297 search.php:273 wiki.php:159
 msgid "Previous"
 msgstr "上一页"
 
 #: admin.php:145 contest.php:203 contest.php:207 mail.php:191 marked.php:122
-#: news.php:93 problempage.php:216 problemset.php:198 problemset.php:202
-#: ranklist.php:141 record.php:289 resetpwd.php:32 resetpwd.php:60
+#: news.php:93 problempage.php:217 problemset.php:198 problemset.php:202
+#: ranklist.php:141 record.php:300 resetpwd.php:32 resetpwd.php:60
 #: resetpwd.php:94 resetpwd.php:151 resetpwd.php:208 resetpwd.php:215
-#: search.php:278 wiki.php:161
+#: search.php:278 wiki.php:162
 msgid "Next"
 msgstr "下一页"
 
@@ -291,8 +291,8 @@ msgstr "请输入HTML代码..."
 
 #: admin.php:174 admin.php:201 admin.php:243 admin.php:271 admin.php:305
 #: admin.php:327 board.php:82 board.php:191 index.php:123 mail.php:231
-#: mail.php:248 news.php:115 problempage.php:458 problempage.php:493
-#: ranklist.php:163 record.php:311 search.php:299 signup.php:79 solved.php:67
+#: mail.php:248 news.php:115 problempage.php:459 problempage.php:494
+#: ranklist.php:163 record.php:322 search.php:299 signup.php:79 solved.php:67
 #: sourcecode.php:152 upload.php:70
 msgid "Close"
 msgstr "关闭"
@@ -318,7 +318,7 @@ msgid "Sticky"
 msgstr "顶置"
 
 #: admin.php:233 contestpage.php:340 mail.php:156 marked.php:95
-#: problempage.php:371 wikipage.php:125
+#: problempage.php:372 wikipage.php:128
 msgid "Delete"
 msgstr "删除"
 
@@ -361,11 +361,11 @@ msgid "System"
 msgstr "系统"
 
 #: admin.php:317 board.php:181 mail.php:242 ranklist.php:153 ranklist.php:218
-#: record.php:301 search.php:289 solved.php:57 sourcecode.php:142
+#: record.php:312 search.php:289 solved.php:57 sourcecode.php:142
 msgid "User Profile"
 msgstr "用户信息"
 
-#: admin.php:324 board.php:188 ranklist.php:160 record.php:308 search.php:296
+#: admin.php:324 board.php:188 ranklist.php:160 record.php:319 search.php:296
 #: solved.php:64 sourcecode.php:149
 msgid "Send Mail"
 msgstr "发送邮件"
@@ -448,12 +448,12 @@ msgid "Invalid Argument..."
 msgstr "指令无效..."
 
 #: api/ajax_admin.php:35 board.php:155 mail.php:126 marked.php:49 news.php:51
-#: ranklist.php:92 record.php:99
+#: ranklist.php:92 record.php:105
 msgid "Looks like there's nothing here"
 msgstr "看起来这里空空如也"
 
 #: api/ajax_admin.php:43 api/ajax_contest.php:73 func/privilege.php:20
-#: ranklist.php:101 record.php:164 record.php:235 search.php:146 solved.php:28
+#: ranklist.php:101 record.php:170 record.php:246 search.php:146 solved.php:28
 msgid "User"
 msgstr "用户"
 
@@ -497,8 +497,8 @@ msgstr "禁用"
 msgid "There's nothing here..."
 msgstr "这里空空如也..."
 
-#: api/ajax_admin.php:84 marked.php:94 news.php:60 record.php:204
-#: record.php:242 search.php:179 solved.php:31
+#: api/ajax_admin.php:84 marked.php:94 news.php:60 record.php:215
+#: record.php:253 search.php:179 solved.php:31
 msgid "Date"
 msgstr "日期"
 
@@ -511,7 +511,7 @@ msgid "Titles"
 msgstr "头衔"
 
 #: api/ajax_admin.php:143 api/ajax_user.php:71 contestpage.php:296
-#: editcontest.php:129 editproblem.php:153 problempage.php:324 ranklist.php:104
+#: editcontest.php:129 editproblem.php:153 problempage.php:325 ranklist.php:104
 msgid "Level"
 msgstr "等级"
 
@@ -548,7 +548,7 @@ msgstr "该比赛不存在..."
 msgid "Looks like nobody enrolled in this contest..."
 msgstr "看起来还没有人参加该比赛..."
 
-#: api/ajax_contest.php:74 ranklist.php:105 record.php:237 solved.php:30
+#: api/ajax_contest.php:74 ranklist.php:105 record.php:248 solved.php:30
 #: wait.php:54
 msgid "Score"
 msgstr "分数"
@@ -560,8 +560,8 @@ msgstr "罚时"
 #: api/ajax_contest.php:110 api/ajax_mailfunc.php:15 api/ajax_message.php:19
 #: api/ajax_profile.php:28 api/ajax_sourcecode.php:12 api/ajax_submit.php:9
 #: api/ajax_submit.php:46 api/ajax_usernote.php:6 backupcode.php:11
-#: board.php:225 board.php:254 contestpage.php:374 problempage.php:137
-#: problempage.php:734
+#: board.php:225 board.php:254 contestpage.php:374 problempage.php:138
+#: problempage.php:735
 msgid "Please login first..."
 msgstr "你尚未登录..."
 
@@ -816,7 +816,7 @@ msgstr "已解决"
 msgid "You can only backup your code not more than once a month..."
 msgstr "你一周最多只能备份一次代码..."
 
-#: board.php:37 inc/navbar.php:28 problempage.php:359
+#: board.php:37 inc/navbar.php:28 problempage.php:360
 msgid "Board"
 msgstr "讨论"
 
@@ -857,7 +857,7 @@ msgid "Reply"
 msgstr "回复"
 
 #: board.php:133 contestpage.php:339 index.php:121 mail.php:159 news.php:113
-#: problempage.php:369 problempage.php:384 wikipage.php:124
+#: problempage.php:370 problempage.php:385 wikipage.php:127
 msgid "Edit"
 msgstr "编辑"
 
@@ -918,7 +918,7 @@ msgstr "比赛"
 msgid "Levels"
 msgstr "等级"
 
-#: contest.php:113 problemset.php:112 record.php:180 record.php:192
+#: contest.php:113 problemset.php:112 record.php:190 record.php:203
 msgid "All"
 msgstr "所有"
 
@@ -931,8 +931,8 @@ msgid "Status"
 msgstr "状态"
 
 #: contest.php:151 contestpage.php:264 editcontest.php:170 editproblem.php:234
-#: editwiki.php:107 problempage.php:277 problempage.php:391 problempage.php:487
-#: problemset.php:151 search.php:180 search.php:218 wiki.php:132
+#: editwiki.php:107 problempage.php:278 problempage.php:392 problempage.php:488
+#: problemset.php:151 search.php:180 search.php:218 wiki.php:133
 msgid "Tags"
 msgstr "标签"
 
@@ -948,19 +948,19 @@ msgstr "尚未开始"
 msgid "In Progress"
 msgstr "正在进行"
 
-#: contest.php:173 contestpage.php:212 problempage.php:203 problemset.php:166
-#: wiki.php:143 wikipage.php:82
+#: contest.php:173 contestpage.php:212 problempage.php:204 problemset.php:166
+#: wiki.php:144 wikipage.php:85
 msgid "Deleted"
 msgstr "已删除"
 
 #: contestpage.php:31 contestpage.php:420 contestpage.php:431
-#: contestpage.php:434 problempage.php:118 problempage.php:710
-#: problempage.php:721 problempage.php:724
+#: contestpage.php:434 problempage.php:119 problempage.php:711
+#: problempage.php:722 problempage.php:725
 msgid "Mark"
 msgstr "收藏"
 
-#: contestpage.php:35 contestpage.php:432 problempage.php:122
-#: problempage.php:722
+#: contestpage.php:35 contestpage.php:432 problempage.php:123
+#: problempage.php:723
 msgid "Unmark"
 msgstr "取消收藏"
 
@@ -988,7 +988,7 @@ msgstr "类OI赛制"
 msgid "Contest hasn't started"
 msgstr "比赛尚未开始"
 
-#: contestpage.php:86 problempage.php:299 problempage.php:531
+#: contestpage.php:86 problempage.php:300 problempage.php:532
 msgid "Contest has ended"
 msgstr "比赛已经结束"
 
@@ -996,8 +996,8 @@ msgstr "比赛已经结束"
 msgid "Contest in progress"
 msgstr "比赛正在进行"
 
-#: contestpage.php:178 func/sourcecode.php:17 func/sourcecode.php:32
-#: inc/403.php:26 problempage.php:155 wikipage.php:41
+#: contestpage.php:177 func/sourcecode.php:17 func/sourcecode.php:32
+#: inc/403.php:26 problempage.php:155 wikipage.php:42
 msgid "Looks like you can't access this page"
 msgstr "看起来你无法访问该页面"
 
@@ -1006,7 +1006,7 @@ msgid "Contest"
 msgstr "比赛"
 
 #: contestpage.php:217 editcontest.php:162 editproblem.php:186
-#: problempage.php:225
+#: problempage.php:226
 msgid "Description"
 msgstr "描述"
 
@@ -1034,7 +1034,7 @@ msgstr "未AC"
 msgid "Rankings"
 msgstr "排名"
 
-#: contestpage.php:282 problempage.php:287 wikipage.php:89
+#: contestpage.php:282 problempage.php:288 wikipage.php:92
 msgid "Hide Sidebar"
 msgstr "隐藏边栏"
 
@@ -1070,11 +1070,11 @@ msgstr "参赛"
 msgid "Leave"
 msgstr "退出"
 
-#: contestpage.php:340 mail.php:169 problempage.php:371 wikipage.php:125
+#: contestpage.php:340 mail.php:169 problempage.php:372 wikipage.php:128
 msgid "Recover"
 msgstr "恢复"
 
-#: contestpage.php:364 problempage.php:504 wikipage.php:138
+#: contestpage.php:364 problempage.php:505 wikipage.php:141
 msgid "Show Sidebar"
 msgstr "显示边栏"
 
@@ -1110,8 +1110,8 @@ msgstr "选项"
 msgid "Hide"
 msgstr "隐藏"
 
-#: editcontest.php:178 editproblem.php:242 editwiki.php:115 problempage.php:357
-#: problempage.php:424 problempage.php:457 problempage.php:503 ranklist.php:107
+#: editcontest.php:178 editproblem.php:242 editwiki.php:115 problempage.php:358
+#: problempage.php:425 problempage.php:458 problempage.php:504 ranklist.php:107
 #: search.php:150 signup.php:59
 msgid "Submit"
 msgstr "提交"
@@ -1176,7 +1176,7 @@ msgstr "新建题目"
 msgid "Edit Problem"
 msgstr "编辑题目"
 
-#: editproblem.php:28 func/sourcecode.php:14 problempage.php:58 testcase.php:26
+#: editproblem.php:28 func/sourcecode.php:14 problempage.php:59 testcase.php:26
 msgid "There's no such problem"
 msgstr "该题目不存在"
 
@@ -1192,15 +1192,15 @@ msgstr "内存限制 (KB)"
 msgid "Case Score (Full: 100)"
 msgstr "单点分值 (满分:100)"
 
-#: editproblem.php:113 problempage.php:323
+#: editproblem.php:113 problempage.php:324
 msgid "Comparison"
 msgstr "比较方式"
 
-#: editproblem.php:116 problempage.php:62
+#: editproblem.php:116 problempage.php:63
 msgid "Traditional"
 msgstr "传统"
 
-#: editproblem.php:117 problempage.php:68
+#: editproblem.php:117 problempage.php:69
 msgid "Integer"
 msgstr "整数"
 
@@ -1208,7 +1208,7 @@ msgstr "整数"
 msgid "Real Number"
 msgstr "实数"
 
-#: editproblem.php:119 problempage.php:71
+#: editproblem.php:119 problempage.php:72
 msgid "Special Judge"
 msgstr "SPJ"
 
@@ -1232,23 +1232,23 @@ msgstr "解决用户"
 msgid "Nobody"
 msgstr "没有人"
 
-#: editproblem.php:194 problempage.php:233
+#: editproblem.php:194 problempage.php:234
 msgid "Input"
 msgstr "输入"
 
-#: editproblem.php:202 problempage.php:241
+#: editproblem.php:202 problempage.php:242
 msgid "Output"
 msgstr "输出"
 
-#: editproblem.php:210 problempage.php:249
+#: editproblem.php:210 problempage.php:250
 msgid "Sample Input"
 msgstr "样例输入"
 
-#: editproblem.php:218 problempage.php:258
+#: editproblem.php:218 problempage.php:259
 msgid "Sample Output"
 msgstr "样例输出"
 
-#: editproblem.php:226 problempage.php:268
+#: editproblem.php:226 problempage.php:269
 msgid "Hints"
 msgstr "提示"
 
@@ -1280,7 +1280,7 @@ msgstr "编辑百科"
 msgid "There's no such wiki"
 msgstr "该百科不存在"
 
-#: editwiki.php:101 problempage.php:433
+#: editwiki.php:101 problempage.php:434
 msgid "Command: "
 msgstr "指令:"
 
@@ -1387,7 +1387,7 @@ msgid ""
 "code your future."
 msgstr "- 一个开源且为信息竞赛设计的在线评测系统，为你而建，编码未来。"
 
-#: inc/navbar.php:29 problempage.php:358 record.php:138
+#: inc/navbar.php:29 problempage.php:359 record.php:144
 msgid "Record"
 msgstr "记录"
 
@@ -1396,7 +1396,7 @@ msgid "Rank"
 msgstr "排名"
 
 #: inc/navbar.php:31 inc/navbar.php:47 marked.php:76 search.php:123 wiki.php:48
-#: wikipage.php:52
+#: wikipage.php:54
 msgid "Wiki"
 msgstr "百科"
 
@@ -1642,103 +1642,103 @@ msgstr "开源我所有的代码"
 msgid "Thanks for making a great contribution!"
 msgstr "感谢您做出的伟大贡献!"
 
-#: problempage.php:52 record.php:153 record.php:234 solved.php:29
+#: problempage.php:53 record.php:159 record.php:245 solved.php:29
 msgid "Problem"
 msgstr "题目"
 
-#: problempage.php:65
+#: problempage.php:66
 msgid "Real, precision: "
 msgstr "实数, 精度:"
 
-#: problempage.php:103
+#: problempage.php:104
 msgid "Give it a try..."
 msgstr "快来试试吧..."
 
-#: problempage.php:107
+#: problempage.php:108
 msgid "Congratulations!"
 msgstr "恭喜AC!"
 
-#: problempage.php:109
+#: problempage.php:110
 msgid "Let's try again..."
 msgstr "再试一次吧..."
 
-#: problempage.php:205
+#: problempage.php:206
 msgid "Contest Home"
 msgstr "比赛主页"
 
-#: problempage.php:250 problempage.php:259
+#: problempage.php:251 problempage.php:260
 msgid "[Copy]"
 msgstr "[复制]"
 
-#: problempage.php:306
+#: problempage.php:307
 msgid "Problem: "
 msgstr "题目: "
 
-#: problempage.php:320
+#: problempage.php:321
 msgid "Time Limit"
 msgstr "时间限制"
 
-#: problempage.php:321
+#: problempage.php:322
 msgid "Memory Limit"
 msgstr "内存限制"
 
-#: problempage.php:322
+#: problempage.php:323
 msgid "Case Score"
 msgstr "单点分数"
 
-#: problempage.php:338
+#: problempage.php:339
 msgid "User Submitted"
 msgstr "提交用户"
 
-#: problempage.php:339
+#: problempage.php:340
 msgid "User Accepted"
 msgstr "解决用户"
 
-#: problempage.php:340
+#: problempage.php:341
 msgid "Total Submits"
 msgstr "提交总量"
 
-#: problempage.php:370 testcase.php:9
+#: problempage.php:371 testcase.php:9
 msgid "Test Cases"
 msgstr "数据"
 
-#: problempage.php:383 problempage.php:472
+#: problempage.php:384 problempage.php:473
 msgid "Notes"
 msgstr "笔记"
 
-#: problempage.php:398
+#: problempage.php:399
 msgid "Add Notes/Tags"
 msgstr "添加笔记/标签"
 
-#: problempage.php:431
+#: problempage.php:432
 msgid "Type your code here..."
 msgstr "在这里输入你的代码..."
 
-#: problempage.php:441 record.php:157 sourcecode.php:85 sourcecode.php:112
+#: problempage.php:442 sourcecode.php:85 sourcecode.php:112
 msgid "Open Source"
 msgstr "开源"
 
-#: problempage.php:456
+#: problempage.php:457
 msgid "Clear"
 msgstr "清空"
 
-#: problempage.php:477
+#: problempage.php:478
 msgid "Write something here..."
 msgstr "在这里写些心得吧..."
 
-#: problempage.php:478
+#: problempage.php:479
 msgid "Only you can read & edit your very own notes."
 msgstr "只有你才能阅读并编辑你自己的笔记。"
 
-#: problempage.php:612 problempage.php:622 sourcecode.php:199
+#: problempage.php:613 problempage.php:623 sourcecode.php:199
 msgid "Copied!"
 msgstr "复制成功!"
 
-#: problempage.php:617 problempage.php:627 sourcecode.php:204
+#: problempage.php:618 problempage.php:628 sourcecode.php:204
 msgid "Failed..."
 msgstr "复制失败!"
 
-#: problempage.php:656
+#: problempage.php:657
 msgid "Your code is too long or too short..."
 msgstr "你的代码太长或太短..."
 
@@ -1878,47 +1878,55 @@ msgstr "用户\"'+user1+'\"不存在..."
 msgid "User \"'+user2+'\" does not exist..."
 msgstr "用户\"'+user2+'\"不存在..."
 
-#: record.php:169
+#: record.php:163
+msgid "OSC"
+msgstr "开源"
+
+#: record.php:175
 msgid "Me"
 msgstr "我"
 
-#: record.php:177 record.php:236 wait.php:51
+#: record.php:183 record.php:247 wait.php:51
 msgid "Result"
 msgstr "结果"
 
-#: record.php:189 record.php:241
+#: record.php:187
+msgid "Malicious"
+msgstr "恶意"
+
+#: record.php:200 record.php:252
 msgid "Language"
 msgstr "语言"
 
-#: record.php:201
+#: record.php:212
 msgid "Order by"
 msgstr "排序"
 
-#: record.php:205
+#: record.php:216
 msgid "Run Time"
 msgstr "运行时间"
 
-#: record.php:206
+#: record.php:217
 msgid "Run Memory"
 msgstr "运行内存"
 
-#: record.php:211
+#: record.php:222
 msgid "Operation"
 msgstr "操作"
 
-#: record.php:213
+#: record.php:224
 msgid "Reset"
 msgstr "重置"
 
-#: record.php:238 wait.php:52
+#: record.php:249 wait.php:52
 msgid "Time"
 msgstr "时间"
 
-#: record.php:239 wait.php:53
+#: record.php:250 wait.php:53
 msgid "Memory"
 msgstr "内存"
 
-#: record.php:240
+#: record.php:251
 msgid "Size"
 msgstr "大小"
 
@@ -2201,30 +2209,30 @@ msgstr "快速访问暂不可用"
 msgid "Looks like there's no wiki here"
 msgstr "看起来这里暂无百科"
 
-#: wiki.php:63
+#: wiki.php:64
 msgid "Quick Access"
 msgstr "快速访问"
 
-#: wiki.php:88
+#: wiki.php:89
 msgid "Get Started"
 msgstr "开始"
 
-#: wiki.php:93
+#: wiki.php:94
 msgid "Search Wiki..."
 msgstr "搜索百科..."
 
-#: wiki.php:94
+#: wiki.php:95
 msgid "New Wiki..."
 msgstr "新建百科..."
 
-#: wiki.php:95
+#: wiki.php:96
 msgid "All Wikis..."
 msgstr "所有百科..."
 
-#: wiki.php:115
+#: wiki.php:116
 msgid "Wiki Home"
 msgstr "百科首页"
 
-#: wiki.php:131
+#: wiki.php:132
 msgid "Last Modified"
 msgstr "上次修改"

@@ -50,7 +50,7 @@ if(isset($_GET['level'])){
         
     $addt_cond='';
     if(!check_priv(PRIV_PROBLEM))
-        $addt_cond.="and defunct=0";
+        $addt_cond.="and defunct=0 ";
     if(!check_priv(PRIV_INSIDER))
         $addt_cond.="and (has_tex&".PROB_IS_HIDE.")=0 ";
 

@@ -14,6 +14,7 @@ $lang=-1;
 $way="none";
 $public_code=false;
 $rank_mode=false;
+$malicious=false;
 
 if(isset($_GET['problem_id']))
 	$problem_id=intval($_GET['problem_id']);
@@ -52,6 +53,11 @@ if(isset($_GET['lang'])){
 if(isset($_GET['public'])){
 	$public_code=true;
 	$cond.=' and public_code';
+}
+
+if(isset($_GET['malicious'])){
+    $malicious=true;
+    $cond.=' and malicious';
 }
 
 if(!$rank_mode){
@@ -148,13 +154,13 @@ $Title=$inTitle .' - '. $oj_name;
 		<div class="container">
 			<div class="row">
 				<form action="record.php" method="get" id="form_filter">
-					<div class="form-group col-xs-6 col-md-3 col-lg-3">
+					<div class="form-group col-xs-6 col-md-2 col-lg-2">
 						<label>
 							<?php echo _('Problem')?>
 						</label>
 						<div class="input-group">
 							<span class="input-group-addon">
-								<input <?php if($public_code)echo 'checked'?> id="chk_public" type="checkbox" name="public"><?php echo _('Open Source');?>
+								<input <?php if($public_code)echo 'checked'?> id="chk_public" type="checkbox" name="public"><?php echo _('OSC');?>
 							</span>
 							<input type="number" class="form-control" name="problem_id" id="ipt_problem_id" value="<?php echo $problem_id?>">
 						</div>  
@@ -172,17 +178,22 @@ $Title=$inTitle .' - '. $oj_name;
                             <input type="text" class="form-control" name="user_id" id="ipt_user_id" value="<?php echo $user_id?>">
                         <?php }?>
 					</div>
-					<div class="form-group col-xs-4 col-sm-4 col-md-2 col-lg-2">
+					<div class="form-group col-xs-5 col-sm-4 col-md-3 col-lg-3">
 						<label>
 							<?php echo _('Result')?>
 						</label>
-						<select class="form-control" name="result" id="slt_result">
-							<option value="-1"><?php echo _('All')?></option>
-							<?php
-								foreach ($RESULT_TYPE as $type => $str)
-									echo '<option value="',$type,'">',$str,'</option>';
-							?>
-						</select>
+                        <div class="input-group">
+                            <span class="input-group-addon">
+                                <input <?php if($malicious)echo 'checked'?> id="chk_malicious" type="checkbox" name="malicious"><?php echo _('Malicious');?>
+                            </span>
+                            <select class="form-control" name="result" id="slt_result">
+                                <option value="-1"><?php echo _('All')?></option>
+                                <?php
+                                    foreach ($RESULT_TYPE as $type => $str)
+                                        echo '<option value="',$type,'">',$str,'</option>';
+                                ?>
+                            </select>
+						</div>
 					</div>
 					<div class="form-group col-xs-4 col-sm-3 col-md-2 col-lg-2">
 						<label>
@@ -196,7 +207,7 @@ $Title=$inTitle .' - '. $oj_name;
 							?>
 						</select>
 					</div>
-					<div class="form-group col-xs-4 col-sm-3 col-md-2 col-lg-2">
+					<div class="form-group col-xs-3 col-sm-3 col-md-2 col-lg-2">
 						<label>
 							<?php echo _('Order by')?>
 						</label>
@@ -378,6 +389,7 @@ $Title=$inTitle .' - '. $oj_name;
 				$('#slt_lang').change(fun_submit);
 				$('#slt_way').change(fun_submit);
 				$('#chk_public').change(fun_submit);
+                $('#chk_malicious').change(fun_submit);
 				$('#ipt_problem_id').keydown(function(E){
 					if(E.keyCode==13)fun_submit();
 				});
