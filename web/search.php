@@ -308,8 +308,10 @@ $Title=$inTitle .' - '. $oj_name;
 		<script src="/assets/js/common.js?v=<?php echo $web_ver?>"></script>
 		<script type="text/javascript"> 
 			$(document).ready(function(){
+				var req=decodeURIComponent('<?php echo $req;?>');
 				change_type(<?php echo $type?>);
 				$('#search_type').val('<?php echo $type?>');
+				$('#search_input').val(req);
 				<?php if($type==4){?>
 					$('#userlist').click(function(Event){
 						var $target=$(Event.target);
