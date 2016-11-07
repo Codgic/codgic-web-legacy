@@ -183,7 +183,8 @@ if(!isset($_POST['title'])||!isset($_POST['content']))
     $id=1;
     if($row[0])
         $id=$row[0]+1;
-    if(mysqli_query($con,"insert into news(news_id,time,title,content,importance) values ($id,NOW(),'$title','$content','$importance')"))
+    $userid = mysqli_real_escape_string($con, $_SESSION['user']);
+    if(mysqli_query($con,"insert into news(news_id,author,time,title,content,importance) values ($id,'$userid',NOW(),'$title','$content','$importance')"))
         echo 'success';
     else
         echo 'error';
