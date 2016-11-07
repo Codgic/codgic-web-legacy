@@ -16,10 +16,10 @@
 function postmail($to,$subject = '',$body = ''){
     //error_reporting(E_STRICT);
     date_default_timezone_set('Asia/Shanghai');
-	if(!class_exists("phpmailer")) 
-		require __DIR__.'/../lib/class.phpmailer.php';
-	if(!class_exists("SMTP")) 
-		include __DIR__.'/../lib/class.smtp.php';
+    if(!class_exists("phpmailer")) 
+        require __DIR__.'/../lib/class.phpmailer.php';
+    if(!class_exists("SMTP")) 
+        include __DIR__.'/../lib/class.smtp.php';
     $mail = new PHPMailer(); 
     $mail->CharSet ="UTF-8";
     $mail->Encoding ="base64";
@@ -34,7 +34,7 @@ function postmail($to,$subject = '',$body = ''){
     $mail->SetFrom('YOUREMAIL', 'CWOJ');
     $mail->AddReplyTo('YOUREMAIL','CWOJ');
     $mail->Subject    = $subject;
-	$mail->WordWrap = 60;
+    $mail->WordWrap = 60;
     //$mail->AltBody    = 'To view the message, please use an HTML compatible email viewer!'; // optional, comment out and test
     $mail->MsgHTML($body);
     $address = $to;

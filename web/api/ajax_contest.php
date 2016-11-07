@@ -1,5 +1,4 @@
 <?php
-require __DIR__.'/../conf/ojsettings.php';
 require __DIR__.'/../inc/init.php';
 require __DIR__.'/../func/contest.php';
 
@@ -67,43 +66,43 @@ if($op=='get_rank_table'){
     }
 ?>
     <table class="table table-condensed">
-		<thead>
-			<tr>
-				<th>No.</th>
-				<th><?php echo _('User')?></th>
-				<th><?php echo _('Score')?></th>
-				<th><?php echo _('Time Penalty')?></th>
-				<?php 
-					if(time()>=$cont_endtime||(time()>=$cont_starttime&&$joined==1))
-						for($i=0;$i<$cont_num;$i++)
-							echo "<th>$prob_arr[$i]</th>";
-				?>
-			</tr>
-		</thead>
-		<tbody>
-			<?php
-				while($row=mysqli_fetch_row($q)){
-					$scr_arr=unserialize($row[1]);
-					$res_arr=unserialize($row[2]);
-					echo '<tr>';
+        <thead>
+            <tr>
+                <th>No.</th>
+                <th><?php echo _('User')?></th>
+                <th><?php echo _('Score')?></th>
+                <th><?php echo _('Time Penalty')?></th>
+                <?php 
+                    if(time()>=$cont_endtime||(time()>=$cont_starttime&&$joined==1))
+                        for($i=0;$i<$cont_num;$i++)
+                            echo "<th>$prob_arr[$i]</th>";
+                ?>
+            </tr>
+        </thead>
+        <tbody>
+            <?php
+                while($row=mysqli_fetch_row($q)){
+                    $scr_arr=unserialize($row[1]);
+                    $res_arr=unserialize($row[2]);
+                    echo '<tr>';
                     if(time()>=$cont_starttime)
                         echo '<td>',$row[5],'</td>';
                     else
                         echo '<td>-</td>';
-					echo '<td>',$row[0],'</td>';
-					echo '<td>',$row[3],'</td>';
-					echo '<td>',get_time_text($row[4]),'</td>';
-					if(time()>=$cont_endtime||(time()>=$cont_starttime&&$joined==1)){
-						for($i=0;$i<$cont_num;$i++){
-							echo '<td><i class=', is_null($res_arr["$prob_arr[$i]"]) ? '"fa fa-fw fa-question" style="color:grey"' : ($res_arr["$prob_arr[$i]"] ? '"fa fa-fw fa-remove" style="color:red"' : '"fa fa-fw fa-check" style="color:green"'), '></i> ';
-							echo $scr_arr[$prob_arr[$i]],'</td>';
-						}
-					}
-					echo "</tr>\n";
-				}
-			?>
-		</tbody>
-	</table>
+                    echo '<td>',$row[0],'</td>';
+                    echo '<td>',$row[3],'</td>';
+                    echo '<td>',get_time_text($row[4]),'</td>';
+                    if(time()>=$cont_endtime||(time()>=$cont_starttime&&$joined==1)){
+                        for($i=0;$i<$cont_num;$i++){
+                            echo '<td><i class=', is_null($res_arr["$prob_arr[$i]"]) ? '"fa fa-fw fa-question" style="color:grey"' : ($res_arr["$prob_arr[$i]"] ? '"fa fa-fw fa-remove" style="color:red"' : '"fa fa-fw fa-check" style="color:green"'), '></i> ';
+                            echo $scr_arr[$prob_arr[$i]],'</td>';
+                        }
+                    }
+                    echo "</tr>\n";
+                }
+            ?>
+        </tbody>
+    </table>
 <?php 
 }else{
     if(!isset($_SESSION['user'])){

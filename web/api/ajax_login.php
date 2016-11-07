@@ -1,9 +1,8 @@
 <?php
-require __DIR__.'/../conf/ojsettings.php';
 require __DIR__.'/../inc/init.php';
 
 if(!isset($_POST['uid']) || !isset($_POST['pwd'])){
-	echo _('Wrong Username/Password...');
+    echo _('Wrong Username/Password...');
     exit();
 }
 
@@ -18,12 +17,15 @@ if((preg_match('/\W/',$user) && !preg_match("/^([0-9A-Za-z\\-_\\.]+)@([0-9a-z]+\
 
 $ret=login($user, FALSE, $_POST['pwd']);
 
-if($ret !== TRUE) die($ret);
+if($ret !== TRUE) 
+    die($ret);
 
-if(isset($_POST['remember'])) $remember=1;
-else $remember=0;
-
-require __DIR__.'/../func/cookie.php';
+if(isset($_POST['remember'])) 
+    $remember=1;
+else 
+    $remember=0;
+if(!function_exists('write_cookie'))
+    require __DIR__.'/../func/cookie.php';
 
 write_cookie($remember);
 

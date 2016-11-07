@@ -1,5 +1,4 @@
 <?php
-require __DIR__.'/../conf/ojsettings.php';
 require __DIR__.'/../inc/init.php';
 require __DIR__.'/../func/privilege.php';
 require __DIR__.'/../conf/database.php';
@@ -9,7 +8,7 @@ $arr=array('success'=>false,'title'=>'','content'=>'','time'=>'','priv'=>'');
 
 if(!isset($_POST['newsid'])){
     $arr['content']=_('Invalid Argument...');
-	die(json_encode($arr));
+    die(json_encode($arr));
 }
 
 $newsid = intval($_POST['newsid']);

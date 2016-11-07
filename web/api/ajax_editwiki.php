@@ -5,9 +5,9 @@ header('Content-Type: application/json');
 
 if(!isset($_SESSION['user'])){
     echo json_encode(array('success' => false, 'message' => _('Permission Denied...')));
-	exit();
+    exit();
 }else if(!isset($_POST['op'])){
-	echo json_encode(array('success' => false, 'message' => _('Invalid Argument...')));
+    echo json_encode(array('success' => false, 'message' => _('Invalid Argument...')));
     exit();
 }
 

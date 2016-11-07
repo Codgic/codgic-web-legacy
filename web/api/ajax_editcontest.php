@@ -5,7 +5,7 @@ require __DIR__.'/../lib/problem_flags.php';
 header('Content-Type: application/json');
 
 function JUDGE_TYPE($way){
-	if($way=='train')
+    if($way=='train')
       return 0;
     else if($way=='cwoj')
       return 1;
@@ -16,9 +16,9 @@ function JUDGE_TYPE($way){
 }
 if(!check_priv(PRIV_PROBLEM)){
     echo json_encode(array('success' => false, 'message' => _('Permission Denied...')));
-	exit();
+    exit();
 }else if(!isset($_POST['op'])){
-	echo json_encode(array('success' => false, 'message' => _('Invalid Argument...')));
+    echo json_encode(array('success' => false, 'message' => _('Invalid Argument...')));
     exit();
 }
 

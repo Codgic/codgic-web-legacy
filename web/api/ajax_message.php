@@ -1,19 +1,18 @@
 <?php
-require __DIR__.'/../conf/ojsettings.php';
 require __DIR__.'/../inc/init.php';
 require __DIR__.'/../lib/mutex.php';
 require __DIR__.'/../conf/database.php';
 
 function getNextMsgID(){
-	require __DIR__.'/../conf/database.php';
+    require __DIR__.'/../conf/database.php';
 
-	$ID=1000;
-	$res=mysqli_query($con,"select max(message_id) from message");
-	if($res && ($r=mysqli_fetch_row($res))){
-		if($r[0])
-			$ID=$r[0]+1;
-	}
-	return $ID;
+    $ID=1000;
+    $res=mysqli_query($con,"select max(message_id) from message");
+    if($res && ($r=mysqli_fetch_row($res))){
+        if($r[0])
+            $ID=$r[0]+1;
+    }
+    return $ID;
 }
 if($require_auth&&!isset($_SESSION['user'])){
     echo _('Please login first...');
@@ -71,7 +70,7 @@ else if($op=='msg_create'){
     $new_msg_id=getNextMsgID();
     if(isset($_POST['message_id']) 
     && ($tmp=intval($_POST['message_id']))
-	&& ($row=mysqli_fetch_row(mysqli_query($con,'select orderNum,depth,thread_id,problem_id from message where message_id='.$tmp)))){ //Reply message
+    && ($row=mysqli_fetch_row(mysqli_query($con,'select orderNum,depth,thread_id,problem_id from message where message_id='.$tmp)))){ //Reply message
         $msg_id=$tmp;
         $order_num=$row[0];
         $depth=$row[1];

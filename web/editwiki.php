@@ -1,5 +1,4 @@
 <?php
-require __DIR__.'/conf/ojsettings.php';
 require __DIR__.'/inc/init.php';
 require __DIR__.'/func/privilege.php';
 require __DIR__.'/func/checklogin.php';
@@ -41,165 +40,165 @@ $Title=$inTitle .' - '. $oj_name;
 ?>
 <!DOCTYPE html>
 <html>
-	<?php require __DIR__.'/inc/head.php'; ?>
-	<body>
-		<?php
-			//Load CodeMirror
-			if($pref->edrmode!='off'){
-				echo '<link rel="stylesheet" href="/assets/css/codemirror.css" type="text/css" />';
-				echo '<link rel="stylesheet" href="/assets/css/codemirror.fullscreen.css" type="text/css" />';
-				//Load CodeMirror Theme
-				if($t_night=='off') 
-					echo '<link rel="stylesheet" href="/assets/css/codemirror.eclipse.css" type="text/css" />';
-				else
-					echo '<link rel="stylesheet" href="/assets/css/codemirror.midnight.css" type="text/css" />';
-			}
-			require __DIR__.'/inc/navbar.php';
-		?>
-		<div class="container edit-page">
-			<?php if(isset($info)){?>
-				<div class="text-center none-text none-center">
-					<p><i class="fa fa-meh-o fa-4x"></i></p>
-					<p>
-						<b>Whoops</b>
-						<br>
-						<?php echo $info?>
-					</p>
-				</div>
-			<?php }else{?>
-				<form action="#" method="post" id="edit_form" style="padding-top:10px">
-					<input type="hidden" name="op" value="<?php echo $p_type?>">
-					<input type="hidden" name="wiki_id" value="<?php echo $wiki_id?>">
-					<div class="row">
-						<div class="form-group col-xs-12" id="ctl_title">
-							<label class="control-label" for="input_title">
-								<?php echo _('Title')?>
-							</label>
-							<input type="text" class="form-control" name="title" id="input_title" value="<?php if($p_type=='edit') echo $row[0]?>">
-						</div>
-					</div>
+    <?php require __DIR__.'/inc/head.php'; ?>
+    <body>
+        <?php
+            //Load CodeMirror
+            if($pref->edrmode!='off'){
+                echo '<link rel="stylesheet" href="/assets/css/codemirror.css" type="text/css" />';
+                echo '<link rel="stylesheet" href="/assets/css/codemirror.fullscreen.css" type="text/css" />';
+                //Load CodeMirror Theme
+                if($t_night=='off') 
+                    echo '<link rel="stylesheet" href="/assets/css/codemirror.eclipse.css" type="text/css" />';
+                else
+                    echo '<link rel="stylesheet" href="/assets/css/codemirror.midnight.css" type="text/css" />';
+            }
+            require __DIR__.'/inc/navbar.php';
+        ?>
+        <div class="container edit-page">
+            <?php if(isset($info)){?>
+                <div class="text-center none-text none-center">
+                    <p><i class="fa fa-meh-o fa-4x"></i></p>
+                    <p>
+                        <b>Whoops</b>
+                        <br>
+                        <?php echo $info?>
+                    </p>
+                </div>
+            <?php }else{?>
+                <form action="#" method="post" id="edit_form" style="padding-top:10px">
+                    <input type="hidden" name="op" value="<?php echo $p_type?>">
+                    <input type="hidden" name="wiki_id" value="<?php echo $wiki_id?>">
+                    <div class="row">
+                        <div class="form-group col-xs-12" id="ctl_title">
+                            <label class="control-label" for="input_title">
+                                <?php echo _('Title')?>
+                            </label>
+                            <input type="text" class="form-control" name="title" id="input_title" value="<?php if($p_type=='edit') echo $row[0]?>">
+                        </div>
+                    </div>
                     <?php if(check_priv(PRIV_PROBLEM)){?>
-					<div class="row">
-						<div class="form-group col-xs-6 col-sm-4">
-							<label class="control-label">
-								<?php echo _('Options')?>
-							</label>
-							<div class="checkbox">
-								<label>
-									<input <?php if($p_type=='edit') echo $option_hide?> type="checkbox" name="hide_cont"><?php echo _('Hide')?>
-								</label>
-							</div>  
-						</div>
-					</div>
+                    <div class="row">
+                        <div class="form-group col-xs-6 col-sm-4">
+                            <label class="control-label">
+                                <?php echo _('Options')?>
+                            </label>
+                            <div class="checkbox">
+                                <label>
+                                    <input <?php if($p_type=='edit') echo $option_hide?> type="checkbox" name="hide_cont"><?php echo _('Hide')?>
+                                </label>
+                            </div>  
+                        </div>
+                    </div>
                     <?php }?>
-					<div class="row">
-						<div class="form-group col-xs-12" id="ctl_des">
-							<label class="control-label" for="input_des">
-								<?php echo _('Content')?>
-							</label>
-							<textarea class="form-control col-xs-12" id="input_des" name="content" rows="20"><?php if($p_type=='edit') echo htmlspecialchars($row[1])?></textarea>
+                    <div class="row">
+                        <div class="form-group col-xs-12" id="ctl_des">
+                            <label class="control-label" for="input_des">
+                                <?php echo _('Content')?>
+                            </label>
+                            <textarea class="form-control col-xs-12" id="input_des" name="content" rows="20"><?php if($p_type=='edit') echo htmlspecialchars($row[1])?></textarea>
                             <?php if($pref->edrmode=='vim') echo '<samp>',_('Command: '),'<span id="vim_cmd"></span></samp>'?>
-						</div>
-					</div>       
-					<div class="row">
-						<div class="form-group col-xs-12">
-							 <label class="control-label" for="input_tags">
-								<?php echo _('Tags')?>
-							</label>
-							<input class="form-control col-xs-12" id="input_tags" type="text" name="tags" value="<?php if($p_type=='edit') echo htmlspecialchars($row[2])?>">
-						</div>
-					</div>
-					<div class="row">
-						<div class="form-group col-xs-12">
-							<div class="alert alert-danger collapse" id="alert_error"></div>  
-							<button class="btn btn-primary" type="submit"><?php echo _('Submit')?></button>
-						</div>
-					</div>
-				</form>
-			<?php }
-			require __DIR__.'/inc/footer.php';?>
-		</div>
-		
-		<script src="/assets/js/common.js?v=<?php echo $web_ver?>"></script>
+                        </div>
+                    </div>       
+                    <div class="row">
+                        <div class="form-group col-xs-12">
+                             <label class="control-label" for="input_tags">
+                                <?php echo _('Tags')?>
+                            </label>
+                            <input class="form-control col-xs-12" id="input_tags" type="text" name="tags" value="<?php if($p_type=='edit') echo htmlspecialchars($row[2])?>">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-xs-12">
+                            <div class="alert alert-danger collapse" id="alert_error"></div>  
+                            <button class="btn btn-primary" type="submit"><?php echo _('Submit')?></button>
+                        </div>
+                    </div>
+                </form>
+            <?php }
+            require __DIR__.'/inc/footer.php';?>
+        </div>
+        
+        <script src="/assets/js/common.js?v=<?php echo $web_ver?>"></script>
         <?php //Load CodeMirror
-			if($pref->edrmode!='off'){
-				echo '<script src="/assets/js/codemirror.js"></script>';
-				echo '<script src="/assets/js/CodeMirror/addon/placeholder.js"></script>';
-				echo '<script src="/assets/js/CodeMirror/addon/fullscreen.js"></script>';
+            if($pref->edrmode!='off'){
+                echo '<script src="/assets/js/codemirror.js"></script>';
+                echo '<script src="/assets/js/CodeMirror/addon/placeholder.js"></script>';
+                echo '<script src="/assets/js/CodeMirror/addon/fullscreen.js"></script>';
                 echo '<script src="/assets/js/CodeMirror/addon/overlay.js"></script>';
                 echo '<script src="/assets/js/CodeMirror/mode/markdown.js"></script>';
-				echo '<script src="/assets/js/CodeMirror/mode/gfm.js"></script>';
+                echo '<script src="/assets/js/CodeMirror/mode/gfm.js"></script>';
                 echo '<script src="/assets/js/CodeMirror/mode/clike.js"></script>';
                 echo '<script src="/assets/js/CodeMirror/mode/pascal.js"></script>';
                 echo '<script src="/assets/js/CodeMirror/mode/css.js"></script>';
                 echo '<script src="/assets/js/CodeMirror/mode/javascript.js"></script>';
                 echo '<script src="/assets/js/CodeMirror/mode/htmlmixed.js"></script>';
-				if($pref->edrmode!='default')
-					echo '<script src="/assets/js/CodeMirror/addon/'.$pref->edrmode.'.js"></script>';
-			}
-		?>
-		<script type="text/javascript">
-			$(document).ready(function(){
+                if($pref->edrmode!='default')
+                    echo '<script src="/assets/js/CodeMirror/addon/'.$pref->edrmode.'.js"></script>';
+            }
+        ?>
+        <script type="text/javascript">
+            $(document).ready(function(){
                 var editor = CodeMirror.fromTextArea(document.getElementById('input_des'),{
-					theme: "<?php if($t_night=='on') echo 'midnight'; else echo 'eclipse'?>",
-					mode: "gfm",
-					<?php
-						if($pref->edrmode!='default'){
-							echo 'keyMap:"'.$pref->edrmode.'",';
-						echo 'showCursorWhenSelecting: true,';
-						}
-					?>
-					lineNumbers:true,
+                    theme: "<?php if($t_night=='on') echo 'midnight'; else echo 'eclipse'?>",
+                    mode: "gfm",
+                    <?php
+                        if($pref->edrmode!='default'){
+                            echo 'keyMap:"'.$pref->edrmode.'",';
+                        echo 'showCursorWhenSelecting: true,';
+                        }
+                    ?>
+                    lineNumbers:true,
                     viewportMargin: Infinity,
-					extraKeys:{
-						"Ctrl-F11": function(cm){
-							if(cm.getOption("fullScreen")){
-								toggle_fullscreen(1);
-								cm.setOption("fullScreen",false);
-							}else{
-								toggle_fullscreen(0);  
-								cm.setOption("fullScreen", !cm.getOption("fullScreen"));
-							}  
-						},
-					}
-				});
-				<?php if($pref->edrmode=='vim'){?>
-					CodeMirror.on(editor,'vim-keypress',function(key){
-						$('#vim_cmd').html(key);
-					});
-					CodeMirror.on(editor,'vim-command-done',function(){
-						$('#vim_cmd').html('');
-					});
-				<?php }?>
-				function toggle_fullscreen(e){
-					if(e == 0){
-						$('#submit_dialog').css({
-							'width': '101%','height': '100%','margin': '0','padding': '0'
-						});
-						$('#submit_content').css({
-							'height': 'auto','min-height': '100%','border-radius': '0'
-						});
-					}else{
-						$('#submit_dialog').css({
-							'width': '','height': '','margin': '','padding': ''
-						});
-						$('#submit_content').css({
-							'height': '','min-height': '','border-radius': ''
-						});
-					}
-				}
-				$('#edit_form textarea').focus(function(e){cur=e.target;});
-				$('#edit_form').submit(function(){
-					var b=false;
+                    extraKeys:{
+                        "Ctrl-F11": function(cm){
+                            if(cm.getOption("fullScreen")){
+                                toggle_fullscreen(1);
+                                cm.setOption("fullScreen",false);
+                            }else{
+                                toggle_fullscreen(0);  
+                                cm.setOption("fullScreen", !cm.getOption("fullScreen"));
+                            }  
+                        },
+                    }
+                });
+                <?php if($pref->edrmode=='vim'){?>
+                    CodeMirror.on(editor,'vim-keypress',function(key){
+                        $('#vim_cmd').html(key);
+                    });
+                    CodeMirror.on(editor,'vim-command-done',function(){
+                        $('#vim_cmd').html('');
+                    });
+                <?php }?>
+                function toggle_fullscreen(e){
+                    if(e == 0){
+                        $('#submit_dialog').css({
+                            'width': '101%','height': '100%','margin': '0','padding': '0'
+                        });
+                        $('#submit_content').css({
+                            'height': 'auto','min-height': '100%','border-radius': '0'
+                        });
+                    }else{
+                        $('#submit_dialog').css({
+                            'width': '','height': '','margin': '','padding': ''
+                        });
+                        $('#submit_content').css({
+                            'height': '','min-height': '','border-radius': ''
+                        });
+                    }
+                }
+                $('#edit_form textarea').focus(function(e){cur=e.target;});
+                $('#edit_form').submit(function(){
+                    var b=false;
                     $('#alert_error').slideUp;
-					if(!$.trim($('#input_title').val())){
+                    if(!$.trim($('#input_title').val())){
                         $('#ctl_title').addClass('has-error');
-						b=true;
+                        b=true;
                     }else
                         $('#ctl_title').removeClass('has-error');
                     if(!$.trim($('#input_des').val())){
                         $('#ctl_des').addClass('has-error');
-						b=true;
+                        b=true;
                     }else
                         $('#ctl_des').removeClass('has-error');
                     if(b)
@@ -218,10 +217,10 @@ $Title=$inTitle .' - '. $oj_name;
                             }
                         });
                     }
-					return false;
-				});
-			});
-		</script>
-	</body>
+                    return false;
+                });
+            });
+        </script>
+    </body>
 </html>
 <?php }?>

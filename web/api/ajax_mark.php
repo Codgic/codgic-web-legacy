@@ -20,12 +20,12 @@ else{
 }
 
 if($_GET['op']=='rm_saved'){
-	mysqli_query($con,"DELETE from saved_$type where user_id='$user' and {$type}_id=$problem_id");
+    mysqli_query($con,"DELETE from saved_$type where user_id='$user' and {$type}_id=$problem_id");
 }else if($_GET['op']=='add_saved'){
-	mysqli_query($con,"INSERT into saved_$type set {$type}_id=$problem_id,user_id='$user',savetime=NOW()");
+    mysqli_query($con,"INSERT into saved_$type set {$type}_id=$problem_id,user_id='$user',savetime=NOW()");
 }
 
 if(mysqli_affected_rows($con)===1)
-	echo 'success';
+    echo 'success';
 else
     echo _('Something went wrong...');

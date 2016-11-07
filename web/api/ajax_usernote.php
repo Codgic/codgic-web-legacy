@@ -1,5 +1,4 @@
 <?php
-require __DIR__.'/../conf/ojsettings.php';
 require __DIR__.'/../inc/init.php';
 
 if(!isset($_SESSION['user'])){
@@ -7,7 +6,7 @@ if(!isset($_SESSION['user'])){
     exit();
 }
 if(!isset($_POST['content'],$_POST['tags'],$_POST['problem_id'])){
-	echo _('Invalid Argument...');
+    echo _('Invalid Argument...');
     exit();
 }
 

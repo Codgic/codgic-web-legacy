@@ -1,5 +1,4 @@
 <?php
-require __DIR__.'/conf/ojsettings.php';
 require __DIR__.'/inc/init.php';
 require __DIR__.'/func/checklogin.php';
 require __DIR__.'/lib/Parsedown.php';
@@ -20,10 +19,10 @@ if(isset($_GET['rev'])){
     $row=mysqli_fetch_row(mysqli_query($con, "select max(revision) from wiki where wiki_id=$wiki_id"));
     if(isset($row)&&$rev<=$row[0])
         $addt_cond="and revision=$rev";
-	else if(isset($row)){
-		header("Location: wikipage.php?wiki_id=$wiki_id");
-		exit();
-	}
+    else if(isset($row)){
+        header("Location: wikipage.php?wiki_id=$wiki_id");
+        exit();
+    }
 }
 
 $query="select title,content,tags,author,revision,in_date,privilege,defunct from wiki where wiki_id=$wiki_id $addt_cond";
@@ -136,7 +135,7 @@ $Title=$inTitle .' - '. $oj_name;
         </div>
         <?php require __DIR__.'/inc/footer.php';?>
     </div>
-	
+    
     <div id="show_tool" class="bottom-right">
         <span id="btn_show" title="Alt+H" class="btn btn btn-primary shortcut-hint"><i class="fa fa-fw fa-toggle-off"></i> <?php echo _('Show Sidebar')?></span>
     </div>

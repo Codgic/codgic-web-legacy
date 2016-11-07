@@ -5,5 +5,5 @@ $year = date("Y");
 ?>
 <hr>
 <footer>
-	<p>&copy; <?php echo "$year $oj_copy";?></p>
+    <p>&copy; <?php echo "$year $oj_copy";?></p>
 </footer>

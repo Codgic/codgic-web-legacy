@@ -1,5 +1,4 @@
 <?php
-require __DIR__.'/conf/ojsettings.php';
 require __DIR__.'/inc/init.php';
 require __DIR__.'/func/checklogin.php';
 
@@ -51,55 +50,55 @@ $Title=$inTitle .' - '. $oj_name;
 <!DOCTYPE html>
 <html>
 <?php require __DIR__.'/inc/head.php';?>
-	<body>
-		<?php require __DIR__.'/inc/navbar.php';?>
+    <body>
+        <?php require __DIR__.'/inc/navbar.php';?>
         <div class="alert collapse text-center alert-popup alert-danger" id="alert_error"></div>
-		<div class="container">
-			<?php if(!isset($_GET['page_id'])){?>
-				<div class="row">
-					<div class="col-xs-12 col-sm-8" style="font-size:16px">
-						<div class="panel panel-default">
-							<div class="panel-heading">
-								<h5 class="panel-title">
-									<?php echo _('Quick Access')?>
-								</h5>
-							</div>
-							<div class="panel-body">
-								<?php if(isset($info)){?>
-									<div class="text-center none-text none-center">
-										<p><i class="fa fa-meh-o fa-4x"></i></p>
-										<p>
-											<b>Whoops</b>
-											<br>
-											<?php echo $info?>
-										</p>
-									</div>
-								<?php }else{?>
-									<div>
-										<?php echo $row[0]?>
-									</div>
-								<?php }?>
-							</div>
-						</div>
-					</div>
-					<div class="col-xs-12 col-sm-4">
-						<div class="panel panel-default">
-							<div class="panel-heading">
-								<h5 class="panel-title">
-									<?php echo _('Get Started')?>
-								</h5>
-							</div>
-							<div class="panel-body">
-								<ul class="nav nav-pills nav-stacked">
-									<li><a href="javascript:void(0)" onclick="$('#nav_searchbtn').click();change_type(4);return;"><i class="fa fa-fw fa-search"></i> <?php echo _('Search Wiki...')?></a></li>
-									<li><a href="/editwiki.php"><i class="fa fa-fw fa-magic"></i> <?php echo _('New Wiki...')?></a></li>
-									<li><a href="/wiki.php?page_id=1"><i class="fa fa-fw fa-list"></i> <?php echo _('All Wikis...')?></a></li>
-								</ul>
-							</div>
-						</div>
-					</div>
-				</div>
-			<?php }else{
+        <div class="container">
+            <?php if(!isset($_GET['page_id'])){?>
+                <div class="row">
+                    <div class="col-xs-12 col-sm-8" style="font-size:16px">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h5 class="panel-title">
+                                    <?php echo _('Quick Access')?>
+                                </h5>
+                            </div>
+                            <div class="panel-body">
+                                <?php if(isset($info)){?>
+                                    <div class="text-center none-text none-center">
+                                        <p><i class="fa fa-meh-o fa-4x"></i></p>
+                                        <p>
+                                            <b>Whoops</b>
+                                            <br>
+                                            <?php echo $info?>
+                                        </p>
+                                    </div>
+                                <?php }else{?>
+                                    <div>
+                                        <?php echo $row[0]?>
+                                    </div>
+                                <?php }?>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-sm-4">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h5 class="panel-title">
+                                    <?php echo _('Get Started')?>
+                                </h5>
+                            </div>
+                            <div class="panel-body">
+                                <ul class="nav nav-pills nav-stacked">
+                                    <li><a href="javascript:void(0)" onclick="$('#nav_searchbtn').click();change_type(4);return;"><i class="fa fa-fw fa-search"></i> <?php echo _('Search Wiki...')?></a></li>
+                                    <li><a href="/editwiki.php"><i class="fa fa-fw fa-magic"></i> <?php echo _('New Wiki...')?></a></li>
+                                    <li><a href="/wiki.php?page_id=1"><i class="fa fa-fw fa-list"></i> <?php echo _('All Wikis...')?></a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <?php }else{
                     if(isset($info)){?>
                     <div class="text-center none-text none-center">
                         <p><i class="fa fa-meh-o fa-4x"></i></p>
@@ -115,7 +114,7 @@ $Title=$inTitle .' - '. $oj_name;
                             <div class="form-group">
                                 <a href="/wiki.php" class="btn btn-default"><i class="fa fa-fw fa-home"></i> <?php echo _('Wiki Home')?></a>
                             </div>
-                        </div>	
+                        </div>    
                     </div>
                     <div class="row">
                         <div class="col-xs-12">
@@ -168,32 +167,32 @@ $Title=$inTitle .' - '. $oj_name;
             require __DIR__.'/inc/footer.php';?>
         </div>
     
-		<script src="/assets/js/common.js?v=<?php echo $web_ver?>"></script>
-		<script type="text/javascript">
-			$(document).ready(function(){
-				$('#nav_wiki').parent().addClass('active');
+        <script src="/assets/js/common.js?v=<?php echo $web_ver?>"></script>
+        <script type="text/javascript">
+            $(document).ready(function(){
+                $('#nav_wiki').parent().addClass('active');
                 $('table').addClass('table');
-				change_type(4);
-				<?php if(isset($_GET['page_id'])){?>
-					$('#wiki_table').click(function(E){
-						var $target = $(E.target);
-						if($target.is('i.save_problem')){
-							var pid = $target.attr('data-pid');
-							var op;
-							if($target.hasClass('fa-star'))
-								op='rm_saved';
-							else
-								op='add_saved';
-							$.get('api/ajax_mark.php?type=3&prob='+pid+'&op='+op,function(result){
-								if(/success/.test(result)){
-									$target.toggleClass('fa-star-o')
-									$target.toggleClass('fa-star')
-								}
-							});
-						}
-					});
-				<?php }?>
-			});
-		</script>
-	</body>
+                change_type(4);
+                <?php if(isset($_GET['page_id'])){?>
+                    $('#wiki_table').click(function(E){
+                        var $target = $(E.target);
+                        if($target.is('i.save_problem')){
+                            var pid = $target.attr('data-pid');
+                            var op;
+                            if($target.hasClass('fa-star'))
+                                op='rm_saved';
+                            else
+                                op='add_saved';
+                            $.get('api/ajax_mark.php?type=3&prob='+pid+'&op='+op,function(result){
+                                if(/success/.test(result)){
+                                    $target.toggleClass('fa-star-o')
+                                    $target.toggleClass('fa-star')
+                                }
+                            });
+                        }
+                    });
+                <?php }?>
+            });
+        </script>
+    </body>
 </html>
