@@ -8,9 +8,12 @@
 * ----------------
 * "cookie_key" defines the encryption key of the cookies. Please change it into a random string.
 * "cookie_expire" defines the expiration time of the cookies.
+* "bind_domain" defines the specific domain you want to bind cookies to. COMMENT IT IF YOU DON'T NEED IT.
 */
 define("cookie_key","HELLO_WORLD_CWOJ!");
-define("cookie_expire",31536000); 
+define("cookie_expire",31536000);
+//define("bind_domain", '.cwoj.org');
+
 /**
 * 2. Password Encryption
 * ----------------

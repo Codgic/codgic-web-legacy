@@ -324,6 +324,9 @@ else if(!isset($_SESSION['admin_tfa']) || !$_SESSION['admin_tfa']){
                     for(var i=0;i<10;i++)
                         option+='<option value="'+i+'">'+i+'</option>';
                     $('#input_cmp_pre').html(option);
+                    <?php if(isset($prec)){?>
+                        $('#input_cmp_pre').val(<?php echo $prec?>);
+                    <?php }?>
                     show_help($('#input_cmp').val());
                 })();
                 $('#input_cmp').change(function(E){show_help($(E.target).val());});

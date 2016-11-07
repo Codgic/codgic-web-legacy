@@ -1,6 +1,8 @@
 <?php
 if(!defined('cookie_key'))
     require __DIR__.'/../conf/encsettings.php';
+if(!defined('bind_domain'))
+    define('bind_domain', $_SERVER['HTTP_HOST']);
 
 //Check whether user's login cookie is valid.
 function check_cookie(){
@@ -28,14 +30,14 @@ function write_cookie($remember){
 
     $data = encrypt(cookie_key, serialize($arr));
     if($remember==1)
-        setcookie('SID', $data, time()+cookie_expire, '/');
+        setcookie('SID', $data, time()+cookie_expire, '/', bind_domain);
     else 
-        setcookie('SID', $data, 0, '/');
+        setcookie('SID', $data, 0, '/', bind_domain);
 }
 
 //Clear certain cookie.
 function clear_cookie($name){
-    setcookie("$name",'',time()-3600, '/');
+    setcookie("$name",'',time()-3600, '/', bind_domain);
 }
 
 //Encrypt cookie.
