@@ -259,7 +259,7 @@ if(!isset($_POST['title'])||!isset($_POST['content']))
         echo _('Something went wrong...');
 }else if($op=='update_category'){
     $category=isset($_POST['content']) ? mysqli_real_escape_string($con,trim($_POST['content'])) : '';
-    if(mysqli_query($con,"insert into user_notes (id,author,problem_id,tags,user_id,content,edit_time) VALUES (0,0,'','root','$category',NOW()) ON DUPLICATE KEY UPDATE content='$category', edit_time=NOW()")) 
+    if(mysqli_query($con,"insert into user_notes (id,problem_id,tags,user_id,content,edit_time) VALUES (0,0,'','root','$category',NOW()) ON DUPLICATE KEY UPDATE content='$category', edit_time=NOW()")) 
         echo 'success';
     else
         echo _('Something went wrong...');
