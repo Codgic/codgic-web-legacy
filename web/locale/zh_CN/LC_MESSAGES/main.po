@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: CWOJ-1.0.Laverne\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-11-07 13:05+0800\n"
-"PO-Revision-Date: 2016-11-07 13:05+0800\n"
+"POT-Creation-Date: 2016-11-08 13:01+0800\n"
+"PO-Revision-Date: 2016-11-08 13:02+0800\n"
 "Last-Translator: Jimmy Zhang <info@cwoj.tk>\n"
 "Language-Team: CWOJ Team <info@cwoj.tk>\n"
 "Language: zh_CN\n"
@@ -244,7 +244,7 @@ msgstr "新建新闻..."
 
 #: admin.php:90 admin.php:594 board.php:258 contestpage.php:274 mail.php:259
 #: ranklist.php:215 record.php:373 search.php:318 solved.php:79
-#: sourcecode.php:208
+#: sourcecode.php:242
 msgid "Loading..."
 msgstr "正在加载..."
 
@@ -293,7 +293,7 @@ msgstr "请输入HTML代码..."
 #: admin.php:326 board.php:81 board.php:190 index.php:122 mail.php:230
 #: mail.php:247 news.php:114 problempage.php:458 problempage.php:493
 #: ranklist.php:162 record.php:321 search.php:298 signup.php:78 solved.php:66
-#: sourcecode.php:151 upload.php:69
+#: sourcecode.php:163 sourcecode.php:185 upload.php:69
 msgid "Close"
 msgstr "关闭"
 
@@ -361,12 +361,12 @@ msgid "System"
 msgstr "系统"
 
 #: admin.php:316 board.php:180 mail.php:241 ranklist.php:152 ranklist.php:217
-#: record.php:311 search.php:288 solved.php:56 sourcecode.php:141
+#: record.php:311 search.php:288 solved.php:56 sourcecode.php:175
 msgid "User Profile"
 msgstr "用户信息"
 
 #: admin.php:323 board.php:187 ranklist.php:159 record.php:318 search.php:295
-#: solved.php:63 sourcecode.php:148
+#: solved.php:63 sourcecode.php:182
 msgid "Send Mail"
 msgstr "发送邮件"
 
@@ -430,7 +430,7 @@ msgstr "你没有权限..."
 msgid "Privilege not authorized..."
 msgstr "尚未验证权限..."
 
-#: api/ajax_admin.php:14 api/ajax_admin.php:311 api/ajax_contest.php:6
+#: api/ajax_admin.php:14 api/ajax_admin.php:312 api/ajax_contest.php:6
 #: api/ajax_contest.php:12 api/ajax_contest.php:167 api/ajax_editcontest.php:21
 #: api/ajax_editcontest.php:118 api/ajax_editcontest.php:134
 #: api/ajax_editproblem.php:23 api/ajax_editproblem.php:118
@@ -515,8 +515,8 @@ msgstr "头衔"
 msgid "Level"
 msgstr "等级"
 
-#: api/ajax_admin.php:229 api/ajax_admin.php:246 api/ajax_admin.php:258
-#: api/ajax_admin.php:264 api/ajax_contest.php:144 api/ajax_contest.php:146
+#: api/ajax_admin.php:230 api/ajax_admin.php:247 api/ajax_admin.php:259
+#: api/ajax_admin.php:265 api/ajax_contest.php:144 api/ajax_contest.php:146
 #: api/ajax_contest.php:162 api/ajax_contest.php:165 api/ajax_mark.php:31
 #: api/ajax_message.php:44 api/ajax_message.php:99 api/ajax_message.php:126
 #: api/ajax_profile.php:110 api/ajax_resetpwd.php:103
@@ -526,16 +526,16 @@ msgstr "等级"
 msgid "Something went wrong..."
 msgstr "系统抽风咯..."
 
-#: api/ajax_admin.php:270 api/ajax_mailfunc.php:52
+#: api/ajax_admin.php:271 api/ajax_mailfunc.php:52
 msgid "Reciever can't be empty..."
 msgstr "收件人不可为空..."
 
-#: api/ajax_admin.php:276 api/ajax_admin.php:293 api/ajax_mailfunc.php:60
+#: api/ajax_admin.php:277 api/ajax_admin.php:294 api/ajax_mailfunc.php:60
 #: api/ajax_mailfunc.php:111
 msgid "Title can't be empty..."
 msgstr "标题不可为空..."
 
-#: api/ajax_admin.php:282 api/ajax_admin.php:299
+#: api/ajax_admin.php:283 api/ajax_admin.php:300
 msgid "Content can't be empty..."
 msgstr "内容不可为空..."
 
@@ -1163,7 +1163,7 @@ msgstr "公式"
 msgid "Hide Toolbar"
 msgstr "隐藏工具"
 
-#: editcontest.php:322 editproblem.php:394
+#: editcontest.php:322 editproblem.php:397
 msgid "Please enter the image link"
 msgstr "请输入图片链接"
 
@@ -1716,7 +1716,7 @@ msgstr "添加笔记/标签"
 msgid "Type your code here..."
 msgstr "在这里输入你的代码..."
 
-#: problempage.php:441 sourcecode.php:84 sourcecode.php:111
+#: problempage.php:441 sourcecode.php:95 sourcecode.php:126
 msgid "Open Source"
 msgstr "开源"
 
@@ -1732,11 +1732,11 @@ msgstr "在这里写些心得吧..."
 msgid "Only you can read & edit your very own notes."
 msgstr "只有你才能阅读并编辑你自己的笔记。"
 
-#: problempage.php:612 problempage.php:622 sourcecode.php:198
+#: problempage.php:612 problempage.php:622 sourcecode.php:232
 msgid "Copied!"
 msgstr "复制成功!"
 
-#: problempage.php:617 problempage.php:627 sourcecode.php:203
+#: problempage.php:617 problempage.php:627 sourcecode.php:237
 msgid "Failed..."
 msgstr "复制失败!"
 
@@ -2050,7 +2050,7 @@ msgstr "你的注册申请将被管理员审核"
 msgid "Great! Let's get started"
 msgstr "好的! 让我们现在开始..."
 
-#: sourcecode.php:8 sourcecode.php:68
+#: sourcecode.php:8 sourcecode.php:79
 msgid "Sourcecode"
 msgstr "源码"
 
@@ -2058,27 +2058,35 @@ msgstr "源码"
 msgid "Please specify the solution id"
 msgstr "请指明源码ID"
 
-#: sourcecode.php:33
+#: sourcecode.php:41
+msgid "Compile Info is not available..."
+msgstr "编译信息不可用..."
+
+#: sourcecode.php:44
 msgid "Sourcecode not available"
 msgstr "源码不可用"
 
-#: sourcecode.php:86 sourcecode.php:109
+#: sourcecode.php:97 sourcecode.php:124
 msgid "Close Source"
 msgstr "闭源"
 
-#: sourcecode.php:90 sourcecode.php:101
+#: sourcecode.php:101 sourcecode.php:116
 msgid "Malicious!"
 msgstr "恶意代码!"
 
-#: sourcecode.php:103
+#: sourcecode.php:111 sourcecode.php:157
+msgid "Compile Info"
+msgstr "编译信息"
+
+#: sourcecode.php:118
 msgid "Not Malicious"
 msgstr "非恶意代码"
 
-#: sourcecode.php:116 upload.php:68
+#: sourcecode.php:131 upload.php:68
 msgid "Copy"
 msgstr "复制"
 
-#: sourcecode.php:119
+#: sourcecode.php:134
 msgid "Fullscreen"
 msgstr "全屏"
 

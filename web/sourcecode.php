@@ -15,8 +15,12 @@ else{
     require __DIR__.'/conf/database.php';
     $result=mysqli_query($con,"select user_id,time,memory,result,language,code_length,problem_id,public_code,malicious from solution where solution_id=$sol_id");
     $row=mysqli_fetch_row($result);
+    
+    //Check existence.
     if(!$row)
         die('No such solution.');
+     
+    //Check privilege.
     $ret = sc_check_priv($row[6], $row[7], $row[0]);
     if($ret === TRUE)
         $allowed = TRUE;
@@ -24,12 +28,19 @@ else{
         $allowed = FALSE;
         $info=$ret;
     }
-
     if($allowed){
         $result=mysqli_query($con,"select source from source_code where solution_id=$sol_id");
-        if($tmp=mysqli_fetch_row($result))
+        if($tmp=mysqli_fetch_row($result)){
             $source=$tmp[0];
-        else
+            //If result == 'Compile Error', fetch Compile Info.
+            if($row[3]==7){
+                $result=mysqli_query($con, "select error from compileinfo where solution_id=$sol_id");
+                if($tmp=mysqli_fetch_row($result))
+                    $compileinfo=$tmp[0];
+                else
+                    $compileinfo=_('Compile Info is not available...');
+            }      
+        }else
             $info = _('Sourcecode not available');
     }
     $inTitle.=" #$sol_id";
@@ -95,7 +106,11 @@ $Title=$inTitle .' - '. $oj_name;
                 <div class="row">
                     <div class="col-xs-12">
                         <div class="btn-group">
-                            <?php if(check_priv(PRIV_PROBLEM) || check_priv(PRIV_SYSTEM)){?>
+                            <?php if($row[3]==7){?>
+                                <button class="btn btn-default" data-toggle="modal" data-target="#CEModal">
+                                    <i class="fa fa-fw fa-heartbeat"></i> <?php echo _('Compile Info')?>
+                                </button>
+                            <?php }if(check_priv(PRIV_PROBLEM) || check_priv(PRIV_SYSTEM)){?>
                                 <button class="btn btn-default" id="btn_mark_mal">
                                     <?php if(!$row[8]){?>
                                         <i class="fa fa-fw fa-flag"></i> <?php echo _('Malicious!')?>
@@ -132,6 +147,25 @@ $Title=$inTitle .' - '. $oj_name;
             <?php } 
             require __DIR__.'/inc/footer.php';?>
         </div>
+        
+        <?php if($row[3]==7){?>
+            <div class="modal fade" id="CEModal">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title"><?php echo _('Compile Info')?></h4>
+                        </div>
+                        <div class="modal-body">
+                            <pre><?php echo htmlspecialchars($compileinfo)?></pre>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal"><?php echo _('Close')?></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        <?php }?>
         
         <div class="modal fade" id="UserModal">
             <div class="modal-dialog">
