@@ -13,8 +13,8 @@ function get_ip(){
 //Obtain user's Gravatar.
 function get_gravatar($email, $s=80, $d='mm'){
     $email = md5($email); 
-    //$avatar = "https://secure.gravatar.com/avatar/$email?s=$s&d=$d&r=g"; 
-    $avatar = "//sdn.geekzu.org/avatar/$email?s=$s&d=$d&r=g";
+    $avatar = "//secure.gravatar.com/avatar/$email?s=$s&d=$d&r=g"; 
+    //$avatar = "//sdn.geekzu.org/avatar/$email?s=$s&d=$d&r=g";
     return $avatar; 
 }
 
