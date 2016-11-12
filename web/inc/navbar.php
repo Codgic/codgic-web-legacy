@@ -13,7 +13,7 @@ if(!isset($_SESSION['user'])){
 <header class="navbar navbar-default navbar-fixed-top">
     <div class="container">
         <div class="navbar-header">
-            <a class="navbar-brand" href="/" style="font-size:18px"><i class="fa fa-home"></i> CWOJ</a>
+            <a class="navbar-brand" href="/" style="font-size:18px"><i class="fa fa-angle-left"></i> <i class="fa fa-angle-right"></i> CWOJ</a>
             <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#nav_menus">
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
@@ -57,7 +57,7 @@ if(!isset($_SESSION['user'])){
                 <?php if(isset($_SESSION['user'])){?>
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                            <?php echo '<img src='.get_gravatar($_SESSION['email'],40).' class="img-circle navbar-img" width="40" height="40"> '.$_SESSION['user']?> <strong class="notifier"></strong> <span class="caret"></span>
+                            <?php echo '<img src='.get_gravatar($_SESSION['email'],40).' class="img-circle navbar-img" width="20" height="20"> '.$_SESSION['user']?> <strong class="notifier"></strong> <span class="caret"></span>
                         </a>  
                         <ul class="dropdown-menu dropdown-menu-right" id="nav_right">
                             <li><a href="/mail.php" id="nav_mail"><i class="fa fa-fw fa-envelope"></i> <?php echo _('Mails');?> <strong class="notifier"></strong></a></li>
