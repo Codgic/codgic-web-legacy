@@ -40,38 +40,38 @@ if($_POST['op']=='del'){
     if(isset($_POST['time'])&&!empty($_POST['time'])){
         $time=intval($_POST['time']);
     }else{
-        echo json_encode(array('success' => false, 'message' => _('Please enter Time Limit...')));
+        echo json_encode(array('success' => false, 'message' => _('Please enter time limit...')));
         exit();
     }
     if($time<0){
-        echo json_encode(array('success' => false, 'message' => _('Invalid Time Limit...')));
+        echo json_encode(array('success' => false, 'message' => _('Invalid time limit...')));
         exit();
     }
     if(isset($_POST['memory'])&&!empty($_POST['memory'])){ 
         $memory=intval($_POST['memory']);
     }else{
-        echo json_encode(array('success' => false, 'message' => _('Please enter Memory Limit...')));
+        echo json_encode(array('success' => false, 'message' => _('Please enter memory limit...')));
         exit();
     }
     if($memory<0){
-        echo json_encode(array('success' => false, 'message' => _('Invalid Memory Limit...')));
+        echo json_encode(array('success' => false, 'message' => _('Invalid memory limit...')));
         exit();
     }
     if(isset($_POST['score'])&&!empty($_POST['score'])){ 
         $score=intval($_POST['score']);
     }else{
-        echo json_encode(array('success' => false, 'message' => _('Please enter Case Score...')));
+        echo json_encode(array('success' => false, 'message' => _('Please enter case score...')));
         exit();
     }
     if($score<0){
-        echo json_encode(array('success' => false, 'message' => _('Invalid Case Score...')));
+        echo json_encode(array('success' => false, 'message' => _('Invalid case score...')));
         exit();
     }
     $compare_way=isset($_POST['compare']) ? CMP_TYPE($_POST['compare'], intval($_POST['precision'])) : 0;
     if(isset($_POST['title'])&&!empty($_POST['title'])){
         $title=mysqli_real_escape_string($con,$_POST['title']);
     }else{
-        echo json_encode(array('success' => false, 'message' => _('Please enter Title...')));
+        echo json_encode(array('success' => false, 'message' => _('Please enter title...')));
         exit();
     }
     $des=isset($_POST['description']) ? mysqli_real_escape_string($con,$_POST['description']) : '';

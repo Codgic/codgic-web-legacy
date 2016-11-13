@@ -72,7 +72,7 @@ else if(!isset($info)){
             break;
     }
 
-    if($row_prob[11]==1 && !check_priv(PRIV_PROBLEM))
+    if($row_prob[11] && !check_priv(PRIV_PROBLEM))
         $forbidden=true;
     else if($row_prob[12] & PROB_IS_HIDE && !check_priv(PRIV_INSIDER))
         $forbidden=true;
@@ -199,7 +199,7 @@ $Title=$inTitle .' - '. $oj_name;
                             <h2>
                                 <?php 
                                     echo '#'.$prob_id,' ',$row_prob[0];
-                                    if($row_prob[11]==1)
+                                    if($row_prob[11])
                                         echo ' <span style="vertical-align:middle;font-size:12px" class="label label-danger">',_('Deleted'),'</span>';
                                     if($is_contest){
                                         echo '<a href="contestpage.php?contest_id=',$cont_id,'" class="btn btn-default pull-left"><i class="fa fa-fw fa-home"></i> <span class="nav-text-alt">',_('Contest Home'),'</span></a>';
@@ -368,7 +368,7 @@ $Title=$inTitle .' - '. $oj_name;
                                         <div class="panel-body">
                                             <a href="editproblem.php?problem_id=<?php echo $prob_id?>" class="btn btn-primary"><?php echo _('Edit')?></a>
                                             <a href="testcase.php?problem_id=<?php echo $prob_id?>" class="btn btn-warning"><?php echo _('Test Cases')?></a>
-                                            <span id="action_delete" class="btn btn-danger"><?php echo $row_prob[11]==0 ? _('Delete') : _('Recover');?></span>
+                                            <span id="action_delete" class="btn btn-danger"><?php echo $row_prob[11] ? _('Recover') : _('Delete');?></span>
                                         </div>
                                     </div>
                                 </div>

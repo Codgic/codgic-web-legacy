@@ -19,7 +19,7 @@ require __DIR__.'/../conf/database.php';
 if($op=='get_rank_table'){
     $cont_id=intval($_POST['contest_id']);
     //Check if contest rxists.
-    $row=mysqli_fetch_row(mysqli_query($con, "select start_time,end_time,num,problems,last_rank_time from contest where contest_id=$cont_id"));
+    $row=mysqli_fetch_row(mysqli_query($con, "select start_time,end_time,num,problems,owners,last_rank_time from contest where contest_id=$cont_id"));
     if(!$row){
         echo _('No such contest...');
         exit();
@@ -29,13 +29,13 @@ if($op=='get_rank_table'){
     $cont_num=$row[2];
     $cont_starttime=strtotime($row[0]);
     $cont_endtime=strtotime($row[1]);
-    $joined=0;
+    $enrolled=false;
     //Determine if an update is needed.
     if(time()>=$cont_starttime){
         if($row[4]==NULL) 
             //If last ranked time is undefined.
             update_cont_rank($cont_id);
-        else if($cont_endtime>time()&&time()-strtotime($row[4])>20)
+        else if($cont_endtime>time()&&time()-strtotime($row[5])>20)
             //If contest hasn't ended.
             //Won't rank if ranked less than 20 seconds ago.
             update_cont_rank($cont_id);
@@ -43,7 +43,7 @@ if($op=='get_rank_table'){
             //If contest has ended.
             for($i=0;$i<$row[2];$i++){
                 $s_row=mysqli_fetch_row(mysqli_query($con,'select rejudge_time from problem where problem_id='.$prob_arr[$i].' limit 1'));
-                if(isset($s_row[1])&&strtotime($s_row[1])>strtotime($row[4])){
+                if(isset($s_row[1])&&strtotime($s_row[1])>strtotime($row[5])){
                     update_cont_rank($cont_id);
                     break;
                 }
@@ -53,9 +53,15 @@ if($op=='get_rank_table'){
             //Determine whether show the problem list or not.
             if(isset($_SESSION['user'])){
                 $uid=$_SESSION['user'];
-                //Check if user has joined contest
+                //Check if user has joined contest.
                 if(mysqli_num_rows(mysqli_query($con,"select 1 from contest_status where user_id='$uid' and contest_id=$cont_id limit 1")))
-                    $joined=1;
+                    $enrolled=true;
+                //Contest owners can view status without enrolling.
+                if(!$enrolled){
+                    $owner_arr=unserialize($row[4]);
+                    if(in_array($uid,$owner_arr))
+                        $enrolled=true;
+                }
             }
         }
     }
@@ -73,7 +79,7 @@ if($op=='get_rank_table'){
                 <th><?php echo _('Score')?></th>
                 <th><?php echo _('Time Penalty')?></th>
                 <?php 
-                    if(time()>=$cont_endtime||(time()>=$cont_starttime&&$joined==1))
+                    if(time()>=$cont_endtime||(time()>=$cont_starttime&&$enrolled))
                         for($i=0;$i<$cont_num;$i++)
                             echo "<th>$prob_arr[$i]</th>";
                 ?>
@@ -92,7 +98,7 @@ if($op=='get_rank_table'){
                     echo '<td>',$row[0],'</td>';
                     echo '<td>',$row[3],'</td>';
                     echo '<td>',get_time_text($row[4]),'</td>';
-                    if(time()>=$cont_endtime||(time()>=$cont_starttime&&$joined==1)){
+                    if(time()>=$cont_endtime||(time()>=$cont_starttime&&$enrolled)){
                         for($i=0;$i<$cont_num;$i++){
                             echo '<td><i class=', is_null($res_arr["$prob_arr[$i]"]) ? '"fa fa-fw fa-question" style="color:grey"' : ($res_arr["$prob_arr[$i]"] ? '"fa fa-fw fa-remove" style="color:red"' : '"fa fa-fw fa-check" style="color:green"'), '></i> ';
                             echo $scr_arr[$prob_arr[$i]],'</td>';

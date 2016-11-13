@@ -38,21 +38,21 @@ if($_POST['op']=='del'){
     if(isset($_POST['start_time'])&&!empty($_POST['start_time'])){
          $start_time = mysqli_real_escape_string($con,$_POST['start_time']);
     }else{
-        echo json_encode(array('success' => false, 'message' => _('Please enter Start Time...')));
+        echo json_encode(array('success' => false, 'message' => _('Please enter start time...')));
         exit();
     }
     if($start_time<0){
-        echo json_encode(array('success' => false, 'message' => _('Invalid Start Time...')));
+        echo json_encode(array('success' => false, 'message' => _('Invalid start time...')));
         exit();
     }
     if(isset($_POST['end_time'])&&!empty($_POST['end_time'])){
         $end_time=mysqli_real_escape_string($con,$_POST['end_time']);
     }else{
-        echo json_encode(array('success' => false, 'message' => _('Please enter End Time...')));
+        echo json_encode(array('success' => false, 'message' => _('Please enter end time...')));
         exit();
     }
     if($end_time<0){
-        echo json_encode(array('success' => false, 'message' => _('Invalid End Time...')));
+        echo json_encode(array('success' => false, 'message' => _('Invalid end time...')));
         exit();
     }
     if(strtotime($start_time)>strtotime($end_time)){
@@ -67,21 +67,36 @@ if($_POST['op']=='del'){
     if(isset($_POST['title'])&&!empty($_POST['title'])){
         $title=mysqli_real_escape_string($con,$_POST['title']);
     }else{
-        echo json_encode(array('success' => false, 'message' => _('Please enter Title...')));
+        echo json_encode(array('success' => false, 'message' => _('Please enter title...')));
         exit();
     }
     if(isset($_POST['problems'])&&!empty($_POST['problems'])){
         $problems=mysqli_real_escape_string($con,$_POST['problems']);
+        if(strlen($problems)>400){
+            echo json_encode(array('success' => false, 'message' => _('Too much problems...')));
+            exit();
+        }
     }else{
         echo json_encode(array('success' => false, 'message' => _('Please specify problems...')));
         exit();
     }
+    
     $num=substr_count($problems,',')+1;
     $prob_arr=explode(',',$problems);
     $problems=serialize($prob_arr);
     $des=isset($_POST['description']) ? mysqli_real_escape_string($con,$_POST['description']) : '';
     $source=isset($_POST['source']) ? mysqli_real_escape_string($con,$_POST['source']) : '';
-    
+    if(isset($_POST['owners'])&&!empty($_POST['owners'])){
+        $owners=mysqli_real_escape_string($con,$_POST['owners']);
+        if(strlen($problems)>800){
+            echo json_encode(array('success' => false, 'message' => _('Too much owners...')));
+            exit();
+        }
+        $owners_num=substr_count($owners,',')+1;
+        $owners_arr=explode(',',$owners);
+        $owners_query='\''.serialize($owners_arr).'\'';
+    }else
+        $owners_query='NULL';
     $has_tex=0;
     if(isset($_POST['option_level'])){
         $l=intval($_POST['option_level']);
@@ -91,17 +106,29 @@ if($_POST['op']=='del'){
         }
     }
 
+    //Verify problems availability.
     for($i=0;$i<$num;$i++){
         $r=mysqli_fetch_row(mysqli_query($con,'select has_tex from problem where problem_id='.$prob_arr[$i].' limit 1'));
         if(!$r){
-            echo json_encode(array('success' => false, 'message' => _('Problem #').$prob_arr[$i]._('does not exist...')));
+            echo json_encode(array('success' => false, 'message' => _('Problem ').'#'.$prob_arr[$i]._(' does not exist...')));
             exit();
         }
         if($r[0] & PROB_IS_HIDE && !isset($_POST['hide_cont'])){
-            echo json_encode(array('success' => false, 'message' => _('Problem #').$prob_arr[$i]._('is hidden. Please hide the contest to add it...')));
+            echo json_encode(array('success' => false, 'message' => _('Problem ').'#'.$prob_arr[$i]._('is hidden. Please hide the contest to add it...')));
             exit();
         }
-    } 
+    }
+
+    //Verify owners availability.
+    if(isset($owners_num)){
+        for($i=0;$i<$owners_num;$i++){
+            $r=mysqli_num_rows(mysqli_query($con, 'select 1 from users where user_id=\''.$owners_arr[$i].'\' limit 1'));
+            if($r<=0){
+                echo json_encode(array('success' => false, 'message' => _('User ').'"'.$owners_arr[$i].'"'.' does not exist...'));
+                exit();
+            }
+        }
+    }
 
     if(isset($_POST['hide_cont'])){
         $has_tex|=PROB_IS_HIDE;
@@ -119,7 +146,7 @@ if($_POST['op']=='del'){
             exit();
         }
         $id=intval($_POST['contest_id']);
-        $result=mysqli_query($con,"update contest set title='$title',start_time='$start_time',end_time='$end_time',problems='$problems',num='$num',description='$des',source='$source',has_tex=$has_tex,judge_way=$judge_way where contest_id=$id");
+        $result=mysqli_query($con,"update contest set title='$title',start_time='$start_time',end_time='$end_time',num='$num',problems='$problems',owners=$owners_query,description='$des',source='$source',has_tex=$has_tex,judge_way=$judge_way where contest_id=$id");
         if($result){
             require __DIR__.'/../func/contest.php';
             update_cont_rank($id);
@@ -129,7 +156,7 @@ if($_POST['op']=='del'){
         $result=mysqli_query($con,'select max(contest_id) from contest');
         if(($row=mysqli_fetch_row($result)) && intval($row[0]))
             $id=intval($row[0])+1;
-        $result=mysqli_query($con,"insert into contest (contest_id,title,start_time,end_time,description,problems,num,source,in_date,has_tex,judge_way,enroll_user) values ($id,'$title','$start_time','$end_time','$des','$problems','$num','$source',NOW(),$has_tex,$judge_way,0)");
+        $result=mysqli_query($con,"insert into contest (contest_id,title,start_time,end_time,num,problems,owners,description,source,in_date,has_tex,judge_way,enroll_user) values ($id,'$title','$start_time','$end_time','$num','$problems',$owners_query,'$des','$source',NOW(),$has_tex,$judge_way,0)");
     }else{
         echo json_encode(array('success' => false, 'message' => _('Invalid Argument...')));
         exit();
@@ -138,5 +165,5 @@ if($_POST['op']=='del'){
     if($result)
         echo json_encode(array('success' => true, 'contestID' => $id));
     else
-        echo json_encode(array('success' => false, 'message' => _('Unknown Error...')));
+        echo json_encode(array('success' => false, 'message' => _('Database operation failed...')));
 }

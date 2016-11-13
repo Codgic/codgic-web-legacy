@@ -21,13 +21,13 @@ else if(!isset($_SESSION['admin_tfa']) || !$_SESSION['admin_tfa']){
         $p_type='edit';
         $cont_id=intval($_GET['contest_id']);  
         $inTitle=_('Edit Contest')." #$cont_id";
-        $query="select title,start_time,end_time,problems,description,source,judge_way,has_tex from contest where contest_id=$cont_id";
+        $query="select title,start_time,end_time,problems,owners,description,source,judge_way,has_tex from contest where contest_id=$cont_id";
         $result=mysqli_query($con,$query);
         $row=mysqli_fetch_row($result);
         if(!$row)
             $info=_('There\'s no such contest');
         else{ 
-            switch ($row[6]) {
+            switch ($row[7]) {
                 case 0:
                     $way='train';
                     break;
@@ -42,8 +42,8 @@ else if(!isset($_SESSION['admin_tfa']) || !$_SESSION['admin_tfa']){
                     break;
             }
         }
-        $option_level=($row[7]&PROB_LEVEL_MASK)>>PROB_LEVEL_SHIFT;
-        $option_hide=(($row[7]&PROB_IS_HIDE)?'checked':'');
+        $option_level=($row[8]&PROB_LEVEL_MASK)>>PROB_LEVEL_SHIFT;
+        $option_hide=(($row[8]&PROB_IS_HIDE)?'checked':'');
     }
 
     $Title=$inTitle .' - '. $oj_name;
@@ -78,29 +78,38 @@ else if(!isset($_SESSION['admin_tfa']) || !$_SESSION['admin_tfa']){
                             <label class="control-label" for="input_title">
                                 <?php echo _('Title')?>
                             </label>
-                            <input type="text" class="form-control" name="title" id="input_title" value="<?php if($p_type=='edit') echo $row[0]?>">
+                            <input type="text" class="form-control" name="title" id="input_title" placeholder="<?php echo _('Pleae enter contest title...')?>" value="<?php if($p_type=='edit') echo $row[0]?>">
                         </div>
                     </div>
                     <div class="row">
                         <div class="form-group col-xs-12 col-sm-9" id="ctl_probs">
                             <label class="control-label" for="input_probs">
-                                <?php echo _('Problems (Format: a,b,c)')?>
+                                <?php echo _('Problems'),_(' (Format: 1000,1001,...)')?>
                             </label>
-                            <input type="text" class="form-control" name="problems" id="input_probs" value="<?php if($p_type=='edit'){ $prob_arr=unserialize($row[3]);echo implode(',', $prob_arr);}?>">
+                            <input type="text" class="form-control" name="problems" id="input_probs" placeholder="<?php echo _('Please specify Problem IDs...')?>" value="<?php if($p_type=='edit'){ $prob_arr=unserialize($row[3]);echo implode(',', $prob_arr);}?>">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-xs-12 col-sm-9" id="ctl_owners">
+                            <label class="control-label" for="input_owners">
+                                <?php echo _('Owners'),_(' (Format: user1,user2,...)')?>
+                            </label>
+                            <input type="text" class="form-control" name="owners" id="input_owners" placeholder="<?php echo _('Please specify User IDs...')?>" value="<?php if($p_type=='edit'){ if($row[4]!=NULL){$owner_arr=unserialize($row[4]);echo implode(',', $owner_arr);}}else{if(isset($_SESSION['user'])) echo $_SESSION['user'];}?>">
+                            <span class="help-block"><?php echo _('Contest owners can view contest status without the need of enrollment. Leave it blank if you don\'t want any owners.')?></span>
                         </div>
                     </div>
                     <div class="row">
                         <div class="form-group col-xs-6 col-sm-4" id="ctl_starttime">
                             <label class="control-label" for="input_starttime">
-                                <?php echo _('Start Time (yyyy-mm-dd hh:mm:ss)')?>
+                                <?php echo _('Start Time')?>
                             </label>
-                            <input type="text" name="start_time" id="input_starttime" class="form-control" value="<?php if($p_type=='edit') echo $row[1]; else echo date("Y-m-d H:i:s",time())?>">
+                            <input type="text" name="start_time" id="input_starttime" class="form-control" placeholder="<?php echo _('yyyy-mm-dd hh:mm:ss')?>" value="<?php if($p_type=='edit') echo $row[1]; else echo date("Y-m-d H:i:s",time())?>">
                         </div>
                         <div class="form-group col-xs-6 col-sm-4" id="ctl_endtime">
                             <label class="control-label" for="input_endtime">
-                                <?php echo _('End Time (yyyy-mm-dd hh:mm:ss)')?>
+                                <?php echo _('End Time')?>
                             </label>
-                            <input type="text" name="end_time" id="input_endtime" class="form-control" value="<?php if($p_type=='edit') echo $row[2]; else echo date("Y-m-d H:i:s",time()+14400)?>">
+                            <input type="text" name="end_time" id="input_endtime" class="form-control" placeholder="<?php echo _('yyyy-mm-dd hh:mm:ss')?>" value="<?php if($p_type=='edit') echo $row[2]; else echo date("Y-m-d H:i:s",time()+14400)?>">
                         </div> 
                     </div>
                     <div class="row">
@@ -119,7 +128,7 @@ else if(!isset($_SESSION['admin_tfa']) || !$_SESSION['admin_tfa']){
                                     $('#input_cmp').val("<?php echo $way?>");
                                 </script>
                             <?php }?>
-                            <span id="input_cmp_help" class="help-block"></span>
+                            <span id="input_judge_help" class="help-block"></span>
                         </div>
                     </div>      
                     <div class="row">
@@ -160,7 +169,7 @@ else if(!isset($_SESSION['admin_tfa']) || !$_SESSION['admin_tfa']){
                             <label class="control-label" for="input_des">
                                 <?php echo _('Description')?>
                             </label>
-                            <textarea class="form-control col-xs-12" name="description" id="input_des" rows="13"><?php if($p_type=='edit') echo htmlspecialchars($row[4])?></textarea>
+                            <textarea class="form-control col-xs-12" name="description" id="input_des" rows="13" placeholder="<?php echo _('Please create a description for your contest...')?>"><?php if($p_type=='edit') echo htmlspecialchars($row[5])?></textarea>
                         </div>
                     </div>       
                     <div class="row">
@@ -168,7 +177,7 @@ else if(!isset($_SESSION['admin_tfa']) || !$_SESSION['admin_tfa']){
                             <label <label class="control-label" for="input_tags">
                                 <?php echo _('Tags')?>
                             </label>
-                            <input class="form-control col-xs-12" type="text" name="source" id="input_tags" value="<?php if($p_type=='edit') echo htmlspecialchars($row[5])?>">
+                            <input class="form-control col-xs-12" type="text" name="source" id="input_tags" placeholder="<?php echo _('Please specify some tags for your contest...')?>" value="<?php if($p_type=='edit') echo htmlspecialchars($row[6])?>">
                         </div>
                     </div>
                     <div class="row">
@@ -243,13 +252,13 @@ else if(!isset($_SESSION['admin_tfa']) || !$_SESSION['admin_tfa']){
                 var loffset=window.screenLeft+200,toffset=window.screenTop+200;
                 function show_help(way){
                     if(way=='train')
-                        $('#input_cmp_help').html('<?php echo get_judgeway_destext(0);?>');
+                        $('#input_judge_help').html('<?php echo get_judgeway_destext(0);?>');
                     else if(way=='cwoj')
-                        $('#input_cmp_help').html('<?php echo get_judgeway_destext(1);?>');
+                        $('#input_judge_help').html('<?php echo get_judgeway_destext(1);?>');
                     else if(way=='acm-like')
-                        $('#input_cmp_help').html('<?php echo get_judgeway_destext(2);?>');
+                        $('#input_judge_help').html('<?php echo get_judgeway_destext(2);?>');
                     else if(way=='oi-like')
-                        $('#input_cmp_help').html('<?php echo get_judgeway_destext(3);?>');
+                        $('#input_judge_help').html('<?php echo get_judgeway_destext(3);?>');
                 }
                 (function(){
                     show_help($('#input_cmp').val());

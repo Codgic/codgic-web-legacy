@@ -83,7 +83,7 @@ else if(!isset($_SESSION['admin_tfa']) || !$_SESSION['admin_tfa']){
                             <label class="control-label" for="input_title">
                                 <?php echo _('Title')?>
                             </label>
-                            <input type="text" name="title" id="input_title" class="form-control" value="<?php if($p_type=='edit') echo $row[0]?>">
+                            <input type="text" name="title" id="input_title" class="form-control" placeholder="<?php echo _('Please enter problem title...')?>" value="<?php if($p_type=='edit') echo $row[0]?>">
                         </div>
                     </div>
                     <div class="row">
@@ -91,19 +91,19 @@ else if(!isset($_SESSION['admin_tfa']) || !$_SESSION['admin_tfa']){
                             <label class="control-label" for="input_time">
                                 <?php echo _('Time Limit (ms)')?>
                             </label>
-                                <input id="input_time" name="time" id="input_time" class="form-control" type="number" value="<?php if($p_type=='edit') echo $row[8]; else echo '1000'?>">
+                                <input id="input_time" name="time" id="input_time" class="form-control" type="number" placeholder="<?php echo _('Please enter time limit...')?>" value="<?php if($p_type=='edit') echo $row[8]; else echo '1000'?>">
                         </div>
                         <div class="form-group col-xs-4 col-sm-3" id="ctl_memory">
                             <label class="control-label" for="input_memory">
                                 <?php echo _('Memory Limit (KB)')?>
                             </label>
-                            <input id="input_memory" name="memory" id="input_memory" class="form-control" type="number" value="<?php if($p_type=='edit') echo $row[9]; else echo '65536'?>">
+                            <input id="input_memory" name="memory" id="input_memory" class="form-control" type="number" placeholder="<?php echo _('Please enter memory limit...')?>" value="<?php if($p_type=='edit') echo $row[9]; else echo '65536'?>">
                         </div>  
                         <div class="form-group col-xs-4 col-sm-3" id="ctl_score">
                             <label class="control-label" for="input_score">
                                 <?php echo _('Case Score (Full: 100)')?>
                             </label>
-                            <input id="input_score" name="score" id="input_score" class="form-control" type="number" value="<?php if($p_type=='edit') echo $row[10]; else echo '10'?>">
+                            <input id="input_score" name="score" id="input_score" class="form-control" type="number" placeholder="<?php echo _('Please enter case score...')?>" value="<?php if($p_type=='edit') echo $row[10]; else echo '10'?>">
                         </div>    
                     </div>
                     <div class="row">
@@ -184,7 +184,7 @@ else if(!isset($_SESSION['admin_tfa']) || !$_SESSION['admin_tfa']){
                             <label class="control-label" for="input_des">
                                 <?php echo _('Description')?>
                             </label>
-                            <textarea class="form-control col-xs-12" id="input_des" name="description" rows="13"><?php if($p_type=='edit') echo htmlspecialchars($row[1])?></textarea>
+                            <textarea class="form-control col-xs-12" id="input_des" name="description" rows="13" placeholder="<?php echo _('Please create a description for your problem...')?>"><?php if($p_type=='edit') echo htmlspecialchars($row[1])?></textarea>
                         </div>
                     </div>       
                     <div class="row">
@@ -192,7 +192,7 @@ else if(!isset($_SESSION['admin_tfa']) || !$_SESSION['admin_tfa']){
                             <label class="control-label" for="input_input">
                                 <?php echo _('Input')?>
                             </label>
-                            <textarea class="form-control col-xs-12" id="input_input" name="input" rows="8"><?php if($p_type=='edit') echo htmlspecialchars($row[2])?></textarea>
+                            <textarea class="form-control col-xs-12" id="input_input" name="input" rows="8" placeholder="<?php echo _('Please specify the input format for your problem...')?>"><?php if($p_type=='edit') echo htmlspecialchars($row[2])?></textarea>
                         </div>
                     </div>       
                     <div class="row">
@@ -200,7 +200,7 @@ else if(!isset($_SESSION['admin_tfa']) || !$_SESSION['admin_tfa']){
                             <label class="control-label" for="input_output">
                                 <?php echo _('Output')?>
                             </label>
-                            <textarea class="form-control col-xs-12" id="input_output" name="output" rows="8"><?php if($p_type=='edit') echo htmlspecialchars($row[3])?></textarea>
+                            <textarea class="form-control col-xs-12" id="input_output" name="output" rows="8" placeholder="<?php echo _('Please specify the output format for your problem...')?>"><?php if($p_type=='edit') echo htmlspecialchars($row[3])?></textarea>
                         </div>
                     </div>
                     <div class="row">
@@ -208,7 +208,7 @@ else if(!isset($_SESSION['admin_tfa']) || !$_SESSION['admin_tfa']){
                             <label class="control-label" for="input_sampinput">
                                 <?php echo _('Sample Input')?>
                             </label>
-                            <textarea class="form-control col-xs-12" id="input_sampinput" name="sample_input" rows="8"><?php if($p_type=='edit') echo htmlspecialchars($row[4])?></textarea>
+                            <textarea class="form-control col-xs-12" id="input_sampinput" name="sample_input" rows="8" placeholder="<?php echo _('Please provide an input sample of your problem...')?>"><?php if($p_type=='edit') echo htmlspecialchars($row[4])?></textarea>
                         </div>
                     </div>
                     <div class="row">
@@ -216,7 +216,7 @@ else if(!isset($_SESSION['admin_tfa']) || !$_SESSION['admin_tfa']){
                             <label class="control-label" for="input_sampoutput">
                                 <?php echo _('Sample Output')?>
                             </label>
-                            <textarea class="form-control col-xs-12" id="input_sampoutput" name="sample_output" rows="8"><?php if($p_type=='edit') echo htmlspecialchars($row[5])?></textarea>
+                            <textarea class="form-control col-xs-12" id="input_sampoutput" name="sample_output" rows="8" placeholder="<?php echo _('Please provide an output sample of your problem...')?>"><?php if($p_type=='edit') echo htmlspecialchars($row[5])?></textarea>
                         </div>
                     </div>
                     <div class="row">
@@ -224,7 +224,7 @@ else if(!isset($_SESSION['admin_tfa']) || !$_SESSION['admin_tfa']){
                             <label class="control-label" for="input_hints">
                                 <?php echo _('Hints')?>
                             </label>
-                            <textarea class="form-control col-xs-12" id="input_hints" name="hint" rows="8"><?php if($p_type=='edit') echo htmlspecialchars($row[6])?></textarea>
+                            <textarea class="form-control col-xs-12" id="input_hints" name="hint" rows="8" placeholder="<?php echo _('Please provide some hints of your problem...')?>"><?php if($p_type=='edit') echo htmlspecialchars($row[6])?></textarea>
                         </div>
                     </div>
                     <div class="row">
@@ -232,7 +232,7 @@ else if(!isset($_SESSION['admin_tfa']) || !$_SESSION['admin_tfa']){
                             <label class="control-label" for="input_tags">
                                 <?php echo _('Tags')?>    
                             </label>
-                            <input class="form-control col-xs-12" id="input_tags" type="text" name="source" value="<?php if($p_type=='edit') echo htmlspecialchars($row[7])?>">
+                            <input class="form-control col-xs-12" id="input_tags" type="text" name="source" placeholder="<?php echo _('Please specify some tags for your problem...')?>" value="<?php if($p_type=='edit') echo htmlspecialchars($row[7])?>">
                         </div>
                     </div>
                     <div class="row">

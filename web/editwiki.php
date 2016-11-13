@@ -74,7 +74,7 @@ $Title=$inTitle .' - '. $oj_name;
                             <label class="control-label" for="input_title">
                                 <?php echo _('Title')?>
                             </label>
-                            <input type="text" class="form-control" name="title" id="input_title" value="<?php if($p_type=='edit') echo $row[0]?>">
+                            <input type="text" class="form-control" name="title" id="input_title" placeholder="<?php echo _('Please enter wiki title...')?>" value="<?php if($p_type=='edit') echo $row[0]?>">
                         </div>
                     </div>
                     <?php if(check_priv(PRIV_PROBLEM)){?>
@@ -96,7 +96,7 @@ $Title=$inTitle .' - '. $oj_name;
                             <label class="control-label" for="input_des">
                                 <?php echo _('Content')?>
                             </label>
-                            <textarea class="form-control col-xs-12" id="input_des" name="content" rows="20"><?php if($p_type=='edit') echo htmlspecialchars($row[1])?></textarea>
+                            <textarea class="form-control col-xs-12" id="input_des" name="content" rows="20" placeholder="<?php echo _('Let start sharing knowledge here...')?>"><?php if($p_type=='edit') echo htmlspecialchars($row[1])?></textarea>
                             <?php if($pref->edrmode=='vim') echo '<samp>',_('Command: '),'<span id="vim_cmd"></span></samp>'?>
                         </div>
                     </div>       
@@ -105,7 +105,7 @@ $Title=$inTitle .' - '. $oj_name;
                              <label class="control-label" for="input_tags">
                                 <?php echo _('Tags')?>
                             </label>
-                            <input class="form-control col-xs-12" id="input_tags" type="text" name="tags" value="<?php if($p_type=='edit') echo htmlspecialchars($row[2])?>">
+                            <input class="form-control col-xs-12" id="input_tags" type="text" name="tags" placeholder="<?php echo _('Please specify some tags for your wiki...')?>" value="<?php if($p_type=='edit') echo htmlspecialchars($row[2])?>">
                         </div>
                     </div>
                     <div class="row">
