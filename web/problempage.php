@@ -13,13 +13,20 @@ if(isset($_GET['contest_id'])){
     $cont_id=intval($_GET['contest_id']);
     $inTitle=_('Contest')." #$cont_id";
     $is_contest=true;
-    $query="select title,start_time,end_time,defunct,num,problems,description,source,has_tex from contest where contest_id=$cont_id";
+    $query="select title,start_time,end_time,defunct,num,problems,owners from contest where contest_id=$cont_id";
     $result=mysqli_query($con,$query);
     $row_cont=mysqli_fetch_row($result);
     if(!$row_cont)
         $info=_('There\'s no such contest');
     else{
-        if(time()<strtotime($row_cont[1])){
+        //Check if current user is contest owner.
+        $is_owner=false;
+        if(isset($_SESSION['user'])){
+            $owners_arr=unserialize($row_cont[6]);
+            if($owners_arr!=NULL && in_array($_SESSION['user'],$owners_arr))
+                $is_owner=true;
+        }
+        if(!$is_owner && time()<strtotime($row_cont[1])){
             header("Location: contestpage.php?contest_id=$cont_id");
             exit();
         }
@@ -389,7 +396,7 @@ $Title=$inTitle .' - '. $oj_name;
                                                 </div>
                                                 <div class="panel-body">
                                                     <p><strong><?php echo _('Tags')?></strong></p>
-                                                    <span id="user_tags"><?php echo htmlspecialchars($tags)?></span>
+                                                    <span id="user_tags"><?php if(isset($tags)) echo htmlspecialchars($tags)?></span>
                                                 </div>
                                             </div>
                                         </div>
@@ -474,7 +481,7 @@ $Title=$inTitle .' - '. $oj_name;
                     <form method="post" id="form_note"> 
                         <div class="modal-body">
                             <div class="form-group">
-                                <textarea class="form-control" style="resize:none" rows="14" placeholder="<?php echo _('Write something here...')?>" name="content"><?php echo $note_content?></textarea>
+                                <textarea class="form-control" style="resize:none" rows="14" placeholder="<?php echo _('Write something here...')?>" name="content"><?php if(isset($note_content)) echo $note_content?></textarea>
                                 <span class="help-block"><?php echo _('Only you can read & edit your very own notes.')?></span>
                                 <input type="hidden" name="problem_id" value="<?php echo $prob_id?>">
                             </div>
@@ -485,7 +492,7 @@ $Title=$inTitle .' - '. $oj_name;
                                 <div class="form-group col-xs-6 col-sm-7">
                                     <div class="input-group pull-left">
                                         <span class="input-group-addon"><b><?php echo _('Tags')?></b></span>
-                                        <input class="form-control" id="tags_edit" type="text" name="tags" value="<?php echo $tags?>">
+                                        <input class="form-control" id="tags_edit" type="text" name="tags" value="<?php if(isset($tags)) echo $tags?>">
                                     </div>
                                 </div>
                                 <div class="form-group col-xs-6 col-sm-5">

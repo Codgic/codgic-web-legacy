@@ -21,6 +21,7 @@ else{
     require __DIR__.'/conf/database.php';
     $user_id=$_SESSION['user'];
     if($type=='problem'){
+        $type_num=1;
         $row=mysqli_fetch_row(mysqli_query($con,"select count(1) from saved_problem where user_id='$user_id'"));
         $maxpage=intval($row[0]/20)+1;
         if($page_id<1||$page_id>$maxpage){
@@ -29,6 +30,7 @@ else{
         }
         $result=mysqli_query($con,"SELECT saved_problem.problem_id,title,savetime from saved_problem inner join problem using (problem_id) where user_id='$user_id' order by savetime desc limit ".(($page_id-1)*20).",20");
     }else if($type=='contest'){
+        $type_num=2;
         $row=mysqli_fetch_row(mysqli_query($con,"select count(1) from saved_contest where user_id='$user_id'"));
         $maxpage=intval($row[0]/20)+1;
         if($page_id<1||$page_id>$maxpage){
@@ -37,13 +39,14 @@ else{
         }
         $result=mysqli_query($con,"SELECT saved_contest.contest_id,title,savetime from saved_contest inner join contest using (contest_id) where user_id='$user_id' order by savetime desc limit ".(($page_id-1)*20).",20");
     }else{
+        $type_num=3;
         $row=mysqli_fetch_row(mysqli_query($con,"select count(1) from saved_wiki where user_id='$user_id'"));
         $maxpage=intval($row[0]/20)+1;
         if($page_id<1||$page_id>$maxpage){
             header("Location: marked.php");
             exit();
         }
-        $result=mysqli_query($con,"SELECT saved_wiki.wiki_id,title,savetime from saved_wiki inner join wiki using (wiki_id) where user_id='$user_id' order by savetime desc limit ".(($page_id-1)*20).",20");
+        $result=mysqli_query($con,"SELECT saved_wiki.wiki_id,title,savetime from saved_wiki inner join wiki using (wiki_id) where is_MAX and user_id='$user_id' order by savetime desc limit ".(($page_id-1)*20).",20");
     }
     if(mysqli_num_rows($result)==0) $info=_('Looks like there\'s nothing here');
 }
@@ -134,7 +137,7 @@ $Title=$inTitle .' - '. $oj_name;
                     var $target = $(E.target);
                     if($target.is('i')){
                         var pid = $target.attr('data-pid');
-                        $.get('api/ajax_mark.php?prob='+pid+'&op=rm_saved&type='+'<?php echo $t?>',function(result){
+                        $.get('api/ajax_mark.php?prob='+pid+'&op=rm_saved&type='+'<?php echo $type_num?>',function(result){
                             if(/success/.test(result)){
                                 $target.parents('tr').remove();
                                 del++;

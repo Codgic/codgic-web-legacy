@@ -58,8 +58,8 @@ if($op=='get_rank_table'){
                     $enrolled=true;
                 //Contest owners can view status without enrolling.
                 if(!$enrolled){
-                    $owner_arr=unserialize($row[4]);
-                    if(in_array($uid,$owner_arr))
+                    $owners_arr=unserialize($row[4]);
+                    if($owners_arr!=NULL && in_array($uid,$owners_arr))
                         $enrolled=true;
                 }
             }
@@ -118,7 +118,7 @@ if($op=='get_rank_table'){
     $uid=$_SESSION['user'];
     
     if($op=='enroll'){
-        $row=mysqli_fetch_row(mysqli_query($con,"select start_time,end_time,problems,num,enroll_user from contest where contest_id=$cont_id"));
+        $row=mysqli_fetch_row(mysqli_query($con,"select start_time,end_time,num,problems,owners,enroll_user from contest where contest_id=$cont_id"));
         if(!$row){
             echo _('No such contest...');
             exit();
@@ -127,22 +127,27 @@ if($op=='get_rank_table'){
             echo _('Contest has ended...');
             exit();
         }
+        //Check if current user is contest owner.
+        $owners_arr=unserialize($row[4]);
+        if($owners_arr!=NULL && in_array($uid,$owners_arr)){
+            echo _('Contest owner can\'t enroll in his contest...');
+            exit();
+        }
         //Check if already enrolled.
         if(mysqli_num_rows(mysqli_query($con,"select 1 from contest_status where user_id='$uid' and contest_id=$cont_id limit 1"))){
             echo 'success';
             exit();
         }
-
-        $prob_arr=unserialize($row[2]);
+        $prob_arr=unserialize($row[3]);
         $newp_arr=array();
-        for($i=0;$i<$row[3];$i++){
+        for($i=0;$i<$row[2];$i++){
             $newp_arr["$prob_arr[$i]"]=0;
             $newr_arr["$prob_arr[$i]"]=NULL;
         }
         $problems=serialize($newp_arr);
         $results=serialize($newr_arr);
         if(mysqli_query($con,"insert into contest_status (user_id,contest_id,scores,results,times) VALUES ('$uid',$cont_id,'$problems','$results','$problems')")){
-            if(mysqli_query($con,'update contest set enroll_user='.($row[4]+1)." where contest_id=$cont_id")){
+            if(mysqli_query($con,'update contest set enroll_user='.($row[5]+1)." where contest_id=$cont_id")){
                 if(time()>strtotime($row[0]))
                     update_cont_rank($cont_id);
                 echo 'success';
