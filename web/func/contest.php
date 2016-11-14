@@ -21,7 +21,7 @@ require __DIR__.'/../conf/database.php';
             //OI-like: Only recognize the first submit
             if($cont_judgeway==3){
                 $s_row=mysqli_fetch_row(mysqli_query($con, "select score,result,in_date from solution where user_id='$user_id' and in_date>'".$cont_start."' and in_date<'".$cont_end."' and problem_id=".$prob_arr[$i].' order by in_date limit 1'));
-                        //Process score
+                //Process score
                 if(isset($s_row[0]))
                     $score_arr["$prob_arr[$i]"]=$s_row[0];
                 else

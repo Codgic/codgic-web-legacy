@@ -105,8 +105,8 @@ else{
                 }else{
                     //Check if need updating
                     for($i=0;$i<$row[10];$i++){
-                        $s_row=mysqli_fetch_row(mysqli_query($con,'select title,rejudged from problem where problem_id='.$prob_arr[$i].' limit 1'));
-                        if($s_row[1]){
+                        $s_row=mysqli_fetch_row(mysqli_query($con,'select title,rejudge_time from problem where problem_id='.$prob_arr[$i].' limit 1'));
+                        if(strtotime($s_row[1])>strtotime($row[12])){
                             update_cont_rank($cont_id);
                             header("Location: contestpage.php?contest_id=$cont_id");
                             exit(); 

@@ -167,9 +167,10 @@ if($op=='get_rank_table'){
         }
         if(mysqli_query($con,"DELETE from contest_status where user_id='$uid' and contest_id=$cont_id")){
             $row[1]--;
-            if(mysqli_query($con, "UPDATE contest set enroll_user=$row[1] where contest_id=$cont_id"))
+            if(mysqli_query($con, "UPDATE contest set enroll_user=$row[1] where contest_id=$cont_id")){
+                update_cont_rank($cont_id);
                 echo 'success';
-            else
+            }else
                 echo _('Something went wrong...');
         }
         else
