@@ -170,7 +170,7 @@ $Title=$inTitle .' - '. $oj_name;
                         </label>
                         <?php if(isset($_SESSION['user'])){?>
                             <div class="input-group">
-                                <input type="text" class="form-control" name="user_id" id="ipt_user_id" value="<?php echo $user_id?>">
+                                <input type="text" class="form-control" name="user_id" id="ipt_user_id">
                                 <span class="input-group-addon btn btn-default" id="filter_me" data-myuid="<?php echo $_SESSION['user'];?>"><?php echo _('Me');?></span>
                             </div>  
                         <?php }else{?>
@@ -331,7 +331,7 @@ $Title=$inTitle .' - '. $oj_name;
                 $('#slt_result>option[value=<?php echo $result?>]').prop('selected',true);
                 $('#slt_way>option[value="<?php echo $way?>"]').prop('selected',true);
                 $('#nav_record').parent().addClass('active');
-
+                $('#ipt_user_id').val(decodeURIComponent('<?php echo urlencode($user_id)?>'));
                 function toggle_s(obj){
                     if(obj.hasClass('fa-eye-slash')){
                         obj.removeClass('fa-eye-slash');

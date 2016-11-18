@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: CWOJ-1.0.Laverne\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2016-11-13 14:12+0800\n"
-"PO-Revision-Date: 2016-11-13 14:12+0800\n"
+"PO-Revision-Date: 2016-11-16 12:40+0800\n"
 "Last-Translator: Jimmy Zhang <info@cwoj.tk>\n"
 "Language-Team: CWOJ Team <info@cwoj.tk>\n"
 "Language: zh_CN\n"
@@ -1228,7 +1228,7 @@ msgstr "该题目不存在"
 
 #: editproblem.php:86
 msgid "Please enter problem title..."
-msgstr "请输入比赛标题..."
+msgstr "请输入题目标题..."
 
 #: editproblem.php:92
 msgid "Time Limit (ms)"
