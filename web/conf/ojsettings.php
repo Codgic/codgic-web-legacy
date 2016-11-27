@@ -8,8 +8,8 @@
 * 1.1 Temporary Location
 * ----------------
 * You'll need to define a temporary directory for CWOJ to store a temporary file named "cwoj_postmessage.lock"
-* This acts as the mutex lock, which is necessary for message board function.
-* Please ensure that php has the permission to RW in the directory you've defined.
+* This acts as the mutex lock, which is necessary for message board to work.
+* Please ensure that PHP has the permission to R/W in the directory you've defined.
 */
 static $temp_dir="/tmp/cwoj_postmessage.lock"; 
 

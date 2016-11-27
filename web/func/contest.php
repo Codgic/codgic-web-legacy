@@ -1,89 +1,27 @@
 <?php
-//Update contest rank status.
-function update_cont_rank($cont_id){
-require __DIR__.'/../conf/database.php';
+//Fetch contest problems.
+function get_cont_probs($cont_id){
+    require __DIR__.'/../conf/database.php';
 
-    //Obtain basic info.
-    $row=mysqli_fetch_row(mysqli_query($con,"select problems,num,start_time,end_time,judge_way from contest where contest_id=$cont_id"));
-    $prob_arr=unserialize($row[0]);
-    $cont_num=$row[1];
-    $cont_start=$row[2];
-    $cont_end=$row[3];
-    $cont_judgeway=$row[4];
-
-    //Update scores for each user.
-    $q=mysqli_query($con,"select user_id from contest_status where contest_id=$cont_id");
-    while($row=mysqli_fetch_row($q)){
-        $user_id=$row[0];
-        $tot_scores=0;
-        $tot_times=0;
-        for($i=0;$i<$cont_num;$i++){
-            //OI-like: Only recognize the first submit
-            if($cont_judgeway==3){
-                $s_row=mysqli_fetch_row(mysqli_query($con, "select score,result,in_date from solution where user_id='$user_id' and in_date>'".$cont_start."' and in_date<'".$cont_end."' and problem_id=".$prob_arr[$i].' order by in_date limit 1'));
-                //Process score
-                if(isset($s_row[0]))
-                    $score_arr["$prob_arr[$i]"]=$s_row[0];
-                else
-                    $score_arr["$prob_arr[$i]"]=0;
-                    $tot_scores+=$score_arr["$prob_arr[$i]"];
-                //Process result
-                if(isset($s_row[1]))
-                    $res_arr["$prob_arr[$i]"]=$s_row[1];
-                else
-                    $res_arr["$prob_arr[$i]"]=NULL;
-                 //Process time
-                if(isset($s_row[2]))
-                    $time_arr["$prob_arr[$i]"]=$s_row[2];
-                else
-                    $s_row[2]=0;
-                $tot_times+=$time_arr["$prob_arr[$i]"];
-            }else{
-                        $s_row=mysqli_fetch_row(mysqli_query($con,"select max(score),count(score),min(result),max(in_date) from solution where user_id='$user_id' and in_date>'".$cont_start."' and in_date<'".$cont_end."' and problem_id=".$prob_arr[$i]));
-                //Process scores
-                if(isset($s_row[0])){
-                    if($s_row[0]!=100&&$cont_judgeway==2) //ACM
-                        $s_row[0]=0;
-                           $score_arr["$prob_arr[$i]"]=$s_row[0];
-                    if($cont_judgeway==1&&$s_row[1]!=0){ //CWOJ
-                        $score_arr["$prob_arr[$i]"]-=5*($s_row[1]-1);
-                        if($score_arr["$prob_arr[$i]"]<0)
-                            $score_arr["$prob_arr[$i]"]=0;
-                    }
-                }else
-                    $score_arr["$prob_arr[$i]"]=0;
-                $tot_scores+=$score_arr["$prob_arr[$i]"];
-                //Process results
-                if(isset($s_row[2]))
-                    $res_arr["$prob_arr[$i]"]=$s_row[2];
-                else
-                    $res_arr["$prob_arr[$i]"]=NULL;
-                //Process times
-                if(isset($s_row[3])){
-                    if($s_row[0]==100)
-                        $time_arr["$prob_arr[$i]"]=strtotime($s_row[3])-strtotime($cont_start)+1200*($s_row[1]-1);
-                    else 
-                        $time_arr["$prob_arr[$i]"]=1200*$s_row[1];
-                }else
-                    $time_arr["$prob_arr[$i]"]=0;
-                    $tot_times+=$time_arr["$prob_arr[$i]"];
-            }
-        }
-        $scores=serialize($score_arr);
-        $results=serialize($res_arr);
-        $times=serialize($time_arr);
-        unset($score_arr);
-        unset($res_arr);
-        mysqli_query($con,"update contest_status set scores='$scores', results='$results', times='$times', tot_scores=$tot_scores, tot_times=$tot_times where contest_id=$cont_id and user_id='$user_id'");
+    $res=mysqli_query($con, "select problem_id from contest_problem where contest_id=$cont_id order by place");
+    $i=0;
+    while($row=mysqli_fetch_row($res)){
+        $prob_arr[$i]=$row[0];
+        $i++;
     }
-    
-    //Update user rank.
-    $q=mysqli_query($con,"select user_id,tot_scores,tot_times from contest_status where contest_id=$cont_id order by tot_scores desc,tot_times");
+    return $prob_arr;
+}
+
+//Update contest rank.
+function update_cont_rank($cont_id){
+    require __DIR__.'/../conf/database.php';
+
+    $res=mysqli_query($con,"select user_id,tot_score,tot_time from contest_status where contest_id=$cont_id order by tot_score desc,tot_time");
     $pre_score=-1;
     $pre_time=-1;
     $pre_rank=-1;
     $cnt=0;
-    while($row=mysqli_fetch_row($q)){
+    while($row=mysqli_fetch_row($res)){
         $user_id=$row[0];
         $cnt++;
         if($pre_score==$row[1] && $pre_time==$row[2]) 
@@ -93,11 +31,90 @@ require __DIR__.'/../conf/database.php';
         $pre_rank=$tmp;
         $pre_score=$row[1];
         $pre_time=$row[2];
-        mysqli_query($con, "update contest_status set rank=$tmp where user_id='$user_id' and contest_id=$cont_id");
+        if(!mysqli_query($con, "update contest_status set rank=$tmp where user_id='$user_id' and contest_id=$cont_id")){
+            //Log error_log.
+        }
     }
+}
+
+//Update contest score.
+function update_cont_scr($cont_id){
+    require __DIR__.'/../conf/database.php';
+
+    $row=mysqli_fetch_row(mysqli_query($con, "select start_time,end_time,judge_way from contest where contest_id=$cont_id limit 1"));
+    $cont_start=$row[0];
+    $cont_end=$row[1];
+    $cont_judgeway=$row[2];
+
+    //Obtain problems.
+    $prob_arr=get_cont_probs($cont_id);
     
-    //Update last_rank_time.
-    mysqli_query($con, "update contest set last_rank_time=NOW() where contest_id=$cont_id");
+    //Update scores for each user.
+    $res=mysqli_query($con,"select user_id,enroll_time,leave_time from contest_status where contest_id=$cont_id");
+    while($row=mysqli_fetch_row($res)){
+        $user_id=$row[0];
+        $tot_score=0;
+        $tot_time=0;
+        //Obtain time range.
+        $range_start=$cont_start;
+        $range_end=$cont_end;
+        if($cont_start<strtotime($row[1]))
+            $range_start=$row[1];
+        if($row[2]&&$cont_end>strtotime($row[2]))
+            $range_end=$row[2];
+
+        //As for every problem.
+        for($i=0;$i<sizeof($prob_arr);$i++){
+            $score=0;
+            $time=0;
+            $result=NULL;
+            if($cont_judgeway==3){ //OI-Like: Only recognize the first submit.
+                $s_row=mysqli_fetch_row(mysqli_query($con, "select score,result,in_date from solution where user_id='$user_id' and in_date>'".$range_start."' and in_date<'".$range_end."' and problem_id=".$prob_arr[$i].' order by in_date limit 1'));
+                //Process score.
+                if($s_row[0])
+                    $score=$s_row[0];
+                $tot_score+=$score;
+                //Process result.
+                if($s_row[1])
+                    $result=$s_row[1];
+                //Process time.
+                if(isset($s_row[2]))
+                    $time=strtotime($s_row[2])-strtotime($range_start);
+                $tot_time+=$time;
+            }else{  //Others: Select the highest score among eligible submits.
+                $s_row=mysqli_fetch_row(mysqli_query($con,"select MAX(score),COUNT(score),MIN(result),MAX(in_date) from solution where user_id='$user_id' and in_date>'".$range_start."' and in_date<'".$range_end."' and problem_id=".$prob_arr[$i]));
+                //Process score.
+                if($s_row[0]){
+                    if($cont_judgeway==2 && $s_row[0]==100) //ACM: if score != 100 then score = 0.
+                        $score=100;
+                    else if($cont_judgeway==1 && $s_row[1]!=0){ //CWOJ: Minus 5 points per non-AC submit.
+                        $score=$s_row[0]-5*($s_row[1]-1);
+                        if($score<0)
+                            $score=0;
+                    }else if($cont_judgeway==0) //Training: MAX(score).
+                        $score=$s_row[0];
+                }
+                $tot_score+=$score;
+                //Process result.
+                if($s_row[2])
+                    $result=$s_row[2];
+                //Process time.
+                if($s_row[3]){
+                    if($s_row[0]==100)
+                        $time=strtotime($s_row[3])-strtotime($range_start)+1200*($s_row[1]-1);
+                    else 
+                        $time=1200*$s_row[1];
+                }
+                $tot_time+=$time;
+            }
+            //Write into database.
+            mysqli_query($con, "INSERT into contest_detail (user_id,contest_id,problem_id,result,score,time) VALUES ('$user_id',$cont_id,".$prob_arr[$i].",$result,$score,$time) ON DUPLICATE KEY UPDATE result=$result,score=$score,time=$time");
+        }
+    }
+    //Update user rank.
+    update_cont_rank($cont_id);
+    //Update last_upd_time.
+    mysqli_query($con, "update contest set last_upd_time=NOW() where contest_id=$cont_id");
 }
 
 //Return description text of each type of contest.

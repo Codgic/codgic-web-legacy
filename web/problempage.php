@@ -10,40 +10,64 @@ require __DIR__.'/conf/database.php';
 $is_contest=false;
 if(isset($_GET['contest_id'])){
     //If in contest mode
+    $is_contest=true;
     $cont_id=intval($_GET['contest_id']);
     $inTitle=_('Contest')." #$cont_id";
-    $is_contest=true;
-    $query="select title,start_time,end_time,defunct,num,problems,owners from contest where contest_id=$cont_id";
+    $query="SELECT title,start_time,end_time,defunct,cnt.place from contest
+            LEFT JOIN (select place from contest_problem where contest_id=$cont_id order by place desc limit 1) as cnt on (1=1)
+            where contest_id=$cont_id";
     $result=mysqli_query($con,$query);
     $row_cont=mysqli_fetch_row($result);
     if(!$row_cont)
         $info=_('There\'s no such contest');
     else{
-        //Check if current user is contest owner.
-        $is_owner=false;
-        if(isset($_SESSION['user'])){
-            $owners_arr=unserialize($row_cont[6]);
-            if($owners_arr!=NULL && in_array($_SESSION['user'],$owners_arr))
-                $is_owner=true;
+        //Get contest status.
+        if(strtotime($row_cont[1])>time()){
+            //Contest has not started.
+            $cont_status=0;
+            //Check if current user is contest owner.
+            if(isset($_SESSION['user'])){
+                if(mysqli_num_rows(mysqli_query($con, "select 1 from contest_owner where contest_id=$cont_id and user_id='".$_SESSION['user']."' limit 1"))>0)
+                    $is_owner=true;
+                else
+                    $is_owner=false;
+            }
+            if(!$is_owner && time()<strtotime($row_cont[1])){
+                header("Location: contestpage.php?contest_id=$cont_id");
+                exit();
+            }
+        }else if(time()>strtotime($row_cont[2])){
+            $cont_status=2;
+        }else{
+            $cont_status=1;
+            $enrolled=false;
+            //Check if user has enrolled.
+            if(isset($_SESSION['user'])){
+                $t_row=mysqli_fetch_row(mysqli_query($con, "select 1, leave_time from contest_status where contest_id=$cont_id and user_id='".$_SESSION['user']."' limit 1"));
+                if(isset($t_row[0])){
+                    $enrolled=true;
+                    if(!is_null($t_row[1]))
+                        $user_quit=true;
+                }
+            }
+            if(!$enrolled){
+                header("Location: contestpage.php?contest_id=$cont_id");
+                exit();
+            }
+            $rem_time=strtotime($row_cont[2])-time();
         }
-        if(!$is_owner && time()<strtotime($row_cont[1])){
-            header("Location: contestpage.php?contest_id=$cont_id");
-            exit();
-        }
-        $rem_time=strtotime($row_cont[2])-time();
-        $prob_arr=unserialize($row_cont[5]);
-        $prob_num=0;
         if(isset($_GET['prob'])){
             $prob_num=intval($_GET['prob']);
-            if($prob_num<1||$prob_num>$row_cont[4]){
+            if($prob_num<1||$prob_num>$row_cont[4]+1){
                 header("Location: problempage.php?contest_id=".$cont_id);
                 exit();
-            }else 
-                $prob_id=$prob_arr[$prob_num-1];
-        }else{
-            $prob_id=$prob_arr[0];
+            }
+        }else
             $prob_num=1;
-        }
+        //Fetch current problem id.
+        $t_row=mysqli_fetch_row(mysqli_query($con, "select problem_id from contest_problem where contest_id=$cont_id and place=".($prob_num-1)." limit 1"));
+        $prob_id=$t_row[0];
+        unset($t_row);
     }
 }
 
@@ -64,27 +88,28 @@ $row_prob=mysqli_fetch_row($result);
 if(!$row_prob&&!isset($info))
     $info=_('There\'s no such problem');
 else if(!isset($info)){
-    switch($row_prob[13] >> 16){
-        case 0:
-            $comparison=_('Traditional');
-            break;
-        case 1:
-            $comparison=_('Real, precision: ').($row_prob[13] & 65535);
-            break;
-        case 2:
-            $comparison=_('Integer');
-            break;
-        case 3:
-            $comparison=_('Special Judge');
-            break;
-    }
-
+    //Check if user is forbidden to this problem.
     if($row_prob[11] && !check_priv(PRIV_PROBLEM))
         $forbidden=true;
     else if($row_prob[12] & PROB_IS_HIDE && !check_priv(PRIV_INSIDER))
         $forbidden=true;
     else{
         $forbidden=false;
+        //Get comparsion method.
+        switch($row_prob[13] >> 16){
+            case 0:
+                $comparison=_('Traditional');
+                break;
+            case 1:
+                $comparison=_('Real, precision: ').($row_prob[13] & 65535);
+                break;
+            case 2:
+                $comparison=_('Integer');
+                break;
+            case 3:
+                $comparison=_('Special Judge');
+                break;
+        }
         //Update last visited records.
         if(!isset($_SESSION['view'])){
             if($is_contest)
@@ -216,7 +241,7 @@ $Title=$inTitle .' - '. $oj_name;
                                         else 
                                             $addt='';
                                         echo '<a href="problempage.php?contest_id=',$cont_id,'&prob=',($prob_num-1),'" class="btn btn-default ',$addt,'"><i class="fa fa-fw fa-angle-left"></i> <span class="nav-text-alt">',_('Previous'),'</span></a>';
-                                        if($prob_num>$row_cont[4]-1)
+                                        if($prob_num>$row_cont[4])
                                             $addt='disabled';
                                         else
                                             $addt='';
@@ -302,15 +327,19 @@ $Title=$inTitle .' - '. $oj_name;
                                         <div class="panel-body">
                                             <h2 class="text-center">
                                                 <?php
-                                                    if($rem_time<0) 
+                                                    if($cont_status==0){
+                                                        echo _('Contest hasn\'t started');
+                                                    }else if($cont_status==2) 
                                                         echo _('Contest has ended');
+                                                    else if(isset($user_quit))
+                                                        echo _('You have left');
                                                     else
                                                         echo '<span id="cont_st">','<span id="thour">--</span>:<span id="tmin">--</span>:<span id="tsec">--</span></span>';
                                                 ?>
                                             </h2>
                                             <div class="text-center">
                                                 <?php
-                                                    echo _('Problem: '),$prob_num,' / ',$row_cont[4];
+                                                    echo _('Problem: '),$prob_num,' / ',($row_cont[4]+1);
                                                 ?>
                                             </div>
                                         </div>
@@ -526,7 +555,7 @@ $Title=$inTitle .' - '. $oj_name;
         ?>
         <script type="text/javascript">
             var prob=<?php echo $prob_id?>;
-            <?php if($is_contest==true&&$rem_time>0){?> 
+            <?php if($is_contest==true && $cont_status==1 && !isset($user_quit)){?> 
                 var t=new Date(<?php echo strtotime($row_cont[2])*1000?>);
                 var EndTime=t.getTime();
                 var t1=new Date(),t2=new Date(<?php echo time()*1000?>);
@@ -646,11 +675,9 @@ $Title=$inTitle .' - '. $oj_name;
                         url:"api/ajax_editproblem.php",
                         data:{op:'del',problem_id:prob},
                         success:function(msg){
-                                                    if (msg.success)
-                                                    {
-                                location.reload();
-                                                    }
-                                                    else{
+                            if(msg.success){
+                                window.location.reload();
+                            }else{
                                 $('#alert_error').html('<i class="fa fa-fw fa-remove"></i> '+msg.message).fadeIn();
                                 setTimeout(function(){$('#alert_error').fadeOut();},2000);
                             }

@@ -21,13 +21,13 @@ else if(!isset($_SESSION['admin_tfa']) || !$_SESSION['admin_tfa']){
         $p_type='edit';
         $cont_id=intval($_GET['contest_id']);  
         $inTitle=_('Edit Contest')." #$cont_id";
-        $query="select title,start_time,end_time,problems,owners,description,source,judge_way,has_tex from contest where contest_id=$cont_id";
+        $query="select title,start_time,end_time,description,source,judge_way,has_tex from contest where contest_id=$cont_id";
         $result=mysqli_query($con,$query);
         $row=mysqli_fetch_row($result);
         if(!$row)
             $info=_('There\'s no such contest');
         else{ 
-            switch ($row[7]) {
+            switch ($row[5]) {
                 case 0:
                     $way='train';
                     break;
@@ -42,8 +42,8 @@ else if(!isset($_SESSION['admin_tfa']) || !$_SESSION['admin_tfa']){
                     break;
             }
         }
-        $option_level=($row[8]&PROB_LEVEL_MASK)>>PROB_LEVEL_SHIFT;
-        $option_hide=(($row[8]&PROB_IS_HIDE)?'checked':'');
+        $option_level=($row[6]&PROB_LEVEL_MASK)>>PROB_LEVEL_SHIFT;
+        $option_hide=(($row[6]&PROB_IS_HIDE)?'checked':'');
     }
 
     $Title=$inTitle .' - '. $oj_name;
@@ -86,7 +86,17 @@ else if(!isset($_SESSION['admin_tfa']) || !$_SESSION['admin_tfa']){
                             <label class="control-label" for="input_probs">
                                 <?php echo _('Problems'),_(' (Format: 1000,1001,...)')?>
                             </label>
-                            <input type="text" class="form-control" name="problems" id="input_probs" placeholder="<?php echo _('Please specify Problem IDs...')?>" value="<?php if($p_type=='edit'){ $prob_arr=unserialize($row[3]);echo implode(',', $prob_arr);}?>">
+                            <?php
+                                echo '<input type="text" class="form-control" name="problems" id="input_probs" placeholder="',_('Please specify Problem IDs...'),'"';
+                                if($p_type=='edit'){
+                                    $text='';
+                                    $t=mysqli_query($con, "select problem_id from contest_problem where contest_id=$cont_id");
+                                    while($t_row=mysqli_fetch_row($t))
+                                        $text.=$t_row[0].',';
+                                    echo ' value="',substr($text,0,-1),'"';
+                                }
+                                echo '>';
+                            ?>
                         </div>
                     </div>
                     <div class="row">
@@ -94,7 +104,19 @@ else if(!isset($_SESSION['admin_tfa']) || !$_SESSION['admin_tfa']){
                             <label class="control-label" for="input_owners">
                                 <?php echo _('Owners'),_(' (Format: user1,user2,...)')?>
                             </label>
-                            <input type="text" class="form-control" name="owners" id="input_owners" placeholder="<?php echo _('Please specify User IDs...')?>" value="<?php if($p_type=='edit'){ if($row[4]!=NULL){$owner_arr=unserialize($row[4]);echo implode(',', $owner_arr);}}else{if(isset($_SESSION['user'])) echo $_SESSION['user'];}?>">
+                            <?php
+                                echo '<input type="text" class="form-control" name="owners" id="input_owners" placeholder="',_('Please specify User IDs...'),'"';
+                                if($p_type=='edit'){
+                                    $text='';
+                                    $t=mysqli_query($con, "select user_id from contest_owner where contest_id=$cont_id");
+                                    while($t_row=mysqli_fetch_row($t))
+                                        $text.=$t_row[0].',';
+                                    echo ' value="',substr($text,0,-1),'"';
+                                }else{
+                                    echo ' value="',$_SESSION['user'],'"';
+                                }
+                                echo '>';
+                            ?>
                             <span class="help-block"><?php echo _('Contest owners can view contest status without the need of enrollment. Leave it blank if you don\'t want any owners.')?></span>
                         </div>
                     </div>
@@ -169,15 +191,15 @@ else if(!isset($_SESSION['admin_tfa']) || !$_SESSION['admin_tfa']){
                             <label class="control-label" for="input_des">
                                 <?php echo _('Description')?>
                             </label>
-                            <textarea class="form-control col-xs-12" name="description" id="input_des" rows="13" placeholder="<?php echo _('Please create a description for your contest...')?>"><?php if($p_type=='edit') echo htmlspecialchars($row[5])?></textarea>
+                            <textarea class="form-control col-xs-12" name="description" id="input_des" rows="13" placeholder="<?php echo _('Please create a description for your contest...')?>"><?php if($p_type=='edit') echo htmlspecialchars($row[3])?></textarea>
                         </div>
                     </div>       
                     <div class="row">
                         <div class="form-group col-xs-12 col-sm-9">
-                            <label <label class="control-label" for="input_tags">
+                            <label class="control-label" for="input_tags">
                                 <?php echo _('Tags')?>
                             </label>
-                            <input class="form-control col-xs-12" type="text" name="source" id="input_tags" placeholder="<?php echo _('Please specify some tags for your contest...')?>" value="<?php if($p_type=='edit') echo htmlspecialchars($row[6])?>">
+                            <input class="form-control col-xs-12" type="text" name="source" id="input_tags" placeholder="<?php echo _('Please specify some tags for your contest...')?>" value="<?php if($p_type=='edit') echo htmlspecialchars($row[4])?>">
                         </div>
                     </div>
                     <div class="row">

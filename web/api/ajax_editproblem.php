@@ -132,7 +132,7 @@ if($_POST['op']=='del'){
         $result=mysqli_query($con,'select max(problem_id) from problem');
         if(($row=mysqli_fetch_row($result)) && intval($row[0]))
             $id=intval($row[0])+1;
-        $result=mysqli_query($con,"insert into problem (problem_id,title,description,input,output,sample_input,sample_output,hint,source,in_date,memory_limit,case_time_limit,case_score,has_tex,compare_way,rejudge_time) values ($id,'$title','$des','$input','$output','$samp_in','$samp_out','$hint','$source',NOW(),$memory,$time,$score,$has_tex,$compare_way,'1970-01-01 00:00:00')");
+        $result=mysqli_query($con,"insert into problem (problem_id,title,description,input,output,sample_input,sample_output,hint,source,in_date,memory_limit,case_time_limit,case_score,has_tex,compare_way) values ($id,'$title','$des','$input','$output','$samp_in','$samp_out','$hint','$source',NOW(),$memory,$time,$score,$has_tex,$compare_way)");
     }else{
         echo json_encode(array('success' => false, 'message' => _('Invalid Argument...')));
         exit();

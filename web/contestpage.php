@@ -18,10 +18,10 @@ else if(isset($_SESSION['view'])){
     $cont_id=1000;
 if(isset($_SESSION['user'])){
     $user_id=$_SESSION['user'];
-    $query="select title,start_time,end_time,problems,owners,description,source,has_tex,defunct,judge_way,num,enroll_user,last_rank_time,res.scores,res.results,res.rank,res.times from contest
-    LEFT JOIN (select scores,results,rank,times from contest_status where user_id='$user_id' and contest_id=$cont_id limit 1) as res on (1=1)
+    $query="select title,start_time,end_time,description,source,has_tex,defunct,judge_way,enroll_user,last_upd_time,need_update,contest_status.tot_score, contest_status.tot_time, contest_status.rank, contest_status.leave_time from contest
+    LEFT JOIN (select tot_score, tot_time, rank, leave_time from contest_status where user_id='$user_id' and contest_id=$cont_id limit 1) as contest_status on (1=1)
     where contest_id=$cont_id";
-    //Check if contest is marked
+    //Check if contest is marked: to be rewritten.
     $result=mysqli_query($con,"SELECT contest_id FROM saved_contest where user_id='$user_id' and contest_id=$cont_id");
     $mark_flag=mysqli_fetch_row($result);
     if(!($mark_flag)){
@@ -34,34 +34,40 @@ if(isset($_SESSION['user'])){
         $mark_btn_html=_('Unmark');
     }
 }else
-    $query="select title,start_time,end_time,problems,owners,description,source,has_tex,defunct,judge_way,num,enroll_user,last_rank_time from contest
+    $query="select title,start_time,end_time,description,source,has_tex,defunct,judge_way,enroll_user,last_upd_time,need_update from contest
     where contest_id=$cont_id";
 $result=mysqli_query($con,$query);
 $row=mysqli_fetch_row($result);
 if(!$row)
     $info=_('There\'s no such contest');
 else{
-    switch ($row[9]) {
-        case 0:
-            $judge_way=_('Training');
-            break;
-        case 1:
-            $judge_way=_('CWOJ');
-            break;
-        case 2:
-            $judge_way=_('ACM-like');
-            break;
-        case 3:
-            $judge_way=_('OI-like');
-            break;
-    }
-
-    if($row[8] && !check_priv(PRIV_PROBLEM))
+    //Check if user is forbidden from this contest.
+    if($row[6] && !check_priv(PRIV_PROBLEM))
         $forbidden=true;
-    else if($row[7]&PROB_IS_HIDE && !check_priv(PRIV_INSIDER))
+    else if($row[5]&PROB_IS_HIDE && !check_priv(PRIV_INSIDER))
         $forbidden=true;
     else{
         $forbidden=false;
+        //Check if need updating.
+        if($row[10])
+            update_cont_scr($cont_id);
+        //Get contest type.
+        switch($row[7]){
+            case 0:
+                $judge_way=_('Training');
+                break;
+            case 1:
+                $judge_way=_('CWOJ');
+                break;
+            case 2:
+                $judge_way=_('ACM-like');
+                break;
+            case 3:
+                $judge_way=_('OI-like');
+                break;
+        }
+        //Get contest level.
+        $cont_level=($row[5]&PROB_LEVEL_MASK)>>PROB_LEVEL_SHIFT;
         //Update last visited records.
         if(!isset($_SESSION['view']))
             $view_arr=array('cont'=>$cont_id,'prob'=>1000,'wiki'=>1);
@@ -71,119 +77,47 @@ else{
         }
         $_SESSION['view']=serialize($view_arr);
         
-        $prob_arr=unserialize($row[3]);
-        $owners_arr=unserialize($row[4]);
-        $tot_scores=0;
-        $tot_times=0;
-        //Check if current user is contest owner.
-        $is_owner=false;
-        if(isset($_SESSION['user']))
-            if($owners_arr!=NULL&&in_array($_SESSION['user'],$owners_arr))
+        //Check if current user is contest owner
+        if(isset($_SESSION['user'])){
+            if(mysqli_num_rows(mysqli_query($con, "select 1 from contest_owner where contest_id=$cont_id and user_id='".$_SESSION['user']."' limit 1"))>0)
                 $is_owner=true;
+            else
+                $is_owner=false;
+        }
         if(strtotime($row[1])>time()){
-            //Contest hasn't started
+            //Contest has not started.
             $s_info = '<tr><td colspan="2" class="label-re text-center"><i class="fa fa-fw fa-car"></i> '._('Contest hasn\'t started').'</td></tr>';
             $cont_status=0;
             if($is_owner){
-                for($i=0;$i<$row[10];$i++){
-                    $s_row=mysqli_fetch_row(mysqli_query($con,'select title from problem where problem_id='.$prob_arr[$i].' limit 1'));
-                    //Initialize arrays.
-                    $pname_arr[$i]=$s_row[0];
-                    $res_arr["$prob_arr[$i]"]=NULL;
-                }
+                $res=mysqli_query($con, "SELECT contest_problem.problem_id, contest_problem.place, problem.title from contest_problem
+                                         LEFT JOIN (select title, problem_id from problem) as problem on (contest_problem.problem_id = problem.problem_id)
+                                         where contest_id=$cont_id order by place");
             }
+        }else if(time()>strtotime($row[2])){
+            //Contest has ended.
+             $s_info = '<tr><td colspan="2" class="label-wa text-center"><i class="fa fa-fw fa-ambulance"></i> '._('Contest has ended').'</td></tr>';
+            $cont_status=2;
         }else{
-            if(time()>strtotime($row[2])){
-                //Contest has ended
-                $s_info = '<tr><td colspan="2" class="label-wa text-center"><i class="fa fa-fw fa-ambulance"></i> '._('Contest has ended').'</td></tr>';
-                $cont_status=2;
-                if($row[12]==NULL){
-                    //Contest needs updating
-                    update_cont_rank($cont_id);
-                    header("Location: contestpage.php?contest_id=$cont_id");
-                    exit();
-                }else{
-                    //Check if need updating
-                    for($i=0;$i<$row[10];$i++){
-                        $s_row=mysqli_fetch_row(mysqli_query($con,'select title,rejudge_time from problem where problem_id='.$prob_arr[$i].' limit 1'));
-                        if(strtotime($s_row[1])>strtotime($row[12])){
-                            update_cont_rank($cont_id);
-                            header("Location: contestpage.php?contest_id=$cont_id");
-                            exit(); 
-                        }
-                        //Initialize arrays.
-                        $pname_arr[$i]=$s_row[0];
-                        $score_arr["$prob_arr[$i]"]=0;
-                        $res_arr["$prob_arr[$i]"]=NULL;
-                        $time_arr["$prob_arr[$i]"]=0;
-                    }
-                }
-                //Get scores from database directly.
-                if(isset($row[13])){
-                    $score_arr=unserialize($row[13]);
-                    $res_arr=unserialize($row[14]);
-                    $time_arr=unserialize($row[15]);
-                    $tot_scores=array_sum($score_arr);
-                    $tot_times=array_sum($time_arr);
-                }
-            }else{
-                //Contest in progress: live data
+            if(isset($row[14]) && !is_null($row[14])){
+                //User unenrolled before contest ends.
+                $s_info = '<tr><td colspan="2" class="label-wa text-center"><i class="fa fa-fw fa-ambulance"></i> '._('You have left').'</td></tr>';
+                $user_quit = true;
+            }else
+                //Contest is in progress.
                 $s_info = '<tr><td colspan="2" class="label-ac text-center"><i class="fa fa-fw fa-cog fa-spin"></i> '._('Contest in progress').'</td></tr>';
                 $cont_status=1;
-                if(isset($row[13])||$is_owner){
-                    for($i=0;$i<$row[10];$i++){
-                        $s_row=mysqli_fetch_row(mysqli_query($con,'select title from problem where problem_id='.$prob_arr[$i].' limit 1'));
-                        $pname_arr[$i]=$s_row[0];
-                        if($row[9]==3){ 
-                            //For judge ways that only recognize the first submit
-                            $s_row=mysqli_fetch_row(mysqli_query($con, "select score,result,in_date from solution where user_id='$user_id' and in_date>'".$row[1]."' and in_date<'".$row[2]."' and problem_id=".$prob_arr[$i].' order by in_date limit 1'));
-                            //Process score
-                            if(!isset($s_row[0]))
-                                $s_row[0]=0;
-                            $score_arr["$prob_arr[$i]"]=$s_row[0];
-                            $tot_scores+=$score_arr["$prob_arr[$i]"];
-                            //Process result
-                            if(!isset($s_row[1]))
-                                $s_row[1]=NULL;
-                            $res_arr["$prob_arr[$i]"]=$s_row[1];
-                            //Process time
-                            if(!isset($s_row[2]))
-                                $s_row[2]=0;
-                            $time_arr["$prob_arr[$i]"]=$s_row[2];
-                            $tot_times+=$time_arr["$prob_arr[$i]"];
-                        }else{
-                            //For judge ways that recognize max scores
-                            $s_row=mysqli_fetch_row(mysqli_query($con,"select max(score),count(score),min(result),max(in_date) from solution where user_id='$user_id' and in_date>'".$row[1]."' and in_date<'".$row[2]."' and problem_id=".$prob_arr[$i]));
-                            //Process scores
-                            if(!isset($s_row[0]))
-                                $s_row[0]=0;
-                            if($s_row[0]!=100&&$row[9]==2)
-                                $s_row[0]=0;
-                            $score_arr["$prob_arr[$i]"]=$s_row[0];
-                            if($row[9]==1&&$s_row[1]!=0){
-                                $score_arr["$prob_arr[$i]"]-=5*($s_row[1]-1);
-                                if($score_arr["$prob_arr[$i]"]<0)
-                                    $score_arr["$prob_arr[$i]"]=0;
-                            }
-                            $tot_scores+=$score_arr["$prob_arr[$i]"];
-                            //Process results
-                            if(!isset($s_row[2])) 
-                                $s_row[2]=NULL;
-                            $res_arr["$prob_arr[$i]"]=$s_row[2];
-                            //Process times
-                            if(!isset($s_row[3]))
-                                $s_row[3]=0;
-                            if($s_row[0]==100)
-                                $time_arr["$prob_arr[$i]"]=strtotime($s_row[3])-strtotime($row[1])+1200*($s_row[1]-1);
-                            else 
-                                $time_arr["$prob_arr[$i]"]=1200*$s_row[1];
-                                $tot_times+=$time_arr["$prob_arr[$i]"];
-                        }
-                    }
-                }
-            }
         }
-        $cont_level=($row[7]&PROB_LEVEL_MASK)>>PROB_LEVEL_SHIFT;
+        //If user has joined this contest.
+        if(isset($row[13])){
+            $res=mysqli_query($con, "SELECT contest_problem.problem_id, contest_problem.place, problem.title, contest_detail.result, contest_detail.score, contest_detail.time from contest_problem
+                                     LEFT JOIN (select title, problem_id from problem) as problem on (contest_problem.problem_id = problem.problem_id)
+                                     LEFT JOIN (select problem_id, result, score, time from contest_detail where user_id='".$_SESSION['user']."' and contest_id='$cont_id') as contest_detail on (contest_detail.problem_id = contest_problem.problem_id)
+                                     where contest_id=$cont_id order by place");
+        }else{
+            $res=mysqli_query($con, "SELECT contest_problem.problem_id, contest_problem.place, problem.title from contest_problem
+                                     LEFT JOIN (select title, problem_id from problem) as problem on (contest_problem.problem_id = problem.problem_id)
+                                     where contest_id=$cont_id order by place");
+        }
     }
     if($forbidden)
         $info=_('Looks like you can\'t access this page');
@@ -198,7 +132,7 @@ $Title=$inTitle .' - '. $oj_name;
     <link rel="stylesheet" href="/assets/css/prism.css"> 
     <body>
         <?php
-            if($row[7]&PROB_HAS_TEX)
+            if($row[5]&PROB_HAS_TEX)
                 require __DIR__.'/conf/mathjax.php';
             require __DIR__.'/inc/navbar.php';
         ?>
@@ -221,7 +155,7 @@ $Title=$inTitle .' - '. $oj_name;
                 <div class="row">
                     <div class="col-xs-12 col-sm-9" id="leftside" style="font-size:16px">
                         <div class="text-center">
-                            <h2><?php echo '#'.$cont_id,' ',$row[0];if($row[8]) echo ' <span style="vertical-align:middle;font-size:12px" class="label label-danger">',_('Deleted'),'</span>';?></h2>
+                            <h2><?php echo '#'.$cont_id,' ',$row[0];if($row[6]) echo ' <span style="vertical-align:middle;font-size:12px" class="label label-danger">',_('Deleted'),'</span>';?></h2>
                         </div>
                         <br>
                         <div class="panel panel-default">
@@ -229,7 +163,7 @@ $Title=$inTitle .' - '. $oj_name;
                                 <h5 class="panel-title"><?php echo _('Description')?></h5>
                             </div>
                             <div class="panel-body">
-                                <?php echo mb_ereg_replace('\r?\n','<br>',$row[5]);?>
+                                <?php echo mb_ereg_replace('\r?\n','<br>',$row[3]);?>
                             </div>
                         </div>
                         <div class="panel panel-default">
@@ -244,18 +178,18 @@ $Title=$inTitle .' - '. $oj_name;
                                 }else{?>
                                     <ul class="list-group">
                                         <?php 
-                                            for($i=0;$i<$row[10];$i++){
-                                                echo '<li class="list-group-item"><i class=', is_null($res_arr["$prob_arr[$i]"]) ? '"fa fa-fw fa-lg fa-question" style="color:grey"' : ($res_arr["$prob_arr[$i]"] ? '"fa fa-fw fa-lg fa-remove" style="color:red"' : '"fa fa-fw fa-lg fa-check" style="color:green"'), '></i>';
-                                                echo ' <a href="problempage.php?contest_id='.$cont_id.'&prob='.($i+1).'">#'.$prob_arr[$i].' - '.$pname_arr[$i].'</a>';
-                                                if(isset($row[13])){
+                                            while($s_row=mysqli_fetch_row($res)){
+                                                echo '<li class="list-group-item"><i class=', (!isset($s_row[3]) || is_null($s_row[3])) ? '"fa fa-fw fa-lg fa-question" style="color:grey"' : ($s_row[3] ? '"fa fa-fw fa-lg fa-remove" style="color:red"' : '"fa fa-fw fa-lg fa-check" style="color:green"'), '></i>';
+                                                echo ' <a href="problempage.php?contest_id='.$cont_id.'&prob='.($s_row[1]+1).'">#'.$s_row[0].' - '.$s_row[2].'</a>';
+                                                if(isset($row[11])){
                                                     echo '<span class="pull-right">';
                                                     if($row[9]==2){
-                                                        if($score_arr["$prob_arr[$i]"]==100)
+                                                        if($s_row[3])
                                                             echo '<font color="green">',_('Accepted'),'</font>';
                                                         else
                                                             echo '<font color="red">',_('Not Accepted'),'</font>';
                                                     }else
-                                                        echo $score_arr["$prob_arr[$i]"];
+                                                        echo $s_row[4];
                                                     echo '</span></li>';
                                                 }
                                             }
@@ -268,7 +202,7 @@ $Title=$inTitle .' - '. $oj_name;
                                 <h5 class="panel-title"><?php echo $judge_way?></h5>
                             </div>
                             <div class="panel-body">
-                                <?php echo get_judgeway_destext($row[9])?>
+                                <?php echo get_judgeway_destext($row[7])?>
                             </div>
                         </div>
                         <div class="panel panel-default">
@@ -276,7 +210,7 @@ $Title=$inTitle .' - '. $oj_name;
                                 <h5 class="panel-title"><?php echo _('Tags')?></h5>
                             </div>
                             <div class="panel-body">
-                                <?php echo mb_ereg_replace('\r?\n','<br>',$row[6]);?>
+                                <?php echo mb_ereg_replace('\r?\n','<br>',$row[4]);?>
                             </div>
                         </div>
                         <div class="panel panel-default">
@@ -320,13 +254,13 @@ $Title=$inTitle .' - '. $oj_name;
                                             <tbody>
                                                 <?php echo $s_info;?>
                                                 <?php if(isset($_SESSION['user'])&&isset($row[13])){?>
-                                                    <tr><td style="text-align:left"><?php echo _('Your Score')?></td><td><?php echo $tot_scores?></td></tr>
-                                                    <tr><td style="text-align:left"><?php echo _('Time Penalty')?></td><td><?php echo get_time_text($tot_times)?></td></tr>
+                                                    <tr><td style="text-align:left"><?php echo _('Your Score')?></td><td><?php echo $row[11]?></td></tr>
+                                                    <tr><td style="text-align:left"><?php echo _('Time Penalty')?></td><td><?php echo get_time_text($row[12])?></td></tr>
                                                     <?php if($cont_status==2){?>
-                                                        <tr><td style="text-align:left"><?php echo _('Your Rank')?></td><td><?php echo $row[15]?></td></tr>
+                                                        <tr><td style="text-align:left"><?php echo _('Your Rank')?></td><td><?php echo $row[13]?></td></tr>
                                                     <?php }
                                                 }?>
-                                                <tr><td style="text-align:left"><?php echo _('Competitors')?></td><td><?php echo $row[11]?></td></tr>
+                                                <tr><td style="text-align:left"><?php echo _('Competitors')?></td><td><?php echo $row[8]?></td></tr>
                                             </tbody>
                                         </table>
                                     </div>
@@ -337,7 +271,7 @@ $Title=$inTitle .' - '. $oj_name;
                             <div class="col-xs-12 text-center">
                                 <div id="function" class="panel panel-default problem-operation" style="margin-top:10px">
                                     <div class="panel-body">
-                                        <a href="#" title="Alt+S" class="btn btn-primary shortcut-hint" id="btn_submit"><?php if(!isset($row[13])) echo _('Enroll'); else echo _('Leave')?></a>
+                                        <a href="#" title="Alt+S" class="btn btn-primary shortcut-hint" id="btn_submit"><?php if(!isset($row[13]) || isset($user_quit)) echo _('Enroll'); else echo _('Leave')?></a>
                                         <a href="#" class="btn btn-success" id="btn_rank"><?php echo _('Rankings')?></a>
                                     </div>
                                 </div>
@@ -349,7 +283,7 @@ $Title=$inTitle .' - '. $oj_name;
                                     <div class="panel panel-default problem-operation" style="margin-top:10px">
                                         <div class="panel-body">
                                             <a href="editcontest.php?contest_id=<?php echo $cont_id?>" class="btn btn-primary"><?php echo _('Edit')?></a>
-                                            <span id="action_delete" class="btn btn-danger"><?php echo $row[8] ? _('Recover') : _('Delete');?></span>
+                                            <span id="action_delete" class="btn btn-danger"><?php echo $row[6] ? _('Recover') : _('Delete');?></span>
                                         </div>
                                     </div>
                                 </div>
@@ -388,21 +322,24 @@ $Title=$inTitle .' - '. $oj_name;
                 <?php }else if($cont_status==2){?>
                     $('#alert_error').html('<i class="fa fa-fw fa-remove"></i> <?php echo _('Contest has ended...')?>').fadeIn();
                     setTimeout(function(){$('#alert_error').fadeOut();},2000);
+                <?php }else if(isset($user_quit)){?>
+                    $('#alert_error').html('<i class="fa fa-fw fa-remove"></i> <?php echo _('You have left the contest...')?>').fadeIn();
+                    setTimeout(function(){$('#alert_error').fadeOut();},2000);
                 <?php }else if(!isset($row[13])){?>
                     $.post('api/ajax_contest.php', {op:'enroll',contest_id:cont}, function(msg){
-                        if(/success/.test(msg)){
+                        if(msg.success){
                             window.location.href='problempage.php?contest_id='+cont;
                         }else{
-                            $('#alert_error').html('<i class="fa fa-fw fa-remove"></i> '+msg).fadeIn();
+                            $('#alert_error').html('<i class="fa fa-fw fa-remove"></i> '+msg.message).fadeIn();
                             setTimeout(function(){$('#alert_error').fadeOut();},2000);
                         }
                     });
                 <?php }else{?>
                     $.post('api/ajax_contest.php', {op:'leave',contest_id:cont}, function(msg){
-                        if(/success/.test(msg)){
+                        if(msg.success){
                             window.location.reload();
                         }else{
-                            $('#alert_error').html('<i class="fa fa-fw fa-remove"></i> '+msg).fadeIn();
+                            $('#alert_error').html('<i class="fa fa-fw fa-remove"></i> '+msg.message).fadeIn();
                             setTimeout(function(){$('#alert_error').fadeOut();},2000);
                         }
                     });
@@ -419,7 +356,7 @@ $Title=$inTitle .' - '. $oj_name;
                         data:{op:'del',contest_id:cont},
                         success:function(msg){
                             if(msg.success)
-                                location.reload();
+                                window.location.reload();
                             else{
                                 $('#alert_error').html('<i class="fa fa-fw fa-remove"></i> '+msg.message).fadeIn();
                                 setTimeout(function(){$('#alert_error').fadeOut();},2000);

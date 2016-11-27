@@ -27,12 +27,12 @@ if(isset($_GET['level'])){
     $range="limit ".(($page_id-1)*100).",100";
     if(isset($_SESSION['user'])){
         $user_id=$_SESSION['user'];
-        $result=mysqli_query($con,"SELECT contest_id,title,start_time,end_time,defunct,num,source,has_tex,joined.res,saved.cid from contest
+        $result=mysqli_query($con,"SELECT contest_id,title,start_time,end_time,defunct,source,joined.res,saved.cid from contest
         LEFT JOIN (select contest_id as cid,1 as res from contest_status where user_id='$user_id' group by contest_id) as joined on(joined.cid=contest_id) 
         left join (select contest_id as cid from saved_contest where user_id='$user_id') as saved on (saved.cid=contest_id) 
         where $addt_cond order by contest_id desc $range");
     }else{
-        $result=mysqli_query($con,"select contest_id,title,start_time,end_time,defunct,num,source from contest
+        $result=mysqli_query($con,"select contest_id,title,start_time,end_time,defunct,source from contest
         where $addt_cond order by contest_id desc $range");
     }
     if(mysqli_num_rows($result)==0) $info=_('There\'s no contest of this level');
@@ -71,13 +71,13 @@ if(isset($_GET['level'])){
     $range="between $page_id"."00 and $page_id".'99';
     if(isset($_SESSION['user'])){
         $user_id=$_SESSION['user'];
-        $result=mysqli_query($con,"SELECT contest_id,title,start_time,end_time,defunct,num,source,has_tex,joined.res,saved.cid from contest 
+        $result=mysqli_query($con,"SELECT contest_id,title,start_time,end_time,defunct,source,joined.res,saved.cid from contest 
         LEFT JOIN (select contest_id as cid,1 as res from contest_status 
         where user_id='$user_id' group by contest_id) as joined on (joined.cid=contest_id) 
         left join (select contest_id as cid from saved_contest where user_id='$user_id') as saved on(saved.cid=contest_id) 
         where contest_id $range $addt_cond order by contest_id desc");
     }else{
-        $result=mysqli_query($con,"select contest_id,title,start_time,end_time,defunct,num,source from contest where contest_id $range $addt_cond order by contest_id desc");
+        $result=mysqli_query($con,"select contest_id,title,start_time,end_time,defunct,source from contest where contest_id $range $addt_cond order by contest_id desc");
     }
 }
 
@@ -163,7 +163,7 @@ $Title=$inTitle .' - '. $oj_name;
                                     echo '<tr>';
                                     echo '<td>',$row[0],'</td>';
                                     if(isset($_SESSION['user'])){
-                                        echo '<td><i class=', is_null($row[8]) ? '"fa fa-fw fa-remove fa-2x" style="visibility:hidden"' : '"fa fa-fw fa-2x fa-paper-plane" style="color:steelblue"', '></i>', '</td>';
+                                        echo '<td><i class=', is_null($row[6]) ? '"fa fa-fw fa-remove fa-2x" style="visibility:hidden"' : '"fa fa-fw fa-2x fa-paper-plane" style="color:steelblue"', '></i>', '</td>';
                                         echo '<td style="text-align:left;border-left:0;">';
                                     }else
                                         echo '<td style="text-align:left">';
@@ -172,10 +172,10 @@ $Title=$inTitle .' - '. $oj_name;
                                         echo '&nbsp;&nbsp;<span class="label label-danger">',_('Deleted'),'</span>';
                                     echo '</a>';
                                     if(isset($_SESSION['user']))
-                                        echo '<td style="border-left:0;"><i data-pid="',$row[0],'" class="', is_null($row[9]) ? 'fa fa-star-o' : 'fa fa-star', ' fa-fw fa-2x text-warning save_problem" style="cursor:pointer;"></i></td>';
+                                        echo '<td style="border-left:0;"><i data-pid="',$row[0],'" class="', is_null($row[7]) ? 'fa fa-star-o' : 'fa fa-star', ' fa-fw fa-2x text-warning save_problem" style="cursor:pointer;"></i></td>';
                                     echo'</td><td class="hidden-xs hidden-sm">',$row[2],'</a></td>';
                                     echo '<td>',$cont_status,'</td>';
-                                    echo '<td class="hidden-xs" style="text-align:left">',$row[6],"</td></tr>\n";
+                                    echo '<td class="hidden-xs" style="text-align:left">',$row[5],"</td></tr>\n";
                                 }
                             ?>
                             </tbody>

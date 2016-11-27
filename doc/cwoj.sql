@@ -1,3 +1,9 @@
+-- phpMyAdmin SQL Dump
+-- version 4.6.4deb1
+-- https://www.phpmyadmin.net/
+--
+-- Generation Time: Nov 27, 2016 at 10:48 PM
+
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
 
@@ -10,9 +16,6 @@ SET time_zone = "+00:00";
 --
 -- Database: `cwoj`
 --
-
-CREATE DATABASE cwoj CHARACTER SET utf8mb4;
-use cwoj;
 
 DELIMITER $$
 --
@@ -52,18 +55,54 @@ CREATE TABLE `contest` (
   `title` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `start_time` datetime DEFAULT NULL,
   `end_time` datetime DEFAULT NULL,
-  `defunct` tinyint(1) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '0',
-  `num` int(11) NOT NULL DEFAULT '0',
-  `problems` varchar(400) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '0',
-  `owners` varchar(800) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `defunct` tinyint(1) NOT NULL DEFAULT '0',
   `description` longtext COLLATE utf8mb4_unicode_ci,
   `source` varchar(200) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `in_date` datetime DEFAULT NULL,
+  `in_date` datetime NOT NULL,
   `has_tex` tinyint(4) NOT NULL DEFAULT '0',
   `judge_way` int(11) NOT NULL DEFAULT '0',
   `enroll_user` int(11) NOT NULL DEFAULT '0',
-  `last_rank_time` datetime DEFAULT NULL
+  `last_upd_time` datetime DEFAULT NULL,
+  `need_update` int(11) NOT NULL DEFAULT '0'
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `contest_detail`
+--
+
+CREATE TABLE `contest_detail` (
+  `user_id` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `contest_id` int(11) NOT NULL,
+  `problem_id` int(11) NOT NULL,
+  `result` smallint(6) DEFAULT NULL,
+  `score` int(11) NOT NULL DEFAULT '0',
+  `time` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `contest_owner`
+--
+
+CREATE TABLE `contest_owner` (
+  `contest_id` int(11) NOT NULL,
+  `user_id` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `contest_problem`
+--
+
+CREATE TABLE `contest_problem` (
+  `contest_id` int(11) NOT NULL,
+  `problem_id` int(11) NOT NULL,
+  `place` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -74,14 +113,12 @@ CREATE TABLE `contest` (
 CREATE TABLE `contest_status` (
   `contest_id` int(11) NOT NULL DEFAULT '0',
   `user_id` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
-  `scores` varchar(800) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `results` varchar(800) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `times` varchar(800) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `tot_scores` int(11) NOT NULL DEFAULT '0',
-  `tot_times` int(32) NOT NULL DEFAULT '0',
+  `tot_score` int(11) NOT NULL DEFAULT '0',
+  `tot_time` int(32) NOT NULL DEFAULT '0',
   `rank` int(11) NOT NULL DEFAULT '0',
-  `defunct` char(1) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'N'
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `enroll_time` datetime NOT NULL,
+  `leave_time` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -103,10 +140,10 @@ INSERT INTO `experience_titles` (`experience`, `title`) VALUES
 (1, '小咸鱼'),
 (75, '咸鱼'),
 (150, '大咸鱼'),
-(700, '银蛤蟆'),
+(2048, '银蛤蟆'),
 (0, ''),
-(1050, '金蛤蟆'),
-(1926, '长者'),
+(19260817, '长者'),
+(8192, '金蛤蟆'),
 (350, '铜蛤蟆');
 
 -- --------------------------------------------------------
@@ -125,14 +162,14 @@ CREATE TABLE `level_experience` (
 --
 
 INSERT INTO `level_experience` (`level`, `experience`) VALUES
-(0, 1),
-(1, 5),
-(2, 10),
-(3, 15),
-(4, 20),
-(5, 30),
-(6, 40),
-(7, 50);
+(0, 100),
+(1, 100),
+(2, 100),
+(3, 100),
+(4, 100),
+(5, 100),
+(6, 100),
+(7, 100);
 
 -- --------------------------------------------------------
 
@@ -180,7 +217,7 @@ CREATE TABLE `message` (
 
 CREATE TABLE `news` (
   `news_id` int(11) NOT NULL DEFAULT '0',
-  `author` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  `author` varchar(20) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `title` varchar(200) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `content` longtext COLLATE utf8mb4_unicode_ci,
   `time` datetime DEFAULT NULL,
@@ -194,9 +231,8 @@ CREATE TABLE `news` (
 --
 
 INSERT INTO `news` (`news_id`, `author`, `title`, `content`, `time`, `importance`, `privilege`, `defunct`) VALUES
-(0, 'root', '', '<div class="text-center"><text style="font-size:30px;font-weight:bold">Welcome to CWOJ</text>
-<text style="font-size:18px">Built for you to code your future.</text></div>', '2016-08-11 20:21:09', 0, 0, 'N'),
-(1, '', '欢迎来到CWOJ', '<b>CWOJ - 一个开源且毫无特色并且随时收到水王洪水威胁的信息竞赛刷题系统，现已向校内外同学开放~~~ 祝大家在这里玩得愉快！</b>', '2015-12-12 18:45:21', 0, 0, 'N');
+(1, 'root', '欢迎来到CWOJ', '<b>CWOJ - 一个开源且毫无特色并且随时收到水王洪水威胁的信息竞赛刷题系统，现已向校内外同学开放~~~ 祝大家在这里玩得愉快！</b><hr>CWOJ Team:\r<br>jimmy19990: CWOJ前/后端\r<br>Void: CWOJ题库管理\r<br>dreamfly:一条出口咸鱼', '2015-12-12 18:45:21', 0, 0, 0),
+(0, NULL, NULL, '<div class="text-center"><div style="font-size:28px"><b>Welcome to CWOJ</b></div><div style="font-size:18px">Built for you to code your future.</div></div>', NULL, 0, 0, 0);
 
 -- --------------------------------------------------------
 
@@ -230,7 +266,7 @@ CREATE TABLE `problem` (
   `time_limit` int(11) NOT NULL DEFAULT '0',
   `memory_limit` int(11) NOT NULL DEFAULT '0',
   `case_score` int(11) NOT NULL DEFAULT '0',
-  `defunct` tinyint(1) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '0',
+  `defunct` tinyint(1) NOT NULL DEFAULT '0',
   `accepted` int(11) DEFAULT '0',
   `submit` int(11) DEFAULT '0',
   `ratio` tinyint(4) NOT NULL DEFAULT '0',
@@ -238,16 +274,15 @@ CREATE TABLE `problem` (
   `has_tex` tinyint(4) NOT NULL DEFAULT '0',
   `submit_user` int(11) DEFAULT '0',
   `solved` int(11) DEFAULT '0',
-  `case_time_limit` int(11) NOT NULL DEFAULT '0',
-  `rejudge_time` datetime DEFAULT '1970-01-01 00:00:00'
+  `case_time_limit` int(11) NOT NULL DEFAULT '0'
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `problem`
 --
 
-INSERT INTO `problem` (`problem_id`, `title`, `description`, `input`, `output`, `sample_input`, `sample_output`, `hint`, `source`, `in_date`, `time_limit`, `memory_limit`, `case_score`, `defunct`, `accepted`, `submit`, `ratio`, `compare_way`, `has_tex`, `submit_user`, `solved`, `case_time_limit`, `rejudge_time`) VALUES
-(1000, 'A+B 问题', '计算 a+b', '两个整数 a,b (保证a+b在int范围内)', '输出 a+b', '1 2', '3', '请使用标准输入输出~\r\n\r\n', '基础语法', '1970-01-01 00:00:00', 1000, 30000, 10, 'N', 0, 0, 0, 0, 56, 0, 0, 1000, '1970-01-01 00:00:00');
+INSERT INTO `problem` (`problem_id`, `title`, `description`, `input`, `output`, `sample_input`, `sample_output`, `hint`, `source`, `in_date`, `time_limit`, `memory_limit`, `case_score`, `defunct`, `accepted`, `submit`, `ratio`, `compare_way`, `has_tex`, `submit_user`, `solved`, `case_time_limit`) VALUES
+(1000, 'A+B 问题', '计算 a+b\r\n<pre>#include &lt;iostream&gt;\r\nusing namespace std;\r\nint main()\r\n{ \r\n    int a, b; \r\n    cin >> a >> b; \r\n    cout << a + b;\r\n}\r\n</pre>', '两个整数 a,b (保证a+b在int范围内)', '输出 a+b', '1 2', '3', '请使用标准输入输出~\r\n\r\n', '基础语法', '2016-11-19 18:10:45', 1000, 128000, 10, 0, 0, 0, 0, 0, 56, 0, 0, 1000);
 
 -- --------------------------------------------------------
 
@@ -352,7 +387,7 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`user_id`, `email`, `submit`, `solved`, `score`, `experience`, `defunct`, `ip`, `accesstime`, `volume`, `language`, `password`, `reg_time`, `nick`, `school`, `motto`, `privilege`) VALUES
-('root', 'info@cwoj.tk', 0, 0, 0, 0, 'N', '127.0.0.1', NULL, 1, 0, 'CWOJUser125', '2015-11-20 00:00:00', 'admin', 'CFLS', 'I\'m an evil administrator.', 15);
+('root', 'cwoj@hello.world', 0, 0, 0, 0, 'N', '', '1970-01-01 00:00:00', 1, 0, 'CWOJUser125', '1970-01-01 00:00:00', 'admin', '', 'I\'m an evil administrator.', 15);
 
 -- --------------------------------------------------------
 
@@ -361,19 +396,13 @@ INSERT INTO `users` (`user_id`, `email`, `submit`, `solved`, `score`, `experienc
 --
 
 CREATE TABLE `user_notes` (
+  `id` int(11) NOT NULL,
   `problem_id` int(11) NOT NULL,
   `user_id` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
   `tags` varchar(32) COLLATE utf8mb4_unicode_ci NOT NULL,
   `content` mediumtext COLLATE utf8mb4_unicode_ci NOT NULL,
   `edit_time` datetime NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Dumping data for table `user_notes`
---
-
-INSERT INTO `user_notes` (`problem_id`, `user_id`, `tags`, `content`, `edit_time`) VALUES
-(0, 'root', '', '<div class="panel panel-success">\n    <div class="panel-heading">\n      <h4 class="panel-title">\n        <a data-toggle="collapse" data-parent="#accordion" href="#algorithm">\n          按算法分类\n        </a>\n      </h4>\n    </div>\n    <div id="algorithm" class="panel-collapse collapse in">\n      <div class="panel-body">\n        <p><a href="search.php?q=基础语法">基础语法</a>  \n<a href="search.php?q=数组">数组</a>  \n<a href="search.php?q=字符串">字符串</a>  \n<a href="search.php?q=数论">数论</a>  \n<a href="search.php?q=高精度">高精度</a>  \n<a href="search.php?q=模拟">模拟</a>  \n<a href="search.php?q=动态规划">动态规划</a>  \n<a href="search.php?q=贪心">贪心</a>  \n<a href="search.php?q=搜索">搜索</a>  \n<a href="search.php?q=二分">二分查找</a></p>\n<p><a href="search.php?q=数据结构">数据结构</a>  \n<a href="search.php?q=树">树结构</a>  \n<a href="search.php?q=图">图结构</a></p>\n<a href="problemset.php?level=7">听说你会模拟？</a>\n      </div>\n    </div>\n  </div>\n  <div class="panel panel-warning">\n    <div class="panel-heading">\n      <h4 class="panel-title">\n        <a data-toggle="collapse" data-parent="#accordion" href="#difficulty">\n          按难度分类\n        </a>\n      </h4>\n    </div>\n    <div id="difficulty" class="panel-collapse collapse">\n      <div class="panel-body">\n<a href="problemset.php?level=0">OI太难</a>\n<a href="problemset.php?level=1">普及</a>  \n<a href="problemset.php?level=2">普及+</a>  \n<a href="problemset.php?level=3">提高T2</a>  \n<a href="problemset.php?level=4">提高T3</a>  \n<a href="problemset.php?level=5">NOI</a>  \n<a href="problemset.php?level=6">NOIplus</a>\n<a href="problemset.php?level=7">我是神哈哈哈</a>  \n      </div>\n    </div>\n  </div>\n  <div class="panel panel-primary">\n    <div class="panel-heading">\n      <h4 class="panel-title">\n        <a data-toggle="collapse" data-parent="#accordion" href="#source">\n          按来源分类\n        </a>\n      </h4>\n    </div>\n    <div id="source" class="panel-collapse collapse">\n      <div class="panel-body">\n        <a href="search.php?q=普及组">NOIP普及组</a>  \n<a href="search.php?q=提高组">NOIP提高组</a>  \n<a href="search.php?q=省选">省选</a>  \n<a href="search.php?q=NOI2">NOI</a>   		 \n<a href="search.php?q=IOI">IOI</a>  \n<a href="search.php?q=UESTC">UESTC</a>  \n<a href="search.php?q=USACO">USACO</a>  \n<a href="search.php?q=原创">原创</a>  \n      </div>\n    </div>\n  </div>', '2016-07-31 11:12:14');
 
 -- --------------------------------------------------------
 
@@ -389,11 +418,11 @@ CREATE TABLE `wiki` (
   `tags` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `author` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
   `revision` int(11) NOT NULL DEFAULT '0',
-  `is_max` tinyint(1) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '1',
+  `is_max` tinyint(1) NOT NULL DEFAULT '1',
   `in_date` datetime NOT NULL,
   `privilege` tinyint(4) NOT NULL DEFAULT '0',
-  `defunct` tinyint(1) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '0'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `defunct` tinyint(1) NOT NULL DEFAULT '0'
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Indexes for dumped tables
@@ -410,6 +439,28 @@ ALTER TABLE `compileinfo`
 --
 ALTER TABLE `contest`
   ADD PRIMARY KEY (`contest_id`);
+
+--
+-- Indexes for table `contest_detail`
+--
+ALTER TABLE `contest_detail`
+  ADD UNIQUE KEY `cdk` (`user_id`,`contest_id`,`problem_id`),
+  ADD KEY `cdi` (`user_id`,`contest_id`,`problem_id`,`result`,`score`,`time`);
+
+--
+-- Indexes for table `contest_owner`
+--
+ALTER TABLE `contest_owner`
+  ADD UNIQUE KEY `contest_id_2` (`contest_id`,`user_id`),
+  ADD KEY `contest_id` (`contest_id`,`user_id`),
+  ADD KEY `contest_id_3` (`contest_id`,`user_id`);
+
+--
+-- Indexes for table `contest_problem`
+--
+ALTER TABLE `contest_problem`
+  ADD UNIQUE KEY `problem_id` (`problem_id`,`contest_id`),
+  ADD UNIQUE KEY `problem_id_2` (`problem_id`,`contest_id`);
 
 --
 -- Indexes for table `contest_status`
@@ -508,6 +559,7 @@ ALTER TABLE `users`
 -- Indexes for table `user_notes`
 --
 ALTER TABLE `user_notes`
+  ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `u_p` (`user_id`,`problem_id`);
 
 --
@@ -525,6 +577,11 @@ ALTER TABLE `wiki`
 --
 ALTER TABLE `mail`
   MODIFY `mail_id` int(11) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT for table `user_notes`
+--
+ALTER TABLE `user_notes`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `wiki`
 --

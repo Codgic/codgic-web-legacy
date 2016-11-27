@@ -27,8 +27,24 @@ function sc_check_priv($prob_id,$opened,$user){
                     return TRUE;
             }
             return _('You can\'t see me before solving it');
+        }else if(isset($_SESSION['user'])){
+            $res=mysqli_query($con, "SELECT contest.contest_id,co.contest_id from contest
+                                       LEFT JOIN (select contest_id from contest_status where user_id='".$_SESSION['user']."' and leave_time is NULL) as cs on (contest.contest_id=cs.contest_id)
+                                       LEFT JOIN (select contest_id from contest_problem where problem_id=$prob_id) as cp on (contest.contest_id=cp.contest_id)
+                                       LEFT JOIN (select contest_id from contest_owner where user_id='".$_SESSION['user']."') as co on (contest.contest_id=co.contest_id)
+                                       where NOW()>start_time and NOW()<end_time");
+            $num=mysqli_num_rows($res);
+            if($num>0){
+                $is_owner=false;
+                while($row=mysqli_fetch_row($res)){
+                    if(!is_null($row[1]))
+                        $is_owner=true;
+                }
+                if(!$is_owner)
+                    return _('You can\'t see me before the contest ends');
+            }
+            return TRUE;
         }
-        return TRUE;
     }    
     return _('Looks like you can\'t access this page');
 }
