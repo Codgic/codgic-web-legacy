@@ -348,7 +348,10 @@ $Title=$inTitle .' - '. $oj_name;
             }
             $(document).ready(function(){
                 var cont=<?php echo $cont_id?>;
-                $('#cont_rank').load('api/ajax_contest.php',{op:'get_rank_table',contest_id:cont});
+                //$('#cont_rank').load('api/ajax_contest.php',{op:'get_rank_table',contest_id:cont});
+                $.post("api/ajax_contest.php",{op:'get_rank_table',contest_id:cont},function(data){
+                    $('#cont_rank').html(data.message);
+                })
                 $('#action_delete').click(function(){
                     $.ajax({
                         type:"POST",
