@@ -1,214 +1,186 @@
 <?php
 require __DIR__.'/../inc/init.php';
-require __DIR__.'/../func/privilege.php';
-require __DIR__.'/../lib/problem_flags.php';
+require __DIR__.'/../func/contest.php';
 header('Content-Type: application/json');
 
-function JUDGE_TYPE($way){
-    if($way=='train')
-      return 0;
-    else if($way=='cwoj')
-      return 1;
-    else if($way=='acm-like')
-      return 2;
-    else if($way=='oi-like')
-      return 3;
-}
-if(!check_priv(PRIV_PROBLEM)){
-    echo json_encode(array('success' => false, 'message' => _('Permission Denied...')));
-    exit();
-}else if(!isset($_POST['op'])){
+if(!isset($_POST['op'])){
     echo json_encode(array('success' => false, 'message' => _('Invalid Argument...')));
     exit();
 }
+$op=$_POST['op'];
+
+if(!isset($_POST['contest_id'])||empty($_POST['contest_id'])){
+    echo json_encode(array('success' => false, 'message' => _('Invalid Argument...')));
+    exit();
+}
+$cont_id=intval($_POST['contest_id']);
 
 require __DIR__.'/../conf/database.php';
-$success=false;
-if($_POST['op']=='del'){
-    if(!isset($_POST['contest_id'])){
+
+if($op=='get_rank_table'){
+    $cont_id=intval($_POST['contest_id']);
+    //Obtain basic info.
+    $row=mysqli_fetch_row(mysqli_query($con, "select start_time,end_time,last_upd_time,need_update from contest where contest_id=$cont_id"));
+    if(!$row){
         echo json_encode(array('success' => false, 'message' => _('No such contest...')));
         exit();
     }
-    $id=intval($_POST['contest_id']);
-    if(mysqli_query($con,"update contest set defunct=(!defunct) where contest_id=$id"))
-        echo json_encode(array('success' => true));
-    else
-        echo json_encode(array('success' => false, 'message' => _('Database operation failed...')));
+    $cont_starttime=strtotime($row[0]);
+    $cont_endtime=strtotime($row[1]);
+    $cont_lastrank=strtotime($row[2]);
+    $cont_needupdate=$row[3];
+
+    $enrolled=false;
+    //Determine if an update is needed.
+    if(time()>=$cont_starttime){
+        if(is_null($cont_lastrank) || $row[3] || ($cont_endtime>time() && time()-$cont_lastrank>20))
+            update_cont_scr($cont_id);
+        if(time()<=$cont_endtime){
+            //Determine whether show the problem list or not.
+            if(isset($_SESSION['user'])){
+                $uid=$_SESSION['user'];
+                //Check if user has joined contest.
+                if(mysqli_num_rows(mysqli_query($con,"select 1 from contest_status where user_id='$uid' and contest_id=$cont_id limit 1")))
+                    $enrolled=true;
+                //Check if user is contest owner.
+                if(!$enrolled)
+                    if(mysqli_num_rows(mysqli_query($con, "select 1 from contest_owner where user_id='$uid' and contest_id=$cont_id"))>0)
+                        $enrolled=true;
+            }
+        }
+    }
+    $q=mysqli_query($con, "select contest_status.user_id,contest_status.tot_score,contest_status.tot_time,contest_status.rank,users.nick from contest_status,users where contest_status.contest_id=$cont_id AND contest_status.user_id = users.user_id order by contest_status.rank,contest_status.user_id");
+    if(mysqli_num_rows($q)==0){
+        echo json_encode(array('success' => false, 'message' => _('Looks like nobody enrolled in this contest...')));
+        exit();
+    }
+    $return_html='
+    <table class="table table-condensed">
+        <thead>
+            <tr>
+                <th>No.</th>
+                <th>'._('User').'</th>
+                <th>'._('Score').'</th>
+                <th>'._('Time Penalty').'</th>';
+                    if(time()>=$cont_endtime || (time()>=$cont_starttime && $enrolled)){  
+                        $r=mysqli_query($con, "select problem_id from contest_problem where contest_id=$cont_id order by place");
+                        while($row=mysqli_fetch_row($r))
+                            $return_html.="<th>$row[0]</th>";
+                    }
+                $return_html.='
+            </tr>
+        </thead>
+        <tbody>';
+                while($row=mysqli_fetch_row($q)){
+                    $return_html.='<tr>';
+                    //Rank
+                    if(time()>=$cont_starttime)
+                        $return_html.='<td>'.$row[3].'</td>';
+                    else
+                        $return_html.='<td>-</td>';
+                    //User
+                    $cuname = "$row[0]";
+                    if ($row[4] != NULL && $row[4] != "")
+                    {
+                        $cuname .= " <small>(<em>$row[4]</em>)</small>";
+                    }
+                    $return_html.="<td>$cuname</td>";
+                    //Total Score
+                    $return_html.="<td>$row[1]</td>";
+                    //Total Time
+                    $return_html.="<td>$row[2]</td>";
+                    //Problems
+                    if(time()>=$cont_endtime||(time()>=$cont_starttime&&$enrolled)){
+                        $r=mysqli_query($con, "SELECT contest_detail.problem_id,score,result,contest_problem.place from contest_detail
+                                               LEFT JOIN (select problem_id,place from contest_problem where contest_id=$cont_id) as contest_problem on (contest_problem.problem_id=contest_detail.problem_id)
+                                               where contest_id=$cont_id and user_id='$row[0]'");
+                        while($t_row=mysqli_fetch_row($r)){
+                            $return_html.='<td><i class='.(is_null($t_row[2]) ? '"fa fa-fw fa-question" style="color:grey"' : ($t_row[2] ? '"fa fa-fw fa-remove" style="color:red"' : '"fa fa-fw fa-check" style="color:green"')).'></i> ';
+                            $return_html.=$t_row[1].'</td>';
+                        }
+                    }
+                    $return_html.="<tr>\n";
+                }
+            $return_html.='
+        </tbody>
+    </table>';
+    echo json_encode(array('success' => true, 'message' => $return_html));
 }else{
-    if(isset($_POST['start_time'])&&!empty($_POST['start_time'])){
-         $start_time = mysqli_real_escape_string($con,$_POST['start_time']);
-    }else{
-        echo json_encode(array('success' => false, 'message' => _('Please enter start time...')));
+    if(!isset($_SESSION['user'])){
+        echo json_encode(array('success' => false, 'message' => _('Please login first...')));
         exit();
     }
-    if($start_time<0){
-        echo json_encode(array('success' => false, 'message' => _('Invalid start time...')));
-        exit();
-    }
-    if(isset($_POST['end_time'])&&!empty($_POST['end_time'])){
-        $end_time=mysqli_real_escape_string($con,$_POST['end_time']);
-    }else{
-        echo json_encode(array('success' => false, 'message' => _('Please enter end time...')));
-        exit();
-    }
-    if($end_time<0){
-        echo json_encode(array('success' => false, 'message' => _('Invalid end time...')));
-        exit();
-    }
-    if(strtotime($start_time)>strtotime($end_time)){
-        echo json_encode(array('success' => false, 'message' => _('Start time can\'t be greater than end time...')));
-        exit();
-    }
-    if(isset($_POST['judge'])){
-        $judge_way=JUDGE_TYPE($_POST['judge']);
-    }else{
-        $judge_way=0;
-    }
-    if(isset($_POST['title'])&&!empty($_POST['title'])){
-        $title=mysqli_real_escape_string($con,$_POST['title']);
-    }else{
-        echo json_encode(array('success' => false, 'message' => _('Please enter title...')));
-        exit();
-    }
-    if(isset($_POST['problems'])&&!empty($_POST['problems'])){
-        $problems=mysqli_real_escape_string($con,$_POST['problems']);
-    }else{
-        echo json_encode(array('success' => false, 'message' => _('Please specify problems...')));
-        exit();
-    }
+    $uid=$_SESSION['user'];
     
-    $num=substr_count($problems,',')+1;
-    $prob_arr=explode(',',$problems);
-    $des=isset($_POST['description']) ? mysqli_real_escape_string($con,$_POST['description']) : '';
-    $source=isset($_POST['source']) ? mysqli_real_escape_string($con,$_POST['source']) : '';
-    if(isset($_POST['owners'])&&!empty($_POST['owners'])){
-        $owners=mysqli_real_escape_string($con,$_POST['owners']);
-        $owners_arr=explode(',',$owners);
-        $owners="'".implode("','",$owners_arr)."'";
+    if($op=='enroll'){
+        $row=mysqli_fetch_row(mysqli_query($con,"select start_time,end_time,enroll_user from contest where contest_id=$cont_id"));
+        if(!$row){
+            echo json_encode(array('success' => false, 'message' => _('No such contest...')));
+            exit();
+        }
+        if(strtotime($row[1])<=time()){
+            echo json_encode(array('success' => false, 'message' => _('Contest has ended...')));
+            exit();
+        }
+        //Check if current user is contest owner.
+        if(mysqli_num_rows(mysqli_query($con, "select 1 from contest_owner where contest_id=$cont_id and user_id='$uid' limit 1"))>0){
+            echo json_encode(array('success' => false, 'message' => _('Contest owner can\'t enroll in his contest...')));
+            exit();
+        }
+        //Check if already enrolled.
+        if(mysqli_num_rows(mysqli_query($con,"select 1 from contest_status where user_id='$uid' and contest_id=$cont_id limit 1"))){
+            echo json_encode(array('success' => true));
+            exit();
+        }
+        //Insert contest_status.
+        if(!mysqli_query($con, "insert into contest_status (contest_id,user_id,tot_score,tot_time,rank,enroll_time,leave_time) VALUES ($cont_id,'$uid',0,0,0,NOW(),NULL)")){
+            echo json_encode(array('success' => false, 'message' => _('Database operation failed...')));
+            exit();
+        }
+        //Obtain problems
+        $prob_arr=get_cont_probs($cont_id);
+        //Insert contest_detail
+        for($i=0;$i<sizeof($prob_arr);$i++){
+            if(!mysqli_query($con, "insert into contest_detail (user_id,contest_id,problem_id,result,score,time) VALUES ('$uid',$cont_id,$prob_arr[$i],NULL,0,0)")){
+                echo json_encode(array('success' => false, 'message' => "insert into contest_detail (user_id,contest_id,problem_id,result,score,time) VALUES ('$uid',$cont_id,$prob_arr[$i],NULL,0,0)"));
+                exit();
+            }     
+        }
+        //Update contest rank.
+        update_cont_rank($cont_id);
+        echo json_encode(array('success' => true));
+    }else if($op=='leave'){
+        $row=mysqli_fetch_row(mysqli_query($con,"select start_time, end_time from contest where contest_id=$cont_id limit 1"));
+        if(!$row){
+            echo json_encode(array('success' => false, 'message' => _('No such contest...')));
+            exit();
+        }
+        if(strtotime($row[1])<=time()){
+            echo json_encode(array('success' => false, 'message' => _('Contest has ended...')));
+            exit();
+        }
+        if(mysqli_num_rows(mysqli_query($con, "select 1 from contest_status where contest_id=$cont_id and leave_time is not null and user_id='$uid'"))>0){
+            echo json_encode(array('success' => false, 'message' => _('You have left the contest...')));
+            exit();
+        }
+        if(strtotime($row[0])>time()){
+            //If contest has not started, delete the entry.
+            if(!mysqli_query($con, "delete from contest_status where contest_id=$cont_id and user_id='$uid' limit 1")){
+                echo json_encode(array('success' => false, 'message' => _('Database operation failed...')));
+                exit();
+            }
+            if(!mysqli_query($con, "delete from contest_detail where contest_id=$cont_id and user_id='$uid'")){
+                echo json_encode(array('success' => false, 'message' => _('Database operation failed...')));
+                exit();
+            }
+        }else{
+            //If contest is still in progress, update leave_time.
+            if(!mysqli_query($con, "update contest_status set leave_time=NOW() where contest_id=$cont_id and user_id='$uid' limit 1")){
+                echo json_encode(array('success' => false, 'message' => _('Database operation failed...')));
+                exit();
+            }
+        }
+        echo json_encode(array('success' => true));
     }else
-        $owners="''";
-    $has_tex=0;
-    if(isset($_POST['option_level'])){
-        $l=intval($_POST['option_level']);
-        $level_max=(PROB_LEVEL_MASK>>PROB_LEVEL_SHIFT);
-        if($l>=0 && $l<=$level_max){
-            $has_tex|=($l<<PROB_LEVEL_SHIFT);
-        }
-    }
-
-    //Verify problems availability.
-    for($i=0;$i<$num;$i++){
-        $r=mysqli_fetch_row(mysqli_query($con,'select has_tex from problem where problem_id='.$prob_arr[$i].' limit 1'));
-        if(!$r){
-            echo json_encode(array('success' => false, 'message' => _('Problem ').'#'.$prob_arr[$i]._(' does not exist...')));
-            exit();
-        }
-        if($r[0] & PROB_IS_HIDE && !isset($_POST['hide_cont'])){
-            echo json_encode(array('success' => false, 'message' => _('Problem ').'#'.$prob_arr[$i]._('is hidden. Please hide the contest to add it...')));
-            exit();
-        }
-    }
-
-    //Verify owners availability.
-    if(isset($owners_arr)){
-        for($i=0;$i<sizeof($owners_arr);$i++){
-            $r=mysqli_num_rows(mysqli_query($con, 'select 1 from users where user_id=\''.$owners_arr[$i].'\' limit 1'));
-            if($r<=0){
-                echo json_encode(array('success' => false, 'message' => _('User ').'"'.$owners_arr[$i].'"'.' does not exist...'));
-                exit();
-            }
-        }
-    }
-
-    if(isset($_POST['hide_cont'])){
-        $has_tex|=PROB_IS_HIDE;
-    }
-    foreach ($_POST as $value) {
-        if(strstr($value,'[tex]') || strstr($value,'[inline]')) {
-            $has_tex|=PROB_HAS_TEX;
-            break;
-        }
-    }
-
-    if($_POST['op']=='edit'){
-        if(!isset($_POST['contest_id'])){
-            echo json_encode(array('success' => false, 'message' => _('Invalid Argument...')));
-            exit();
-        }
-        $id=intval($_POST['contest_id']);
-        //LEGACY CODE STILL NOT DELETED!
-        if(!mysqli_query($con,"update contest set title='$title',start_time='$start_time',end_time='$end_time',description='$des',source='$source',has_tex=$has_tex,judge_way=$judge_way where contest_id=$id")){
-            echo json_encode(array('success' => false, 'message' => _('Database operation failed...')));
-            exit();
-        }else{
-            //Clean up previous problems.
-            if(!mysqli_query($con, "delete from contest_problem where contest_id=$id and problem_id not in($problems)")){
-                echo json_encode(array('success' => false, 'message' => _('Database operation failed...')));
-                exit();
-            }
-            if(!mysqli_query($con, "delete from contest_detail where contest_id=$id and problem_id not in($problems)")){
-                echo json_encode(array('success' => false, 'message' => _('Database operation failed...')));
-                exit();
-            }            
-            //Clean up previous owners.
-            if(!mysqli_query($con, "delete from contest_owner where contest_id=$id and user_id not in($owners)")){
-                echo json_encode(array('success' => false, 'message' => _('Database operation failed...')));
-                exit();
-            }
-            //Insert problems.
-            for($i=0;$i<sizeof($prob_arr);$i++){
-                if(!mysqli_query($con, "INSERT into contest_problem (contest_id,problem_id,place) VALUES ($id,".$prob_arr[$i].",$i) ON DUPLICATE KEY update place=$i")){
-                    echo json_encode(array('success' => false, 'message' => _('Database operation failed...')));
-                    exit();
-                }
-            }
-            //Insert owners.
-            if(isset($owners_arr)){
-                for($i=0;$i<sizeof($owners_arr);$i++){
-                    if(!mysqli_query($con, "INSERT IGNORE into contest_owner (contest_id,user_id) VALUES ($id,'".$owners_arr[$i]."')")){
-                        echo json_encode(array('success' => false, 'message' => _('Database operation failed...')));
-                        exit();
-                    }
-                }
-            }
-            require __DIR__.'/../func/contest.php';
-            update_cont_scr($id);
-            $success=true;
-        }
-    }else if($_POST['op']=='add'){
-        $id=1000;
-        $result=mysqli_query($con,'select max(contest_id) from contest');
-        if(($row=mysqli_fetch_row($result)) && intval($row[0]))
-            $id=intval($row[0])+1;
-        if(!mysqli_query($con,"insert into contest (contest_id,title,start_time,end_time,description,source,in_date,has_tex,judge_way,enroll_user) values ($id,'$title','$start_time','$end_time','$des','$source',NOW(),$has_tex,$judge_way,0)")){
-            echo json_encode(array('success' => false, 'message' => _('Database operation failed...')));
-            exit();
-        }else{
-            //Insert problems.
-            for($i=0;$i<$num;$i++){
-                if(!mysqli_query($con, "insert into contest_problem (contest_id,problem_id,place) VALUES ($id,".$prob_arr[$i].",$i) ON DUPLICATE KEY update contest_id=$id,problem_id=".$prob_arr[$i].",place=$i")){
-                    echo json_encode(array('success' => false, 'message' => _('Database operation failed...')));
-                    exit();
-                }
-            }
-            //Insert owners.
-            if(isset($owners_arr)){
-                for($i=0;$i<sizeof($owners_arr);$i++){
-                    if(!mysqli_query($con, "INSERT IGNORE into contest_owner (contest_id,user_id) VALUES ($id,'".$owners_arr[$i]."')")){
-                        echo json_encode(array('success' => false, 'message' => _('Database operation failed...')));
-                        exit();
-                    }
-                }
-            }
-            $success=true;
-        }
-    }else{
         echo json_encode(array('success' => false, 'message' => _('Invalid Argument...')));
-        exit();
-    }
-
-    if($success)
-        echo json_encode(array('success' => true, 'contestID' => $id));
-    else
-        echo json_encode(array('success' => false, 'message' => _('Unknown Error...')));
 }
