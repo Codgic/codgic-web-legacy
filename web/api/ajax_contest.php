@@ -49,7 +49,7 @@ if($op=='get_rank_table'){
             }
         }
     }
-    $q=mysqli_query($con, "select user_id,tot_score,tot_time,rank from contest_status where contest_id=$cont_id order by rank,user_id");
+    $q=mysqli_query($con, "select contest_status.user_id,contest_status.tot_score,contest_status.tot_time,contest_status.rank,users.nick from contest_status,users where contest_status.contest_id=$cont_id AND contest_status.user_id = users.user_id order by contest_status.rank,contest_status.user_id");
     if(mysqli_num_rows($q)==0){
         echo json_encode(array('success' => false, 'message' => _('Looks like nobody enrolled in this contest...')));
         exit();
@@ -79,7 +79,12 @@ if($op=='get_rank_table'){
                     else
                         $return_html.='<td>-</td>';
                     //User
-                    $return_html.="<td>$row[0]</td>";
+                    $cuname = "$row[0]";
+                    if ($row[4] != NULL && $row[4] != "")
+                    {
+                        $cuname .= " <small>(<em>$row[4]</em>)</small>";
+                    }
+                    $return_html.="<td>$cuname</td>";
                     //Total Score
                     $return_html.="<td>$row[1]</td>";
                     //Total Time
