@@ -111,6 +111,7 @@ function update_cont_scr($cont_id){
             }
             //Write into database.
             mysqli_query($con, "INSERT into contest_detail (user_id,contest_id,problem_id,result,score,time) VALUES ('$user_id',$cont_id,".$prob_arr[$i].",$result,$score,$time) ON DUPLICATE KEY UPDATE result=$result,score=$score,time=$time");
+            mysqli_query($con, "UPDATE contest_status SET tot_score=$tot_score, tot_time=$tot_time where user_id='$user_id' and contest_id=$cont_id limit 1");
         }
     }
     //Update user rank.

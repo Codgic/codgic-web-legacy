@@ -88,7 +88,7 @@ if($op=='get_rank_table'){
                     //Total Score
                     $return_html.="<td>$row[1]</td>";
                     //Total Time
-                    $return_html.="<td>$row[2]</td>";
+                    $return_html.='<td>'.get_time_text($row[2]).'</td>';
                     //Problems
                     if(time()>=$cont_endtime||(time()>=$cont_starttime&&$enrolled)){
                         $r=mysqli_query($con, "SELECT contest_detail.problem_id,score,result,contest_problem.place from contest_detail
