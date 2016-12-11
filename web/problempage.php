@@ -26,13 +26,10 @@ if(isset($_GET['contest_id'])){
             //Contest has not started.
             $cont_status=0;
             //Check if current user is contest owner.
-            if(isset($_SESSION['user'])){
+            if(isset($_SESSION['user']))
                 if(mysqli_num_rows(mysqli_query($con, "select 1 from contest_owner where contest_id=$cont_id and user_id='".$_SESSION['user']."' limit 1"))>0)
                     $is_owner=true;
-                else
-                    $is_owner=false;
-            }
-            if(!$is_owner && time()<strtotime($row_cont[1])){
+            if(isset($is_owner) && time()<strtotime($row_cont[1])){
                 header("Location: contestpage.php?contest_id=$cont_id");
                 exit();
             }
@@ -50,7 +47,7 @@ if(isset($_GET['contest_id'])){
                         $user_quit=true;
                 }
             }
-            if(!$enrolled){
+            if(isset($is_owner) &&! $enrolled){
                 header("Location: contestpage.php?contest_id=$cont_id");
                 exit();
             }
