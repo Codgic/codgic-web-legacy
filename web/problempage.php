@@ -473,7 +473,7 @@ $Title=$inTitle .' - '. $oj_name;
                                         <span class="input-group-addon">
                                             <input type="checkbox" <?php if($pref->sharecode=='on')echo 'checked';?> name="public"><?php echo _('Open Source')?>
                                         </span>
-                                        <select class="form-control" name="language" id="slt_lang" onchange="editor_changemode()">
+                                        <select class="form-control" name="language" id="slt_lang">
                                             <?php
                                                 foreach($LANG_NAME as $langid => $lang){
                                                     echo "<option value=\"$langid\" ";
@@ -486,7 +486,7 @@ $Title=$inTitle .' - '. $oj_name;
                                     </div>  
                                 </div>
                                 <div class="form-group col-xs-12 col-sm-7">
-                                    <a href="javascript:void(0)" onclick="return clreditor()" class="btn btn-danger shortcut-hint" title="Alt+C"><?php echo _('Clear')?></a>
+                                    <button type="button" id="btn_clear" class="btn btn-danger shortcut-hint" title="Alt+C"><?php echo _('Clear')?></a>
                                     <button class="btn btn-primary shortcut-hint" title="Alt+S" type="submit"><?php echo _('Submit')?></button>
                                     <a href="#" class="btn btn-default" data-dismiss="modal"><?php echo _('Close')?></a>
                                 </div>
@@ -546,6 +546,7 @@ $Title=$inTitle .' - '. $oj_name;
                 echo '<script src="/assets/js/CodeMirror/addon/fullscreen.js"></script>';
                 echo '<script src="/assets/js/CodeMirror/mode/clike.js"></script>';
                 echo '<script src="/assets/js/CodeMirror/mode/pascal.js"></script>';
+                echo '<script src="/assets/js/CodeMirror/mode/basic.js"></script>';
                 if($pref->edrmode!='default')
                     echo '<script src="/assets/js/CodeMirror/addon/'.$pref->edrmode.'.js"></script>';
             }
@@ -574,9 +575,9 @@ $Title=$inTitle .' - '. $oj_name;
                 }
             <?php }
             if($pref->edrmode!='off'){?>
+            $(document).ready(function(){
                 var editor = CodeMirror.fromTextArea(document.getElementById('detail_input'),{
                     theme: "<?php if($t_night=='on') echo 'midnight'; else echo 'eclipse'?>",
-                    mode: "text/x-c++src",
                     <?php
                         if($pref->edrmode!='default'){
                             echo 'keyMap:"'.$pref->edrmode.'",';
@@ -610,7 +611,9 @@ $Title=$inTitle .' - '. $oj_name;
                         editor.setOption("mode", "text/x-csrc");
                     else if(m == 2) 
                         editor.setOption("mode", "text/x-pascal");
-                    else 
+                    else if (m == 6)
+                        editor.setOption("mode", "text/x-basic");
+                    else
                         editor.setOption("mode", "text/x-c++src");
                 }
                 function toggle_fullscreen(e){
@@ -630,16 +633,17 @@ $Title=$inTitle .' - '. $oj_name;
                         });
                     }
                 }
-                function clreditor(){
+                function clear_editor(){
                     editor.getDoc().setValue('');
                     editor.focus();
                 }
             <?php }else{?>
-                function clreditor(){
+                function clear_editor(){
                     $('#detail_input').val('');
                     $('#detail_input').focus();
                 }
             <?php }?>
+            editor_changemode();
             var clipin = new Clipboard('#copy_in'),clipout = new Clipboard('#copy_out');
             clipin.on('success', function(e){
                 $('#copy_in').attr('title','<?php echo _('Copied!')?>');
@@ -662,7 +666,6 @@ $Title=$inTitle .' - '. $oj_name;
                 setTimeout("$('#copy_out').tooltip('destroy')",800);
             });
             var hide_info = 0;
-            $(document).ready(function(){
                 <?php if($is_contest==true&&isset($rem_time)&&$rem_time>0){?>
                     var timer_rt = window.setInterval("GetRTime()", 1000);
                 <?php }?>
@@ -768,7 +771,7 @@ $Title=$inTitle .' - '. $oj_name;
                         $('#prob_input').val(''+prob);
                         $('#SubmitModal').modal('show');
                         <?php if($pref->edrmode!='off'){?> 
-                            setTimeout("editor.refresh();editor.focus();", 200);
+                            setTimeout(function() {editor.refresh();editor.focus();}, 200);
                         <?php }else{?>
                         $("#detail_input").focus();
                     <?php }
@@ -777,6 +780,8 @@ $Title=$inTitle .' - '. $oj_name;
                 }
                 $('#btn_submit').click(click_submit);
                 $('#btn_submit2').click(click_submit);
+                $('#btn_clear').click(function () { clr_editor(); });
+                $('#slt_lang').change(function () { editor_changemode(); });
                 function toggle_info(){
                     if(hide_info) {
                         $('#leftside').addClass('col-sm-9');
