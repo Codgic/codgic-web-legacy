@@ -666,7 +666,7 @@ $Title=$inTitle .' - '. $oj_name;
             });
             var hide_info = 0;
             $(document).ready(function(){
-                <?php if($is_contest==true&&$rem_time>0){?>
+                <?php if($is_contest==true&&isset($rem_time)&&$rem_time>0){?>
                     var timer_rt = window.setInterval("GetRTime()", 1000);
                 <?php }?>
                 $('#action_delete').click(function(){

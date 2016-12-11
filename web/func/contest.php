@@ -48,7 +48,7 @@ function update_cont_scr($cont_id){
 
     //Obtain problems.
     $prob_arr=get_cont_probs($cont_id);
-    
+
     //Update scores for each user.
     $res=mysqli_query($con,"select user_id,enroll_time,leave_time from contest_status where contest_id=$cont_id");
     while($row=mysqli_fetch_row($res)){
@@ -60,7 +60,7 @@ function update_cont_scr($cont_id){
         $range_end=$cont_end;
         if($cont_start<strtotime($row[1]))
             $range_start=$row[1];
-        if($row[2]&&$cont_end>strtotime($row[2]))
+        if(isset($row[2])&&$cont_end>strtotime($row[2]))
             $range_end=$row[2];
 
         //As for every problem.
@@ -71,11 +71,11 @@ function update_cont_scr($cont_id){
             if($cont_judgeway==3){ //OI-Like: Only recognize the first submit.
                 $s_row=mysqli_fetch_row(mysqli_query($con, "select score,result,in_date from solution where user_id='$user_id' and in_date>'".$range_start."' and in_date<'".$range_end."' and problem_id=".$prob_arr[$i].' order by in_date limit 1'));
                 //Process score.
-                if($s_row[0])
+                if(isset($s_row[0]))
                     $score=$s_row[0];
                 $tot_score+=$score;
                 //Process result.
-                if($s_row[1])
+                if(isset($s_row[1]))
                     $result=$s_row[1];
                 //Process time.
                 if(isset($s_row[2]))
@@ -84,7 +84,7 @@ function update_cont_scr($cont_id){
             }else{  //Others: Select the highest score among eligible submits.
                 $s_row=mysqli_fetch_row(mysqli_query($con,"select MAX(score),COUNT(score),MIN(result),MAX(in_date) from solution where user_id='$user_id' and in_date>'".$range_start."' and in_date<'".$range_end."' and problem_id=".$prob_arr[$i]));
                 //Process score.
-                if($s_row[0]){
+                if(isset($s_row[0])){
                     if($cont_judgeway==2 && $s_row[0]==100) //ACM: if score != 100 then score = 0.
                         $score=100;
                     else if($cont_judgeway==1 && $s_row[1]!=0){ //CWOJ: Minus 5 points per non-AC submit.
@@ -96,10 +96,12 @@ function update_cont_scr($cont_id){
                 }
                 $tot_score+=$score;
                 //Process result.
-                if($s_row[2])
+                if(isset($s_row[2]))
                     $result=$s_row[2];
+                else
+                    $result='NULL';
                 //Process time.
-                if($s_row[3]){
+                if(isset($s_row[3])){
                     if($s_row[0]==100)
                         $time=strtotime($s_row[3])-strtotime($range_start)+1200*($s_row[1]-1);
                     else 
