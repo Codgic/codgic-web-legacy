@@ -185,7 +185,7 @@ else if(!isset($_SESSION['admin_tfa']) || !$_SESSION['admin_tfa']){
                                     <input <?php if($p_type=='edit') echo $option_hide?> type="checkbox" name="hide_cont"><?php echo _('Hide')?>
                                 </label>
                                 <label>
-                                    <input <?php echo $option_hide_source?> type="checkbox" name="hide_source"><?php echo _('Hide source code during contest')?>
+                                    <input <?php if(isset($option_hide_source)) echo $option_hide_source?> type="checkbox" name="hide_source"><?php echo _('Hide source code')?>
                                 </label>
                             </div>  
                             <div class="checkbox">
