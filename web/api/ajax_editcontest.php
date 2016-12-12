@@ -123,6 +123,9 @@ if($_POST['op']=='del'){
     if(isset($_POST['hide_cont'])){
         $has_tex|=PROB_IS_HIDE;
     }
+
+    $hide_source = isset($_POST['hide_source']) ? 1 : 0;
+
     foreach ($_POST as $value) {
         if(strstr($value,'[tex]') || strstr($value,'[inline]')) {
             $has_tex|=PROB_HAS_TEX;
@@ -137,7 +140,7 @@ if($_POST['op']=='del'){
         }
         $id=intval($_POST['contest_id']);
         //LEGACY CODE STILL NOT DELETED!
-        if(!mysqli_query($con,"update contest set title='$title',start_time='$start_time',end_time='$end_time',description='$des',source='$source',has_tex=$has_tex,judge_way=$judge_way where contest_id=$id")){
+        if(!mysqli_query($con,"update contest set title='$title',start_time='$start_time',end_time='$end_time',description='$des',source='$source',has_tex=$has_tex,judge_way=$judge_way,hide_source_code=$hide_source where contest_id=$id")){
             echo json_encode(array('success' => false, 'message' => _('Database operation failed...')));
             exit();
         }else{
@@ -180,7 +183,7 @@ if($_POST['op']=='del'){
         $result=mysqli_query($con,'select max(contest_id) from contest');
         if(($row=mysqli_fetch_row($result)) && intval($row[0]))
             $id=intval($row[0])+1;
-        if(!mysqli_query($con,"insert into contest (contest_id,title,start_time,end_time,description,source,in_date,has_tex,judge_way,enroll_user) values ($id,'$title','$start_time','$end_time','$des','$source',NOW(),$has_tex,$judge_way,0)")){
+        if(!mysqli_query($con,"insert into contest (contest_id,title,start_time,end_time,description,source,in_date,has_tex,judge_way,hide_source_code,enroll_user) values ($id,'$title','$start_time','$end_time','$des','$source',NOW(),$has_tex,$judge_way,$hide_source,0)")){
             echo json_encode(array('success' => false, 'message' => _('Database operation failed...')));
             exit();
         }else{
