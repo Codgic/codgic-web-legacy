@@ -192,6 +192,7 @@ $Title=$inTitle .' - '. $oj_name;
         <script src="/assets/js/CodeMirror/addon/fullscreen.js"></script>
         <script src="/assets/js/CodeMirror/mode/clike.js"></script>
         <script src="/assets/js/CodeMirror/mode/pascal.js"></script>
+        <script src="/assets/js/CodeMirror/mode/basic.js"></script>
         <script src="/assets/js/clipboard.min.js"></script>
         <script src="/assets/js/common.js?v=<?php echo $web_ver?>"></script>
         <script type="text/javascript">
@@ -207,8 +208,10 @@ $Title=$inTitle .' - '. $oj_name;
                     echo 'text/x-csrc';
                 if($LANG_NAME[$row[4]]=='Pascal')
                     echo 'text/x-pascal';
+                if ($LANG_NAME[$row[4]]=='QBASIC')
+                    echo 'text/x-basic';
                 else 
-                    echo 'text/x-c++src'
+                    echo 'text/x-c++src';
                 ?>",
                 lineNumbers: true,
                 readOnly: 'nocursor',

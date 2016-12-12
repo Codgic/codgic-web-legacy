@@ -21,7 +21,7 @@ else if(!isset($_SESSION['admin_tfa']) || !$_SESSION['admin_tfa']){
         $p_type='edit';
         $cont_id=intval($_GET['contest_id']);  
         $inTitle=_('Edit Contest')." #$cont_id";
-        $query="select title,start_time,end_time,description,source,judge_way,has_tex from contest where contest_id=$cont_id";
+        $query="select title,start_time,end_time,description,source,judge_way,has_tex,hide_source_code from contest where contest_id=$cont_id";
         $result=mysqli_query($con,$query);
         $row=mysqli_fetch_row($result);
         if(!$row)
@@ -44,6 +44,7 @@ else if(!isset($_SESSION['admin_tfa']) || !$_SESSION['admin_tfa']){
         }
         $option_level=($row[6]&PROB_LEVEL_MASK)>>PROB_LEVEL_SHIFT;
         $option_hide=(($row[6]&PROB_IS_HIDE)?'checked':'');
+        $option_hide_source=(($row[7]) ? 'checked' : '');
     }
 
     $Title=$inTitle .' - '. $oj_name;
@@ -180,9 +181,14 @@ else if(!isset($_SESSION['admin_tfa']) || !$_SESSION['admin_tfa']){
                                 <?php echo _('Options')?>
                             </label>
                             <div class="checkbox">
-                                <label>
+                                <label style="margin-right:10px;">
                                     <input <?php if($p_type=='edit') echo $option_hide?> type="checkbox" name="hide_cont"><?php echo _('Hide')?>
                                 </label>
+                                <label>
+                                    <input <?php echo $option_hide_source?> type="checkbox" name="hide_source"><?php echo _('Hide source code during contest')?>
+                                </label>
+                            </div>  
+                            <div class="checkbox">
                             </div>  
                         </div>
                     </div>
