@@ -63,7 +63,8 @@ CREATE TABLE `contest` (
   `judge_way` int(11) NOT NULL DEFAULT '0',
   `enroll_user` int(11) NOT NULL DEFAULT '0',
   `last_upd_time` datetime DEFAULT NULL,
-  `need_update` int(11) NOT NULL DEFAULT '0'
+  `need_update` int(11) NOT NULL DEFAULT '0',
+  `hide_source_code` bit(1) NOT NULL DEFAULT '1'
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -79,7 +80,7 @@ CREATE TABLE `contest_detail` (
   `result` smallint(6) DEFAULT NULL,
   `score` int(11) NOT NULL DEFAULT '0',
   `time` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -90,7 +91,7 @@ CREATE TABLE `contest_detail` (
 CREATE TABLE `contest_owner` (
   `contest_id` int(11) NOT NULL,
   `user_id` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -102,7 +103,7 @@ CREATE TABLE `contest_problem` (
   `contest_id` int(11) NOT NULL,
   `problem_id` int(11) NOT NULL,
   `place` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -118,7 +119,7 @@ CREATE TABLE `contest_status` (
   `rank` int(11) NOT NULL DEFAULT '0',
   `enroll_time` datetime NOT NULL,
   `leave_time` datetime DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 

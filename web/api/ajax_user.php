@@ -51,8 +51,8 @@ if(isset($_GET['type'])&&$_GET['type']=='json'){
         <img src="<?php echo get_gravatar($row[1],100)?>" class="media-object img-circle" width="100" height="100">
     </a>
     <div class="media-body">
-        <h1 class="media-heading"><?php echo $user?></h1>
-        <p class="motto-text"><?php echo $row[8]?></p>
+        <h1 class="media-heading"><?php echo htmlspecialchars($user)?></h1>
+        <p class="motto-text"><?php echo htmlspecialchars($row[8])?></p>
         <label class="label label-<?php echo $status_col?>">
             <?php echo $status_text?>
         </label>
@@ -66,7 +66,7 @@ if(isset($_GET['type'])&&$_GET['type']=='json'){
         <col style="width:80%">
     </colgroup>
     <tbody>
-        <tr><td colspan="2"><?php echo _('Nickname')?></td><td><?php echo $row[9];?></td></tr>
+        <tr><td colspan="2"><?php echo _('Nickname')?></td><td><?php echo htmlspecialchars($row[9]);?></td></tr>
         <tr><td colspan="2"><?php echo _('Level')?></td><td><?php echo $row[12],' (',$row[11],')';?></td></tr>
         <tr><td colspan="2"><?php echo _('Last Seen')?></td><td><?php echo $row[3];?></td></tr>
         <tr><td colspan="2"><?php echo _('Privilege')?></td><td><?php echo list_priv($row[10]);?></td></tr>

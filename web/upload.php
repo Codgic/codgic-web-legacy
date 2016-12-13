@@ -19,14 +19,14 @@ else{
             $tmp = explode('.', $filename);
             $file_extension = end($tmp);
 
-            if(file_exists("../images/$filename"))
+            if(file_exists(OJDIR."/images/$filename"))
                 echo _('File '),"'$filename'",_(' exists already, try another name...');
-            if(!is_dir("../images"))
-                if(!mkdir("../images",0770))
+            if(!is_dir(OJDIR."/images"))
+                if(!mkdir(OJDIR."/images",0770))
                     echo _('Can\'t access upload directory...');
                     
-            if(move_uploaded_file($_FILES["file"]["tmp_name"],"../images/$filename")){
-                $imgtag="img src=\"../images/$filename\"";
+            if(move_uploaded_file($_FILES["file"]["tmp_name"],OJDIR."/images/$filename")){
+                $imgtag="img src=\"/images/$filename\"";
             }else
                 echo _('Upload Failed!');
         }catch(Exception $e){
