@@ -55,55 +55,54 @@ if($op=='get_rank_table'){
         exit();
     }
     $return_html='
-    <table class="table table-condensed">
-        <thead>
-            <tr>
-                <th>No.</th>
-                <th>'._('User').'</th>
-                <th>'._('Score').'</th>
-                <th>'._('Time Penalty').'</th>';
-                    if(time()>=$cont_endtime || (time()>=$cont_starttime && $enrolled)){  
-                        $r=mysqli_query($con, "select problem_id from contest_problem where contest_id=$cont_id order by place");
-                        while($row=mysqli_fetch_row($r))
-                            $return_html.="<th>$row[0]</th>";
+    <div class="table-responsive">
+        <table class="table table-condensed">
+            <thead>
+                <tr>
+                    <th>No.</th>
+                    <th>'._('User').'</th>
+                    <th>'._('Nickname').'</th>
+                    <th>'._('Score').'</th>
+                    <th>'._('Time Penalty').'</th>';
+                        if(time()>=$cont_endtime || (time()>=$cont_starttime && $enrolled)){  
+                            $r=mysqli_query($con, "select problem_id from contest_problem where contest_id=$cont_id order by place");
+                            while($row=mysqli_fetch_row($r))
+                                $return_html.="<th>$row[0]</th>";
+                        }
+                    $return_html.='
+                </tr>
+            </thead>
+            <tbody>';
+                    while($row=mysqli_fetch_row($q)){
+                        $return_html.='<tr>';
+                        //Rank
+                        if(time()>=$cont_starttime)
+                            $return_html.='<td>'.$row[3].'</td>';
+                        else
+                            $return_html.='<td>-</td>';
+                        //User
+                        $return_html.="<td>$row[0]</td>";
+                        $return_html.='<td>'.htmlspecialchars($row[4]).'</td>';
+                        //Total Score
+                        $return_html.="<td>$row[1]</td>";
+                        //Total Time
+                        $return_html.='<td>'.get_time_text($row[2]).'</td>';
+                        //Problems
+                        if(time()>=$cont_endtime||(time()>=$cont_starttime&&$enrolled)){
+                            $r=mysqli_query($con, "SELECT contest_detail.problem_id,score,result,contest_problem.place from contest_detail
+                                                  LEFT JOIN (select problem_id,place from contest_problem where contest_id=$cont_id) as contest_problem on (contest_problem.problem_id=contest_detail.problem_id)
+                                                  where contest_id=$cont_id and user_id='$row[0]'");
+                            while($t_row=mysqli_fetch_row($r)){
+                                $return_html.='<td><i class='.(is_null($t_row[2]) ? '"fa fa-fw fa-question" style="color:grey"' : ($t_row[2] ? '"fa fa-fw fa-remove" style="color:red"' : '"fa fa-fw fa-check" style="color:green"')).'></i> ';
+                                $return_html.=$t_row[1].'</td>';
+                            }
+                        }
+                        $return_html.="<tr>\n";
                     }
                 $return_html.='
-            </tr>
-        </thead>
-        <tbody>';
-                while($row=mysqli_fetch_row($q)){
-                    $return_html.='<tr>';
-                    //Rank
-                    if(time()>=$cont_starttime)
-                        $return_html.='<td>'.$row[3].'</td>';
-                    else
-                        $return_html.='<td>-</td>';
-                    //User
-                    $cuname = "$row[0]";
-                    if ($row[4] != NULL && $row[4] != "")
-                    {
-                        $cuname .= " <small>(<em>$row[4]</em>)</small>";
-                    }
-                    $return_html.="<td>$cuname</td>";
-                    //Total Score
-                    $return_html.="<td>$row[1]</td>";
-                    //Total Time
-                    $return_html.='<td>'.get_time_text($row[2]).'</td>';
-                    //Problems
-                    if(time()>=$cont_endtime||(time()>=$cont_starttime&&$enrolled)){
-                        $r=mysqli_query($con, "SELECT contest_detail.problem_id,score,result,contest_problem.place from contest_detail
-                                               LEFT JOIN (select problem_id,place from contest_problem where contest_id=$cont_id) as contest_problem on (contest_problem.problem_id=contest_detail.problem_id)
-                                               where contest_id=$cont_id and user_id='$row[0]'");
-                        while($t_row=mysqli_fetch_row($r)){
-                            $return_html.='<td><i class='.(is_null($t_row[2]) ? '"fa fa-fw fa-question" style="color:grey"' : ($t_row[2] ? '"fa fa-fw fa-remove" style="color:red"' : '"fa fa-fw fa-check" style="color:green"')).'></i> ';
-                            $return_html.=$t_row[1].'</td>';
-                        }
-                    }
-                    $return_html.="<tr>\n";
-                }
-            $return_html.='
-        </tbody>
-    </table>';
+            </tbody>
+        </table>
+    </div>';
     echo json_encode(array('success' => true, 'message' => $return_html));
 }else{
     if(!isset($_SESSION['user'])){
