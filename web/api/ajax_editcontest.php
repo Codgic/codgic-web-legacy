@@ -77,8 +77,7 @@ if($_POST['op']=='del'){
         exit();
     }
     
-    $num=substr_count($problems,',')+1;
-    $prob_arr=explode(',',$problems);
+    $prob_arr=array_unique(explode(',',$problems));
     $des=isset($_POST['description']) ? mysqli_real_escape_string($con,$_POST['description']) : '';
     $source=isset($_POST['source']) ? mysqli_real_escape_string($con,$_POST['source']) : '';
     if(isset($_POST['owners'])&&!empty($_POST['owners'])){
@@ -97,7 +96,7 @@ if($_POST['op']=='del'){
     }
 
     //Verify problems availability.
-    for($i=0;$i<$num;$i++){
+    for($i=0;$i<sizeof($prob_arr);$i++){
         $r=mysqli_fetch_row(mysqli_query($con,'select has_tex from problem where problem_id='.$prob_arr[$i].' limit 1'));
         if(!$r){
             echo json_encode(array('success' => false, 'message' => _('Problem ').'#'.$prob_arr[$i]._(' does not exist...')));
@@ -188,7 +187,7 @@ if($_POST['op']=='del'){
             exit();
         }else{
             //Insert problems.
-            for($i=0;$i<$num;$i++){
+            for($i=0;$i<sizeof($prob_arr);$i++){
                 if(!mysqli_query($con, "insert into contest_problem (contest_id,problem_id,place) VALUES ($id,".$prob_arr[$i].",$i) ON DUPLICATE KEY update contest_id=$id,problem_id=".$prob_arr[$i].",place=$i")){
                     echo json_encode(array('success' => false, 'message' => _('Database operation failed...')));
                     exit();

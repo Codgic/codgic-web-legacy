@@ -56,7 +56,7 @@ if($op=='get_rank_table'){
     }
     $return_html='
     <div class="table-responsive">
-        <table class="table table-condensed">
+        <table class="table table-striped table-condensed" style="word-break:keep-all;">
             <thead>
                 <tr>
                     <th>No.</th>
@@ -93,11 +93,12 @@ if($op=='get_rank_table'){
                                                   LEFT JOIN (select problem_id,place from contest_problem where contest_id=$cont_id) as contest_problem on (contest_problem.problem_id=contest_detail.problem_id)
                                                   where contest_id=$cont_id and user_id='$row[0]' order by contest_problem.place");
                             while($t_row=mysqli_fetch_row($r)){
-                                $return_html.='<td><i class='.(is_null($t_row[2]) ? '"fa fa-fw fa-question" style="color:grey"' : ($t_row[2] ? '"fa fa-fw fa-remove" style="color:red"' : '"fa fa-fw fa-check" style="color:green"')).'></i> ';
-                                $return_html.=$t_row[1].'</td>';
+                                //$return_html.='<td><i class='.(is_null($t_row[2]) ? '"fa fa-fw fa-question" style="color:grey"' : ($t_row[2] ? '"fa fa-fw fa-remove" style="color:red"' : '"fa fa-fw fa-check" style="color:green"')).'></i> ';
+                                $text_color=(is_null($t_row[2]) ? 'grey' : ($t_row[2] ? 'red' : 'green'));
+                                $return_html.="<td style=\"color:$text_color\">".$t_row[1].'</td>';
                             }
                         }
-                        $return_html.="<tr>\n";
+                        $return_html.="</tr>\n";
                     }
                 $return_html.='
             </tbody>
