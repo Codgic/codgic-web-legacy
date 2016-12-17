@@ -452,16 +452,14 @@ ALTER TABLE `contest_detail`
 -- Indexes for table `contest_owner`
 --
 ALTER TABLE `contest_owner`
-  ADD UNIQUE KEY `contest_id_2` (`contest_id`,`user_id`),
-  ADD KEY `contest_id` (`contest_id`,`user_id`),
-  ADD KEY `contest_id_3` (`contest_id`,`user_id`);
+  ADD UNIQUE KEY `contest_id` (`contest_id`,`user_id`),
 
 --
 -- Indexes for table `contest_problem`
 --
 ALTER TABLE `contest_problem`
   ADD UNIQUE KEY `problem_id` (`problem_id`,`contest_id`),
-  ADD UNIQUE KEY `problem_id_2` (`problem_id`,`contest_id`);
+  ADD UNIQUE KEY `place` (`place`);
 
 --
 -- Indexes for table `contest_status`
