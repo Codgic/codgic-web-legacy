@@ -27,13 +27,12 @@ if($op=='get_rank_table'){
     }
     $cont_starttime=strtotime($row[0]);
     $cont_endtime=strtotime($row[1]);
-    $cont_lastrank=strtotime($row[2]);
-    $cont_needupdate=$row[3];
-
+    $cont_lastupd=strtotime($row[2]);
+    
     $enrolled=false;
     //Determine if an update is needed.
     if(time()>=$cont_starttime){
-        if(is_null($cont_lastrank) || $row[3] || ($cont_endtime>time() && time()-$cont_lastrank>20))
+        if(is_null($cont_lastupd) || $row[3] || ($cont_endtime>time() && time()-$cont_lastupd>20))
             update_cont_scr($cont_id);
         if(time()<=$cont_endtime){
             //Determine whether show the problem list or not.

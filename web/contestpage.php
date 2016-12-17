@@ -102,9 +102,12 @@ else{
                 //User unenrolled before contest ends.
                 $s_info = '<tr><td colspan="2" class="label-wa text-center"><i class="fa fa-fw fa-ambulance"></i> '._('You have left').'</td></tr>';
                 $user_quit = true;
-            }else
+            }else{
                 //Contest is in progress.
+                if(time()-strtotime($row[9])>20)
+                    update_cont_scr($cont_id);
                 $s_info = '<tr><td colspan="2" class="label-ac text-center"><i class="fa fa-fw fa-cog fa-spin"></i> '._('Contest in progress').'</td></tr>';
+            }
                 $cont_status=1;
         }
         //If user has joined this contest.
