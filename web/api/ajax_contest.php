@@ -112,7 +112,7 @@ if($op=='get_rank_table'){
     $uid=$_SESSION['user'];
     
     if($op=='enroll'){
-        $row=mysqli_fetch_row(mysqli_query($con,"select start_time,end_time,enroll_user from contest where contest_id=$cont_id"));
+        $row=mysqli_fetch_row(mysqli_query($con,"select start_time,end_time from contest where contest_id=$cont_id"));
         if(!$row){
             echo json_encode(array('success' => false, 'message' => _('No such contest...')));
             exit();
@@ -133,6 +133,11 @@ if($op=='get_rank_table'){
         }
         //Insert contest_status.
         if(!mysqli_query($con, "insert into contest_status (contest_id,user_id,tot_score,tot_time,rank,enroll_time,leave_time) VALUES ($cont_id,'$uid',0,0,0,NOW(),NULL)")){
+            echo json_encode(array('success' => false, 'message' => _('Database operation failed...')));
+            exit();
+        }
+        //Update enroll_user
+        if(!mysqli_query($con, "update contest set enroll_user=enroll_user+1 where contest_id=$cont_id limit 1")){
             echo json_encode(array('success' => false, 'message' => _('Database operation failed...')));
             exit();
         }
@@ -158,10 +163,6 @@ if($op=='get_rank_table'){
             echo json_encode(array('success' => false, 'message' => _('Contest has ended...')));
             exit();
         }
-        if(mysqli_num_rows(mysqli_query($con, "select 1 from contest_status where contest_id=$cont_id and leave_time is not null and user_id='$uid'"))>0){
-            echo json_encode(array('success' => false, 'message' => _('You have left the contest...')));
-            exit();
-        }
         if(strtotime($row[0])>time()){
             //If contest has not started, delete the entry.
             if(!mysqli_query($con, "delete from contest_status where contest_id=$cont_id and user_id='$uid' limit 1")){
@@ -172,7 +173,16 @@ if($op=='get_rank_table'){
                 echo json_encode(array('success' => false, 'message' => _('Database operation failed...')));
                 exit();
             }
+            //Update enroll_user
+            if(!mysqli_query($con, "update contest set enroll_user=enroll_user-1 where contest_id=$cont_id limit 1")){
+                echo json_encode(array('success' => false, 'message' => _('Database operation failed...')));
+                exit();
+            }
         }else{
+            if(mysqli_num_rows(mysqli_query($con, "select 1 from contest_status where contest_id=$cont_id and leave_time is not null and user_id='$uid'"))>0){
+                echo json_encode(array('success' => false, 'message' => _('You have left the contest...')));
+                exit();
+            }
             //If contest is still in progress, update leave_time.
             if(!mysqli_query($con, "update contest_status set leave_time=NOW() where contest_id=$cont_id and user_id='$uid' limit 1")){
                 echo json_encode(array('success' => false, 'message' => _('Database operation failed...')));
