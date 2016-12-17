@@ -91,7 +91,7 @@ else if(!isset($_SESSION['admin_tfa']) || !$_SESSION['admin_tfa']){
                                 echo '<input type="text" class="form-control" name="problems" id="input_probs" placeholder="',_('Please specify Problem IDs...'),'"';
                                 if($p_type=='edit'){
                                     $text='';
-                                    $t=mysqli_query($con, "select problem_id from contest_problem where contest_id=$cont_id");
+                                    $t=mysqli_query($con, "select problem_id from contest_problem where contest_id=$cont_id order by place");
                                     while($t_row=mysqli_fetch_row($t))
                                         $text.=$t_row[0].',';
                                     echo ' value="',substr($text,0,-1),'"';

@@ -57,3 +57,5 @@ static $news_num=7;
 //2.5 Contact email
 //Contact email that is shown in login.php.
 static $contact_email = 'info@cwoj.tk';
+
+define("GRAVATAR_CDN",  '//cdn.v2ex.com/gravatar');
