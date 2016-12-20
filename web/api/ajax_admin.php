@@ -235,13 +235,8 @@ if(!isset($_POST['title'])||!isset($_POST['content']))
 }else if($op=='del_news'){
     isset($_POST['news_id']) ? $news_id=intval($_POST['news_id']) : die('');
     if(mysqli_query($con,"delete from news where $news_id>0 and news_id=$news_id")){
-        $row=mysqli_fetch_row(mysqli_query($con,"select max(news_id) from news"));
-        $news_id++;
-        for($news_id;$news_id<=$row[0];$news_id++){
-            $res=mysqli_query($con,"update news set news_id='".($news_id-1)."'where news_id='".$news_id."'");
-            if(!$res) die($news_id);
-        }
-        echo 'success';
+        if(mysqli_query($con,"update news set news_id=news_id-1 where news_id>$news_id order by news_id"))
+            echo 'success';
     }
     else
         echo _('Something went wrong...');
