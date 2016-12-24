@@ -1,0 +1,9 @@
+{
+    "name": "CWOJ/CWOJ",
+    "description": "A free, open-source Online Judge.",
+    "license": "GPLv3+",
+
+    "require": {
+        "components/jquery": "3.1.*"
+    }
+}
