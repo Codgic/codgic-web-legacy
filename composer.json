@@ -1,0 +1,6 @@
+{
+    "require": {
+        "php-amqplib/php-amqplib": "2.6.*",
+        "mathjax/mathjax": "2.7.*"
+    }
+}

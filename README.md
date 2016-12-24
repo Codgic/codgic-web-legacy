@@ -10,6 +10,12 @@ Notes: 1.x is still in early development stage, meaning it contains loads of hal
 - stable: Latest stable version (0.x).
 
 ## Deployment
+- Requirements:
+    * PHP 7.0
+    * composer
+    * php-bcmath
+- Run `composer.phar install` on the project root.
+- Make sure your web server follows symlinks.
 - The local daemon can be found [HERE](https://github.com/CDFLS/cwoj_daemon).
 - Deployment Guide for CWOJ 0.x could be found in the [Wiki](https://github.com/CDFLS/CWOJ/wiki) section.
 

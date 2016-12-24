@@ -10,6 +10,7 @@ Laverne，电影《疯狂动物城》中主人公Judy Hopps的中间名，代表
 - stable-0.x: 稳定版本分支 (0.x)。
 
 ## 部署
+- See English version for latest development guides.
 - 评测端在[这里](https://github.com/CDFLS/cwoj_daemon)。
 - 适用于CWOJ 0.x的部署指南可以在[Wiki](https://github.com/CDFLS/CWOJ/wiki)标签栏下找到。
 
