@@ -59,3 +59,5 @@ static $news_num=7;
 static $contact_email = 'info@cwoj.tk';
 
 define("GRAVATAR_CDN",  '//cdn.v2ex.com/gravatar');
+define("CWOJ_MIN_SCORE", 50);
+

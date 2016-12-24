@@ -40,6 +40,7 @@ function update_cont_rank($cont_id){
 //Update contest score.
 function update_cont_scr($cont_id){
     require __DIR__.'/../conf/database.php';
+    require __DIR__.'/../conf/ojsettings.php';
 
     $row=mysqli_fetch_row(mysqli_query($con, "select start_time,end_time,judge_way from contest where contest_id=$cont_id limit 1"));
     $cont_start=$row[0];
@@ -89,8 +90,14 @@ function update_cont_scr($cont_id){
                         $score=100;
                     else if($cont_judgeway==1 && $s_row[1]!=0){ //CWOJ: Minus 5 points per non-AC submit.
                         $score=$s_row[0]-5*($s_row[1]-1);
-                        if($score<0)
-                            $score=0;
+
+                        if($score < 0)
+                            $score = 0;
+
+                        if ($s_row[2] == 0 && $score < CWOJ_MIN_SCORE)
+                        {
+                            $score = CWOJ_MIN_SCORE;
+                        }
                     }else if($cont_judgeway==0) //Training: MAX(score).
                         $score=$s_row[0];
                 }
