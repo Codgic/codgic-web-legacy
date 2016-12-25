@@ -12,12 +12,16 @@ Notes: 1.x is still in early development stage, meaning it contains loads of hal
 ## Deployment
 - Requirements:
     * PHP 7.0
-    * composer
     * php-bcmath
-- Run `composer.phar install` on the project root.
+    * composer
+    * msgpack
+- Run `apt install php-bcmath` to install bcmath required by php ACME lib.
+- Run `pecl install msgpack` to install MessagePack extension.
+- Run `composer.phar install` on the project root to install prerequisites.
 - Make sure your web server follows symlinks.
-- The local daemon can be found [HERE](https://github.com/CDFLS/cwoj_daemon).
-- Deployment Guide for CWOJ 0.x could be found in the [Wiki](https://github.com/CDFLS/CWOJ/wiki) section.
+- Copy the whole project to wherever you want, and set WebRoot to the `web` directory.
+- The local daemon can be found [HERE](https://github.com/CDFLS/ParallelDaemon).
+- Deployment Guide for CWOJ 0.x could be found in the [Wiki](https://github.com/CDFLS/CWOJ/wiki) section. The latest development guide will be published later.
 
 ## Credits
 - CWOJ is mainly based on [Bashu OnlineJudge](https://github.com/593141477/bashu-onlinejudge).
