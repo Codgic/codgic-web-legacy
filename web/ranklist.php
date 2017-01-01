@@ -64,11 +64,10 @@ $Title=$inTitle .' - '. $oj_name;
         <div class="container">
             <div class="row">
                 <div class="col-xs-12" style="margin-bottom:10px">
-                    <a href="solved.php" class="btn btn-success"><i class="fa fa-fw fa-clock-o"></i> <?php echo _('Recent AC')?></a>
                     <?php if($online==0){?>
-                        <a href="ranklist.php?online=1" class="btn btn-primary" id="btn_online"><i class="fa fa-fw fa-car"></i> <?php echo _('Show Online')?></a>
+                        <a href="ranklist.php?online=1" class="btn btn-success" id="btn_online"><i class="fa fa-fw fa-car"></i> <?php echo _('Show Online')?></a>
                     <?php }else{?>
-                        <a href="ranklist.php" class="btn btn-primary" id="btn_online"><i class="fa fa-fw fa-gamepad"></i> <?php echo _('Show All')?></a>
+                        <a href="ranklist.php" class="btn btn-danger" id="btn_online"><i class="fa fa-fw fa-gamepad"></i> <?php echo _('Show All')?></a>
                     <?php }?>
                     <div class="btn-group dropdown">
                         <button class="btn btn-primary dropdown-toggle" id="btn_usrcmp_menu"><i class="fa fa-fw fa-users"></i> <?php echo _('User Compare')?> <span class="caret"></span></button>

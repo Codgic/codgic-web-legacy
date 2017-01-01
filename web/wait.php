@@ -58,7 +58,7 @@ $Title=$inTitle .' - '. $oj_name;
                         </div>
                     </div>
                     <div class="collapse" id="ele_finish" style="margin-top:15px">
-                        <p><b><span id="judge_result" style="font-size:16px"></span></b></p>
+                        <p><b><span id="judge_result"></span></b></p>
                         <ul class="pager">
                             <li class="previous"><a class="pager-pre-link shortcut-hint" title="Alt+P" id="btn_back" href="#"><i class="fa fa-angle-left"></i> <?php echo _('Problem Page')?></a></li>
                             <li class="next"><a class="pager-next-link shortcut-hint" title="Alt+R" href="record.php"><?php echo _('Submit Records')?> <i class="fa fa-angle-right"></i></a></li>

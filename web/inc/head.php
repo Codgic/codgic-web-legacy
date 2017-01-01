@@ -29,15 +29,15 @@
         }
         if($t_night=='on'){
             $loginimg='/assets/res/loginbg_dark.png';
-            echo '<link href="/assets/css/bootstrap_slate.min.css" rel="stylesheet" type="text/css" />';
-            echo '<link href="/assets/css/docs_dark.css?v='.$web_ver.'" rel="stylesheet" type="text/css" />';
+            echo '<link href="/assets/Bootswatch/slate/bootstrap.min.css?v=337" rel="stylesheet" type="text/css" />';
+            echo '<link href="/assets/css/docs_dark.css?v=109" rel="stylesheet" type="text/css" />';
         }else{
             $loginimg='/assets/res/loginbg.png';
-            echo '<link href="/assets/css/bootstrap_cerulean.min.css" rel="stylesheet" type="text/css" />';
-            echo '<link href="/assets/css/docs.css?v='.$web_ver.'" rel="stylesheet" type="text/css" />';
+            echo '<link href="/assets/Bootswatch/cerulean/bootstrap.min.css?v=337" rel="stylesheet" type="text/css" />';
+            echo '<link href="/assets/css/docs.css?v=109" rel="stylesheet" type="text/css" />';
         }
     ?>
-    <link href="/assets/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+    <link href="/assets/FontAwesome/css/font-awesome.min.css?v=470" rel="stylesheet" type="text/css" />
     <script src="/assets/js/jquery.min.js?v=310"></script>
     <script src="/assets/js/bootstrap.min.js?v=337"></script>
     <!--[if lt IE 9]>

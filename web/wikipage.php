@@ -1,8 +1,10 @@
 <?php
 require __DIR__.'/inc/init.php';
 require __DIR__.'/func/checklogin.php';
+if(!isset($con))
+    require __DIR__.'/conf/database.php';
 require __DIR__.'/lib/Parsedown.php';
-require __DIR__.'/conf/database.php';
+require __DIR__.'/lib/ParsedownExtra.php';
 
 if(isset($_GET['wiki_id']))
     $wiki_id=intval($_GET['wiki_id']);
@@ -55,8 +57,14 @@ $Title=$inTitle .' - '. $oj_name;
 ?>
 <!DOCTYPE html>
 <html>
-    <?php require __DIR__.'/inc/head.php';?>
-    <link rel="stylesheet" href="/assets/css/prism.css">
+    <?php 
+        require __DIR__.'/inc/head.php';
+        //Load highlight-js theme.
+         if($t_night=='off') 
+            echo '<link rel="stylesheet" href="/assets/highlight/styles/vs.css" type="text/css" />';
+        else
+            echo '<link rel="stylesheet" href="/assets/highlight/styles/androidstudio.css" type="text/css" />';
+    ?>
     <body>
         <?php
             require __DIR__.'/conf/mathjax.php';
@@ -79,11 +87,11 @@ $Title=$inTitle .' - '. $oj_name;
                 </div>
             <?php }else{?>
                 <div class="row">
-                    <div class="col-xs-12" id="leftside" style="font-size:16px">
+                    <div class="col-xs-12" id="leftside">
                         <div class="page-header">
                             <h2><?php echo '#'.$wiki_id,' ',$row[0];if($row[7]==1)echo ' <span style="vertical-align:middle;font-size:12px" class="label label-danger">',_('Deleted'),'</span>';?></h2>
                         </div>
-                        <?php echo Parsedown::instance()->text(htmlspecialchars($row[1]));?>
+                        <?php echo Parsedown::instance()->text($row[1]);?>
                     </div>
                     <div class="col-xs-12 col-sm-3 collapse" id="rightside">
                         <div class="row">
@@ -142,7 +150,13 @@ $Title=$inTitle .' - '. $oj_name;
     
     <script src="/assets/js/prism.js"></script>
     <script src="/assets/js/common.js?v=<?php echo $web_ver?>"></script>
+    <script src="/assets/highlight/highlight.pack.js"></script>
     <script type="text/javascript">
+        hljs.initHighlightingOnLoad();
+        $('code').parent().css({
+            'background-color': 'transparent',
+            'border': 0
+        });
         var wiki=<?php echo $wiki_id?>,hide_info=1;
         change_type(4);
         $(document).ready(function(){
