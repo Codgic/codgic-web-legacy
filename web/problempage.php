@@ -573,9 +573,9 @@ $Title=$inTitle .' - '. $oj_name;
                         $("#tsec").text(nS);
                     }
                 }
-            <?php }
-            if($pref->edrmode!='off'){?>
+            <?php } ?>
             $(document).ready(function(){
+           <?php if($pref->edrmode!='off'){?>
                 var editor = CodeMirror.fromTextArea(document.getElementById('detail_input'),{
                     theme: "<?php if($t_night=='on') echo 'midnight'; else echo 'eclipse'?>",
                     <?php
@@ -638,6 +638,7 @@ $Title=$inTitle .' - '. $oj_name;
                     editor.focus();
                 }
             <?php }else{?>
+                function editor_changemode(){}
                 function clear_editor(){
                     $('#detail_input').val('');
                     $('#detail_input').focus();
