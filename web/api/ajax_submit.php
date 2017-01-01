@@ -1,45 +1,7 @@
 <?php
-require __DIR__.'/../inc/init.php';
-require __DIR__.'/../lib/lang.php';
-require __DIR__.'/../func/checklogin.php';
-
-function posttodaemon($data){
-    if(!isset($_SESSION['user'])) 
-        return _('Please login first...');
-    $encoded="";
-    while(list($k,$v) = each($data)){
-        $encoded.=($encoded ? "&" : "");
-        $encoded.=rawurlencode($k)."=".rawurlencode($v);
-    }
-    if(!($fp=@fsockopen('127.0.0.1', 8881))){
-        echo _('Can\'t connect to daemon...');
-        exit();
-    }
-    fputs($fp, "POST /submit_prob HTTP/1.0\r\n");
-    fputs($fp, "Host: 127.0.0.1\r\n");
-    fputs($fp, "Content-type: application/x-www-form-urlencoded\r\n");
-    fputs($fp, "Content-length: " . strlen($encoded) . "\r\n");
-    fputs($fp, "Connection: close\r\n\r\n");
-    fputs($fp, "$encoded\r\n");
-
-    $line = fgets($fp,128);
-    if(!strstr($line,"HTTP/1.0 200"))
-        return _('Something went wrong...');
-
-    $results="";
-    while(!feof($fp))
-        $results.=fgets($fp,128);
-    /*$inheader=true;
-    while(!feof($fp)) {
-        $line=fgets($fp,128);
-        if($inheader && $line=="\r\n")
-            $inheader=false;
-        else if(!$inheader)
-            $results.=$line;
-    }*/
-    fclose($fp);
-    return $results;
-}
+require_once __DIR__.'/../inc/init.php';
+require_once __DIR__.'/../lib/lang.php';
+require_once __DIR__.'/../func/checklogin.php';
 
 if(!isset($_SESSION['user']) || strlen($_SESSION['user'])==0){
     echo _('Please login first...');
@@ -49,11 +11,14 @@ if(!isset($_POST['op'],$_POST['problem'])){
     echo _('Invalid Argument...');
     exit();
 }
+
 $prob=intval($_POST['problem']);
 
-require __DIR__.'/../conf/database.php';
+require_once __DIR__.'/../conf/database.php';
+require_once __DIR__.'/../func/daemonrpc.php';
 
-$res=mysqli_query($con,"select case_time_limit,memory_limit,case_score,compare_way,defunct,has_tex from problem where problem_id=$prob");
+$res=mysqli_query($con,"select defunct from problem where problem_id=$prob");
+
 if(!($row=mysqli_fetch_row($res))){
     echo _('No such problem...');
     exit();
@@ -83,10 +48,9 @@ if($_POST['op']=='judge'){
     require __DIR__.'/../func/privilege.php';
 
     $forbidden=false;
-    if($row[4]=='Y' && !check_priv(PRIV_PROBLEM))
+    if($row[0] == 0 && !check_priv(PRIV_PROBLEM))
         $forbidden=true;
-    else if($row[5]&PROB_IS_HIDE && !check_priv(PRIV_INSIDER))
-        $forbidden=true;
+
     if($forbidden){
         echo _('Permission Denied...');
         exit();
@@ -96,44 +60,20 @@ if($_POST['op']=='judge'){
     mysqli_query($con,"update users set language=$lang where user_id='".$_SESSION['user']."'");
     mysqli_query($con,"update problem set in_date=NOW() where problem_id=$prob");
     
-    $key=md5('key'.time().rand());
     $share_code=(isset($_POST['public']) ? 1 : 0);
-    
-    $data=array(
-        'a'=>$prob,
-        'b'=>$lang,
-        'c'=>$row[0],
-        'd'=>$row[1],
-        'e'=>$row[2],
-        'f'=>$code,
-        'g'=>$_SESSION['user'],
-        'h'=>$key,
-        'i'=>$share_code,
-        'j'=>$row[3]
-    );
+
+    $stmt = $con->prepare("INSERT INTO `solution` (`problem_id`, `user_id`, `time`, `memory`, `in_date`, `result`, `score`, `language`, `code_length`, `public_code`, `malicious`) 
+        VALUES (?, ?, 0, 0, NOW(), 8, 0, ?, ?, ?, 0)");
+    $stmt->bind_param('dsddd', $prob, $_SESSION['user'], $lang, strlen($code), $share_code);
+    $stmt->execute();
+    $solution_id = $stmt->insert_id;
+    $stmt->close();
+
+    $data=array('solution' => $solution_id);
     ignore_user_abort(TRUE);
-    $result = posttodaemon($data);
-    if(strstr($result,'OK'))
-        echo 'success_'.$key;
-    else
-        die($result);
+    $rpcclient = new DaemonRpcClient();
+    $rpcresult = $rpcclient->call($data);
+    echo $rpcresult["suck_my_dick"];
 }else if($_POST['op']=='rejudge'){
-    $data=array(
-        'a'=>$prob,
-        'c'=>$row[0],
-        'd'=>$row[1],
-        'e'=>$row[2],
-        'h'=>"rejudge".$prob,
-        'j'=>$row[3],
-        'k'=>1  //TYPE_rejudge
-    );
-    ignore_user_abort(TRUE);
-    $result = posttodaemon($data);
-    
-    if(strstr($result,"OK"))
-        echo 'success';
-    else if(strstr($result,"another"))
-        echo _('Another rejudge thread is running, try again later...');
-    else
-        echo $result;
+    echo "Rejudge is currently under development.";
 }

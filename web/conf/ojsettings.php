@@ -61,3 +61,7 @@ static $contact_email = 'info@cwoj.tk';
 define("GRAVATAR_CDN",  '//cdn.v2ex.com/gravatar');
 define("CWOJ_MIN_SCORE", 50);
 
+define("DAEMON_SERVER_WEBSOCKET", "ws://127.0.0.1:12345/");
+define("AMQP_SERVER", "127.0.0.1");
+define("AMQP_PORT", 5672);
+define("AMQP_EXCHANGE_NAME", "cwoj_web");

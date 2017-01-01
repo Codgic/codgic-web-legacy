@@ -696,7 +696,8 @@ $Title=$inTitle .' - '. $oj_name;
                             success:function(msg){
                                 if(msg.indexOf('success_')!=-1){
                                     $('#submit_res').slideUp();
-                                    window.location.href='wait.php?key='+msg.substring(8,msg.length);
+                                    // window.location.href='wait.php?key='+msg.substring(8,msg.length);
+                                    alert("Posted! Server returns: " + msg);
                                 }
                                 else 
                                     $('#submit_res').html('<i class="fa fa-fw fa-remove"></i> '+msg).slideDown();
