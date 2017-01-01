@@ -4,6 +4,7 @@
     "license": "GPLv3+",
 
     "require": {
-        "components/jquery": "3.1.*"
+        "php-amqplib/php-amqplib": "2.6.*",
+        "mathjax/mathjax": "2.7.*"
     }
 }
