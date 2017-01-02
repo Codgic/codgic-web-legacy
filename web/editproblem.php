@@ -247,6 +247,7 @@ else if(!isset($_SESSION['admin_tfa']) || !$_SESSION['admin_tfa']){
         </div>
         <script src="/assets/js/common.js?v=<?php echo $web_ver?>"></script>
         <script src="/assets/js/simplemde.min.js"></script>
+        <script src="/assets/highlight/highlight.pack.js"></script>
         <script type="text/javascript"> 
             $(document).ready(function(){
                 $("[data-toggle='tooltip']").tooltip();

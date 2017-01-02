@@ -171,7 +171,6 @@ $Title=$inTitle .' - '. $oj_name;
         <script type="text/javascript">
             $(document).ready(function(){
                 $('#nav_wiki').parent().addClass('active');
-                $('table').addClass('table');
                 change_type(4);
                 <?php if(isset($_GET['page_id'])){?>
                     $('#wiki_table').click(function(E){
