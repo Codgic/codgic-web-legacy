@@ -556,7 +556,7 @@ $Title=$inTitle .' - '. $oj_name;
                 echo '<script src="/assets/CodeMirror/mode/pascal.js"></script>';
                 echo '<script src="/assets/CodeMirror/mode/basic.js"></script>';
                 if($pref->edrmode!='default')
-                    echo '<script src="/assets/CodeMirror/addon/'.$pref->edrmode.'.js"></script>';
+                    echo '<script src="/assets/CodeMirror/keymap/'.$pref->edrmode.'.js"></script>';
             }
         ?>
         <script type="text/javascript">
@@ -585,101 +585,101 @@ $Title=$inTitle .' - '. $oj_name;
             <?php }?>
             
             $(document).ready(function(){
-            $('table').each(function(){
-                if(!$(this).hasClass('table'))
-                    $('table').addClass('table table-bordered table-condensed');
-            });
-            <?php if($pref->edrmode!='off'){?>
-                var editor = CodeMirror.fromTextArea(document.getElementById('detail_input'),{
-                    theme: "<?php if($t_night=='on') echo 'midnight'; else echo 'eclipse'?>",
-                    <?php
-                        if($pref->edrmode!='default'){
-                            echo 'keyMap:"'.$pref->edrmode.'",';
-                            echo 'showCursorWhenSelecting: true,';
-                        }
-                    ?>
-                    lineNumbers:true,
-                    extraKeys:{
-                        "F11": function(cm){
-                            if(cm.getOption("fullScreen")){
-                                toggle_fullscreen(1);
-                                cm.setOption("fullScreen",false);
-                            }else{
-                                toggle_fullscreen(0);  
-                                cm.setOption("fullScreen", !cm.getOption("fullScreen"));
-                            }  
-                        },
-                    }
+                $('table').each(function(){
+                    if(!$(this).hasClass('table'))
+                        $('table').addClass('table table-bordered table-condensed');
                 });
-                <?php if($pref->edrmode=='vim'){?>
-                    CodeMirror.on(editor,'vim-keypress',function(key){
-                        $('#vim_cmd').html(key);
+                <?php if($pref->edrmode!='off'){?>
+                    var editor = CodeMirror.fromTextArea(document.getElementById('detail_input'),{
+                        theme: "<?php if($t_night=='on') echo 'midnight'; else echo 'eclipse'?>",
+                        <?php
+                            if($pref->edrmode!='default'){
+                                echo 'keyMap:"'.$pref->edrmode.'",';
+                                echo 'showCursorWhenSelecting: true,';
+                            }
+                        ?>
+                        lineNumbers:true,
+                        extraKeys:{
+                            "F11": function(cm){
+                                if(cm.getOption("fullScreen")){
+                                    toggle_fullscreen(1);
+                                    cm.setOption("fullScreen",false);
+                                }else{
+                                    toggle_fullscreen(0);  
+                                    cm.setOption("fullScreen", !cm.getOption("fullScreen"));
+                                }  
+                            },
+                        }
                     });
-                    CodeMirror.on(editor,'vim-command-done',function(){
-                        $('#vim_cmd').html('');
-                    });
-                <?php }?>
-                function editor_changemode(){
-                    var m = $("#slt_lang").val();
-                    if(m == 1) 
-                        editor.setOption("mode", "text/x-csrc");
-                    else if(m == 2) 
-                        editor.setOption("mode", "text/x-pascal");
-                    else if (m == 6)
-                        editor.setOption("mode", "text/x-basic");
-                    else
-                        editor.setOption("mode", "text/x-c++src");
-                }
-                function toggle_fullscreen(e){
-                    if(e == 0){
-                        $('#submit_dialog').css({
-                            'width': '101%','height': '100%','margin': '0','padding': '0'
+                    <?php if($pref->edrmode=='vim'){?>
+                        CodeMirror.on(editor,'vim-keypress',function(key){
+                            $('#vim_cmd').html(key);
                         });
-                        $('#submit_content').css({
-                            'height': 'auto','min-height': '100%','border-radius': '0'
+                        CodeMirror.on(editor,'vim-command-done',function(){
+                            $('#vim_cmd').html('');
                         });
-                    }else{
-                        $('#submit_dialog').css({
-                            'width': '','height': '','margin': '','padding': ''
-                        });
-                        $('#submit_content').css({
-                            'height': '','min-height': '','border-radius': ''
-                        });
+                    <?php }?>
+                    function editor_changemode(){
+                        var m = $("#slt_lang").val();
+                        if(m == 1) 
+                            editor.setOption("mode", "text/x-csrc");
+                        else if(m == 2) 
+                            editor.setOption("mode", "text/x-pascal");
+                        else if (m == 6)
+                            editor.setOption("mode", "text/x-basic");
+                        else
+                            editor.setOption("mode", "text/x-c++src");
                     }
-                }
-                function clear_editor(){
-                    editor.getDoc().setValue('');
-                    editor.focus();
-                }
-            <?php }else{?>
-                function clear_editor(){
-                    $('#detail_input').val('');
-                    $('#detail_input').focus();
-                }
-            <?php }?>
-            editor_changemode();
-            var clipin = new Clipboard('#copy_in'),clipout = new Clipboard('#copy_out');
-            clipin.on('success', function(e){
-                $('#copy_in').attr('title','<?php echo _('Copied!')?>');
-                $('#copy_in').tooltip('show');
-                setTimeout("$('#copy_in').tooltip('destroy')",800);
-            });
-            clipin.on('error', function(e){
-                $('#copy_in').attr('title','<?php echo _('Failed...')?>');
-                $('#copy_in').tooltip('show');
-                setTimeout("$('#copy_in').tooltip('destroy')",800);
-            });
-            clipout.on('success', function(e){
-                $('#copy_out').attr('title','<?php echo _('Copied!')?>');
-                $('#copy_out').tooltip('show');
-                setTimeout("$('#copy_out').tooltip('destroy')",800);
-            });
-            clipout.on('success', function(e){
-                $('#copy_out').attr('title','<?php echo _('Failed...')?>');
-                $('#copy_out').tooltip('show');
-                setTimeout("$('#copy_out').tooltip('destroy')",800);
-            });
-            var hide_info = 0;
+                    function toggle_fullscreen(e){
+                        if(e == 0){
+                            $('#submit_dialog').css({
+                                'width': '101%','height': '100%','margin': '0','padding': '0'
+                            });
+                            $('#submit_content').css({
+                                'height': 'auto','min-height': '100%','border-radius': '0'
+                            });
+                        }else{
+                            $('#submit_dialog').css({
+                                'width': '','height': '','margin': '','padding': ''
+                            });
+                            $('#submit_content').css({
+                                'height': '','min-height': '','border-radius': ''
+                            });
+                        }
+                    }
+                    function clear_editor(){
+                        editor.getDoc().setValue('');
+                        editor.focus();
+                    }
+                <?php }else{?>
+                    function clear_editor(){
+                        $('#detail_input').val('');
+                        $('#detail_input').focus();
+                    }
+                <?php }?>
+                editor_changemode();
+                var clipin = new Clipboard('#copy_in'),clipout = new Clipboard('#copy_out');
+                clipin.on('success', function(e){
+                    $('#copy_in').attr('title','<?php echo _('Copied!')?>');
+                    $('#copy_in').tooltip('show');
+                    setTimeout("$('#copy_in').tooltip('destroy')",800);
+                });
+                clipin.on('error', function(e){
+                    $('#copy_in').attr('title','<?php echo _('Failed...')?>');
+                    $('#copy_in').tooltip('show');
+                    setTimeout("$('#copy_in').tooltip('destroy')",800);
+                });
+                clipout.on('success', function(e){
+                    $('#copy_out').attr('title','<?php echo _('Copied!')?>');
+                    $('#copy_out').tooltip('show');
+                    setTimeout("$('#copy_out').tooltip('destroy')",800);
+                });
+                clipout.on('success', function(e){
+                    $('#copy_out').attr('title','<?php echo _('Failed...')?>');
+                    $('#copy_out').tooltip('show');
+                    setTimeout("$('#copy_out').tooltip('destroy')",800);
+                });
+                var hide_info = 0;
                 <?php if($is_contest==true&&isset($rem_time)&&$rem_time>0){?>
                     var timer_rt = window.setInterval("GetRTime()", 1000);
                 <?php }?>
@@ -712,8 +712,8 @@ $Title=$inTitle .' - '. $oj_name;
                                     $('#submit_res').slideUp();
                                     window.location.href='wait.php?key='+msg.substring(8,msg.length);
                                 }
-                                else 
-                                    $('#submit_res').html('<i class="fa fa-fw fa-remove"></i> '+msg).slideDown();
+                            else 
+                                $('#submit_res').html('<i class="fa fa-fw fa-remove"></i> '+msg).slideDown();
                             }
                         });
                     }
