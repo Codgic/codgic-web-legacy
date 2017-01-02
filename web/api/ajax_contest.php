@@ -183,7 +183,7 @@ if($op=='get_rank_table'){
                 echo json_encode(array('success' => false, 'message' => _('You have left the contest...')));
                 exit();
             }
-            //If contest is still in progress, update leave_time.
+            //If contest is still active, update leave_time.
             if(!mysqli_query($con, "update contest_status set leave_time=NOW() where contest_id=$cont_id and user_id='$uid' limit 1")){
                 echo json_encode(array('success' => false, 'message' => _('Database operation failed...')));
                 exit();

@@ -244,7 +244,7 @@ $Title=$inTitle .' - '. $oj_name;
                                                 else if(time()<strtotime($row[4])) 
                                                     $cont_status='<span class="label label-wa">'._('Upcoming').'</span>';
                                                 else 
-                                                    $cont_status='<span class="label label-re">'._('In Progress').'</span>';
+                                                    $cont_status='<span class="label label-re">'._('Active').'</span>';
                                                 echo '<tr><td>',$row[0],'</td>';
                                                 if(isset($_SESSION['user'])){
                                                     echo '<td><i class=', is_null($row[3]) ? '"fa fa-fw fa-remove fa-2x" style="visibility:hidden"' : (($type==1&&$row[3])? '"fa fa-fw fa-remove fa-2x" style="color:red"' : '"fa fa-fw fa-2x fa-check" style="color:green"'), '></i>', '</td>';

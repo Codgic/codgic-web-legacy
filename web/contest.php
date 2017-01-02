@@ -159,7 +159,7 @@ $Title=$inTitle .' - '. $oj_name;
                                     else if(time()<strtotime($row[2])) 
                                         $cont_status='<span class="label label-re">'._('Upcoming').'</span>';
                                     else 
-                                        $cont_status='<span class="label label-ac">'._('In Progress').'</span>';
+                                        $cont_status='<span class="label label-ac">'._('Active').'</span>';
                                     echo '<tr>';
                                     echo '<td>',$row[0],'</td>';
                                     if(isset($_SESSION['user'])){

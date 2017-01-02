@@ -1,8 +1,9 @@
 <?php
-define("PRIV_INSIDER",1);
-define("PRIV_SOURCE",2);
-define("PRIV_PROBLEM",4);
-define("PRIV_SYSTEM",8);
+define("PRIV_USER",1);
+define("PRIV_INSIDER",2);
+define("PRIV_SOURCE",4);
+define("PRIV_PROBLEM",8);
+define("PRIV_SYSTEM",16);
 
 //Check if user has certain privilege.
 function check_priv($priv){
@@ -27,8 +28,10 @@ function list_priv($i){
         $r.=_('Source').' ';
     if($i & PRIV_INSIDER)
         $r.=_('Insider').' '; 
+    if($i & PRIV_USER)
+        $r.=_('User').' '; 
     if($r=='')
-        $r=_('User');
+        $r=_('Everyone');
     else 
         $r=substr($r,0,-1);
     return $r;

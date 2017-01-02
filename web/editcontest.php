@@ -12,7 +12,8 @@ else if(!isset($_SESSION['admin_tfa']) || !$_SESSION['admin_tfa']){
     exit();
 }else{
     require __DIR__.'/lib/problem_flags.php';
-    require __DIR__.'/conf/database.php';
+    if(!isset($con))
+        require __DIR__.'/conf/database.php';
     $level_max=(PROB_LEVEL_MASK>>PROB_LEVEL_SHIFT);
     if(!isset($_GET['contest_id'])){
         $p_type='add';
@@ -51,8 +52,15 @@ else if(!isset($_SESSION['admin_tfa']) || !$_SESSION['admin_tfa']){
 ?>
 <!DOCTYPE html>
 <html>
-    <?php require __DIR__.'/inc/head.php'; ?>
-
+    <?php
+        require __DIR__.'/inc/head.php';
+        //Load highlight-js theme.
+        if($t_night=='off') 
+            echo '<link rel="stylesheet" href="/assets/highlight/styles/xcode.css" type="text/css" />';
+        else
+            echo '<link rel="stylesheet" href="/assets/highlight/styles/androidstudio.css" type="text/css" />';
+    ?>
+    <link rel="stylesheet" href="/assets/css/simplemde.min.css" type="text/css" />
     <body>
         <?php require __DIR__.'/inc/navbar.php'; ?>
         <div class="container edit-page">
@@ -66,16 +74,13 @@ else if(!isset($_SESSION['admin_tfa']) || !$_SESSION['admin_tfa']){
                     </p>
                 </div>
             <?php }else{?>
-                <div class="collapse" id="showtools">
-                    <p><button class="btn btn-primary" id="btn_show"><?php echo _('Show Toolbar')?><i class="fa fa-fw fa-angle-right"></i></button></p>
-                </div>
                 <form action="#" method="post" id="edit_form" style="padding-top:10px">
                     <input type="hidden" name="op" value="<?php echo $p_type?>">
                     <?php if($p_type=='edit'){?>
                         <input type="hidden" name="contest_id" value="<?php echo $cont_id?>">
                     <?php }?>
                     <div class="row">
-                        <div class="form-group col-xs-12 col-sm-9" id="ctl_title">
+                        <div class="form-group col-xs-12 col-sm-12" id="ctl_title">
                             <label class="control-label" for="input_title">
                                 <?php echo _('Title')?>
                             </label>
@@ -83,7 +88,7 @@ else if(!isset($_SESSION['admin_tfa']) || !$_SESSION['admin_tfa']){
                         </div>
                     </div>
                     <div class="row">
-                        <div class="form-group col-xs-12 col-sm-9" id="ctl_probs">
+                        <div class="form-group col-xs-12 col-sm-6" id="ctl_probs">
                             <label class="control-label" for="input_probs">
                                 <?php echo _('Problems'),_(' (Format: 1000,1001,...)')?>
                             </label>
@@ -99,11 +104,10 @@ else if(!isset($_SESSION['admin_tfa']) || !$_SESSION['admin_tfa']){
                                 echo '>';
                             ?>
                         </div>
-                    </div>
-                    <div class="row">
-                        <div class="form-group col-xs-12 col-sm-9" id="ctl_owners">
+                        <div class="form-group col-xs-12 col-sm-6" id="ctl_owners">
                             <label class="control-label" for="input_owners">
                                 <?php echo _('Owners'),_(' (Format: user1,user2,...)')?>
+                                <a href="#" data-toggle="tooltip" title="<?php echo _('Contest owners can view contest status without the need of enrollment. Leave it blank if you don\'t want any owners.')?>"><i class="fa fa-question-circle"></i></a>
                             </label>
                             <?php
                                 echo '<input type="text" class="form-control" name="owners" id="input_owners" placeholder="',_('Please specify User IDs...'),'"';
@@ -118,17 +122,16 @@ else if(!isset($_SESSION['admin_tfa']) || !$_SESSION['admin_tfa']){
                                 }
                                 echo '>';
                             ?>
-                            <span class="help-block"><?php echo _('Contest owners can view contest status without the need of enrollment. Leave it blank if you don\'t want any owners.')?></span>
                         </div>
                     </div>
                     <div class="row">
-                        <div class="form-group col-xs-6 col-sm-4" id="ctl_starttime">
+                        <div class="form-group col-xs-6" id="ctl_starttime">
                             <label class="control-label" for="input_starttime">
                                 <?php echo _('Start Time')?>
                             </label>
                             <input type="text" name="start_time" id="input_starttime" class="form-control" placeholder="<?php echo _('yyyy-mm-dd hh:mm:ss')?>" value="<?php if($p_type=='edit') echo $row[1]; else echo date("Y-m-d H:i:s",time())?>">
                         </div>
-                        <div class="form-group col-xs-6 col-sm-4" id="ctl_endtime">
+                        <div class="form-group col-xs-6" id="ctl_endtime">
                             <label class="control-label" for="input_endtime">
                                 <?php echo _('End Time')?>
                             </label>
@@ -136,10 +139,11 @@ else if(!isset($_SESSION['admin_tfa']) || !$_SESSION['admin_tfa']){
                         </div> 
                     </div>
                     <div class="row">
-                        <div class="form-group col-xs-12 col-sm-9">
+                        <div class="form-group col-xs-12 col-sm-4">
                             <label class="control-label" for="input_cmp">
                                 <?php echo _('Format')?>
                             </label>
+                            <a href="#" id="btn_togglehelp"><i class="fa fa-arrow-circle-down"></i> Show help</a>
                             <select class="form-control" name="judge" id="input_cmp">
                                 <option value="train"><?php echo _('Training')?></option>
                                 <option value="cwoj"><?php echo _('CWOJ')?></option>
@@ -151,10 +155,7 @@ else if(!isset($_SESSION['admin_tfa']) || !$_SESSION['admin_tfa']){
                                     $('#input_cmp').val("<?php echo $way?>");
                                 </script>
                             <?php }?>
-                            <span id="input_judge_help" class="help-block"></span>
                         </div>
-                    </div>      
-                    <div class="row">
                         <div class="form-group col-xs-6 col-sm-3">
                             <label class="control-label" for="input_level">
                                 <?php echo _('Level')?>
@@ -176,7 +177,7 @@ else if(!isset($_SESSION['admin_tfa']) || !$_SESSION['admin_tfa']){
                                 </script>
                             </select>
                         </div>
-                        <div class="form-group col-xs-6 col-sm-4">
+                        <div class="form-group col-xs-6 col-sm-5">
                             <label class="control-label">
                                 <?php echo _('Options')?>
                             </label>
@@ -191,17 +192,21 @@ else if(!isset($_SESSION['admin_tfa']) || !$_SESSION['admin_tfa']){
                             <div class="checkbox">
                             </div>  
                         </div>
+                        <div class="form-group col-xs-12 collapse"  id="div_judgehelp">
+                            <span class="help-block"></span>
+                        </div>
                     </div>
                     <div class="row">
-                        <div class="form-group col-xs-12 col-sm-9">
+                        <div class="form-group col-xs-12">
                             <label class="control-label" for="input_des">
                                 <?php echo _('Description')?>
                             </label>
+                            <a href="#" data-toggle="tooltip" title="<?php echo _('Use [tex][/tex] for common formulas and [inline][/inline] for inline formulas.')?>"><i class="fa fa-question-circle"></i> <?php echo 'Mathjax'?></a>
                             <textarea class="form-control col-xs-12" name="description" id="input_des" rows="13" placeholder="<?php echo _('Please create a description for your contest...')?>"><?php if($p_type=='edit') echo htmlspecialchars($row[3])?></textarea>
                         </div>
                     </div>       
                     <div class="row">
-                        <div class="form-group col-xs-12 col-sm-9">
+                        <div class="form-group col-xs-12">
                             <label class="control-label" for="input_tags">
                                 <?php echo _('Tags')?>
                             </label>
@@ -209,8 +214,8 @@ else if(!isset($_SESSION['admin_tfa']) || !$_SESSION['admin_tfa']){
                         </div>
                     </div>
                     <div class="row">
-                        <div class="form-group col-xs-12 col-sm-9">
-                            <div class="alert alert-danger collapse" id="alert_error"></div>  
+                        <div class="form-group col-xs-12">
+                            <div class="alert alert-danger collapse" id="alert_error"></div>
                             <button class="btn btn-primary" type="submit"><?php echo _('Submit')?></button>
                         </div>
                     </div>
@@ -219,90 +224,44 @@ else if(!isset($_SESSION['admin_tfa']) || !$_SESSION['admin_tfa']){
             require __DIR__.'/inc/footer.php';?>
         </div>
         
-        <div class="html-tools">
-            <div class="panel panel-default" id="tools">
-                <div class="panel-heading">
-                    <h3 class="panel-title"><i class="fa fa-fw fa-code"></i> <?php echo _('HTML Toolbar')?></h3>
-                </div>
-                <div class="panel-body">
-                    <table class="table table-responsive table-bordered table-condensed table-striped">
-                        <thead>
-                            <tr>
-                                <th><?php echo _('Function')?></th>
-                                <th><?php echo _('Code')?></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td><button class="btn btn-default" id="tool_less"><?php echo _('Smaller than(&lt;)')?></button></td>
-                                <td>&amp;lt;</td>
-                            </tr>
-                            <tr>
-                                <td><button class="btn btn-default" id="tool_greater"><?php echo _('Greater than(&gt;)')?></button></td>
-                                <td>&amp;gt;</td>
-                            </tr>
-                            <tr>
-                                <td><button class="btn btn-default" id="tool_img"><?php echo _('Image')?></button></td>
-                                <td>&lt;img src=&quot;...&quot;&gt;</td>
-                            </tr>
-                            <tr>
-                                <td><button class="btn btn-default" id="tool_sup"><?php echo _('Superscript')?></button></td>
-                                <td>&lt;sup&gt;...&lt;/sup&gt;</td>
-                            </tr>
-                            <tr>
-                                <td><button class="btn btn-default" id="tool_sub"><?php echo _('Subscript')?></button></td>
-                                <td>&lt;sub&gt;...&lt;/sub&gt;</td>
-                            </tr>
-                            <tr>
-                                <td><button class="btn btn-default" id="tool_samp"><?php echo _('Monospace')?></button></td>
-                                <td>&lt;samp&gt;...&lt;/samp&gt;</td>
-                            </tr>
-                            <tr>
-                                <td><button class="btn btn-default" id="tool_inline"><?php echo _('Inline TeX')?></button></td>
-                                <td>[inline]...[/inline]</td>
-                            </tr>
-                            <tr>
-                                <td><button class="btn btn-default" id="tool_tex"><?php echo _('TeX')?></button></td>
-                                <td>[tex]...[/tex]</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <div class="btn-group text-center" style="margin-top:10px">
-                        <button class="btn btn-success" id="btn_upload"><?php echo _('Upload Image')?></button>
-                        <button class="btn btn-primary" id="btn_hide"><?php echo _('Hide Toolbar')?><i class="fa fa-fw fa-angle-left"></i></button>
-                    </div>
-                </div>
-            </div>
-        </div>
         <script src="/assets/js/common.js?v=<?php echo $web_ver?>"></script>
+        <script src="/assets/js/simplemde.min.js?v=1"></script>
+        <script src="/assets/highlight/highlight.pack.js"></script>
         <script type="text/javascript">
             $(document).ready(function(){
-                var loffset=window.screenLeft+200,toffset=window.screenTop+200;
+                var simplemde = new SimpleMDE({
+                    element: document.getElementById("input_des"),
+                    renderingConfig: {
+                        codeSyntaxHighlighting: true,
+                    },
+                    indentWithTabs: false,
+                    spellChecker: false,
+                    status: false,
+                    toolbarTips: false,
+                    hideIcons: ["guide"]
+                });
+                $("[data-toggle='tooltip']").tooltip();
                 function show_help(way){
                     if(way=='train')
-                        $('#input_judge_help').html('<?php echo get_judgeway_destext(0);?>');
+                        $('#div_judgehelp span').html('<?php echo get_judgeway_destext(0);?>');
                     else if(way=='cwoj')
-                        $('#input_judge_help').html('<?php echo get_judgeway_destext(1);?>');
+                        $('#div_judgehelp span').html('<?php echo get_judgeway_destext(1);?>');
                     else if(way=='acm-like')
-                        $('#input_judge_help').html('<?php echo get_judgeway_destext(2);?>');
+                        $('#div_judgehelp span').html('<?php echo get_judgeway_destext(2);?>');
                     else if(way=='oi-like')
-                        $('#input_judge_help').html('<?php echo get_judgeway_destext(3);?>');
+                        $('#div_judgehelp span').html('<?php echo get_judgeway_destext(3);?>');
                 }
                 (function(){
                     show_help($('#input_cmp').val());
                 })();
+                $('#btn_togglehelp').click(function(){
+                    if($('#div_judgehelp').is(":visible"))
+                        $('#btn_togglehelp').html('<i class="fa fa-arrow-circle-down"></i> <?php echo _('Show Help')?>');
+                    else
+                        $('#btn_togglehelp').html('<i class="fa fa-arrow-circle-up"></i> <?php echo _('Hide Help')?>');
+                    $('#div_judgehelp').slideToggle();
+                });
                 $('#input_cmp').change(function(E){show_help($(E.target).val());});
-                $('#btn_hide').click(function(){
-                    $('#tools').fadeOut();
-                    $('#showtools').fadeIn();
-                });
-                $('#btn_show').click(function(){
-                    $('#tools').fadeIn();
-                    $('#showtools').fadeOut();
-                });
-                $('#btn_upload').click(function(){
-                    window.open("upload.php",'upload_win2','left='+loffset+',top='+toffset+',width=400,height=300,toolbar=no,resizable=no,menubar=no,location=no,status=no');
-                });
                 $('#edit_form textarea').focus(function(e){cur=e.target;});
                 $('#edit_form').submit(function(){
                     var b=false;
@@ -342,31 +301,6 @@ else if(!isset($_SESSION['admin_tfa']) || !$_SESSION['admin_tfa']){
                                 }
                             }
                         });
-                    }
-                    return false;
-                });
-                $('#tools').click(function(e){
-                    if(!($(e.target).is('button')))
-                        return false;
-                    if(typeof(cur)=='undefined')
-                        return false;
-                    var op=e.target.id,slt=GetSelection(cur);
-                    if(op=="tool_greater")
-                        InsertString(cur,'&gt;');
-                    else if(op=="tool_less")
-                        InsertString(cur,'&lt;');
-                    else if(op=="tool_img"){
-                        var url=prompt('<?php echo _('Please enter the image link')?>:','');
-                        if(url)
-                            InsertString(cur,slt+'<img src="'+url+'">');
-                    }else if(op=="tool_inline"||op=="tool_tex"){
-                        op=op.substr(5);
-                        InsertString(cur,'['+op+']'+slt+'[/'+op+']');
-                    }else if(op=="btn_upload"||op=="btn_hide")
-                        return false;
-                    else{
-                        op=op.substr(5);
-                        InsertString(cur,'<'+op+'>'+slt+'</'+op+'>');
                     }
                     return false;
                 });

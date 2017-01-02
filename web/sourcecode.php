@@ -53,12 +53,12 @@ $Title=$inTitle .' - '. $oj_name;
    <?php
         require __DIR__.'/inc/head.php'; 
         if($t_night=='on') 
-            echo '<link rel="stylesheet" href="/assets/css/codemirror.midnight.css">';
+            echo '<link rel="stylesheet" href="/assets/CodeMirror/theme/midnight.css">';
         else
-            echo'<link rel="stylesheet" href="/assets/css/codemirror.eclipse.css">';
+            echo'<link rel="stylesheet" href="/assets/CodeMirror/theme/eclipse.css">';
     ?>
-    <link rel="stylesheet" href="/assets/css/codemirror.css"> 
-    <link rel="stylesheet" href="/assets/css/codemirror.fullscreen.css">
+    <link rel="stylesheet" href="/assets/CodeMirror/lib/codemirror.css"> 
+    <link rel="stylesheet" href="/assets/CodeMirror/addon/fullscreen.css">
     <body>
         <?php require __DIR__.'/inc/navbar.php'; ?>
         <div class="alert alert-danger collapse text-center alert-popup" id="alert_error"></div>
@@ -81,7 +81,7 @@ $Title=$inTitle .' - '. $oj_name;
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-xs-12" style="font-size:16px">
+                    <div class="col-xs-12">
                         <?php echo '<span class="sc-info label '.$RESULT_STYLE[$row[3]].'" style="display:inline">'.$RESULT_TYPE[$row[3]].'</span>';?>
                         <span class="sc-info"><i class="fa fa-fw fa-coffee"></i> <?php echo '<a href="problempage.php?problem_id=',$row[6],'">',$row[6],'</a>'?></span>
                         <span class="sc-info"><i class="fa fa-fw fa-user"></i> <?php echo '<a href="javascript:void(0)" onclick="return show_user(\'',$row[0],'\');">',$row[0],'</a>'?></span>
@@ -131,7 +131,7 @@ $Title=$inTitle .' - '. $oj_name;
                                 <i class="fa fa-fw fa-clipboard"></i> <?php echo _('Copy')?>
                             </button>
                             <button class="btn btn-default" onclick="toggle_fullscreen(editor)">
-                                <i class="fa fa-fw fa-expand"></i> <?php echo _('Fullscreen')?> <span class="hidden-xs">(Ctrl+F11)</span>
+                                <i class="fa fa-fw fa-expand"></i> <?php echo _('Fullscreen')?> <span class="hidden-xs">(F11)</span>
                             </button>
                         </div>
                     </div>
@@ -188,11 +188,11 @@ $Title=$inTitle .' - '. $oj_name;
             </div>
         </div>
         
-        <script src="/assets/js/codemirror.js"></script>
-        <script src="/assets/js/CodeMirror/addon/fullscreen.js"></script>
-        <script src="/assets/js/CodeMirror/mode/clike.js"></script>
-        <script src="/assets/js/CodeMirror/mode/pascal.js"></script>
-        <script src="/assets/js/CodeMirror/mode/basic.js"></script>
+        <script src="/assets/CodeMirror/lib/codemirror.js"></script>
+        <script src="/assets/CodeMirror/addon/fullscreen.js"></script>
+        <script src="/assets/CodeMirror/mode/clike.js"></script>
+        <script src="/assets/CodeMirror/mode/pascal.js"></script>
+        <script src="/assets/CodeMirror/mode/basic.js"></script>
         <script src="/assets/js/clipboard.min.js"></script>
         <script src="/assets/js/common.js?v=<?php echo $web_ver?>"></script>
         <script type="text/javascript">
@@ -218,13 +218,10 @@ $Title=$inTitle .' - '. $oj_name;
                 viewportMargin: Infinity
             });
             function toggle_fullscreen(cm){
-                if(cm.getOption("fullScreen")){
-                    $('.navbar').css("z-index",1030);  
+                if(cm.getOption("fullScreen"))
                     cm.setOption("fullScreen", false);
-                }else{
-                    $('.navbar').css("z-index",0);   
-                    cm.setOption("fullScreen", !cm.getOption("fullScreen"));
-                }  
+                else
+                    cm.setOption("fullScreen", !cm.getOption("fullScreen")); 
             };
             var clipboard = new Clipboard('#btn_copy', {
                 text: function(){
@@ -282,8 +279,9 @@ $Title=$inTitle .' - '. $oj_name;
                 });
                 <?php }?>
                 $(document).keydown(function(e){
-                    if(e.ctrlKey&&e.which==122)
+                    if(e.which==122)
                         toggle_fullscreen(editor);
+                        return false;
                 });
             });
         </script>

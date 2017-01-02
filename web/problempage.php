@@ -5,7 +5,10 @@ require __DIR__.'/lib/lang.php';
 require __DIR__.'/lib/problem_flags.php';
 require __DIR__.'/func/privilege.php';
 require __DIR__.'/func/checklogin.php';
-require __DIR__.'/conf/database.php';
+if(!isset($con))
+    require __DIR__.'/conf/database.php';
+require __DIR__.'/lib/Parsedown.php';
+require __DIR__.'/lib/ParsedownExtra.php';
 
 $is_contest=false;
 if(isset($_GET['contest_id'])){
@@ -189,18 +192,22 @@ $Title=$inTitle .' - '. $oj_name;
 <html>
     <?php
         require __DIR__.'/inc/head.php';
+        //Load highlight-js theme
+         if($t_night=='off') 
+            echo '<link rel="stylesheet" href="/assets/highlight/styles/xcode.css" type="text/css" />';
+        else
+            echo '<link rel="stylesheet" href="/assets/highlight/styles/androidstudio.css" type="text/css" />';
         //Load CodeMirror
         if($pref->edrmode!='off'){
-            echo '<link rel="stylesheet" href="/assets/css/codemirror.css" type="text/css" />';
-            echo '<link rel="stylesheet" href="/assets/css/codemirror.fullscreen.css" type="text/css" />';
+            echo '<link rel="stylesheet" href="/assets/CodeMirror/lib/codemirror.css" type="text/css" />';
+            echo '<link rel="stylesheet" href="/assets/CodeMirror/addon/fullscreen.css" type="text/css" />';
             //Load CodeMirror Theme
             if($t_night=='off') 
-                echo '<link rel="stylesheet" href="/assets/css/codemirror.eclipse.css" type="text/css" />';
+                echo '<link rel="stylesheet" href="/assets/CodeMirror/theme/eclipse.css" type="text/css" />';
             else
-                echo '<link rel="stylesheet" href="/assets/css/codemirror.midnight.css" type="text/css" />';
+                echo '<link rel="stylesheet" href="/assets/CodeMirror/theme/midnight.css" type="text/css" />';
         }
     ?>
-    <link rel="stylesheet" href="/assets/css/prism.css">
     <body>
         <?php
             require __DIR__.'/conf/mathjax.php';
@@ -225,7 +232,7 @@ $Title=$inTitle .' - '. $oj_name;
                 <div class="row">
                     <div class="col-xs-12 col-sm-9" id="leftside" style="font-size:16px">
                         <div class="text-center">
-                            <h2>
+                            <h2 class="margin-0">
                                 <?php 
                                     echo '#'.$prob_id,' ',$row_prob[0];
                                     if($row_prob[11])
@@ -254,7 +261,7 @@ $Title=$inTitle .' - '. $oj_name;
                                 <h5 class="panel-title"><?php echo _('Description')?></h5>
                             </div>
                             <div class="panel-body">
-                                <?php echo mb_ereg_replace('\r?\n','<br>',$row_prob[1]);?>
+                                <?php echo Parsedown::instance()->text($row_prob[1]);?>
                             </div>
                         </div>
                         <div class="panel panel-default">
@@ -262,7 +269,7 @@ $Title=$inTitle .' - '. $oj_name;
                                 <h5 class="panel-title"><?php echo _('Input')?></h5>
                             </div>
                             <div class="panel-body">
-                                <?php echo mb_ereg_replace('\r?\n','<br>',$row_prob[2]);?>
+                                <?php echo Parsedown::instance()->text($row_prob[2]);?>
                             </div>
                         </div>
                         <div class="panel panel-default">
@@ -270,7 +277,7 @@ $Title=$inTitle .' - '. $oj_name;
                                 <h5 class="panel-title"><?php echo _('Output')?></h5>
                             </div>
                             <div class="panel-body">
-                                <?php echo mb_ereg_replace('\r?\n','<br>',$row_prob[3]);?>
+                                <?php echo Parsedown::instance()->text($row_prob[3]);?>
                             </div>
                         </div>
                         <div class="panel panel-default">
@@ -291,13 +298,13 @@ $Title=$inTitle .' - '. $oj_name;
                                 <?php echo mb_ereg_replace('\r?\n','<br>',$row_prob[5]);?>
                             </div>
                         </div>
-                        <?php if(strlen($row_prob[6])){ ?>
+                        <?php if(strlen(trim($row_prob[6]))){ ?>
                             <div class="panel panel-default">
                                 <div class="panel-heading">
                                     <h5 class="panel-title"><?php echo _('Hints')?></h5>
                                 </div>
                                 <div class="panel-body">
-                                    <?php echo mb_ereg_replace('\r?\n','<br>',$row_prob[6]);?>
+                                    <?php echo Parsedown::instance()->text($row_prob[6]);?>
                                 </div>
                             </div>
                         <?php }?>
@@ -538,20 +545,25 @@ $Title=$inTitle .' - '. $oj_name;
         </div>
         <script src="/assets/js/common.js?v=<?php echo $web_ver?>"></script>
         <script src="/assets/js/clipboard.min.js"></script>
-        <script src="/assets/js/prism.js"></script>
+        <script src="/assets/highlight/highlight.pack.js"></script>
         <?php //Load CodeMirror
             if($pref->edrmode!='off'){
-                echo '<script src="/assets/js/codemirror.js"></script>';
-                echo '<script src="/assets/js/CodeMirror/addon/placeholder.js"></script>';
-                echo '<script src="/assets/js/CodeMirror/addon/fullscreen.js"></script>';
-                echo '<script src="/assets/js/CodeMirror/mode/clike.js"></script>';
-                echo '<script src="/assets/js/CodeMirror/mode/pascal.js"></script>';
-                echo '<script src="/assets/js/CodeMirror/mode/basic.js"></script>';
+                echo '<script src="/assets/CodeMirror/lib/codemirror.js"></script>';
+                echo '<script src="/assets/CodeMirror/addon/placeholder.js"></script>';
+                echo '<script src="/assets/CodeMirror/addon/fullscreen.js"></script>';
+                echo '<script src="/assets/CodeMirror/mode/clike.js"></script>';
+                echo '<script src="/assets/CodeMirror/mode/pascal.js"></script>';
+                echo '<script src="/assets/CodeMirror/mode/basic.js"></script>';
                 if($pref->edrmode!='default')
-                    echo '<script src="/assets/js/CodeMirror/addon/'.$pref->edrmode.'.js"></script>';
+                    echo '<script src="/assets/CodeMirror/addon/'.$pref->edrmode.'.js"></script>';
             }
         ?>
         <script type="text/javascript">
+            hljs.initHighlightingOnLoad();
+            $('code').parent().css({
+                'background-color': 'transparent',
+                'border': 0
+            });
             var prob=<?php echo $prob_id?>;
             <?php if($is_contest==true && $cont_status==1 && !isset($user_quit)){?> 
                 var t=new Date(<?php echo strtotime($row_cont[2])*1000?>);
@@ -573,9 +585,14 @@ $Title=$inTitle .' - '. $oj_name;
                         $("#tsec").text(nS);
                     }
                 }
-            <?php } ?>
+            <?php }?>
+            
             $(document).ready(function(){
-           <?php if($pref->edrmode!='off'){?>
+            $('table').each(function(){
+                if(!$(this).hasClass('table'))
+                    $('table').addClass('table table-bordered table-condensed');
+            });
+            <?php if($pref->edrmode!='off'){?>
                 var editor = CodeMirror.fromTextArea(document.getElementById('detail_input'),{
                     theme: "<?php if($t_night=='on') echo 'midnight'; else echo 'eclipse'?>",
                     <?php
@@ -586,7 +603,7 @@ $Title=$inTitle .' - '. $oj_name;
                     ?>
                     lineNumbers:true,
                     extraKeys:{
-                        "Ctrl-F11": function(cm){
+                        "F11": function(cm){
                             if(cm.getOption("fullScreen")){
                                 toggle_fullscreen(1);
                                 cm.setOption("fullScreen",false);
@@ -638,7 +655,6 @@ $Title=$inTitle .' - '. $oj_name;
                     editor.focus();
                 }
             <?php }else{?>
-                function editor_changemode(){}
                 function clear_editor(){
                     $('#detail_input').val('');
                     $('#detail_input').focus();

@@ -12,7 +12,7 @@ $Title=$inTitle .' - '. $oj_name;
       
         <div class="container">
             <div class="row">
-                <div class="col-xs-12" style="font-size:16px">
+                <div class="col-xs-12">
                     <div class="page-header">
                         <h2><?php echo _('About')?></h2>
                     </div>

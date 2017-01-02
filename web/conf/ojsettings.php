@@ -23,10 +23,10 @@ static $temp_dir="/tmp/cwoj_postmessage.lock";
 * "web_ver" defines the version number of the web part, which is shown in preference.php.
 * "daemon_ver" defines the version number of the judging service, which is shown in preference.php.
 */
-static $i18n = 'zh_CN';
+static $i18n = 'en_US';
 static $oj_name = 'CWOJ'; 
 static $oj_copy = 'CWOJ Team'; 
-static $web_ver = '1.00.laverne-milestone-5';
+static $web_ver = '1.00.laverne-milestone-6';
 static $daemon_ver = '1.03.160801-2101';
 
 //2.2 User policy settings
@@ -58,6 +58,9 @@ static $news_num=7;
 //Contact email that is shown in login.php.
 static $contact_email = 'info@cwoj.tk';
 
-define("GRAVATAR_CDN",  '//cdn.v2ex.com/gravatar');
-define("CWOJ_MIN_SCORE", 50);
+//Here's a temporary fix:
+if(!defined("GRAVATAR_CDN"))
+    define("GRAVATAR_CDN",  '//cdn.v2ex.com/gravatar');
+if(!defined("CWOJ_MIN_SCORE"))
+    define("CWOJ_MIN_SCORE", 50);
 

@@ -29,7 +29,7 @@ if(!isset($_SESSION['user'])){
                 <li><a id="nav_record" class="shortcut-hint" title="Alt+R" href="/record.php"><i class="fa fa-fw fa-university"></i><span class="nav-text"> <?php echo _('Record');?></span></a></li>
                 <li><a id="nav_rank" href="/ranklist.php"><i class="fa fa-fw fa-pie-chart"></i><span class="nav-text"> <?php echo _('Rank');?></span></a></li>
                 <li><a id="nav_wiki" href="/about.php"><i class="fa fa-fw fa-magic"></i><span class="nav-text"> <?php echo _('About');?></span></a></li>
-                <li><a id="nav_searchbtn"  href="javascript:void(0)" title="Alt+I"><i class="fa fa-fw fa-search"></i><span class="nav-text"> <?php echo _('Search...');?></span></a></li>
+                <li><a id="nav_searchbtn"  href="javascript:void(0)" title="Alt+I"><i class="fa fa-fw fa-search"></i><span class="nav-text"> <?php echo _('Search');?></span></a></li>
             </ul>
             <ul class="nav navbar-nav collapse" id="nav_back">
                 <li><a id="nav_clrsearch" href="javascript:void(0)"><i class="fa fa-fw fa-arrow-left"></i> <?php echo _('Go Back...');?></a></li>
@@ -80,3 +80,4 @@ if(!isset($_SESSION['user'])){
     </div>
     <div class="alert alert-success text-center alert-popup collapse" id="alert_newmsg"><i class="fa fa-fw fa-info"></i><?php echo _('You have unread mails...')?></div>
 </header>
+<div style="height:70px"></div>

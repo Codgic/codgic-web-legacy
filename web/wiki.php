@@ -56,7 +56,7 @@ $Title=$inTitle .' - '. $oj_name;
         <div class="container">
             <?php if(!isset($_GET['page_id'])){?>
                 <div class="row">
-                    <div class="col-xs-12 col-sm-8" style="font-size:16px">
+                    <div class="col-xs-12 col-sm-8">
                         <div class="panel panel-default">
                             <div class="panel-heading">
                                 <h5 class="panel-title">

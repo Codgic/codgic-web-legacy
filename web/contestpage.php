@@ -5,8 +5,11 @@ require __DIR__.'/lib/lang.php';
 require __DIR__.'/lib/problem_flags.php';
 require __DIR__.'/func/privilege.php';
 require __DIR__.'/func/checklogin.php';
-require __DIR__.'/conf/database.php';
+if(!isset($con))
+    require __DIR__.'/conf/database.php';
 require __DIR__.'/func/contest.php';
+require __DIR__.'/lib/Parsedown.php';
+require __DIR__.'/lib/ParsedownExtra.php';
 
 //Determine contest_id
 if(isset($_GET['contest_id']))
@@ -103,10 +106,10 @@ else{
                 $s_info = '<tr><td colspan="2" class="label-wa text-center"><i class="fa fa-fw fa-ambulance"></i> '._('You have left').'</td></tr>';
                 $user_quit = true;
             }else{
-                //Contest is in progress.
+                //Contest is active.
                 if(time()-strtotime($row[9])>20)
                     update_cont_scr($cont_id);
-                $s_info = '<tr><td colspan="2" class="label-ac text-center"><i class="fa fa-fw fa-cog fa-spin"></i> '._('Contest in progress').'</td></tr>';
+                $s_info = '<tr><td colspan="2" class="label-ac text-center"><i class="fa fa-fw fa-cog fa-spin"></i> '._('Contest is active').'</td></tr>';
             }
                 $cont_status=1;
         }
@@ -131,8 +134,14 @@ $Title=$inTitle .' - '. $oj_name;
 ?>
 <!DOCTYPE html>
 <html>
-    <?php require __DIR__.'/inc/head.php';?>
-    <link rel="stylesheet" href="/assets/css/prism.css"> 
+    <?php 
+        require __DIR__.'/inc/head.php';
+        //Load highlight-js theme.
+        if($t_night=='off') 
+            echo '<link rel="stylesheet" href="/assets/highlight/styles/xcode.css" type="text/css" />';
+        else
+            echo '<link rel="stylesheet" href="/assets/highlight/styles/androidstudio.css" type="text/css" />';
+    ?>
     <body>
         <?php
             if($row[5]&PROB_HAS_TEX)
@@ -156,19 +165,21 @@ $Title=$inTitle .' - '. $oj_name;
                 </div>
             <?php }else{?>
                 <div class="row">
-                    <div class="col-xs-12 col-sm-9" id="leftside" style="font-size:16px">
+                    <div class="col-xs-12 col-sm-9" id="leftside">
                         <div class="text-center">
-                            <h2><?php echo '#'.$cont_id,' ',$row[0];if($row[6]) echo ' <span style="vertical-align:middle;font-size:12px" class="label label-danger">',_('Deleted'),'</span>';?></h2>
+                            <h2 class="margin-0"><?php echo '#'.$cont_id,' ',$row[0];if($row[6]) echo ' <span style="vertical-align:middle;font-size:12px" class="label label-danger">',_('Deleted'),'</span>';?></h2>
                         </div>
                         <br>
-                        <div class="panel panel-default">
-                            <div class="panel-heading">
-                                <h5 class="panel-title"><?php echo _('Description')?></h5>
+                        <?php if(strlen(trim($row[3]))){?>
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h5 class="panel-title"><?php echo _('Description')?></h5>
+                                </div>
+                                <div class="panel-body">
+                                    <?php echo Parsedown::instance()->text($row[3]);?>
+                                </div>
                             </div>
-                            <div class="panel-body">
-                                <?php echo mb_ereg_replace('\r?\n','<br>',$row[3]);?>
-                            </div>
-                        </div>
+                        <?php }?>
                         <div class="panel panel-default">
                             <div class="panel-heading">
                                 <h5 class="panel-title"><?php echo _('Problems')?></h5>
@@ -208,14 +219,16 @@ $Title=$inTitle .' - '. $oj_name;
                                 <?php echo get_judgeway_destext($row[7])?>
                             </div>
                         </div>
-                        <div class="panel panel-default">
-                            <div class="panel-heading">
-                                <h5 class="panel-title"><?php echo _('Tags')?></h5>
+                        <?php if(strlen(trim($row[4]))){?>
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h5 class="panel-title"><?php echo _('Tags')?></h5>
+                                </div>
+                                <div class="panel-body">
+                                    <?php echo mb_ereg_replace('\r?\n','<br>',$row[4]);?>
+                                </div>
                             </div>
-                            <div class="panel-body">
-                                <?php echo mb_ereg_replace('\r?\n','<br>',$row[4]);?>
-                            </div>
-                        </div>
+                        <?php }?>
                         <div class="panel panel-default">
                             <div class="panel-heading">
                                 <h5 class="panel-title"><?php echo _('Rankings')?></h5>
@@ -314,8 +327,9 @@ $Title=$inTitle .' - '. $oj_name;
         </div>
     
         <script src="/assets/js/common.js?v=<?php echo $web_ver?>"></script>
-        <script src="/assets/js/prism.js"></script>
+        <script src="/assets/highlight/highlight.pack.js"></script>
         <script type="text/javascript">
+            hljs.initHighlightingOnLoad();
             var cont=<?php echo $cont_id?>,hide_info=0;
             change_type(2);
             function enroll_cont(){
@@ -350,6 +364,10 @@ $Title=$inTitle .' - '. $oj_name;
                 return false;
             }
             $(document).ready(function(){
+                $('table').each(function(){
+                    if(!$(this).hasClass('table'))
+                        $('table').addClass('table table-bordered table-condensed');
+                });
                 var cont=<?php echo $cont_id?>;
                 $.post("api/ajax_contest.php",{op:'get_rank_table',contest_id:cont},function(data){
                     $('#cont_rank').html(data.message);

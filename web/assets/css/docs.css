@@ -1,23 +1,36 @@
 body {
-    margin-top:70px;
-    font-size:14px;
-	font-family: Arial,"Microsoft YaHei","微软雅黑",Helvetica Neue
+    font-size: 15px;
+    font-family: Arial, "Microsoft YaHei", "微软雅黑", Helvetica Neue
 }
 
 img {
     height: auto;
-        max-width: 100%;
+    max-width: 100%;
 }
 
-h1,h2,h3,h4,h5,h6,.h1,.h2,.h3,.h4,.h5,.h6 {
-    font-family: Arial,"Microsoft YaHei","微软雅黑",Helvetica Neue
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.h1,
+.h2,
+.h3,
+.h4,
+.h5,
+.h6 {
+    font-family: Arial, "Microsoft YaHei", "微软雅黑", Helvetica Neue
 }
 
+pre {
+    background: #fff
+}
 
 footer {
-	text-align: center;
-	color: #999;
-	font-size: 12px
+    text-align: center;
+    color: #999;
+    font-size: 12px
 }
 
 @media (max-width: 767px) {
@@ -25,7 +38,6 @@ footer {
         display: none;
         width: 100%
     }
-    
     .nav-text-alt {
         display: none
     }
@@ -34,37 +46,21 @@ footer {
 @media (min-width: 768px) {
     #search_form {
         display: none;
-        width: 300px
+        width: 290px
     }
-    
-    .nav-text,.nav-text-alt {
+    .nav-text,
+    .nav-text-alt {
         display: none
     }
-    
-    .active .nav-text, .active .nav-text-alt{
+    .active .nav-text,
+    .active .nav-text-alt {
         display: inline
-    }
-
-    .dropdown .dropdown-menu {
-        -webkit-transition: all 0.3s;
-        -moz-transition: all 0.3s;
-        -ms-transition: all 0.3s;
-        -o-transition: all 0.3s;
-        transition: all 0.3s;
-        height: 0px;
-        display: block;
-        overflow: hidden;
-        opacity: 0
-    }
-
-    .dropdown.open .dropdown-menu {
-        height: auto;
-        opacity: 1
     }
 }
 
 @media (min-width: 992px) {
-    .nav-text,.nav-text-alt{
+    .nav-text,
+    .nav-text-alt {
         display: inline
     }
 }
@@ -73,7 +69,8 @@ footer {
     #search_form {
         display: inline-block;
     }
-    #nav_searchbtn,#nav_clrsearch {
+    #nav_searchbtn,
+    #nav_clrsearch {
         display: none
     }
 }
@@ -94,326 +91,343 @@ footer {
     height: auto
 }
 
+.CodeMirror-fullscreen {
+    z-index: 1040 !important
+}
+
+.fullscreen {
+    z-index: 1040 !important
+}
+
+.editor-preview-side {
+    z-index: 1040 !important
+}
+
+.editor-preview-side pre {
+    background: #fff !important
+}
+
 .navbar-img {
-    width:20px;
-    height:20px
+    width: 20px;
+    height: 20px
 }
 
 .motto-text {
-    font-size:16px;
+    font-size: 16px;
     font-style: italic
 }
 
 .none-text {
-    font-size:24px;
-    color:#888888
+    font-size: 24px;
+    color: #888888
 }
 
-.none-center{
-    margin-top:10%;
-    margin-bottom:10%
+.none-center {
+    margin-top: 10%;
+    margin-bottom: 10%
 }
 
-.msg-title{
-    font-size:16px
+.msg-title {
+    font-size: 16px
 }
 
-.msg-avatar{
-    margin-top:7px
+.msg-avatar {
+    margin-top: 7px
 }
 
 .margin-0 {
-	margin: 0
+    margin: 0
 }
 
-.panel-login{
-    display:table;
-    margin:auto;
-	min-width:25%
+.panel-login {
+    display: table;
+    margin: auto;
+    min-width: 25%
 }
 
 .table {
-	table-layout: auto;
+    table-layout: auto;
     word-break: break-all;
     word-wrap: break-word
 }
 
-.table td,.table th {
-	text-align: center;
-	vertical-align: middle
+.table td,
+.table th {
+    text-align: center;
+    vertical-align: middle
 }
 
 .table-left-aligned td {
-	text-align: left
+    text-align: left
 }
 
 .table-first-left-aligned td:first-child {
-	text-align: left
+    text-align: left
 }
 
 .table-first-center-aligned td:first-child {
-	text-align: center
+    text-align: center
 }
 
 .table-last-left-aligned td:last-child {
-	text-align: left
+    text-align: left
 }
 
 samp {
-	font-family: monospace,"Courier New"
+    font-family: monospace, "Courier New"
 }
 
 samp.samp-sourcecode {
-	display: inline-block;
-	background-color: #fff
+    display: inline-block;
+    background-color: #fff
 }
 
 .pagination>ul>li>a {
-	padding: 0 7px;
-	line-height: 26px
+    padding: 0 7px;
+    line-height: 26px
 }
 
 .problem-operation .btn {
-	padding: 4px 6px
+    padding: 4px 6px
 }
 
-.panel-well{
-	background-color: #f5f5f5
+.panel-well {
+    background-color: #f5f5f5
 }
 
-.label-ac{
+.label-ac {
     color: #fff;
-	background-color: rgb(115,168,57)
+    background-color: rgb(115, 168, 57)
 }
 
-.label-ce{
+.label-ce {
     color: #fff;
-	background-color: rgb(153,153,153)
+    background-color: rgb(153, 153, 153)
 }
 
-.label-le{
+.label-le {
     color: #fff;
-	background-color: rgb(221,86,0)
+    background-color: rgb(221, 86, 0)
 }
 
-.label-re{
+.label-re {
     color: #fff;
-	background-color: rgb(23,138,204)
+    background-color: rgb(23, 138, 204)
 }
 
-.label-wa{
+.label-wa {
     color: #fff;
-	background-color: rgb(199,28,34)
+    background-color: rgb(199, 28, 34)
 }
 
-.label-ve{
+.label-ve {
     color: #fff;
-	background-color: rgb(51,51,51)
+    background-color: rgb(51, 51, 51)
 }
 
 .problem-sample {
-	font-family: monospace
+    font-family: monospace
 }
 
 textarea.problem-sample {
-	width: 100%;
-	-webkit-box-sizing: border-box;
-	-moz-box-sizing: border-box;
-	box-sizing: border-box;
-	font-size: inherit;
-	line-height: inherit
+    width: 100%;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    font-size: inherit;
+    line-height: inherit
 }
 
 .mail-item {
-	padding-top: 1px;
-	margin-top: -2px
+    padding-top: 1px;
+    margin-top: -2px
 }
 
 .mail-container {
-	border: 1px solid #DDD;
-	padding: 5px
+    border: 1px solid #DDD;
+    padding: 5px
 }
 
 .mail-info {
-	text-align: right;
-	float: right
+    text-align: right;
+    float: right
 }
 
 .mail-title {
-	float: left
+    float: left
 }
 
-.mail-title >.msg-title{
+.mail-title>.msg-title {
     margin-left: 5px
 }
 
 .mail-container span+a {
-	font-weight: 700;
-	margin-left: 3px
+    font-weight: 700;
+    margin-left: 3px
 }
 
 .mail-content {
-	display: none
+    display: none
 }
 
 .mail-content pre {
-	margin: 5px 0 0 0
+    margin: 5px 0 0 0
 }
 
 .mail-op {
-	margin-top: 5px
+    margin-top: 5px
 }
 
 #MailModal label {
-	width: 50px
+    width: 50px
 }
 
 #MailModal .controls {
-	margin-left: 70px
+    margin-left: 70px
 }
 
 #MailModal textarea {
-	overflow: auto;
-	white-space: pre;
-	resize: none
+    overflow: auto;
+    white-space: pre;
+    resize: none
 }
 
 .msg-item {
-	padding-top: 1px;
-	margin-top: -2px
+    padding-top: 1px;
+    margin-top: -2px
 }
 
 .msg {
-	min-height: 55px;
-	border: 1px solid #DDD
+    min-height: 55px;
+    border: 1px solid #DDD
 }
 
 .msg-box {
-	background: #F9F9F9
+    background: #F9F9F9
 }
 
 ul.msg-group {
-	margin-left: 25px
+    margin-left: 25px
 }
 
 .msg-container {
-	padding: 7px 5px 0 10px
+    padding: 7px 5px 0 10px
 }
 
 .msg-detailed:before {
-	content: "+";
-	margin-right: 6px;
-	font-weight: 700;
-	font-family: monospace,"Courier New"
+    content: "+";
+    margin-right: 6px;
+    font-weight: 700;
+    font-family: monospace, "Courier New"
 }
 
 .msg-detailed.expanded:before {
-	content: "−"
+    content: "−"
 }
 
-.msg-container> .media> .media-body> .btn-group {
-	margin-left:5px
+.msg-container>.media>.media-body>.btn-group {
+    margin-left: 5px
 }
 
-.msg-container> .media> .media-body> .prob_link {
-	font-weight: 700;
-	color: #468847
+.msg-container>.media>.media-body>.prob_link {
+    font-weight: 700;
+    color: #468847
 }
 
 .replypanel {
-	margin-top: -147px;
-	width: auto;
-	height: auto;
-	position: fixed;
-	right: 0;
-	top: 50%;
-	z-index: 999
+    margin-top: -147px;
+    width: auto;
+    height: auto;
+    position: fixed;
+    right: 0;
+    top: 50%;
+    z-index: 999
 }
 
 @media (max-width:500px) {
-	.replypanel {
-		margin-top: 0;
-		margin-bottom: 10px;
-		overflow: hidden;
-		position: static;
-		right: auto;
-		top: auto
-	}
+    .replypanel {
+        margin-top: 0;
+        margin-bottom: 10px;
+        overflow: hidden;
+        position: static;
+        right: auto;
+        top: auto
+    }
 }
 
 .replypanel .controls {
-	margin-left: 60px
+    margin-left: 60px
 }
 
 .replypanel .control-label {
-	width: auto
+    width: auto
 }
 
 .replypanel textarea {
-	overflow: auto;
-	resize: none
+    overflow: auto;
+    resize: none
 }
 
 .replypanel .resize-ico {
-	left: 9px;
-	bottom: 9px;
-	position: absolute;
-	cursor: sw-resize
+    left: 9px;
+    bottom: 9px;
+    position: absolute;
+    cursor: sw-resize
 }
 
 .resize-ico {
-	display: inline-block;
-	width: 0;
-	height: 0;
-	vertical-align: top;
-	border-top: 4px solid transparent;
-	border-right: 4px solid transparent;
-	border-bottom: 4px solid #000;
-	border-left: 4px solid #000;
-	content: ""
+    display: inline-block;
+    width: 0;
+    height: 0;
+    vertical-align: top;
+    border-top: 4px solid transparent;
+    border-right: 4px solid transparent;
+    border-bottom: 4px solid #000;
+    border-left: 4px solid #000;
+    content: ""
 }
 
 .alert-popup {
-	position: fixed;
-	top: 60px;
-	left: 50%;
-	min-width: 200px;
-        max-width: 400px;
-	margin-left: -100px;
-	z-index: 1040
+    position: fixed;
+    top: 60px;
+    left: 50%;
+    min-width: 200px;
+    max-width: 400px;
+    margin-left: -100px;
+    z-index: 1040
 }
 
 .tiny-font {
-	font-size: 12px
+    font-size: 12px
 }
 
 .res-se {
-	background-color: #333
+    background-color: #333
 }
 
 .res-re {
-	background-color: #3a87ad
+    background-color: #3a87ad
 }
 
 .res-ac {
-	background-color: #468847
+    background-color: #468847
 }
 
 .res-le {
-	background-color: #f89406
+    background-color: #f89406
 }
 
 .res-wa {
-	background-color: #b94a48
+    background-color: #b94a48
 }
 
 .result_table td {
-	padding: 0
+    padding: 0
 }
 
 .result_table tbody tr:hover td {
-	background-color: transparent;
-	background-color: rgba(245,245,245,.5)
+    background-color: transparent;
+    background-color: rgba(245, 245, 245, .5)
 }
 
 .sc-info {
@@ -422,155 +436,141 @@ ul.msg-group {
 }
 
 .tooltip-inner {
-	text-align: left;
-	white-space: pre-wrap;
-	font-family: "Lucida Console","Courier New",Monospace;
-	max-width: none
+    text-align: left;
+    white-space: pre-wrap;
+    font-family: "Lucida Console", "Courier New", Monospace;
+    max-width: none
 }
 
 caption {
-	font-size: 18px;
-	font-weight: 700
+    font-size: 18px;
+    font-weight: 700
 }
 
 .bottom-right {
-	position: fixed;
-	right: 10px;
-	bottom: 10px
-}
-
-h1 {
-	font-size: 32px
-}
-
-h2 {
-	font-size: 26px
-}
-
-h3 {
-	font-size: 20px
-}
-
-h1,h2,h3,h4,h5,h6 {
-	margin: 0
+    position: fixed;
+    right: 10px;
+    bottom: 10px
 }
 
 .html-tools {
-	position: fixed;
-	top: 70px;
-	right: 1px;
-	z-index: 999;
-	width: 270px
+    position: fixed;
+    top: 70px;
+    right: 1px;
+    z-index: 999;
+    width: 270px
 }
 
 .html-tools .td {
-	font-size: 12px
+    font-size: 12px
 }
 
 #usrcmp_menu>li>input {
-	margin: 3px 9px;
-	width: 126px
+    margin: 3px 9px;
+    width: 126px
 }
 
 .linenums li {
-	-moz-user-select: -moz-none;
-	-khtml-user-select: none;
-	-webkit-user-select: none;
-	-ms-user-select: none;
-	user-select: none
+    -moz-user-select: -moz-none;
+    -khtml-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    user-select: none
 }
 
 .linenums li span {
-	-moz-user-select: text;
-	-khtml-user-select: text;
-	-webkit-user-select: text;
-	-ms-user-select: text;
-	user-select: text
+    -moz-user-select: text;
+    -khtml-user-select: text;
+    -webkit-user-select: text;
+    -ms-user-select: text;
+    user-select: text
 }
 
 .border-box {
-	-webkit-box-sizing: border-box;
-	-moz-box-sizing: border-box;
-	-ms-box-sizing: border-box;
-	-o-box-sizing: border-box;
-	box-sizing: border-box
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -ms-box-sizing: border-box;
+    -o-box-sizing: border-box;
+    box-sizing: border-box
 }
 
 .control_panel h2 {
-	margin-top: 20px
+    margin-top: 20px
 }
 
 .edit-page {
-	font-size: 16px
+    font-size: 16px
 }
 
 .edit-page span {
-	vertical-align: middle
+    vertical-align: middle
 }
 
-.edit-page input,.edit-page select,.edit-page textarea {
-	margin-bottom: 0
+.edit-page input,
+.edit-page select,
+.edit-page textarea {
+    margin-bottom: 0
 }
 
 .edit-page textarea[rows="1"] {
-	height: 18px
+    height: 18px
 }
 
 input.error {
-	color: #B94A48;
-	border-color: #B94A48
+    color: #B94A48;
+    border-color: #B94A48
 }
 
 #PreviewPopover .popover-content {
-	max-height: 200px;
-	width: auto;
-	overflow-y: auto
+    max-height: 200px;
+    width: auto;
+    overflow-y: auto
 }
 
 #PreviewPopover {
-	width: auto;
-	max-width: none;
-	top: 60px;
-	left: -475px
+    width: auto;
+    max-width: none;
+    top: 60px;
+    left: -475px
 }
 
 .panel-heading {
-	color: #333;
-	background-color: #f5f5f5;
-	border-color: #ddd
+    color: #333;
+    background-color: #f5f5f5;
+    border-color: #ddd
 }
 
 .note-short {
-	word-wrap:break-word;
-	max-height: 151px
+    word-wrap: break-word;
+    max-height: 151px
 }
 
 .shortcut-hint {
-	position: relative
+    position: relative
 }
 
 .shortcut-hint:after {
-	position: absolute;
-	top: 1px;
-	left: 1px;
-	visibility: hidden;
-	content: attr(title);
-	padding: 2px;
-	line-height: 12px;
-	font-size: 12px;
-	background-color: #F5F5F5;
-	border: 1px solid #DDD;
-	color: #666;
-	-webkit-border-radius: 4px;
-	-moz-border-radius: 4px;
-	border-radius: 4px;
-	-webkit-user-select: none;
-	-moz-user-select: none;
-	-ms-user-select: none;
-	-o-user-select: none;
-	user-select: none
+    position: absolute;
+    top: 1px;
+    left: 1px;
+    visibility: hidden;
+    content: attr(title);
+    padding: 2px;
+    line-height: 12px;
+    font-size: 12px;
+    background-color: #F5F5F5;
+    border: 1px solid #DDD;
+    color: #666;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -o-user-select: none;
+    user-select: none
 }
 
 .shortcut-hint-active:after {
-	visibility: visible
+    visibility: visible
 }

@@ -84,7 +84,7 @@ $Title=$inTitle .' - '. $oj_name;
                         <input type="hidden" name="message_id" id="msgid_input">
                     <?php
                         if(isset($_GET['problem_id'])){
-                            echo '<input type="hidden" name="problem_id" value="',$_GET['problem_id'],'">';
+                            echo '<input type="hidden" name="problem_id" value="',intval($_GET['problem_id']),'">';
                     }?>
                 </form>
             </div>

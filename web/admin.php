@@ -115,12 +115,20 @@ $Title=$inTitle .' - '. $oj_name;
                             </div>
                             <div class="tab-pane fade" id="user">
                                 <div class="row">
-                                    <div class="col-xs-4 pull-left">
+                                    <div class="col-xs-7 pull-left">
                                         <div class="btn-group">
-                                            <a class="btn btn-default" id="btn_emailall"><i class="fa fa-fw fa-envelope"></i> <?php echo _('Send Email to All')?></a>
+                                            <button class="btn btn-default" id="btn_emailall"><i class="fa fa-fw fa-envelope"></i> <?php echo _('Email All')?></button>
+                                            <button class="btn btn-default dropdown-toggle disabled" id="btn_filter" data-toggle="dropdown"><i class="fa fa-fw fa-glass"></i> <?php echo _('Filter')?> <span class="caret"></span></button>
+                                            <ul class="dropdown-menu dropdown-menu-right">
+                                                <li><a href="#0"><input type="checkbox" id="filter_0" name="0" checked> <?php echo _('User')?></a></li>
+                                                <li><a href="#1"><input type="checkbox" id="filter_1" name="1" checked> <?php echo _('Insider')?></a></li>
+                                                <li><a href="#2"><input type="checkbox" id="filter_2" name="2" checked> <?php echo _('Source')?></a></li>
+                                                <li><a href="#3"><input type="checkbox" id="filter_3" name="3" checked> <?php echo _('Problems')?></a></li>
+                                                <li><a href="#4"><input type="checkbox" id="filter_4" name="4" checked> <?php echo _('System')?></a></li>
+                                            </ul>
                                         </div>
                                     </div>
-                                    <div class="col-xs-8 col-sm-5 col-md-3 pull-right">
+                                    <div class="col-xs-5 col-sm-5 col-md-3 pull-right">
                                         <div class="form-group has-feedback">
                                             <input class="form-control" id="user_q" name="q" type="text" placeholder="<?php echo _('Search User...')?>">
                                             <span class="form-control-feedback"><i class="fa fa-fw fa-user"></i></span>
@@ -231,11 +239,12 @@ $Title=$inTitle .' - '. $oj_name;
                                 <div class="btn-group pull-left">
                                     <button class="pull-left btn btn-danger collapse" id="btn_delnews"><?php echo _('Delete')?></button>
                                     <button class="pull-left btn btn-default" id="btn_upload"><?php echo _('Upload Image')?></button>
-                                    <button class="pull-left btn btn-default dropdown-toggle" id="btn_newspriv" data-toggle="dropdown"><?php echo _('Need Privilege')?> <span class="caret"></span></button>
+                                    <button class="pull-left btn btn-default dropdown-toggle" id="btn_newspriv" data-toggle="dropdown"><?php echo _('Visibility')?> <span class="caret"></span></button>
                                     <ul class="dropdown-menu dropdown-menu-right">
-                                        <li><a href="#0"><input type="checkbox" id="news_0" name="0"> <?php echo _('Insider')?></a></li>
-                                        <li><a href="#1"><input type="checkbox" id="news_1" name="1"> <?php echo _('Source')?></a></li>
-                                        <li><a href="#2"><input type="checkbox" id="news_2" name="2"> <?php echo _('Problems')?></a></li>
+                                        <li><a href="#0"><input type="checkbox" id="news_0" name="0"> <?php echo _('User')?></a></li>
+                                        <li><a href="#1"><input type="checkbox" id="news_1" name="1"> <?php echo _('Insider')?></a></li>
+                                        <li><a href="#2"><input type="checkbox" id="news_2" name="2"> <?php echo _('Source')?></a></li>
+                                        <li><a href="#3"><input type="checkbox" id="news_3" name="3"> <?php echo _('Problems')?></a></li>
                                     </ul>
                                 </div>
                                 <button class="btn btn-primary" type="submit"><?php echo _('Save')?></button>
@@ -285,17 +294,20 @@ $Title=$inTitle .' - '. $oj_name;
                             <input type="hidden" name="op" value="update_priv">
                             <input type="hidden" id="priv_uid" name="user_id" value="">  
                             <div class="modal-body">
-                                <div class="checkbox">
-                                    <label><input type="checkbox" name="0" id="chk_insider"> <?php echo _('Insider'),'(',PRIV_INSIDER,')'?></label>
+                            <div class="checkbox">
+                                    <label><input type="checkbox" name="0" id="chk_user"> <?php echo _('User'),'(',PRIV_USER,')'?></label>
                                 </div>
                                 <div class="checkbox">
-                                    <label><input type="checkbox" name="1" id="chk_source"> <?php echo _('Source'),'(',PRIV_SOURCE,')'?></label>
+                                    <label><input type="checkbox" name="1" id="chk_insider"> <?php echo _('Insider'),'(',PRIV_INSIDER,')'?></label>
                                 </div>
                                 <div class="checkbox">
-                                    <label><input type="checkbox" name="2" id="chk_problem"> <?php echo _('Problems'),'(',PRIV_PROBLEM,')'?></label>
+                                    <label><input type="checkbox" name="2" id="chk_source"> <?php echo _('Source'),'(',PRIV_SOURCE,')'?></label>
                                 </div>
                                 <div class="checkbox">
-                                    <label><input type="checkbox" name="3" id="chk_system"> <?php echo _('System'),'(',PRIV_SYSTEM,')'?></label>
+                                    <label><input type="checkbox" name="3" id="chk_problem"> <?php echo _('Problems'),'(',PRIV_PROBLEM,')'?></label>
+                                </div>
+                                <div class="checkbox">
+                                    <label><input type="checkbox" name="4" id="chk_system"> <?php echo _('System'),'(',PRIV_SYSTEM,')'?></label>
                                 </div>
                                 <div class="alert alert-danger collapse" id="priv_res"></div>
                             </div>
@@ -336,7 +348,7 @@ $Title=$inTitle .' - '. $oj_name;
             var getlevellist=function(){$('#table_level_experience').load('api/ajax_admin.php',{op:'list_level_experience'});};
             var gettitlelist=function(){$('#table_experience_title').load('api/ajax_admin.php',{op:'list_experience_title'});};
             var getnewslist=function(){$('#table_news').load('api/ajax_admin.php',{op:'list_news'});};
-            var getusrlist=function(e=1,q=''){$('#table_usr').load('api/ajax_admin.php',{op:'list_usr',page_id:e,q:q});};
+            var getusrlist=function(e=1,q='',p=0){$('#table_usr').load('api/ajax_admin.php',{op:'list_usr',page_id:e,q:q,priv:p});};
             var cnt=-1,kw='',upid=1;
         <?php }?>
         function update_chart(){
@@ -456,9 +468,10 @@ $Title=$inTitle .' - '. $oj_name;
                                 else
                                     a=true;
                                 $('#is_top').prop('checked', a);
-                                $('#news_0').prop('checked', obj.priv&<?php echo PRIV_INSIDER?>);
-                                $('#news_1').prop('checked', obj.priv&<?php echo PRIV_SOURCE?>);
-                                $('#news_2').prop('checked', obj.priv&<?php echo PRIV_PROBLEM?>);
+                                $('#news_0').prop('checked', obj.priv&<?php echo PRIV_USER?>);
+                                $('#news_1').prop('checked', obj.priv&<?php echo PRIV_INSIDER?>);
+                                $('#news_2').prop('checked', obj.priv&<?php echo PRIV_SOURCE?>);
+                                $('#news_3').prop('checked', obj.priv&<?php echo PRIV_PROBLEM?>);
                                 $('#btn_delnews').show();
                                 $('#input_newstitle').val(obj.title);
                                 $('#input_newscontent').val(obj.content);
@@ -558,6 +571,10 @@ $Title=$inTitle .' - '. $oj_name;
                     $('#email_res').hide();
                     $('#EmailModal').modal('show');
                 });
+                $('#btn_filter').click(function(){
+                    //To be finished.
+                    
+                })
                 $('#table_usr').click(function(E){
                     E.preventDefault();
                     var jq=$(E.target);
@@ -576,6 +593,7 @@ $Title=$inTitle .' - '. $oj_name;
                                 $('#PrivModal .modal-title').html('<?php echo _('Edit Privilege')?>: '+uid);
                                 $('#priv_res').hide();
                                 var p=jq.parents('tr').first().children().first().next().next().children('span').contents().text();
+                                $('#chk_user').prop('checked', p&<?php echo PRIV_USER?>);
                                 $('#chk_insider').prop('checked', p&<?php echo PRIV_INSIDER?>);
                                 $('#chk_source').prop('checked', p&<?php echo PRIV_SOURCE?>);
                                 $('#chk_problem').prop('checked', p&<?php echo PRIV_PROBLEM?>);

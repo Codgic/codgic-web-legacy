@@ -2,7 +2,8 @@
 require __DIR__.'/inc/init.php';
 require __DIR__.'/func/privilege.php';
 require __DIR__.'/func/checklogin.php';
-require __DIR__.'/conf/database.php';
+if(!isset($con))
+    require __DIR__.'/conf/database.php';
 
 $res=mysqli_query($con,"select content from news where news_id=0 limit 1");
 $index_text=($row=mysqli_fetch_row($res)) ? $row[0] : '';
@@ -28,24 +29,16 @@ $num=0;
         <div class="container">
             <div class="row">
                 <div class="col-xs-12">
-                    <div id="newspad" class="panel panel-default" style="background-color: transparent">
-                        <div class="panel-body">
-                            <div class="text-center" style="cursor:pointer">
-                                <h1><?php echo _('Bulletin')?></h1>
-                            </div> 
-                            <div id="mainarea">
-                                <?php echo $index_text?>
-                            </div>
-                            <div id="title" class="text-center" style="font-size:24px;cursor:pointer;">
-                                <h2><b><i class="fa fa-fw fa-angle-double-up"></i></b></h2>
-                            </div>
+                    <div class="panel panel-default" style="background-color: transparent">
+                        <div class="panel-body" style="margin-top:2%;margin-bottom:2%">
+                            <?php echo $index_text?>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="row">
                 <div class="col-xs-12 col-sm-6">
-                    <h1>
+                    <h2>
                         <i class="fa fa-fw fa-newspaper-o"></i> 
                         <?php 
                             echo _('News'); 
@@ -56,8 +49,8 @@ $num=0;
                                     <?php echo _('More News')?>...
                                 </font>
                             </a>
-                        </h1>
-                        <ul class="list-group" style="margin-top:10px;font-size:16px">
+                        </h2>
+                        <ul class="list-group" style="margin-top:10px">
                             <?php 
                                 while($row=mysqli_fetch_row($res)){
                                     $num++;
@@ -84,8 +77,8 @@ $num=0;
                     <?php }?>
                 </div>
                 <div class="col-xs-12 col-sm-6">
-                    <h1><i class="fa fa-fw fa-th-list"></i> <?php echo _('Categories');?></h1>
-                    <div class="panel-group" id="accordion" style="margin-top:10px;font-size:16px">
+                    <h2><i class="fa fa-fw fa-th-list"></i> <?php echo _('Categories');?></h2>
+                    <div class="panel-group" id="accordion" style="margin-top:10px">
                         <?php 
                             if(trim($category)!='')
                                 echo $category; 
@@ -147,13 +140,6 @@ $num=0;
                     });
                 }
             };
-            $(document).ready(function(){
-                $('#newspad #title').click(function(){
-                    $('#newspad #mainarea').slideToggle();
-                    $('#title i').toggleClass('fa fa-fw fa-angle-double-down');
-                    $('#title i').toggleClass('fa fa-fw fa-angle-double-up');
-                });
-            });
         </script>
     </body>
 </html>
