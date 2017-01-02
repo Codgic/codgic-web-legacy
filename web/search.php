@@ -94,7 +94,7 @@ else{
             order by wiki_id desc limit ".(($page_id-1)*20).",20");
             break;
         case 4:
-            $result=mysqli_query($con,"select user_id,nick,solved,submit,accesstime from users 
+            $result=mysqli_query($con,"select user_id,nick,solved,submit,accesstime,privilege from users 
             where user_id like '%$keyword%' or nick like '%$keyword%'
             order by solved desc limit ".(($page_id-1)*20).",20");
             break;
@@ -155,10 +155,13 @@ $Title=$inTitle .' - '. $oj_name;
                                             echo '<tr>';
                                             echo '<td><a href="#linkU">',$row[0],'</a></td>';
                                             echo '<td>',htmlspecialchars($row[1]),'</td>';
-                                            if(time()-strtotime($row[4])<=300)
-                                                echo '<td><label class="label label-success">',_('Online'),'</label></td>';
-                                            else
-                                                echo '<td><label class="label label-danger">',_('Offline'),'</label></td>';
+                                            if($row[5] & PRIV_USER){
+                                                if(time()-strtotime($row[4])<=300)
+                                                    echo '<td><label class="label label-ac">',_('Online'),'</label></td>';
+                                                else
+                                                    echo '<td><label class="label label-wa">',_('Offline'),'</label></td>';
+                                            }else
+                                                echo '<td><label class="label label-ce">',_('Disabled'),'</label></td>';
                                             echo '<td><a href="record.php?user_id=',$row[0],'&amp;result=0">',$row[2],'</a></td>';
                                             echo '<td><a href="record.php?user_id=',$row[0],'">',$row[3],'</a></td>';
                                             echo "</tr>\n";

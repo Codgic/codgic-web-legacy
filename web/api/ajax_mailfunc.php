@@ -30,15 +30,17 @@ if($op=='check'){
     //Update last seen time.
     mysqli_query($con,"update users set accesstime=NOW() where user_id='$uid'");
     //Check if account disabled.
-    $row=mysqli_fetch_row(mysqli_query($con,"select defunct,privilege from users where user_id='$uid'"));
-    if($row[0]=='Y'){
+    $row=mysqli_fetch_row(mysqli_query($con,"select privilege from users where user_id='$uid'"));
+    if(!defined(PRIV_USER))
+        require __DIR__.'/../func/privilege.php';
+    if(!$row[0] & PRIV_USER){
         //Log off.
         require ('ajax_logoff.php'); 
         echo '-1';
     }else{ 
         //Check & update privilege if necessary.
-        if($_SESSION['priv']!=$row[1]) 
-            $_SESSION['priv']=$row[1];
+        if($_SESSION['priv']!=$row[0]) 
+            $_SESSION['priv']=$row[0];
         $res=mysqli_query($con,"select sum(new_mail) from mail where UPPER(defunct)='N' and to_user='$uid'");
         //Check unread mail count.
         if($res && ($row=mysqli_fetch_row($res)) && $row[0])

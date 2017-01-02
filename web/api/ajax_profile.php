@@ -96,11 +96,11 @@ else if($_POST['type']=='reg'){
     
     //If new regs need to be reviewed by administrators.
     if($require_confirm) 
-        $defunct='Y';
+        $priv=0;
     else
-        $defunct='N';
+        $priv=1;
         
-    mysqli_query($con,"insert into users (user_id,email,password,reg_time,nick,school,defunct,motto) values ('$user','".mysqli_real_escape_string($con,$_POST['email'])."','$pwd',NOW(),'".mysqli_real_escape_string($con,$_POST['nick'])."','".mysqli_real_escape_string($con,$_POST['school'])."','$defunct','')");
+    mysqli_query($con,"insert into users (user_id,email,password,reg_time,nick,school,motto,privilege) values ('$user','".mysqli_real_escape_string($con,$_POST['email'])."','$pwd',NOW(),'".mysqli_real_escape_string($con,$_POST['nick'])."','".mysqli_real_escape_string($con,$_POST['school'])."','',$priv)");
     $code=mysqli_errno($con);
     if($code==0)
         echo 'success';

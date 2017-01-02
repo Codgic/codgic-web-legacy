@@ -1,6 +1,7 @@
 body {
     font-size: 15px;
-    font-family: Arial, "Microsoft YaHei", "微软雅黑", Helvetica Neue
+    font-family: Arial, "Microsoft YaHei", "微软雅黑", Helvetica Neue;
+    margin-top: 70px
 }
 
 img {

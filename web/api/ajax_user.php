@@ -16,12 +16,18 @@ require __DIR__.'/../func/userinfo.php';
 $user=mysqli_real_escape_string($con,$_GET['user_id']);
 $query="SELECT user_id,email,ip,accesstime,school,reg_time,submit,solved,motto,nick,privilege,t1.experience,experience_titles.title FROM (SELECT user_id,email,ip,accesstime,school,reg_time,submit,solved,motto,nick,privilege,t.experience,MAX(experience_titles.experience) AS m FROM (SELECT user_id,email,ip,accesstime,school,reg_time,submit,solved,motto,nick,privilege,experience from users)t,experience_titles where t.experience>=experience_titles.experience GROUP BY user_id)t1 LEFT JOIN experience_titles ON t1.m=experience_titles.experience where user_id='$user'";
 $row=mysqli_fetch_row(mysqli_query($con,$query));
-if(time()-strtotime($row[3])<=300){
-    $status_text=_('Online');
-    $status_col='success';
+
+if($row[10] & PRIV_USER){
+    if(time()-strtotime($row[3])<=300){
+        $status_text = _('Online');
+        $status_col = 'label-ac';
+    }else{
+        $status_text = _('Offline');
+        $status_col = 'label-wa';
+    }
 }else{
-    $status_text=_('Offline');
-    $status_col='danger';
+    $status_text = _('Disabled');
+    $status_col = 'label-ce';
 }
 
 if(isset($_GET['type'])&&$_GET['type']=='json'){
@@ -53,7 +59,7 @@ if(isset($_GET['type'])&&$_GET['type']=='json'){
     <div class="media-body">
         <h1 class="media-heading"><?php echo htmlspecialchars($user)?></h1>
         <p class="motto-text"><?php echo htmlspecialchars($row[8])?></p>
-        <label class="label label-<?php echo $status_col?>">
+        <label class="label <?php echo $status_col?>">
             <?php echo $status_text?>
         </label>
     </div>

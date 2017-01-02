@@ -1,6 +1,8 @@
 <?php
 require __DIR__.'/inc/init.php';
 require __DIR__.'/func/checklogin.php';
+if(!defined('PRIV_USER'))
+    require __DIR__.'/func/privilege.php';
 
 if(isset($_GET['page_id']))
     $page_id=intval($_GET['page_id']);
@@ -46,10 +48,18 @@ function get_pre_link(){
 }
 
 $rank=($page_id-1)*20;
-if($online==0) 
-    $result=mysqli_query($con,"SELECT user_id,nick,solved,submit,score,accesstime,experience_titles.title FROM (SELECT user_id,nick,solved,submit,score,accesstime,MAX(experience_titles.experience) AS m FROM (SELECT user_id,nick,solved,submit,score,accesstime,experience from users order by score desc,experience desc,solved desc,submit desc)t,experience_titles where t.experience>=experience_titles.experience GROUP BY user_id)t1 LEFT JOIN experience_titles ON t1.m=experience_titles.experience order by score desc,experience desc,solved desc,submit desc limit $rank,20");
+if($online == 0) 
+    $result = mysqli_query($con,"SELECT user_id,nick,solved,submit,score,accesstime,privilege,experience_titles.title 
+    FROM (SELECT user_id,nick,solved,submit,score,accesstime,privilege,MAX(experience_titles.experience) AS m 
+    FROM (SELECT user_id,nick,solved,submit,score,accesstime,experience,privilege from users order by score desc,experience desc,solved desc,submit desc)t,experience_titles where t.experience>=experience_titles.experience GROUP BY user_id)t1 
+    LEFT JOIN experience_titles ON t1.m=experience_titles.experience 
+    order by score desc,experience desc,solved desc,submit desc limit $rank,20");
 else
-      $result=mysqli_query($con,"SELECT user_id,nick,solved,submit,score,accesstime,experience_titles.title FROM (SELECT user_id,nick,solved,submit,score,accesstime,MAX(experience_titles.experience) AS m FROM (SELECT user_id,nick,solved,submit,score,accesstime,experience from users order by score desc,experience desc,solved desc,submit desc)t,experience_titles where t.experience>=experience_titles.experience and (NOW()-accesstime)<=300 GROUP BY user_id)t1 LEFT JOIN experience_titles ON t1.m=experience_titles.experience order by score desc,experience desc,solved desc,submit desc limit $rank,20");
+    $result = mysqli_query($con,"SELECT user_id,nick,solved,submit,score,accesstime,privilege,experience_titles.title 
+    FROM (SELECT user_id,nick,solved,submit,score,accesstime,privilege,MAX(experience_titles.experience) AS m 
+    FROM (SELECT user_id,nick,solved,submit,score,accesstime,experience,privilege from users order by score desc,experience desc,solved desc,submit desc)t,experience_titles where t.experience>=experience_titles.experience and privilege & ".PRIV_USER." = 1 and (NOW()-accesstime)<=300 GROUP BY user_id)t1 
+    LEFT JOIN experience_titles ON t1.m=experience_titles.experience 
+    order by score desc,experience desc,solved desc,submit desc limit $rank,20");
 
 $inTitle=_('Rank');
 $Title=$inTitle .' - '. $oj_name;
@@ -107,16 +117,19 @@ $Title=$inTitle .' - '. $oj_name;
                                     </tr>
                                 </thead>
                                 <tbody id="userlist">
-                                    <?php 
+                                    <?php
                                         while($row=mysqli_fetch_row($result)){
                                             echo '<tr><td>',(++$rank),'</td>';
                                             echo '<td><a href="#linkU">',$row[0],'</a></td>';
                                             echo '<td>',htmlspecialchars($row[1]),'</td>';
-                                            if(time()-strtotime($row[5])<=300) 
-                                                echo '<td><label class="label label-success">',_('Online'),'</label></td>';
-                                            else 
-                                                echo '<td><label class="label label-danger">',_('Offline'),'</label></td>';
-                                            echo '<td>',htmlspecialchars($row[6]),'</td>';
+                                            if($row[6] & PRIV_USER){
+                                                if(time()-strtotime($row[5])<=300)
+                                                    echo '<td><label class="label label-ac">',_('Online'),'</label></td>';
+                                                else 
+                                                    echo '<td><label class="label label-wa">',_('Offline'),'</label></td>';
+                                            }else
+                                                echo '<td><label class="label label-ce">',_('Disabled'),'</label></td>';
+                                            echo '<td>',htmlspecialchars($row[7]),'</td>';
                                             echo '<td>',$row[4],'</td>';
                                             echo '<td><a href="record.php?user_id=',$row[0],'&amp;result=0">',$row[2],'</a></td>';
                                             echo '<td><a href="record.php?user_id=',$row[0],'">',$row[3],'</a></td>';
