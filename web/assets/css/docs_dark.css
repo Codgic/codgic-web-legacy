@@ -23,6 +23,10 @@ h6,
     font-family: Arial, "Microsoft YaHei", "微软雅黑", Helvetica Neue
 }
 
+pre {
+    background: #282b2e
+}
+
 footer {
     text-align: center;
     color: #999;
@@ -39,9 +43,12 @@ footer {
     background-color: #fff
 }
 
-.editor-preview,
 .editor-preview-side {
     background: #2e3338 !important
+}
+
+.editor-preview-side pre {
+    background: #282b2e !important
 }
 
 @media (max-width: 767px) {

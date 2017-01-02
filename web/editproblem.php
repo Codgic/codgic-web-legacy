@@ -57,7 +57,14 @@ else if(!isset($_SESSION['admin_tfa']) || !$_SESSION['admin_tfa']){
 ?>
 <!DOCTYPE html>
 <html>
-    <?php require __DIR__.'/inc/head.php';?>
+    <?php 
+        require __DIR__.'/inc/head.php';
+        //Load highlight-js theme.
+        if($t_night=='off') 
+            echo '<link rel="stylesheet" href="/assets/highlight/styles/xcode.css" type="text/css" />';
+        else
+            echo '<link rel="stylesheet" href="/assets/highlight/styles/androidstudio.css" type="text/css" />';
+    ?>
     <link rel="stylesheet" href="/assets/css/simplemde.min.css" type="text/css" />
     <body>
         <?php require __DIR__.'/inc/navbar.php'; ?>
@@ -180,17 +187,18 @@ else if(!isset($_SESSION['admin_tfa']) || !$_SESSION['admin_tfa']){
                             <label class="control-label" for="input_des">
                                 <?php echo _('Description')?>
                             </label>
+                            <a href="#" data-toggle="tooltip" title="<?php echo _('Use [tex][/tex] for common formulas and [inline][/inline] for inline formulas.')?>"><i class="fa fa-question-circle"></i> <?php echo 'Mathjax'?></a>
                             <textarea class="form-control col-xs-12 simplemde" id="input_des" name="description" rows="13" placeholder="<?php echo _('Please create a description for your problem...')?>"><?php if($p_type=='edit') echo htmlspecialchars($row[1])?></textarea>
                         </div>
                     </div>       
                     <div class="row">
-                        <div class="form-group col-xs-6">
+                        <div class="form-group col-xs-12 col-sm-6">
                             <label class="control-label" for="input_input">
                                 <?php echo _('Input')?>
                             </label>
                             <textarea class="form-control col-xs-12 simplemde" id="input_input" name="input" rows="8" placeholder="<?php echo _('Please specify the input format for your problem...')?>"><?php if($p_type=='edit') echo htmlspecialchars($row[2])?></textarea>
                         </div>
-                        <div class="form-group col-xs-6">
+                        <div class="form-group col-xs-12 col-sm-6">
                             <label class="control-label" for="input_output">
                                 <?php echo _('Output')?>
                             </label>

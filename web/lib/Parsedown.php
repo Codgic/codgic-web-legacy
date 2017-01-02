@@ -405,10 +405,8 @@ class Parsedown
 
             if (isset($matches[1]))
             {
-                //$class = 'language-'.$matches[1];
+                $class = 'language-'.$matches[1];
 
-                $class = $matches[1];  //Modified to support highlight-js
-                
                 $Element['attributes'] = array(
                     'class' => $class,
                 );

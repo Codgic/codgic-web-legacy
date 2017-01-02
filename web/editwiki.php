@@ -40,19 +40,17 @@ $Title=$inTitle .' - '. $oj_name;
 ?>
 <!DOCTYPE html>
 <html>
-    <?php require __DIR__.'/inc/head.php'; ?>
+    <?php
+        require __DIR__.'/inc/head.php';
+        //Load highlight-js theme.
+        if($t_night=='off') 
+            echo '<link rel="stylesheet" href="/assets/highlight/styles/xcode.css" type="text/css" />';
+        else
+            echo '<link rel="stylesheet" href="/assets/highlight/styles/androidstudio.css" type="text/css" />';
+    ?>
+    <link rel="stylesheet" href="/assets/css/simplemde.min.css" type="text/css" />
     <body>
         <?php
-            //Load CodeMirror
-            if($pref->edrmode!='off'){
-                echo '<link rel="stylesheet" href="/assets/css/codemirror.css" type="text/css" />';
-                echo '<link rel="stylesheet" href="/assets/css/codemirror.fullscreen.css" type="text/css" />';
-                //Load CodeMirror Theme
-                if($t_night=='off') 
-                    echo '<link rel="stylesheet" href="/assets/css/codemirror.eclipse.css" type="text/css" />';
-                else
-                    echo '<link rel="stylesheet" href="/assets/css/codemirror.midnight.css" type="text/css" />';
-            }
             require __DIR__.'/inc/navbar.php';
         ?>
         <div class="container edit-page">
@@ -96,8 +94,7 @@ $Title=$inTitle .' - '. $oj_name;
                             <label class="control-label" for="input_des">
                                 <?php echo _('Content')?>
                             </label>
-                            <textarea class="form-control col-xs-12" id="input_des" name="content" rows="20" placeholder="<?php echo _('Let start sharing knowledge here...')?>"><?php if($p_type=='edit') echo htmlspecialchars($row[1])?></textarea>
-                            <?php if($pref->edrmode=='vim') echo '<samp>',_('Command: '),'<span id="vim_cmd"></span></samp>'?>
+                            <textarea class="form-control col-xs-12" id="input_des" name="content" rows="14" placeholder="<?php echo _('Let\'s start sharing knowledge here...')?>"><?php if($p_type=='edit') echo htmlspecialchars($row[1])?></textarea>
                         </div>
                     </div>       
                     <div class="row">
@@ -120,73 +117,21 @@ $Title=$inTitle .' - '. $oj_name;
         </div>
         
         <script src="/assets/js/common.js?v=<?php echo $web_ver?>"></script>
-        <?php //Load CodeMirror
-            if($pref->edrmode!='off'){
-                echo '<script src="/assets/js/codemirror.js"></script>';
-                echo '<script src="/assets/js/CodeMirror/addon/placeholder.js"></script>';
-                echo '<script src="/assets/js/CodeMirror/addon/fullscreen.js"></script>';
-                echo '<script src="/assets/js/CodeMirror/addon/overlay.js"></script>';
-                echo '<script src="/assets/js/CodeMirror/mode/markdown.js"></script>';
-                echo '<script src="/assets/js/CodeMirror/mode/gfm.js"></script>';
-                echo '<script src="/assets/js/CodeMirror/mode/clike.js"></script>';
-                echo '<script src="/assets/js/CodeMirror/mode/pascal.js"></script>';
-                echo '<script src="/assets/js/CodeMirror/mode/css.js"></script>';
-                echo '<script src="/assets/js/CodeMirror/mode/javascript.js"></script>';
-                echo '<script src="/assets/js/CodeMirror/mode/htmlmixed.js"></script>';
-                if($pref->edrmode!='default')
-                    echo '<script src="/assets/js/CodeMirror/addon/'.$pref->edrmode.'.js"></script>';
-            }
-        ?>
+        <script src="/assets/js/simplemde.min.js?v=1"></script>
+        <script src="/assets/highlight/highlight.pack.js"></script>
         <script type="text/javascript">
             $(document).ready(function(){
-                var editor = CodeMirror.fromTextArea(document.getElementById('input_des'),{
-                    theme: "<?php if($t_night=='on') echo 'midnight'; else echo 'eclipse'?>",
-                    mode: "gfm",
-                    <?php
-                        if($pref->edrmode!='default'){
-                            echo 'keyMap:"'.$pref->edrmode.'",';
-                        echo 'showCursorWhenSelecting: true,';
-                        }
-                    ?>
-                    lineNumbers:true,
-                    viewportMargin: Infinity,
-                    extraKeys:{
-                        "Ctrl-F11": function(cm){
-                            if(cm.getOption("fullScreen")){
-                                toggle_fullscreen(1);
-                                cm.setOption("fullScreen",false);
-                            }else{
-                                toggle_fullscreen(0);  
-                                cm.setOption("fullScreen", !cm.getOption("fullScreen"));
-                            }  
-                        },
-                    }
+                var simplemde = new SimpleMDE({
+                    element: document.getElementById("input_des"),
+                    renderingConfig: {
+                        codeSyntaxHighlighting: true,
+                    },
+                    indentWithTabs: false,
+                    spellChecker: false,
+                    status: false,
+                    toolbarTips: false,
+                    hideIcons: ["guide"]
                 });
-                <?php if($pref->edrmode=='vim'){?>
-                    CodeMirror.on(editor,'vim-keypress',function(key){
-                        $('#vim_cmd').html(key);
-                    });
-                    CodeMirror.on(editor,'vim-command-done',function(){
-                        $('#vim_cmd').html('');
-                    });
-                <?php }?>
-                function toggle_fullscreen(e){
-                    if(e == 0){
-                        $('#submit_dialog').css({
-                            'width': '101%','height': '100%','margin': '0','padding': '0'
-                        });
-                        $('#submit_content').css({
-                            'height': 'auto','min-height': '100%','border-radius': '0'
-                        });
-                    }else{
-                        $('#submit_dialog').css({
-                            'width': '','height': '','margin': '','padding': ''
-                        });
-                        $('#submit_content').css({
-                            'height': '','min-height': '','border-radius': ''
-                        });
-                    }
-                }
                 $('#edit_form textarea').focus(function(e){cur=e.target;});
                 $('#edit_form').submit(function(){
                     var b=false;

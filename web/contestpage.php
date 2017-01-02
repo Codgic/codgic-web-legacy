@@ -137,8 +137,8 @@ $Title=$inTitle .' - '. $oj_name;
     <?php 
         require __DIR__.'/inc/head.php';
         //Load highlight-js theme.
-         if($t_night=='off') 
-            echo '<link rel="stylesheet" href="/assets/highlight/styles/vs.css" type="text/css" />';
+        if($t_night=='off') 
+            echo '<link rel="stylesheet" href="/assets/highlight/styles/xcode.css" type="text/css" />';
         else
             echo '<link rel="stylesheet" href="/assets/highlight/styles/androidstudio.css" type="text/css" />';
     ?>
@@ -330,10 +330,6 @@ $Title=$inTitle .' - '. $oj_name;
         <script src="/assets/highlight/highlight.pack.js"></script>
         <script type="text/javascript">
             hljs.initHighlightingOnLoad();
-            $('code').parent().css({
-                'background-color': 'transparent',
-                'border': 0
-            });
             var cont=<?php echo $cont_id?>,hide_info=0;
             change_type(2);
             function enroll_cont(){
@@ -367,7 +363,7 @@ $Title=$inTitle .' - '. $oj_name;
                 <?php }?>
                 return false;
             }
-            $(document).ready(function(){           
+            $(document).ready(function(){
                 var cont=<?php echo $cont_id?>;
                 $.post("api/ajax_contest.php",{op:'get_rank_table',contest_id:cont},function(data){
                     $('#cont_rank').html(data.message);

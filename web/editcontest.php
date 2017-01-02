@@ -52,9 +52,15 @@ else if(!isset($_SESSION['admin_tfa']) || !$_SESSION['admin_tfa']){
 ?>
 <!DOCTYPE html>
 <html>
-    <?php require __DIR__.'/inc/head.php';?>
+    <?php
+        require __DIR__.'/inc/head.php';
+        //Load highlight-js theme.
+        if($t_night=='off') 
+            echo '<link rel="stylesheet" href="/assets/highlight/styles/xcode.css" type="text/css" />';
+        else
+            echo '<link rel="stylesheet" href="/assets/highlight/styles/androidstudio.css" type="text/css" />';
+    ?>
     <link rel="stylesheet" href="/assets/css/simplemde.min.css" type="text/css" />
-    <link rel="stylesheet" href="/assets/highlight/styles/github.css" type="text/css" />
     <body>
         <?php require __DIR__.'/inc/navbar.php'; ?>
         <div class="container edit-page">
@@ -195,7 +201,7 @@ else if(!isset($_SESSION['admin_tfa']) || !$_SESSION['admin_tfa']){
                             <label class="control-label" for="input_des">
                                 <?php echo _('Description')?>
                             </label>
-                            <a href="#" data-toggle="tooltip" title="<?php echo 'Use [tex][/tex] for common formulas and [inline][/inline] for inline formulas.'?>"><i class="fa fa-question-circle"></i> <?php echo 'Mathjax'?></a>
+                            <a href="#" data-toggle="tooltip" title="<?php echo _('Use [tex][/tex] for common formulas and [inline][/inline] for inline formulas.')?>"><i class="fa fa-question-circle"></i> <?php echo 'Mathjax'?></a>
                             <textarea class="form-control col-xs-12" name="description" id="input_des" rows="13" placeholder="<?php echo _('Please create a description for your contest...')?>"><?php if($p_type=='edit') echo htmlspecialchars($row[3])?></textarea>
                         </div>
                     </div>       
@@ -219,7 +225,7 @@ else if(!isset($_SESSION['admin_tfa']) || !$_SESSION['admin_tfa']){
         </div>
         
         <script src="/assets/js/common.js?v=<?php echo $web_ver?>"></script>
-        <script src="/assets/js/simplemde.min.js"></script>
+        <script src="/assets/js/simplemde.min.js?v=1"></script>
         <script src="/assets/highlight/highlight.pack.js"></script>
         <script type="text/javascript">
             $(document).ready(function(){

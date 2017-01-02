@@ -23,6 +23,10 @@ h6,
     font-family: Arial, "Microsoft YaHei", "微软雅黑", Helvetica Neue
 }
 
+pre {
+    background: #fff
+}
+
 footer {
     text-align: center;
     color: #999;
@@ -112,6 +116,10 @@ footer {
 
 .editor-preview-side {
     z-index: 1040 !important
+}
+
+.editor-preview-side pre {
+    background: #fff !important
 }
 
 .navbar-img {
