@@ -152,14 +152,13 @@ $Title=$inTitle .' - '. $oj_name;
     <script src="/assets/highlight/highlight.pack.js"></script>
     <script type="text/javascript">
         hljs.initHighlightingOnLoad();
-        $('code').parent().css({
-            'background-color': 'transparent',
-            'border': 0
-        });
         var wiki=<?php echo $wiki_id?>,hide_info=1;
         change_type(4);
         $(document).ready(function(){
-            $('table').addClass('table');
+            $('table').each(function(){
+                if(!$(this).hasClass('table'))
+                    $('table').addClass('table table-bordered table-condensed');
+            });
             $('#action_delete').click(function(){
                 $.ajax({
                     type:"POST",

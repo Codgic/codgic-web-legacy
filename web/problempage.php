@@ -588,6 +588,10 @@ $Title=$inTitle .' - '. $oj_name;
             <?php }?>
             
             $(document).ready(function(){
+            $('table').each(function(){
+                if(!$(this).hasClass('table'))
+                    $('table').addClass('table table-bordered table-condensed');
+            });
             <?php if($pref->edrmode!='off'){?>
                 var editor = CodeMirror.fromTextArea(document.getElementById('detail_input'),{
                     theme: "<?php if($t_night=='on') echo 'midnight'; else echo 'eclipse'?>",

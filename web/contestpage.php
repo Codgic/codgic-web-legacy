@@ -364,6 +364,10 @@ $Title=$inTitle .' - '. $oj_name;
                 return false;
             }
             $(document).ready(function(){
+                $('table').each(function(){
+                    if(!$(this).hasClass('table'))
+                        $('table').addClass('table table-bordered table-condensed');
+                });
                 var cont=<?php echo $cont_id?>;
                 $.post("api/ajax_contest.php",{op:'get_rank_table',contest_id:cont},function(data){
                     $('#cont_rank').html(data.message);

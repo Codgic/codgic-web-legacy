@@ -56,21 +56,6 @@ footer {
     .active .nav-text-alt {
         display: inline
     }
-    .dropdown .dropdown-menu {
-        -webkit-transition: all 0.3s;
-        -moz-transition: all 0.3s;
-        -ms-transition: all 0.3s;
-        -o-transition: all 0.3s;
-        transition: all 0.3s;
-        height: 0px;
-        display: block;
-        overflow: hidden;
-        opacity: 0
-    }
-    .dropdown.open .dropdown-menu {
-        height: auto;
-        opacity: 1
-    }
 }
 
 @media (min-width: 992px) {
