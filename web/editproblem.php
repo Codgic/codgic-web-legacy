@@ -206,13 +206,13 @@ else if(!isset($_SESSION['admin_tfa']) || !$_SESSION['admin_tfa']){
                         </div>
                     </div>
                     <div class="row">
-                        <div class="form-group col-xs-6">
+                        <div class="form-group col-xs-12 col-sm-6">
                             <label class="control-label" for="input_sampinput">
                                 <?php echo _('Sample Input')?>
                             </label>
                             <textarea class="form-control col-xs-12 simplemde no-toolbar" id="input_sampinput" name="sample_input" rows="8" placeholder="<?php echo _('Please provide an input sample of your problem...')?>"><?php if($p_type=='edit') echo htmlspecialchars($row[4])?></textarea>
                         </div>
-                        <div class="form-group col-xs-6">
+                        <div class="form-group col-xs-12 col-sm-6">
                             <label class="control-label" for="input_sampoutput">
                                 <?php echo _('Sample Output')?>
                             </label>
