@@ -2,7 +2,7 @@
 -- version 4.6.4deb1
 -- https://www.phpmyadmin.net/
 --
--- Generation Time: Nov 27, 2016 at 10:48 PM
+-- Generation Time: Jan 02, 2017 at 05:55 PM
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -36,6 +36,20 @@ DELIMITER ;
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `checker`
+--
+
+CREATE TABLE `checker` (
+  `id` int(11) NOT NULL,
+  `name` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `description` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `source` mediumtext COLLATE utf8mb4_unicode_ci NOT NULL,
+  `have_parameter` bit(1) NOT NULL DEFAULT b'0'
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `compileinfo`
 --
 
@@ -64,7 +78,7 @@ CREATE TABLE `contest` (
   `enroll_user` int(11) NOT NULL DEFAULT '0',
   `last_upd_time` datetime DEFAULT NULL,
   `need_update` int(11) NOT NULL DEFAULT '0',
-  `hide_source_code` bit(1) NOT NULL DEFAULT '1'
+  `hide_source_code` bit(1) NOT NULL DEFAULT 1
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -274,15 +288,17 @@ CREATE TABLE `problem` (
   `has_tex` tinyint(4) NOT NULL DEFAULT '0',
   `submit_user` int(11) DEFAULT '0',
   `solved` int(11) DEFAULT '0',
-  `case_time_limit` int(11) NOT NULL DEFAULT '0'
+  `case_time_limit` int(11) NOT NULL DEFAULT '0',
+  `checker_id` int(11) NOT NULL DEFAULT '0',
+  `checker_parameter` text COLLATE utf8mb4_unicode_ci DEFAULT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `problem`
 --
 
-INSERT INTO `problem` (`problem_id`, `title`, `description`, `input`, `output`, `sample_input`, `sample_output`, `hint`, `source`, `in_date`, `time_limit`, `memory_limit`, `case_score`, `defunct`, `accepted`, `submit`, `ratio`, `compare_way`, `has_tex`, `submit_user`, `solved`, `case_time_limit`) VALUES
-(1000, 'A+B 问题', '计算 a+b\r\n<pre>#include &lt;iostream&gt;\r\nusing namespace std;\r\nint main()\r\n{ \r\n    int a, b; \r\n    cin >> a >> b; \r\n    cout << a + b;\r\n}\r\n</pre>', '两个整数 a,b (保证a+b在int范围内)', '输出 a+b', '1 2', '3', '请使用标准输入输出~\r\n\r\n', '基础语法', '2016-11-19 18:10:45', 1000, 128000, 10, 0, 0, 0, 0, 0, 56, 0, 0, 1000);
+INSERT INTO `problem` (`problem_id`, `title`, `description`, `input`, `output`, `sample_input`, `sample_output`, `hint`, `source`, `in_date`, `time_limit`, `memory_limit`, `case_score`, `defunct`, `accepted`, `submit`, `compare_way`, `has_tex`, `submit_user`, `solved`, `case_time_limit`, `checker_id`, `checker_parameter`) VALUES
+(1000, 'A+B 问题', '计算 a+b\r\n<pre>#include &lt;iostream&gt;\r\nusing namespace std;\r\nint main()\r\n{ \r\n    int a, b; \r\n    cin >> a >> b; \r\n    cout << a + b;\r\n}\r\n</pre>', '两个整数 a,b (保证a+b在int范围内)', '输出 a+b', '1 2', '3', '请使用标准输入输出~\r\n\r\n', '基础语法', '2016-11-19 18:10:45', 1000, 128000, 10, 0, 0, 0, 0, 56, 0, 0, 1000, 0, '');
 
 -- --------------------------------------------------------
 
@@ -366,7 +382,6 @@ CREATE TABLE `users` (
   `solved` int(11) DEFAULT '0',
   `score` int(11) NOT NULL DEFAULT '0',
   `experience` int(11) NOT NULL DEFAULT '0',
-  `defunct` char(1) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'N',
   `ip` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
   `accesstime` datetime DEFAULT NULL,
   `volume` int(11) NOT NULL DEFAULT '1',
@@ -383,8 +398,8 @@ CREATE TABLE `users` (
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`user_id`, `email`, `submit`, `solved`, `score`, `experience`, `defunct`, `ip`, `accesstime`, `volume`, `language`, `password`, `reg_time`, `nick`, `school`, `motto`, `privilege`) VALUES
-('root', 'cwoj@hello.world', 0, 0, 0, 0, 'N', '', '1970-01-01 00:00:00', 1, 0, 'CWOJUser125', '1970-01-01 00:00:00', 'admin', '', 'I\'m an evil administrator.', 15);
+INSERT INTO `users` (`user_id`, `email`, `submit`, `solved`, `score`, `experience`, `ip`, `accesstime`, `volume`, `language`, `password`, `reg_time`, `nick`, `school`, `motto`, `privilege`) VALUES
+('root', 'cwoj@hello.world', 0, 0, 0, 0, '', '1970-01-01 00:00:00', 1, 0, 'CWOJUser125', '1970-01-01 00:00:00', 'admin', '', 'I\'m an evil administrator.', 31);
 
 -- --------------------------------------------------------
 
@@ -426,6 +441,12 @@ CREATE TABLE `wiki` (
 --
 
 --
+-- Indexes for table `checker`
+--
+ALTER TABLE `checker`
+  ADD PRIMARY KEY (`id`);
+  
+--
 -- Indexes for table `compileinfo`
 --
 ALTER TABLE `compileinfo`
@@ -448,13 +469,13 @@ ALTER TABLE `contest_detail`
 -- Indexes for table `contest_owner`
 --
 ALTER TABLE `contest_owner`
-  ADD UNIQUE KEY `contest_id` (`contest_id`,`user_id`),
+  ADD UNIQUE KEY `contest_id` (`contest_id`,`user_id`);
 
 --
 -- Indexes for table `contest_problem`
 --
 ALTER TABLE `contest_problem`
-  ADD UNIQUE KEY `problem_id` (`problem_id`,`contest_id`),
+  ADD UNIQUE KEY `contest_problem` (`contest_id`,`problem_id`),
   ADD UNIQUE KEY `place` (`place`);
 
 --
@@ -548,8 +569,9 @@ ALTER TABLE `users`
   ADD PRIMARY KEY (`user_id`),
   ADD UNIQUE KEY `user_id` (`user_id`),
   ADD UNIQUE KEY `email` (`email`),
-  ADD KEY `solve_submit` (`solved`,`submit`);
-
+  ADD KEY `solve_submit` (`solved`,`submit`),
+  ADD INDEX(`privilege`);
+    
 --
 -- Indexes for table `user_notes`
 --

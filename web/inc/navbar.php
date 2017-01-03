@@ -80,4 +80,3 @@ if(!isset($_SESSION['user'])){
     </div>
     <div class="alert alert-success text-center alert-popup collapse" id="alert_newmsg"><i class="fa fa-fw fa-info"></i><?php echo _('You have unread mails...')?></div>
 </header>
-<div style="height:70px"></div>

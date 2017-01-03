@@ -9,6 +9,7 @@ if(!isset($con))
     require __DIR__.'/conf/database.php';
 require __DIR__.'/lib/Parsedown.php';
 require __DIR__.'/lib/ParsedownExtra.php';
+require_once __DIR__.'/lib/HTMLPurifier/HTMLPurifier.auto.php';
 
 $is_contest=false;
 if(isset($_GET['contest_id'])){
@@ -261,7 +262,7 @@ $Title=$inTitle .' - '. $oj_name;
                                 <h5 class="panel-title"><?php echo _('Description')?></h5>
                             </div>
                             <div class="panel-body">
-                                <?php echo Parsedown::instance()->text($row_prob[1]);?>
+                                <?php echo HTMLPurifier::instance()->purify(Parsedown::instance()->text($row_prob[1]));?>
                             </div>
                         </div>
                         <div class="panel panel-default">
@@ -269,7 +270,7 @@ $Title=$inTitle .' - '. $oj_name;
                                 <h5 class="panel-title"><?php echo _('Input')?></h5>
                             </div>
                             <div class="panel-body">
-                                <?php echo Parsedown::instance()->text($row_prob[2]);?>
+                                <?php echo HTMLPurifier::instance()->purify(Parsedown::instance()->text($row_prob[2]));?>
                             </div>
                         </div>
                         <div class="panel panel-default">
@@ -277,7 +278,7 @@ $Title=$inTitle .' - '. $oj_name;
                                 <h5 class="panel-title"><?php echo _('Output')?></h5>
                             </div>
                             <div class="panel-body">
-                                <?php echo Parsedown::instance()->text($row_prob[3]);?>
+                                <?php echo HTMLPurifier::instance()->purify(Parsedown::instance()->text($row_prob[3]));?>
                             </div>
                         </div>
                         <div class="panel panel-default">
@@ -286,7 +287,7 @@ $Title=$inTitle .' - '. $oj_name;
                                 <a herf="#" class="pull-right" id="copy_in" style="cursor:pointer" data-toggle="tooltip" data-trigger="manual" data-clipboard-action="copy" data-clipboard-target="#sample_input"><?php echo _('[Copy]')?></a></h5>
                             </div>
                             <div class="panel-body problem-sample" id="sample_input">
-                                <?php echo mb_ereg_replace('\r?\n','<br>',$row_prob[4]);?>
+                                <?php echo HTMLPurifier::instance()->purify(mb_ereg_replace('\r?\n','<br>',$row_prob[4]));?>
                             </div>
                         </div>
                         <div class="panel panel-default">
@@ -295,7 +296,7 @@ $Title=$inTitle .' - '. $oj_name;
                                 <a herf="#" class="pull-right" id="copy_out" style="cursor:pointer" data-toggle="tooltip" data-trigger="manual" data-clipboard-action="copy" data-clipboard-target="#sample_output"><?php echo _('[Copy]')?></a></h5>
                             </div>
                             <div class="panel-body problem-sample" id="sample_output">
-                                <?php echo mb_ereg_replace('\r?\n','<br>',$row_prob[5]);?>
+                                <?php echo HTMLPurifier::instance()->purify(mb_ereg_replace('\r?\n','<br>',$row_prob[5]));?>
                             </div>
                         </div>
                         <?php if(strlen(trim($row_prob[6]))){ ?>
@@ -304,7 +305,7 @@ $Title=$inTitle .' - '. $oj_name;
                                     <h5 class="panel-title"><?php echo _('Hints')?></h5>
                                 </div>
                                 <div class="panel-body">
-                                    <?php echo Parsedown::instance()->text($row_prob[6]);?>
+                                    <?php echo HTMLPurifier::instance()->purify(Parsedown::instance()->text($row_prob[6]));?>
                                 </div>
                             </div>
                         <?php }?>
@@ -313,7 +314,7 @@ $Title=$inTitle .' - '. $oj_name;
                                 <h5 class="panel-title"><?php echo _('Tags')?></h5>
                             </div>
                             <div class="panel-body">
-                                <?php echo mb_ereg_replace('\r?\n','<br>',$row_prob[7]);?>
+                                <?php echo HTMLPurifier::instance()->purify(mb_ereg_replace('\r?\n','<br>',$row_prob[7]));?>
                             </div>
                         </div>
                     </div>
@@ -555,15 +556,11 @@ $Title=$inTitle .' - '. $oj_name;
                 echo '<script src="/assets/CodeMirror/mode/pascal.js"></script>';
                 echo '<script src="/assets/CodeMirror/mode/basic.js"></script>';
                 if($pref->edrmode!='default')
-                    echo '<script src="/assets/CodeMirror/addon/'.$pref->edrmode.'.js"></script>';
+                    echo '<script src="/assets/CodeMirror/keymap/'.$pref->edrmode.'.js"></script>';
             }
         ?>
         <script type="text/javascript">
             hljs.initHighlightingOnLoad();
-            $('code').parent().css({
-                'background-color': 'transparent',
-                'border': 0
-            });
             var prob=<?php echo $prob_id?>;
             <?php if($is_contest==true && $cont_status==1 && !isset($user_quit)){?> 
                 var t=new Date(<?php echo strtotime($row_cont[2])*1000?>);
@@ -588,101 +585,101 @@ $Title=$inTitle .' - '. $oj_name;
             <?php }?>
             
             $(document).ready(function(){
-            $('table').each(function(){
-                if(!$(this).hasClass('table'))
-                    $('table').addClass('table table-bordered table-condensed');
-            });
-            <?php if($pref->edrmode!='off'){?>
-                var editor = CodeMirror.fromTextArea(document.getElementById('detail_input'),{
-                    theme: "<?php if($t_night=='on') echo 'midnight'; else echo 'eclipse'?>",
-                    <?php
-                        if($pref->edrmode!='default'){
-                            echo 'keyMap:"'.$pref->edrmode.'",';
-                            echo 'showCursorWhenSelecting: true,';
-                        }
-                    ?>
-                    lineNumbers:true,
-                    extraKeys:{
-                        "F11": function(cm){
-                            if(cm.getOption("fullScreen")){
-                                toggle_fullscreen(1);
-                                cm.setOption("fullScreen",false);
-                            }else{
-                                toggle_fullscreen(0);  
-                                cm.setOption("fullScreen", !cm.getOption("fullScreen"));
-                            }  
-                        },
-                    }
+                $('table').each(function(){
+                    if(!$(this).hasClass('table'))
+                        $('table').addClass('table table-bordered table-condensed');
                 });
-                <?php if($pref->edrmode=='vim'){?>
-                    CodeMirror.on(editor,'vim-keypress',function(key){
-                        $('#vim_cmd').html(key);
+                <?php if($pref->edrmode!='off'){?>
+                    var editor = CodeMirror.fromTextArea(document.getElementById('detail_input'),{
+                        theme: "<?php if($t_night=='on') echo 'midnight'; else echo 'eclipse'?>",
+                        <?php
+                            if($pref->edrmode!='default'){
+                                echo 'keyMap:"'.$pref->edrmode.'",';
+                                echo 'showCursorWhenSelecting: true,';
+                            }
+                        ?>
+                        lineNumbers:true,
+                        extraKeys:{
+                            "F11": function(cm){
+                                if(cm.getOption("fullScreen")){
+                                    toggle_fullscreen(1);
+                                    cm.setOption("fullScreen",false);
+                                }else{
+                                    toggle_fullscreen(0);  
+                                    cm.setOption("fullScreen", !cm.getOption("fullScreen"));
+                                }  
+                            },
+                        }
                     });
-                    CodeMirror.on(editor,'vim-command-done',function(){
-                        $('#vim_cmd').html('');
-                    });
-                <?php }?>
-                function editor_changemode(){
-                    var m = $("#slt_lang").val();
-                    if(m == 1) 
-                        editor.setOption("mode", "text/x-csrc");
-                    else if(m == 2) 
-                        editor.setOption("mode", "text/x-pascal");
-                    else if (m == 6)
-                        editor.setOption("mode", "text/x-basic");
-                    else
-                        editor.setOption("mode", "text/x-c++src");
-                }
-                function toggle_fullscreen(e){
-                    if(e == 0){
-                        $('#submit_dialog').css({
-                            'width': '101%','height': '100%','margin': '0','padding': '0'
+                    <?php if($pref->edrmode=='vim'){?>
+                        CodeMirror.on(editor,'vim-keypress',function(key){
+                            $('#vim_cmd').html(key);
                         });
-                        $('#submit_content').css({
-                            'height': 'auto','min-height': '100%','border-radius': '0'
+                        CodeMirror.on(editor,'vim-command-done',function(){
+                            $('#vim_cmd').html('');
                         });
-                    }else{
-                        $('#submit_dialog').css({
-                            'width': '','height': '','margin': '','padding': ''
-                        });
-                        $('#submit_content').css({
-                            'height': '','min-height': '','border-radius': ''
-                        });
+                    <?php }?>
+                    function editor_changemode(){
+                        var m = $("#slt_lang").val();
+                        if(m == 1) 
+                            editor.setOption("mode", "text/x-csrc");
+                        else if(m == 2) 
+                            editor.setOption("mode", "text/x-pascal");
+                        else if (m == 6)
+                            editor.setOption("mode", "text/x-basic");
+                        else
+                            editor.setOption("mode", "text/x-c++src");
                     }
-                }
-                function clear_editor(){
-                    editor.getDoc().setValue('');
-                    editor.focus();
-                }
-            <?php }else{?>
-                function clear_editor(){
-                    $('#detail_input').val('');
-                    $('#detail_input').focus();
-                }
-            <?php }?>
-            editor_changemode();
-            var clipin = new Clipboard('#copy_in'),clipout = new Clipboard('#copy_out');
-            clipin.on('success', function(e){
-                $('#copy_in').attr('title','<?php echo _('Copied!')?>');
-                $('#copy_in').tooltip('show');
-                setTimeout("$('#copy_in').tooltip('destroy')",800);
-            });
-            clipin.on('error', function(e){
-                $('#copy_in').attr('title','<?php echo _('Failed...')?>');
-                $('#copy_in').tooltip('show');
-                setTimeout("$('#copy_in').tooltip('destroy')",800);
-            });
-            clipout.on('success', function(e){
-                $('#copy_out').attr('title','<?php echo _('Copied!')?>');
-                $('#copy_out').tooltip('show');
-                setTimeout("$('#copy_out').tooltip('destroy')",800);
-            });
-            clipout.on('success', function(e){
-                $('#copy_out').attr('title','<?php echo _('Failed...')?>');
-                $('#copy_out').tooltip('show');
-                setTimeout("$('#copy_out').tooltip('destroy')",800);
-            });
-            var hide_info = 0;
+                    function toggle_fullscreen(e){
+                        if(e == 0){
+                            $('#submit_dialog').css({
+                                'width': '101%','height': '100%','margin': '0','padding': '0'
+                            });
+                            $('#submit_content').css({
+                                'height': 'auto','min-height': '100%','border-radius': '0'
+                            });
+                        }else{
+                            $('#submit_dialog').css({
+                                'width': '','height': '','margin': '','padding': ''
+                            });
+                            $('#submit_content').css({
+                                'height': '','min-height': '','border-radius': ''
+                            });
+                        }
+                    }
+                    function clear_editor(){
+                        editor.getDoc().setValue('');
+                        editor.focus();
+                    }
+                <?php }else{?>
+                    function clear_editor(){
+                        $('#detail_input').val('');
+                        $('#detail_input').focus();
+                    }
+                <?php }?>
+                editor_changemode();
+                var clipin = new Clipboard('#copy_in'),clipout = new Clipboard('#copy_out');
+                clipin.on('success', function(e){
+                    $('#copy_in').attr('title','<?php echo _('Copied!')?>');
+                    $('#copy_in').tooltip('show');
+                    setTimeout("$('#copy_in').tooltip('destroy')",800);
+                });
+                clipin.on('error', function(e){
+                    $('#copy_in').attr('title','<?php echo _('Failed...')?>');
+                    $('#copy_in').tooltip('show');
+                    setTimeout("$('#copy_in').tooltip('destroy')",800);
+                });
+                clipout.on('success', function(e){
+                    $('#copy_out').attr('title','<?php echo _('Copied!')?>');
+                    $('#copy_out').tooltip('show');
+                    setTimeout("$('#copy_out').tooltip('destroy')",800);
+                });
+                clipout.on('success', function(e){
+                    $('#copy_out').attr('title','<?php echo _('Failed...')?>');
+                    $('#copy_out').tooltip('show');
+                    setTimeout("$('#copy_out').tooltip('destroy')",800);
+                });
+                var hide_info = 0;
                 <?php if($is_contest==true&&isset($rem_time)&&$rem_time>0){?>
                     var timer_rt = window.setInterval("GetRTime()", 1000);
                 <?php }?>
@@ -715,8 +712,8 @@ $Title=$inTitle .' - '. $oj_name;
                                     $('#submit_res').slideUp();
                                     window.location.href='wait.php?key='+msg.substring(8,msg.length);
                                 }
-                                else 
-                                    $('#submit_res').html('<i class="fa fa-fw fa-remove"></i> '+msg).slideDown();
+                            else 
+                                $('#submit_res').html('<i class="fa fa-fw fa-remove"></i> '+msg).slideDown();
                             }
                         });
                     }

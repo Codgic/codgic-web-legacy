@@ -63,15 +63,15 @@ $Title=$inTitle .' - '. $oj_name;
                     </div>
                     <div class="form-group" id="msg_content">
                         <label class="col-xs-2" for="detail_input"><?php echo _('Content')?></label>
-                            <div class="col-xs-10">
-                                <textarea class="form-control" id="detail_input" rows="7" name="detail" placeholder="<?php echo _('Post Content...')?>"></textarea>
-                            </div>
+                        <div class="col-xs-10">
+                            <textarea class="form-control" id="detail_input" rows="7" name="detail" placeholder="<?php echo _('Post Content...')?>"></textarea>
+                        </div>
                     </div>
-                    <div class="form-group" id="msg_preview">
+                    <div class="form-group collapse" id="msg_preview">
                         <label class="col-xs-2" for="preview_content"><?php echo _('Preview')?></label>
-                            <div class="col-xs-10">
-                                <pre><div id="preview_content"></div></pre>
-                            </div>
+                        <div class="col-xs-10">
+                            <pre><div id="preview_content"></div></pre>
+                        </div>
                     </div>
                     <div class="pull-left">
                         <button id="post_preview" class="btn btn-default"><?php echo _('Preview')?></button>
@@ -212,8 +212,10 @@ $Title=$inTitle .' - '. $oj_name;
                 $('#msg_op').val('msg_create');
                 $('#msgid_input').val(msg_id);
                 $('#replypanel h4').html(title);
+                $('#msg_preview').slideUp();
+                $('#msg_content').slideDown();
+                $('#post_preview').html('<?php echo _('Preview')?>');
                 $('#post_status').html('');
-                $('#msg_preview').hide();
                 $('#msg_input').val('');
                 $('#detail_input').val('');
                 $('#replypanel').fadeIn(300);
@@ -245,7 +247,7 @@ $Title=$inTitle .' - '. $oj_name;
                 $('#msgid_input').val(msg_id);
                 $('#replypanel h4').html(title);
                 $('#replypanel').fadeIn(300);
-                $('#msg_preview').hide();
+                $('#msg_preview').slideUp();
                 $('#msg_input').focus();
             <?php }else{ ?>
                 $('#alert_error').removeClass('alert-info');
@@ -341,7 +343,7 @@ $Title=$inTitle .' - '. $oj_name;
                 dealwithlinks( $('#preview_content').html(parseBBCode(data)));
                 $('#msg_content').slideUp();
                 $('#msg_preview').slideDown();
-                $('#post_preview').html('<?php echo _('Back')?>');
+                $('#post_preview').html('<?php echo _('Edit')?>');
                 MathJax.Hub.Queue(["Typeset",MathJax.Hub,('preview_content')]);
             }else{
                 $('#msg_preview').slideUp();
