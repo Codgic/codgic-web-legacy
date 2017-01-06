@@ -1,0 +1,43 @@
+{
+  "name": "cwoj",
+  "version": "1.0.0",
+  "description": "Web part for CWOJ.",
+  "directories": {
+    "doc": "doc"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CDFLS/CWOJ.git"
+  },
+  "author": "",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/CDFLS/CWOJ/issues"
+  },
+  "homepage": "https://github.com/CDFLS/CWOJ#readme",
+  "dependencies": {
+    "bootstrap": "^3.3.7",
+    "bootswatch": "^3.3.7",
+    "font-awesome": "^4.7.0",
+    "jquery": "^3.1.1",
+    "mathjax": "^2.7.0",
+    "stats-webpack-plugin": "^0.4.2",
+    "webpack": "^2.1.0-beta.28"
+  },
+  "devDependencies": {
+    "babel-core": "^6.21.0",
+    "babel-loader": "^6.2.10",
+    "babel-preset-es2015": "^6.18.0",
+    "css-loader": "^0.26.1",
+    "extract-text-webpack-plugin": "^2.0.0-beta.4",
+    "file-loader": "^0.9.0",
+    "less": "^2.7.2",
+    "less-loader": "^2.2.3",
+    "style-loader": "^0.13.1",
+    "url-loader": "^0.5.7",
+    "webpack": "^2.1.0-beta.28"
+  }
+}
