@@ -23,9 +23,7 @@
     "bootswatch": "^3.3.7",
     "font-awesome": "^4.7.0",
     "jquery": "^3.1.1",
-    "mathjax": "^2.7.0",
-    "stats-webpack-plugin": "^0.4.2",
-    "webpack": "^2.1.0-beta.28"
+    "mathjax": "^2.7.0"
   },
   "devDependencies": {
     "babel-core": "^6.21.0",
