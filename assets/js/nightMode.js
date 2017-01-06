@@ -9,7 +9,7 @@ export default function() {
     else if (config.mode == 'off')
         nightMode = false;
     else if (hour < config.dayStart || hour > config.nightStart)
-        nightMode = false;
+        nightMode = true;
     else
         nightMode = true;
 
