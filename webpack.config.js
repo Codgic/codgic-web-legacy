@@ -10,7 +10,9 @@ module.exports = {
     },
     output: {
         path: __dirname + '/web/assets_webpack',
-        filename: '[name].js'
+        filename: '[name].js',
+        publicPath: 'assets_webpack/'
+
     },
     module: {
         loaders: [
@@ -30,7 +32,6 @@ module.exports = {
             loader: 'url-loader',
             query: {
                 limit: 10000,
-                publicPath: 'assets_webpack/'
             }
         }
         ]
@@ -46,13 +47,6 @@ module.exports = {
             name: 'vendor',
             minChunks: function (module, count) {
                 // any required modules inside node_modules are extracted to vendor
-                console.log("!!!" + module.resource + " " + (
-                        module.resource &&
-                        (/\.js|\.css|\.less$/.test(module.resource)) &&
-                        module.resource.indexOf(
-                            path.join(__dirname, 'node_modules')
-                            ) === 0
-                       ));
                 return (
                         module.resource &&
                         (/\.js|\.css|\.less$/.test(module.resource)) &&

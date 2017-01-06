@@ -1,10 +1,14 @@
-import jQuery from 'jquery';
+// Cannot lazy load jQuery because of legacy script.
+window.$ = window.jQuery = require('jquery');
 
-window.$ = window.jQuery = jQuery;
+require.ensure(["bootstrap"], function() {
+    require('bootstrap');
+});
 
-require('bootstrap');
+require.ensure(["font-awesome/css/font-awesome.css"], function() {
+    require('font-awesome/css/font-awesome.css');
+});
 // require('bootstrap/less/bootstrap.less');
-require('font-awesome/css/font-awesome.css');
 
 import loadNightMode from './js/nightMode';
 loadNightMode();
