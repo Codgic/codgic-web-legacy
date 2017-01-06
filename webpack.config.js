@@ -3,7 +3,7 @@ var ExtractTextPlugin = require("extract-text-webpack-plugin");
 
 module.exports = {
     entry: {
-        'common-bundle': './assets/common-res.js',
+        'commons': './assets/commons.js',
     },
     performance: {
           hints: false
@@ -41,5 +41,6 @@ module.exports = {
                 warnings: false
             }
         }),
+
     ]
 }

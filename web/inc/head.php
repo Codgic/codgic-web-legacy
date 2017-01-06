@@ -20,7 +20,7 @@
     <link href="/assets/FontAwesome/css/font-awesome.min.css?v=470" rel="stylesheet" type="text/css" />
     -->
     <script>document.nightMode = <?php echo json_encode(array('mode'=>$pref->night, 'dayStart' => $daystart, 'nightStart' => $nightstart)) ?>;</script>
-    <script src="/assets_webpack/common-bundle.js"></script>
+    <script src="/assets_webpack/commons.js"></script>
 
     <!--[if lt IE 9]>
         <script type="text/javascript">
