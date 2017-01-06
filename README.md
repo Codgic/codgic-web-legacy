@@ -12,6 +12,7 @@ Notes: 1.x is still in early development stage, meaning it contains loads of hal
 ## Deployment
 - The local daemon can be found [HERE](https://github.com/CDFLS/cwoj_daemon).
 - Deployment Guide for CWOJ 0.x could be found in the [Wiki](https://github.com/CDFLS/CWOJ/wiki) section.
+- Please see DEPLOY.md.
 
 ## Credits
 - CWOJ is mainly based on [Bashu OnlineJudge](https://github.com/593141477/bashu-onlinejudge).
