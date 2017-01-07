@@ -11,16 +11,18 @@ export default function() {
     else if (hour < config.dayStart || hour > config.nightStart)
         nightMode = true;
     else
-        nightMode = true;
+        nightMode = false;
 
     if (nightMode)
     {
         require('bootswatch/slate/bootstrap.css');
         require('../css/docs_dark.css');
+        require('codemirror/theme/midnight.css');
     }
     else
     {
         require('bootswatch/cerulean/bootstrap.css');
         require('../css/docs.css');
+        require('codemirror/theme/eclipse.css');
     }
 };
