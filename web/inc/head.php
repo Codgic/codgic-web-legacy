@@ -30,11 +30,11 @@
         if($t_night=='on'){
             $loginimg='/assets/res/loginbg_dark.png';
             echo '<link href="/assets/Bootswatch/slate/bootstrap.min.css?v=337" rel="stylesheet" type="text/css" />';
-            echo '<link href="/assets/css/docs_dark.css?v=113" rel="stylesheet" type="text/css" />';
+            echo '<link href="/assets/css/docs_dark.css?v=114" rel="stylesheet" type="text/css" />';
         }else{
             $loginimg='/assets/res/loginbg.png';
             echo '<link href="/assets/Bootswatch/cerulean/bootstrap.min.css?v=337" rel="stylesheet" type="text/css" />';
-            echo '<link href="/assets/css/docs.css?v=113" rel="stylesheet" type="text/css" />';
+            echo '<link href="/assets/css/docs.css?v=114" rel="stylesheet" type="text/css" />';
         }
     ?>
     <link href="/assets/FontAwesome/css/font-awesome.min.css?v=470" rel="stylesheet" type="text/css" />
