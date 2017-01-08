@@ -19,9 +19,9 @@
     <script src="/assets/js/bootstrap.min.js?v=337"></script>
     <link href="/assets/FontAwesome/css/font-awesome.min.css?v=470" rel="stylesheet" type="text/css" />
     -->
-    <script>document.nightMode = <?php echo json_encode(array('mode'=>$pref->night, 'dayStart' => $daystart, 'nightStart' => $nightstart)) ?>;</script>
-    <script src="/assets_webpack/vendor.js"></script>
+    <script>window.nightModeConfig = <?php echo json_encode(array('mode'=>$pref->night, 'dayStart' => $daystart, 'nightStart' => $nightstart)) ?>;</script>
     <script src="/assets_webpack/commons.js"></script>
+    <script src="/assets_webpack/general.js"></script>
 
     <!--[if lt IE 9]>
         <script type="text/javascript">

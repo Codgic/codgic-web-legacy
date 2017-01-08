@@ -1,7 +1,7 @@
 export default function() {
     const resPath = '../';
     let hour = new Date().getHours(),
-        config = document.nightMode,
+        config = window.nightModeConfig,
         nightMode;
 
     if (config.mode == 'on')
@@ -12,6 +12,8 @@ export default function() {
         nightMode = true;
     else
         nightMode = false;
+
+    window.nightMode = nightMode;
 
     if (nightMode)
     {
