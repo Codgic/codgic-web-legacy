@@ -19,7 +19,10 @@
     <script src="/assets/js/bootstrap.min.js?v=337"></script>
     <link href="/assets/FontAwesome/css/font-awesome.min.css?v=470" rel="stylesheet" type="text/css" />
     -->
-    <script>window.nightModeConfig = <?php echo json_encode(array('mode'=>$pref->night, 'dayStart' => $daystart, 'nightStart' => $nightstart)) ?>;</script>
+    <script>
+        window.nightModeConfig = <?php echo json_encode(array('mode'=>$pref->night, 'dayStart' => $daystart, 'nightStart' => $nightstart)) ?>;
+        window.user = <?php echo json_encode(array('logined' => !empty($_SESSION['user']), 'userName' => $_SESSION['user'])) ?>;
+    </script>
     <script src="/assets_webpack/commons.js"></script>
     <script src="/assets_webpack/general.js"></script>
 
