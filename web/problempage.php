@@ -531,7 +531,7 @@ $Title=$inTitle .' - '. $oj_name;
         </div>
         <script src="/assets/js/common.js?v=<?php echo $web_ver?>"></script>
         <script src="/assets/js/clipboard.min.js"></script>
-        <script src="/assets/highlight/highlight.pack.js"></script>
+        <script src="assets_webpack/highlight.js"></script>
 
         <script>
             window.problemConfig = <?php echo json_encode(array('id' => $prob_id)) ?>;

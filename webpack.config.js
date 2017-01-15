@@ -6,7 +6,7 @@ module.exports = {
         'general': './assets/pages/general.js',
         'problempage': './assets/pages/problempage.js',
         'sourcecode': './assets/pages/sourcecode.js',
-        'contestpage': './assets/pages/contestpage.js',
+        'highlight': './assets/snippets/hljs.js',
     },
     performance: {
         hints: false

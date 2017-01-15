@@ -60,11 +60,6 @@ $Title=$inTitle .' - '. $oj_name;
 <html>
     <?php 
         require __DIR__.'/inc/head.php';
-        //Load highlight-js theme.
-        if($t_night=='off') 
-            echo '<link rel="stylesheet" href="/assets/highlight/styles/xcode.css" type="text/css" />';
-        else
-            echo '<link rel="stylesheet" href="/assets/highlight/styles/androidstudio.css" type="text/css" />';
     ?>
     <body>
         <?php
@@ -150,7 +145,7 @@ $Title=$inTitle .' - '. $oj_name;
     </div>
     
     <script src="/assets/js/common.js?v=<?php echo $web_ver?>"></script>
-    <script src="/assets/highlight/highlight.pack.js"></script>
+    <script src="/assets_webpack/highlight.js"></script>
     <script type="text/javascript">
         hljs.initHighlightingOnLoad();
         var wiki=<?php echo $wiki_id?>,hide_info=1;

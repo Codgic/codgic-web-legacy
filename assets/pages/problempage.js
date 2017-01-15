@@ -1,5 +1,3 @@
-require('../js/hljs');
-
 let codeTheme = nightMode ? 'midnight' : 'eclipse',
     cmConfig = window.editorConfig;
 $('.btn-submit').click(function() {

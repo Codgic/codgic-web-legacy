@@ -324,7 +324,7 @@ $Title=$inTitle .' - '. $oj_name;
         </div>
     
         <script src="/assets/js/common.js?v=<?php echo $web_ver?>"></script>
-        <script src="assets_webpack/contestpage.js"></script>
+        <script src="assets_webpack/highlight.js"></script>
         <script type="text/javascript">
             hljs.initHighlightingOnLoad();
             var cont=<?php echo $cont_id?>,hide_info=0;
