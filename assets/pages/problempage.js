@@ -1,4 +1,3 @@
-require('../commons.js');
 let codeTheme = nightMode ? 'midnight' : 'eclipse',
     cmConfig = window.editorConfig;
 $('.btn-submit').click(function() {
@@ -15,7 +14,9 @@ $('.btn-submit').click(function() {
         if (cmConfig.enabled)
         {
             require.ensure([], function () {
+                require('codemirror/lib/codemirror.css');
                 require('codemirror/theme/' + codeTheme + '.css');
+                require('codemirror/addon/display/fullscreen.css');
                 require('codemirror/addon/display/placeholder');
                 require('codemirror/addon/display/fullscreen');
                 require('codemirror/mode/clike/clike');

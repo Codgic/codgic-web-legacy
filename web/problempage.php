@@ -198,16 +198,6 @@ $Title=$inTitle .' - '. $oj_name;
             echo '<link rel="stylesheet" href="/assets/highlight/styles/xcode.css" type="text/css" />';
         else
             echo '<link rel="stylesheet" href="/assets/highlight/styles/androidstudio.css" type="text/css" />';
-        //Load CodeMirror
-        if($pref->edrmode!='off'){
-            echo '<link rel="stylesheet" href="/assets/CodeMirror/lib/codemirror.css" type="text/css" />';
-            echo '<link rel="stylesheet" href="/assets/CodeMirror/addon/fullscreen.css" type="text/css" />';
-            //Load CodeMirror Theme
-            if($t_night=='off') 
-                echo '<link rel="stylesheet" href="/assets/CodeMirror/theme/eclipse.css" type="text/css" />';
-            else
-                echo '<link rel="stylesheet" href="/assets/CodeMirror/theme/midnight.css" type="text/css" />';
-        }
     ?>
     <body>
         <?php
@@ -466,7 +456,7 @@ $Title=$inTitle .' - '. $oj_name;
                     </div>
                     <form method="post" id="form_submit">
                         <input type="hidden" name="op" value="judge">
-                        <input type="hidden" id="prob_input" name="problem">
+                        <input type="hidden" id="prob_input" name="problem" value="<?php echo $prob_id ?>">
                         <div class="modal-body">
                             <div class="form-group">
                                 <textarea spellcheck="false" class="form-control" style="resize:none" id="detail_input" rows="14" name="source" placeholder="<?php echo _('Type your code here...')?>"></textarea>
