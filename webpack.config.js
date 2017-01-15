@@ -5,6 +5,7 @@ module.exports = {
     entry: {
         'general': './assets/pages/general.js',
         'problempage': './assets/pages/problempage.js',
+        'sourcecode': './assets/pages/sourcecode.js',
     },
     performance: {
         hints: false
