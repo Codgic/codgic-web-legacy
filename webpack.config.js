@@ -3,7 +3,8 @@ var path = require('path');
 
 module.exports = {
     entry: {
-        'commons': './assets/commons.js',
+        'general': './assets/pages/general.js',
+        'problempage': './assets/pages/problempage.js',
     },
     performance: {
         hints: false
@@ -42,19 +43,10 @@ module.exports = {
                 warnings: false
             }
         }),
-        // split vendor js into its own file
-        new webpack.optimize.CommonsChunkPlugin({
-            name: 'vendor',
-            minChunks: function (module, count) {
-                // any required modules inside node_modules are extracted to vendor
-                return (
-                        module.resource &&
-                        (/\.js|\.css|\.less$/.test(module.resource)) &&
-                        module.resource.indexOf(
-                            path.join(__dirname, 'node_modules')
-                            ) === 0
-                       )
-            }
+        new webpack.optimize.CommonsChunkPlugin({ 
+            name: 'commons',
+            filename: 'commons.js',
+            chunks: ["general", "problempage"]
         }),
     ],
 };

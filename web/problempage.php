@@ -395,7 +395,7 @@ $Title=$inTitle .' - '. $oj_name;
                             <div class="col-xs-12 text-center">
                                 <div id="function" class="panel panel-default problem-operation" style="margin-top:10px">
                                     <div class="panel-body">
-                                        <a href="#" title="Alt+S" class="btn btn-primary shortcut-hint" id="btn_submit"><?php echo _('Submit')?></a>
+                                        <a href="#" title="Alt+S" class="btn btn-primary shortcut-hint btn-submit" id="btn_submit"><?php echo _('Submit')?></a>
                                         <a href="record.php?problem_id=<?php echo $prob_id?>" class="btn btn-success"><?php echo _('Record')?></a>
                                         <a href="board.php?problem_id=<?php echo $prob_id;?>" class="btn btn-warning"><?php echo _('Board')?></a>
                                     </div>
@@ -541,23 +541,23 @@ $Title=$inTitle .' - '. $oj_name;
         </div>
  
         <div id="show_tool" class="bottom-right collapse">
-            <span id="btn_submit2" title="Alt+S" class="btn btn-primary shortcut-hint"><?php echo _('Submit')?></span>
+            <span id="btn_submit2" title="Alt+S" class="btn btn-primary shortcut-hint btn-submit"><?php echo _('Submit')?></span>
             <span id="btn_show" title="Alt+H" class="btn btn btn-primary shortcut-hint"><i class="fa fa-fw fa-toggle-off"></i> <?php echo _('Show Sidebar')?></span>
         </div>
         <script src="/assets/js/common.js?v=<?php echo $web_ver?>"></script>
         <script src="/assets/js/clipboard.min.js"></script>
         <script src="/assets/highlight/highlight.pack.js"></script>
+
+        <script>
+            window.problemConfig = <?php echo json_encode(array('id' => $prob_id)) ?>;
+            window.editorConfig = <?php echo json_encode(array('enabled' => $pref->edrmode != 'off', 'mode' => $pref->edrmode)) ?>;
+        </script>
+        <script src="assets_webpack/problempage.js"></script>
         <?php //Load CodeMirror
-            if($pref->edrmode!='off'){
-                echo '<script src="/assets/CodeMirror/lib/codemirror.js"></script>';
-                echo '<script src="/assets/CodeMirror/addon/placeholder.js"></script>';
-                echo '<script src="/assets/CodeMirror/addon/fullscreen.js"></script>';
-                echo '<script src="/assets/CodeMirror/mode/clike.js"></script>';
-                echo '<script src="/assets/CodeMirror/mode/pascal.js"></script>';
-                echo '<script src="/assets/CodeMirror/mode/basic.js"></script>';
+            /*
                 if($pref->edrmode!='default')
                     echo '<script src="/assets/CodeMirror/keymap/'.$pref->edrmode.'.js"></script>';
-            }
+             */
         ?>
         <script type="text/javascript">
             hljs.initHighlightingOnLoad();
@@ -589,75 +589,6 @@ $Title=$inTitle .' - '. $oj_name;
                     if(!$(this).hasClass('table'))
                         $('table').addClass('table table-bordered table-condensed');
                 });
-                <?php if($pref->edrmode!='off'){?>
-                    var editor = CodeMirror.fromTextArea(document.getElementById('detail_input'),{
-                        theme: "<?php if($t_night=='on') echo 'midnight'; else echo 'eclipse'?>",
-                        <?php
-                            if($pref->edrmode!='default'){
-                                echo 'keyMap:"'.$pref->edrmode.'",';
-                                echo 'showCursorWhenSelecting: true,';
-                            }
-                        ?>
-                        lineNumbers:true,
-                        extraKeys:{
-                            "F11": function(cm){
-                                if(cm.getOption("fullScreen")){
-                                    toggle_fullscreen(1);
-                                    cm.setOption("fullScreen",false);
-                                }else{
-                                    toggle_fullscreen(0);  
-                                    cm.setOption("fullScreen", !cm.getOption("fullScreen"));
-                                }  
-                            },
-                        }
-                    });
-                    <?php if($pref->edrmode=='vim'){?>
-                        CodeMirror.on(editor,'vim-keypress',function(key){
-                            $('#vim_cmd').html(key);
-                        });
-                        CodeMirror.on(editor,'vim-command-done',function(){
-                            $('#vim_cmd').html('');
-                        });
-                    <?php }?>
-                    function editor_changemode(){
-                        var m = $("#slt_lang").val();
-                        if(m == 1) 
-                            editor.setOption("mode", "text/x-csrc");
-                        else if(m == 2) 
-                            editor.setOption("mode", "text/x-pascal");
-                        else if (m == 6)
-                            editor.setOption("mode", "text/x-basic");
-                        else
-                            editor.setOption("mode", "text/x-c++src");
-                    }
-                    function toggle_fullscreen(e){
-                        if(e == 0){
-                            $('#submit_dialog').css({
-                                'width': '101%','height': '100%','margin': '0','padding': '0'
-                            });
-                            $('#submit_content').css({
-                                'height': 'auto','min-height': '100%','border-radius': '0'
-                            });
-                        }else{
-                            $('#submit_dialog').css({
-                                'width': '','height': '','margin': '','padding': ''
-                            });
-                            $('#submit_content').css({
-                                'height': '','min-height': '','border-radius': ''
-                            });
-                        }
-                    }
-                    function clear_editor(){
-                        editor.getDoc().setValue('');
-                        editor.focus();
-                    }
-                <?php }else{?>
-                    function clear_editor(){
-                        $('#detail_input').val('');
-                        $('#detail_input').focus();
-                    }
-                <?php }?>
-                editor_changemode();
                 var clipin = new Clipboard('#copy_in'),clipout = new Clipboard('#copy_out');
                 clipin.on('success', function(e){
                     $('#copy_in').attr('title','<?php echo _('Copied!')?>');
@@ -777,25 +708,6 @@ $Title=$inTitle .' - '. $oj_name;
                     });
                     return false;
                 });
-                function click_submit(){
-                    <?php if(!isset($_SESSION['user'])){?>
-                        $('#alert_error').html('<i class="fa fa-fw fa-remove"></i> <?php echo _('Please login first...')?>').fadeIn();
-                        setTimeout(function(){$('#alert_error').fadeOut();},2000);
-                    <?php }else{?>
-                        $('#prob_input').val(''+prob);
-                        $('#SubmitModal').modal('show');
-                        <?php if($pref->edrmode!='off'){?> 
-                            setTimeout(function() {editor.refresh();editor.focus();}, 200);
-                        <?php }else{?>
-                        $("#detail_input").focus();
-                    <?php }
-                    }?>
-                    return false;
-                }
-                $('#btn_submit').click(click_submit);
-                $('#btn_submit2').click(click_submit);
-                $('#btn_clear').click(function () { clr_editor(); });
-                $('#slt_lang').change(function () { editor_changemode(); });
                 function toggle_info(){
                     if(hide_info) {
                         $('#leftside').addClass('col-sm-9');
@@ -811,6 +723,7 @@ $Title=$inTitle .' - '. $oj_name;
                 }
                 $('#btn_hide').click(toggle_info);
                 $('#btn_show').click(toggle_info);
+                // not working
                 reg_hotkey(83, function(){ //Alt+S
                     if($('#SubmitModal').is(":visible"))
                         $('#form_submit').submit();
