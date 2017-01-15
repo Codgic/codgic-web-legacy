@@ -539,7 +539,6 @@ $Title=$inTitle .' - '. $oj_name;
         </script>
         <script src="assets_webpack/problempage.js"></script>
         <script type="text/javascript">
-            hljs.initHighlightingOnLoad();
             var prob=<?php echo $prob_id?>;
             <?php if($is_contest==true && $cont_status==1 && !isset($user_quit)){?> 
                 var t=new Date(<?php echo strtotime($row_cont[2])*1000?>);

@@ -3,4 +3,5 @@ if (nightMode)
 else
     require('highlightjs/styles/xcode.css');
 
-require('highlightjs');
+let hljs = require('highlightjs');
+hljs.initHighlightingOnLoad();
