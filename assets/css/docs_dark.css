@@ -4,6 +4,10 @@ body {
     margin-top: 70px
 }
 
+body.bigbg {
+    background-image: url("../img/loginbg_dark.png");
+}
+
 img {
     height: auto;
     max-width: 100%;
