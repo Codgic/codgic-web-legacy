@@ -193,11 +193,6 @@ $Title=$inTitle .' - '. $oj_name;
 <html>
     <?php
         require __DIR__.'/inc/head.php';
-        //Load highlight-js theme
-         if($t_night=='off') 
-            echo '<link rel="stylesheet" href="/assets/highlight/styles/xcode.css" type="text/css" />';
-        else
-            echo '<link rel="stylesheet" href="/assets/highlight/styles/androidstudio.css" type="text/css" />';
     ?>
     <body>
         <?php
