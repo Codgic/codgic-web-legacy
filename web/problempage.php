@@ -543,12 +543,6 @@ $Title=$inTitle .' - '. $oj_name;
             window.editorConfig = <?php echo json_encode(array('enabled' => $pref->edrmode != 'off', 'mode' => $pref->edrmode)) ?>;
         </script>
         <script src="assets_webpack/problempage.js"></script>
-        <?php //Load CodeMirror
-            /*
-                if($pref->edrmode!='default')
-                    echo '<script src="/assets/CodeMirror/keymap/'.$pref->edrmode.'.js"></script>';
-             */
-        ?>
         <script type="text/javascript">
             hljs.initHighlightingOnLoad();
             var prob=<?php echo $prob_id?>;
