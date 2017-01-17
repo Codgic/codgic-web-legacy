@@ -52,13 +52,7 @@ $Title=$inTitle .' - '. $oj_name;
 <html>
    <?php
         require __DIR__.'/inc/head.php'; 
-        if($t_night=='on') 
-            echo '<link rel="stylesheet" href="/assets/CodeMirror/theme/midnight.css">';
-        else
-            echo'<link rel="stylesheet" href="/assets/CodeMirror/theme/eclipse.css">';
     ?>
-    <link rel="stylesheet" href="/assets/CodeMirror/lib/codemirror.css"> 
-    <link rel="stylesheet" href="/assets/CodeMirror/addon/fullscreen.css">
     <body>
         <?php require __DIR__.'/inc/navbar.php'; ?>
         <div class="alert alert-danger collapse text-center alert-popup" id="alert_error"></div>
@@ -130,7 +124,7 @@ $Title=$inTitle .' - '. $oj_name;
                             <button class="btn btn-default" data-clipboard-action="copy" data-toggle="tooltip" data-trigger="manual" id="btn_copy">
                                 <i class="fa fa-fw fa-clipboard"></i> <?php echo _('Copy')?>
                             </button>
-                            <button class="btn btn-default" onclick="toggle_fullscreen(editor)">
+                            <button class="btn btn-default" id="btn_fullscreen">
                                 <i class="fa fa-fw fa-expand"></i> <?php echo _('Fullscreen')?> <span class="hidden-xs">(F11)</span>
                             </button>
                         </div>
@@ -188,41 +182,27 @@ $Title=$inTitle .' - '. $oj_name;
             </div>
         </div>
         
-        <script src="/assets/CodeMirror/lib/codemirror.js"></script>
-        <script src="/assets/CodeMirror/addon/fullscreen.js"></script>
-        <script src="/assets/CodeMirror/mode/clike.js"></script>
-        <script src="/assets/CodeMirror/mode/pascal.js"></script>
-        <script src="/assets/CodeMirror/mode/basic.js"></script>
+        <script>
+            var textMode = <?php 
+                if($LANG_NAME[$row[4]]=='GCC')
+                    $smode = 'text/x-csrc';
+                if($LANG_NAME[$row[4]]=='Pascal')
+                    $smode = 'text/x-pascal';
+                if ($LANG_NAME[$row[4]]=='QBASIC')
+                    $smode = 'text/x-basic';
+                else 
+                    $smode = 'text/x-c++src';
+                echo json_encode($smode);
+            ?>;
+            window.editorConfig = <?php echo json_encode(array('enabled' => $pref->edrmode != 'off', 'mode' => $pref->edrmode)) ?>;
+        </script>
+
+        <script src="assets_webpack/sourcecode.js"></script>
+
         <script src="/assets/js/clipboard.min.js"></script>
         <script src="/assets/js/common.js?v=<?php echo $web_ver?>"></script>
         <script type="text/javascript">
-            var editor = CodeMirror.fromTextArea(document.getElementById('text_code'), {
-                theme: "<?php 
-                if($t_night=='on') 
-                    echo 'midnight'; 
-                else
-                    echo 'eclipse'
-                ?>",
-                mode: "<?php 
-                if($LANG_NAME[$row[4]]=='GCC')
-                    echo 'text/x-csrc';
-                if($LANG_NAME[$row[4]]=='Pascal')
-                    echo 'text/x-pascal';
-                if ($LANG_NAME[$row[4]]=='QBASIC')
-                    echo 'text/x-basic';
-                else 
-                    echo 'text/x-c++src';
-                ?>",
-                lineNumbers: true,
-                readOnly: 'nocursor',
-                viewportMargin: Infinity
-            });
-            function toggle_fullscreen(cm){
-                if(cm.getOption("fullScreen"))
-                    cm.setOption("fullScreen", false);
-                else
-                    cm.setOption("fullScreen", !cm.getOption("fullScreen")); 
-            };
+
             var clipboard = new Clipboard('#btn_copy', {
                 text: function(){
                     return editor.getValue();
@@ -278,11 +258,6 @@ $Title=$inTitle .' - '. $oj_name;
                     });
                 });
                 <?php }?>
-                $(document).keydown(function(e){
-                    if(e.which==122)
-                        toggle_fullscreen(editor);
-                        return false;
-                });
             });
         </script>
     </body>

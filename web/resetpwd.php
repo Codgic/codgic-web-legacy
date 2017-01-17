@@ -10,7 +10,7 @@ $Title=$inTitle .' - '. $oj_name;
 <!DOCTYPE html>
 <html>
 <?php require __DIR__.'/inc/head.php';?>
-    <body style="background-image: url(<?php echo $loginimg?>)">
+    <body class="bigbg">
         <div class="container">
             <div class="row collapse" id="emailpage">
                 <div class="panel panel-default panel-login">

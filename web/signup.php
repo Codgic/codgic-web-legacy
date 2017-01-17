@@ -13,7 +13,7 @@ $Title=_('Sign up ').$oj_name;
 <html>
     <?php require __DIR__.'/inc/head.php';?>
     
-    <body style="background-image: url(<?php echo $loginimg?>)">
+    <body class="bigbg">
         <div class="container">
             <div class="row collapse">
                 <div class="panel panel-default panel-login" style="display:table;margin:auto">
