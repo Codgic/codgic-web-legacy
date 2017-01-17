@@ -15,31 +15,17 @@
     <meta name="application-name" content="CWOJ">
     <meta name="msapplication-config" content="/assets/res/browserconfig.xml?v=1">
     <title><?php echo $Title?></title>
-    <?php 
-        $hour = date('H',time());
-        if($pref->night=='on') 
-            $t_night='on';
-        else if($pref->night=='off') 
-            $t_night='off';
-        else{
-            if($hour>=$daystart && $hour<$nightstart)
-                $t_night='off';
-            else
-                $t_night='on';
-        }
-        if($t_night=='on'){
-            $loginimg='/assets/res/loginbg_dark.png';
-            echo '<link href="/assets/Bootswatch/slate/bootstrap.min.css?v=337" rel="stylesheet" type="text/css" />';
-            echo '<link href="/assets/css/docs_dark.css?v=114" rel="stylesheet" type="text/css" />';
-        }else{
-            $loginimg='/assets/res/loginbg.png';
-            echo '<link href="/assets/Bootswatch/cerulean/bootstrap.min.css?v=337" rel="stylesheet" type="text/css" />';
-            echo '<link href="/assets/css/docs.css?v=114" rel="stylesheet" type="text/css" />';
-        }
-    ?>
-    <link href="/assets/FontAwesome/css/font-awesome.min.css?v=470" rel="stylesheet" type="text/css" />
-    <script src="/assets/js/jquery.min.js?v=310"></script>
+    <!--<script src="/assets/js/jquery.min.js?v=310"></script>
     <script src="/assets/js/bootstrap.min.js?v=337"></script>
+    <link href="/assets/FontAwesome/css/font-awesome.min.css?v=470" rel="stylesheet" type="text/css" />
+    -->
+    <script>
+        window.nightModeConfig = <?php echo json_encode(array('mode'=>$pref->night, 'dayStart' => $daystart, 'nightStart' => $nightstart)) ?>;
+        window.user = <?php echo json_encode(array('logined' => !empty($_SESSION['user']), 'userName' => $_SESSION['user'])) ?>;
+    </script>
+    <script src="/assets_webpack/commons.js"></script>
+    <script src="/assets_webpack/general.js"></script>
+
     <!--[if lt IE 9]>
         <script type="text/javascript">
             window.location = "fuckie.php"; 
