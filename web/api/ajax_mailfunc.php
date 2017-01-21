@@ -31,7 +31,7 @@ if($op=='check'){
     mysqli_query($con,"update users set accesstime=NOW() where user_id='$uid'");
     //Check if account disabled.
     $row=mysqli_fetch_row(mysqli_query($con,"select privilege from users where user_id='$uid'"));
-    if(!defined(PRIV_USER))
+    if(!defined("PRIV_USER"))
         require __DIR__.'/../func/privilege.php';
     if(!$row[0] & PRIV_USER){
         //Log off.
