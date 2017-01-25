@@ -1,5 +1,4 @@
 <?php
-
 require_once __DIR__.'/../conf/ojsettings.php';
 
 //Obtain user's real IP Address.

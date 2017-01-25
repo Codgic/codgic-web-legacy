@@ -26,4 +26,5 @@ webpack # 发布脚本到 web 目录
 ```
 
 ## 部署
+在web目录下创建conf目录并将conf_example内的文件复制到其中。按照每一个文件内的说明对CWOJ进行配置。
 （坑）

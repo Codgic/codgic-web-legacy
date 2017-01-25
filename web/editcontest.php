@@ -230,6 +230,7 @@ else if(!isset($_SESSION['admin_tfa']) || !$_SESSION['admin_tfa']){
                         codeSyntaxHighlighting: true,
                     },
                     indentWithTabs: false,
+                    forceSync: true,
                     spellChecker: false,
                     status: false,
                     toolbarTips: false,
