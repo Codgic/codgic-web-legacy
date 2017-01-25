@@ -608,14 +608,14 @@ $Title=$inTitle .' - '. $oj_name;
                     });
                 });
                 $('#form_submit').submit(function(){
-                    var code = $('#detail_input').val();
+                    var code = window.editor.getValue();
                     if($.trim(code) == '' || code.length > 30000)
                         $('#submit_res').html('<i class="fa fa-fw fa-remove"></i> <?php echo _('Your code is too long or too short...')?>').slideDown();
                     else{
                         $.ajax({
                             type:"POST",
                             url:"api/ajax_submit.php",
-                            data:$('#form_submit').serialize(),
+                            data:$('#form_submit').serialize() + "&source=" + encodeURIComponent(code),
                             success:function(msg){
                                 if(msg.indexOf('success_')!=-1){
                                     $('#submit_res').slideUp();
