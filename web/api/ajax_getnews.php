@@ -4,7 +4,6 @@ require __DIR__.'/../func/privilege.php';
 require __DIR__.'/../conf/database.php';
 require __DIR__.'/../lib/Parsedown.php';
 require __DIR__.'/../lib/ParsedownExtra.php';
-require_once __DIR__.'/../lib/HTMLPurifier/HTMLPurifier.auto.php';
 
 header('Content-Type: application/json');
 
@@ -35,5 +34,5 @@ if($row[3]!=0){
 if(empty($row[1])) 
     $row[1]=_('This piece of news is empty...');
 
-$arr=array('success' => true, 'title' => $row[0], 'content' => HTMLPurifier::instance()->purify(Parsedown::instance()->text($row[1])), 'time' => $row[2],'priv' => list_priv($row[3]));
+$arr=array('success' => true, 'title' => $row[0], 'content' =>Parsedown::instance()->text($row[1]), 'time' => $row[2],'priv' => list_priv($row[3]));
 echo json_encode($arr);
