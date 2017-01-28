@@ -2,7 +2,6 @@
 require __DIR__.'/inc/init.php';
 require __DIR__.'/func/privilege.php';
 require __DIR__.'/func/checklogin.php';
-require __DIR__.'/conf/database.php';
 
 $page_id=1;
 if(isset($_GET['page_id']))
@@ -22,7 +21,7 @@ if($page_id<1){
     }
 
     if($row=mysqli_fetch_row(mysqli_query($con,$maxq)))
-        $maxpage=intval($row[0]/20);
+        $maxpage=intval($row[0]/20)+1;
     else
         $maxpage=1;
     $res=mysqli_query($con,$newsq);
