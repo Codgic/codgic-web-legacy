@@ -1,7 +1,7 @@
 let codeTheme = nightMode ? 'midnight' : 'eclipse',
     cmConfig = window.editorConfig;
 $('.btn-submit').click(function() {
-    if (!user.logined)
+    if (!window.user)
     {
         $('#alert_error').html('<i class="fa fa-fw fa-remove"></i> Please login first...').fadeIn();
         setTimeout(function() { $('#alert_error').fadeOut(); }, 2000);
