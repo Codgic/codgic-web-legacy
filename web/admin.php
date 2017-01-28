@@ -22,6 +22,7 @@ $Title=$inTitle .' - '. $oj_name;
 <!DOCTYPE html>
 <html>
     <?php require __DIR__.'/inc/head.php'; ?>
+    <link rel="stylesheet" href="/assets/css/simplemde.min.css" type="text/css" />
     <body>
         <?php require __DIR__.'/inc/navbar.php';?>
         <div class="container">
@@ -118,14 +119,6 @@ $Title=$inTitle .' - '. $oj_name;
                                     <div class="col-xs-7 pull-left">
                                         <div class="btn-group">
                                             <button class="btn btn-default" id="btn_emailall"><i class="fa fa-fw fa-envelope"></i> <?php echo _('Email All')?></button>
-                                            <button class="btn btn-default dropdown-toggle disabled" id="btn_filter" data-toggle="dropdown"><i class="fa fa-fw fa-glass"></i> <?php echo _('Filter')?> <span class="caret"></span></button>
-                                            <ul class="dropdown-menu dropdown-menu-right">
-                                                <li><a href="#0"><input type="checkbox" id="filter_0" name="0" checked> <?php echo _('User')?></a></li>
-                                                <li><a href="#1"><input type="checkbox" id="filter_1" name="1" checked> <?php echo _('Insider')?></a></li>
-                                                <li><a href="#2"><input type="checkbox" id="filter_2" name="2" checked> <?php echo _('Source')?></a></li>
-                                                <li><a href="#3"><input type="checkbox" id="filter_3" name="3" checked> <?php echo _('Problems')?></a></li>
-                                                <li><a href="#4"><input type="checkbox" id="filter_4" name="4" checked> <?php echo _('System')?></a></li>
-                                            </ul>
                                         </div>
                                     </div>
                                     <div class="col-xs-5 col-sm-5 col-md-3 pull-right">
@@ -233,19 +226,20 @@ $Title=$inTitle .' - '. $oj_name;
                                 <div class="alert alert-danger collapse" id="news_res"></div>
                             </div>
                             <div class="modal-footer">
-                                <div class="checkbox" style="display:inline-block">
-                                    <label><input type="checkbox" name="importance" id="is_top"><?php echo _('Sticky')?></label>
-                                </div>
-                                <div class="btn-group pull-left">
+                                <div class="dropup btn-group pull-left">
                                     <button class="pull-left btn btn-danger collapse" id="btn_delnews"><?php echo _('Delete')?></button>
                                     <button class="pull-left btn btn-default" id="btn_upload"><?php echo _('Upload Image')?></button>
                                     <button class="pull-left btn btn-default dropdown-toggle" id="btn_newspriv" data-toggle="dropdown"><?php echo _('Visibility')?> <span class="caret"></span></button>
                                     <ul class="dropdown-menu dropdown-menu-right">
-                                        <li><a href="#0"><input type="checkbox" id="news_0" name="0"> <?php echo _('User')?></a></li>
-                                        <li><a href="#1"><input type="checkbox" id="news_1" name="1"> <?php echo _('Insider')?></a></li>
-                                        <li><a href="#2"><input type="checkbox" id="news_2" name="2"> <?php echo _('Source')?></a></li>
-                                        <li><a href="#3"><input type="checkbox" id="news_3" name="3"> <?php echo _('Problems')?></a></li>
+                                        <li><a href="#g"><input type="checkbox" id="news_g" name="g" checked="1"> <?php echo _('Guest')?></a></li>
+                                        <li class="newspriv_notguest collapse"><a href="#0"><input type="checkbox" id="news_0" name="0"> <?php echo _('User')?></a></li>
+                                        <li class="newspriv_notguest collapse"><a href="#1"><input type="checkbox" id="news_1" name="1"> <?php echo _('Insider')?></a></li>
+                                        <li class="newspriv_notguest collapse"><a href="#2"><input type="checkbox" id="news_2" name="2"> <?php echo _('Source')?></a></li>
+                                        <li class="newspriv_notguest collapse"><a href="#3"><input type="checkbox" id="news_3" name="3"> <?php echo _('Problems')?></a></li>
                                     </ul>
+                                </div>
+                                <div class="checkbox" style="display:inline-block">
+                                    <label><input type="checkbox" name="importance" id="is_top"><?php echo _('Sticky')?></label>
                                 </div>
                                 <button class="btn btn-primary" type="submit"><?php echo _('Save')?></button>
                                 <button type="button" class="btn btn-default" data-dismiss="modal"><?php echo _('Close')?></button>
@@ -294,7 +288,7 @@ $Title=$inTitle .' - '. $oj_name;
                             <input type="hidden" name="op" value="update_priv">
                             <input type="hidden" id="priv_uid" name="user_id" value="">  
                             <div class="modal-body">
-                            <div class="checkbox">
+                                <div class="checkbox">
                                     <label><input type="checkbox" name="0" id="chk_user"> <?php echo _('User'),'(',PRIV_USER,')'?></label>
                                 </div>
                                 <div class="checkbox">
@@ -343,15 +337,24 @@ $Title=$inTitle .' - '. $oj_name;
         <?php }?>
                     
         <script src="/assets/js/common.js?v=<?php echo $web_ver?>"></script>
+        <script src="/assets/js/simplemde.min.js?v=1"></script>
         <script type="text/javascript">
         <?php if(check_priv(PRIV_SYSTEM)){?>
-            var getlevellist=function(){$('#table_level_experience').load('api/ajax_admin.php',{op:'list_level_experience'});};
-            var gettitlelist=function(){$('#table_experience_title').load('api/ajax_admin.php',{op:'list_experience_title'});};
-            var getnewslist=function(){$('#table_news').load('api/ajax_admin.php',{op:'list_news'});};
-            var getusrlist=function(e=1,q='',p=0){$('#table_usr').load('api/ajax_admin.php',{op:'list_usr',page_id:e,q:q,priv:p});};
+            var getlevellist = function() {
+                $('#table_level_experience').load('api/ajax_admin.php',{op:'list_level_experience'});
+            };
+            var gettitlelist = function() {
+                $('#table_experience_title').load('api/ajax_admin.php',{op:'list_experience_title'});
+            };
+            var getnewslist = function() {
+                $('#table_news').load('api/ajax_admin.php',{op:'list_news'});
+            };
+            var getusrlist = function(e = 1,q = '') {
+                $('#table_usr').load('api/ajax_admin.php',{op:'list_usr',page_id:e,q:q});
+            };
             var cnt=-1,kw='',upid=1;
         <?php }?>
-        function update_chart(){
+        function updateChart(){
             $.getJSON('api/ajax_usage.php',function(data){
                 if(data&&"number"==typeof(data.cpu)){
                     $('#pg_cpu').css('width',data.cpu+'%');
@@ -381,10 +384,27 @@ $Title=$inTitle .' - '. $oj_name;
                     else 
                         $('#pg_daemon').html('<font color=red><?php echo _('Not Running...')?></font>');
                 }
-                setTimeout('update_chart()',3000);
+                setTimeout('updateChart()',3000);
             });
         }
-            
+
+        function initSimpleMDE() {
+            if(typeof(simplemde) == "undefined"){
+                simplemde = new SimpleMDE({
+                    element: document.getElementById("input_newscontent"),
+                    renderingConfig: {
+                        codeSyntaxHighlighting: true,
+                    },
+                    forceSync: true,
+                    indentWithTabs: false,
+                    spellChecker: false,
+                    status: false,
+                    toolbarTips: false,
+                    hideIcons: ["guide","fullscreen","side-by-side"]
+                });
+            }
+        }
+
         $(document).ready(function(){
             $(function(){
                 var hash = window.location.hash;
@@ -410,7 +430,7 @@ $Title=$inTitle .' - '. $oj_name;
                     window.location.hash = this.hash;
                 });
             });
-            update_chart();
+            updateChart();
             $('#form_rejudge').submit(function(){
                 $('#rejudge_res').slideUp();
                 if($.trim($('#input_rejudge').val())){
@@ -458,6 +478,7 @@ $Title=$inTitle .' - '. $oj_name;
                             url:"api/ajax_admin.php",
                             data:{op:'get_news',news_id:jq_id.html()},
                             success:function(data){
+                                initSimpleMDE();
                                 var obj=eval("("+data+")");
                                 $('#news_op').val('edit_news');
                                 $('#news_id').val(cnt);
@@ -468,13 +489,19 @@ $Title=$inTitle .' - '. $oj_name;
                                 else
                                     a=true;
                                 $('#is_top').prop('checked', a);
-                                $('#news_0').prop('checked', obj.priv&<?php echo PRIV_USER?>);
-                                $('#news_1').prop('checked', obj.priv&<?php echo PRIV_INSIDER?>);
-                                $('#news_2').prop('checked', obj.priv&<?php echo PRIV_SOURCE?>);
-                                $('#news_3').prop('checked', obj.priv&<?php echo PRIV_PROBLEM?>);
+                                if(obj.priv != 0) {
+                                    $('#news_g').prop('checked', false);
+                                    $('#news_0').prop('checked', obj.priv&<?php echo PRIV_USER?>);
+                                    $('#news_1').prop('checked', obj.priv&<?php echo PRIV_INSIDER?>);
+                                    $('#news_2').prop('checked', obj.priv&<?php echo PRIV_SOURCE?>);
+                                    $('#news_3').prop('checked', obj.priv&<?php echo PRIV_PROBLEM?>);
+                                    $('.newspriv_notguest').show();
+                                }
                                 $('#btn_delnews').show();
                                 $('#input_newstitle').val(obj.title);
-                                $('#input_newscontent').val(obj.content);
+                                setTimeout(function() {
+                                    simplemde.value(obj.content)
+                                }, 200);
                             }
                         });
                     }
@@ -482,14 +509,21 @@ $Title=$inTitle .' - '. $oj_name;
                 });
                 $('#NewsModal .dropdown-menu a').click(function(E){
                     E.preventDefault();
-                    var jq=$('#news_'+$(E.target).attr('href').substring(1,2));
-                    if(jq.prop('checked'))
-                        jq.prop('checked',false);
-                    else
-                        jq.prop('checked',true);
+                    var jq=$('#news_' + $(E.target).attr('href').substring(1,2));
+                    if(jq.prop('checked')) {
+                        jq.prop('checked', false);
+                        if(jq.attr('name') == 'g')
+                            $('.newspriv_notguest').slideDown();
+                    }
+                    else {
+                        jq.prop('checked', true);
+                        if(jq.attr('name') == 'g')
+                            $('.newspriv_notguest').slideUp();
+                    }
                     return false;
                 });
                 $('#new_news').click(function(){
+                    initSimpleMDE();
                     $('#NewsModal .modal-title').html('<?php echo _('Add News')?>');
                     $('#news_op').val('add_news');
                     $('#input_newstitle').val('');
@@ -571,10 +605,6 @@ $Title=$inTitle .' - '. $oj_name;
                     $('#email_res').hide();
                     $('#EmailModal').modal('show');
                 });
-                $('#btn_filter').click(function(){
-                    //To be finished.
-                    
-                })
                 $('#table_usr').click(function(E){
                     E.preventDefault();
                     var jq=$(E.target);
