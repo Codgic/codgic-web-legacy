@@ -65,3 +65,5 @@ web/assets_webpack/*
 
 # Config file
 web/conf/*
+
+web/vendor/*

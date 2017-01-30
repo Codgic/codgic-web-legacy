@@ -1,0 +1,16 @@
+{
+    "name": "codgic/web",
+    "description": "Web part for Codgic.",
+    "type": "project",
+    "license": "GPLv3",
+    "authors": [
+        {
+            "name": "Tian Yunhao",
+            "email": "t123yh@outlook.com"
+        }
+    ],
+    "require": {},
+    "config": {
+        "vendor-dir": "web/vendor"
+    }
+}
