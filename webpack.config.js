@@ -12,7 +12,7 @@ module.exports = {
         hints: false
     },
     output: {
-        path: __dirname + '/web/assets_webpack',
+        path: __dirname + '/web/public/assets_webpack',
         filename: '[name].js',
         publicPath: 'assets_webpack/'
 
