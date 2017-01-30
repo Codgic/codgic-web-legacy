@@ -45,10 +45,5 @@ module.exports = {
                 warnings: false
             }
         }),
-        new webpack.optimize.CommonsChunkPlugin({ 
-            name: 'commons',
-            filename: 'commons.js',
-            chunks: ["general", "problempage"]
-        }),
     ],
 };
