@@ -112,7 +112,7 @@ $Title=$inTitle .' - '. $oj_name;
                         $('#uploader_wrap').slideUp();
                     },
                     filters: [{
-                        title: "<?php echo _('CWOJ Approved Extensions')?>", 
+                        title: "<?php echo _('Approved Extensions')?>", 
                         extensions: "in,out,cpp"
                     }],
                 });

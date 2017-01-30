@@ -13,7 +13,7 @@ function check_cookie(){
         return false;
     $arr = unserialize($cookie);
 
-    if(false===$arr || !isset($arr['magic']) || $arr['magic']!="cwoj")
+    if(false===$arr || !isset($arr['magic']) || $arr['magic']!="codgic")
         return false;
     $user = $arr['user'];
     if(preg_match('/\W/',$user) || strlen($user)==0)
@@ -25,7 +25,7 @@ function check_cookie(){
 
 //Write login cookie.
 function write_cookie($remember){
-    $arr = array('magic'=>'cwoj');
+    $arr = array('magic'=>'codgic');
     $arr['user']=$_SESSION['user'];
 
     $data = encrypt(cookie_key, serialize($arr));

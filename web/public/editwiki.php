@@ -122,6 +122,7 @@ $Title=$inTitle .' - '. $oj_name;
                         codeSyntaxHighlighting: true,
                     },
                     indentWithTabs: false,
+                    forceSync: true,
                     spellChecker: false,
                     status: false,
                     toolbarTips: false,

@@ -88,15 +88,15 @@ function update_cont_scr($cont_id){
                 if(isset($s_row[0])){
                     if($cont_judgeway==2 && $s_row[0]==100) //ACM: if score != 100 then score = 0.
                         $score=100;
-                    else if($cont_judgeway==1 && $s_row[1]!=0){ //CWOJ: Minus 5 points per non-AC submit.
+                    else if($cont_judgeway==1 && $s_row[1]!=0){ //Codgic: Minus 5 points per non-AC submit.
                         $score=$s_row[0]-5*($s_row[1]-1);
 
                         if($score < 0)
                             $score = 0;
 
-                        if ($s_row[2] == 0 && $score < CWOJ_MIN_SCORE)
+                        if ($s_row[2] == 0 && $score < CODGIC_MIN_SCORE)
                         {
-                            $score = CWOJ_MIN_SCORE;
+                            $score = CODGIC_MIN_SCORE;
                         }
                     }else if($cont_judgeway==0) //Training: MAX(score).
                         $score=$s_row[0];

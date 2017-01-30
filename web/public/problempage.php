@@ -7,6 +7,7 @@ require __DIR__.'/func/privilege.php';
 require __DIR__.'/func/checklogin.php';
 if(!isset($con))
     require __DIR__.'/conf/database.php';
+require __DIR__.'/func/text.php';
 require __DIR__.'/lib/Parsedown.php';
 require __DIR__.'/lib/ParsedownExtra.php';
 require_once __DIR__.'/lib/HTMLPurifier/HTMLPurifier.auto.php';
@@ -272,7 +273,7 @@ $Title=$inTitle .' - '. $oj_name;
                                 <a herf="#" class="pull-right" id="copy_in" style="cursor:pointer" data-toggle="tooltip" data-trigger="manual" data-clipboard-action="copy" data-clipboard-target="#sample_input"><?php echo _('[Copy]')?></a></h5>
                             </div>
                             <div class="panel-body problem-sample" id="sample_input">
-                                <?php echo HTMLPurifier::instance()->purify(mb_ereg_replace('\r?\n','<br>',$row_prob[4]));?>
+                                <?php echo encode_space(HTMLPurifier::instance()->purify($row_prob[4]));?>
                             </div>
                         </div>
                         <div class="panel panel-default">
@@ -281,7 +282,7 @@ $Title=$inTitle .' - '. $oj_name;
                                 <a herf="#" class="pull-right" id="copy_out" style="cursor:pointer" data-toggle="tooltip" data-trigger="manual" data-clipboard-action="copy" data-clipboard-target="#sample_output"><?php echo _('[Copy]')?></a></h5>
                             </div>
                             <div class="panel-body problem-sample" id="sample_output">
-                                <?php echo HTMLPurifier::instance()->purify(mb_ereg_replace('\r?\n','<br>',$row_prob[5]));?>
+                                <?php echo encode_space(HTMLPurifier::instance()->purify($row_prob[5]));?>
                             </div>
                         </div>
                         <?php if(strlen(trim($row_prob[6]))){ ?>
@@ -299,7 +300,7 @@ $Title=$inTitle .' - '. $oj_name;
                                 <h5 class="panel-title"><?php echo _('Tags')?></h5>
                             </div>
                             <div class="panel-body">
-                                <?php echo HTMLPurifier::instance()->purify(mb_ereg_replace('\r?\n','<br>',$row_prob[7]));?>
+                                <?php echo encode_space(HTMLPurifier::instance()->purify($row_prob[7]));?>
                             </div>
                         </div>
                     </div>

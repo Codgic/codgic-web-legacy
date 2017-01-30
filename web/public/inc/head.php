@@ -21,7 +21,7 @@
     -->
     <script>
         window.nightModeConfig = <?php echo json_encode(array('mode'=>$pref->night, 'dayStart' => $daystart, 'nightStart' => $nightstart)) ?>;
-        window.user = <?php echo json_encode($_SESSION["user"] ?: "") ?>;
+        window.user = <?php echo json_encode(isset($_SESSION["user"]) ? $_SESSION['user'] : "") ?>;
     </script>
     <script src="/assets_webpack/general.js"></script>
 

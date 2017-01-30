@@ -1,6 +1,6 @@
 <?php
 /**
-* CWOJ Encryption Configuration File
+* Codgic Encryption Configuration File
 * =======================
 * This configuration file defines serval encryption keys. 
 * PLEASE ALWAYS KEEP IT IN A SAFE PLACE!
@@ -10,14 +10,14 @@
 * "cookie_expire" defines the expiration time of the cookies.
 * "bind_domain" defines the specific domain you want to bind cookies to. COMMENT IT IF YOU DON'T NEED IT.
 */
-define("cookie_key","HELLO_WORLD_CWOJ!");
+define("cookie_key","C0DG1C_HELLO_WORLD!");
 define("cookie_expire",31536000);
-//define("bind_domain", '.cwoj.org');
+//define("bind_domain", '.example.com');
 
 /**
 * 2. Password Encryption
 * ----------------
-* Currently CWOJ uses an RSA public key to encrypt user password.
+* Currently Codgic uses an RSA public key to encrypt user password.
 * Please destory the private key immediately after generating a new RSA key. 
 */
 define("PUBLIC_KEY", "

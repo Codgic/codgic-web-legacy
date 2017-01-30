@@ -33,7 +33,7 @@ else if(!isset($_SESSION['admin_tfa']) || !$_SESSION['admin_tfa']){
                     $way='train';
                     break;
                 case 1:
-                    $way='cwoj';
+                    $way='codgic';
                     break;
                 case 2:
                     $way='acm-like';
@@ -141,7 +141,7 @@ else if(!isset($_SESSION['admin_tfa']) || !$_SESSION['admin_tfa']){
                             <a href="#" id="btn_togglehelp"><i class="fa fa-arrow-circle-down"></i> Show help</a>
                             <select class="form-control" name="judge" id="input_cmp">
                                 <option value="train"><?php echo _('Training')?></option>
-                                <option value="cwoj"><?php echo _('CWOJ')?></option>
+                                <option value="codgic"><?php echo $oj_name?></option>
                                 <option value="acm-like"><?php echo _('ACM-like')?></option>
                                 <option value="oi-like"><?php echo _('OI-like')?></option>
                             </select>
@@ -230,6 +230,7 @@ else if(!isset($_SESSION['admin_tfa']) || !$_SESSION['admin_tfa']){
                         codeSyntaxHighlighting: true,
                     },
                     indentWithTabs: false,
+                    forceSync: true,
                     spellChecker: false,
                     status: false,
                     toolbarTips: false,
@@ -239,7 +240,7 @@ else if(!isset($_SESSION['admin_tfa']) || !$_SESSION['admin_tfa']){
                 function show_help(way){
                     if(way=='train')
                         $('#div_judgehelp span').html('<?php echo get_judgeway_destext(0);?>');
-                    else if(way=='cwoj')
+                    else if(way=='codgic')
                         $('#div_judgehelp span').html('<?php echo get_judgeway_destext(1);?>');
                     else if(way=='acm-like')
                         $('#div_judgehelp span').html('<?php echo get_judgeway_destext(2);?>');

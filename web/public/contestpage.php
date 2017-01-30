@@ -8,6 +8,7 @@ require __DIR__.'/func/checklogin.php';
 if(!isset($con))
     require __DIR__.'/conf/database.php';
 require __DIR__.'/func/contest.php';
+require __DIR__.'/func/text.php';
 require __DIR__.'/lib/Parsedown.php';
 require __DIR__.'/lib/ParsedownExtra.php';
 require_once __DIR__.'/lib/HTMLPurifier/HTMLPurifier.auto.php';
@@ -222,7 +223,7 @@ $Title=$inTitle .' - '. $oj_name;
                                     <h5 class="panel-title"><?php echo _('Tags')?></h5>
                                 </div>
                                 <div class="panel-body">
-                                    <?php echo HTMLPurifier::instance()->purify(mb_ereg_replace('\r?\n','<br>',$row[4]));?>
+                                    <?php echo encode_space(HTMLPurifier::instance()->purify($row[4]));?>
                                 </div>
                             </div>
                         <?php }?>

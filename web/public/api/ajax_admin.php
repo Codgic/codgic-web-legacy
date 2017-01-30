@@ -464,8 +464,10 @@ else if ($op == 'sendemail') {
         exit();
     }
 
+    require __DIR__.'/../func/text.php';
+
     if (isset($_POST['content']) && !empty($_POST['content'])) 
-        $content=mysqli_real_escape_string($con,trim(str_replace(array("\r\n", "\r", "\n"), "<br>", $_POST['content'])));
+        $content=mysqli_real_escape_string($con,trim(encode_space($_POST['content'])));
     else {
         echo _('Content can\'t be empty...');
         exit();
@@ -493,8 +495,10 @@ else if ($op == 'sendemail_all') {
         exit();
     }
 
+    require __DIR__.'/../func/text.php';
+
     if (isset($_POST['content']) && !empty($_POST['content'])) 
-        $content=mysqli_real_escape_string($con,trim(str_replace(array("\r\n", "\r", "\n"), "<br>", $_POST['content'])));
+        $content=mysqli_real_escape_string($con,trim(encode_space($_POST['content'])));
     else {
         echo _('Content can\'t be empty...');
         exit();

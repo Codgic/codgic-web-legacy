@@ -13,7 +13,7 @@ header("Content-Type:text/html;charset=utf-8");
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
         <meta name="renderer" content="webkit">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta name="description" content="<?php echo _('Please upgrade your browser before accessing CWOJ.')?>">
+        <meta name="description" content="<?php echo _('Please upgrade your browser before accessing Codgic.')?>">
         <link rel="shortcut icon" href="/assets/res/favicon.ico" type="image/x-icon" />
         <title><?php echo _('Upgrade your browser')?></title>
         <base target="_blank" />
@@ -34,7 +34,7 @@ header("Content-Type:text/html;charset=utf-8");
     </head>
     <body>
         <h1><?php echo _('It\'s time to upgrade your browser')?></h1>
-        <p><?php echo _('We\'re sorry to inform you that you\'re currently using an obsolete browser which cannot guarantee an enjoyable experience in CWOJ. You have to upgrade your browser before accessing CWOJ.')?></p>
+        <p><?php echo _('We\'re sorry to inform you that you\'re currently using an obsolete browser which cannot guarantee an enjoyable experience in Codgic. You have to upgrade your browser before accessing Codgic.')?></p>
         <div class="line"></div>
         <h2><?php echo _('Modern browsers')?></h2>
         <p><?php echo _('We strongly recommend you to try out one of the following modern browsers that will show you the beauty of web.');?></p>
@@ -47,7 +47,7 @@ header("Content-Type:text/html;charset=utf-8");
         </ul>
         <div class="line"></div>
         <h2><?php echo _('What the heck is a browser?')?></h2>
-        <p><?php echo _('That make things a lot easier. You just need to close this page, because CWOJ might be highly unsuitable for you.');?></p>
+        <p><?php echo _('That make things a lot easier. You just need to close this page, because Codgic might be highly unsuitable for you.');?></p>
 
         <script type="text/javascript">
             if(typeof(valid)=='undefined')

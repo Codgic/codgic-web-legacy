@@ -1,8 +1,8 @@
 <?php
 /**
-* CWOJ Mailing Configuration File
+* Codgic Mailing Configuration File
 * ===============================
-* This is the email configuration file of CWOJ. CWOJ uses PHPMailer to achieve sending emails.
+* This is the email configuration file of Codgic. Codgic uses PHPMailer to achieve sending emails.
 * Set up an administrator email account here so that users could recieve emails from you.
 * Moreover, you can customize various email templates here.
 *
@@ -31,8 +31,8 @@ function postmail($to,$subject = '',$body = ''){
     $mail->Port       = 999;     //SMTP Service Port             
     $mail->Username   = 'YOUREMAIL';  //Input your admin email
     $mail->Password   = 'YOURPASSWORD';  //Input your email password.     
-    $mail->SetFrom('YOUREMAIL', 'CWOJ');
-    $mail->AddReplyTo('YOUREMAIL','CWOJ');
+    $mail->SetFrom('YOUREMAIL', 'Codgic');
+    $mail->AddReplyTo('YOUREMAIL','Codgic');
     $mail->Subject    = $subject;
     $mail->WordWrap = 60;
     //$mail->AltBody    = 'To view the message, please use an HTML compatible email viewer!'; // optional, comment out and test
