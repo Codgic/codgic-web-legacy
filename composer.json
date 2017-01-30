@@ -9,7 +9,9 @@
             "email": "t123yh@outlook.com"
         }
     ],
-    "require": {},
+    "require": {
+        "mathjax/mathjax": "^2.7"
+    },
     "config": {
         "vendor-dir": "web/vendor"
     }

@@ -1,0 +1,54 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "This file is @generated automatically"
+    ],
+    "content-hash": "29711031cc1848e4cf927495eb0d8a9c",
+    "packages": [
+        {
+            "name": "mathjax/mathjax",
+            "version": "2.7.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/mathjax/MathJax.git",
+                "reference": "6273842a9746731b9ecca0de18ec9fd50a36df99"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/mathjax/MathJax/zipball/6273842a9746731b9ecca0de18ec9fd50a36df99",
+                "reference": "6273842a9746731b9ecca0de18ec9fd50a36df99",
+                "shasum": ""
+            },
+            "type": "library",
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "MathJax Consortium",
+                    "homepage": "https://github.com/mathjax"
+                }
+            ],
+            "description": "MathJax is an open-source JavaScript display engine for LaTeX, MathML, and AsciiMath notation that works in all modern browsers.",
+            "homepage": "http://www.mathjax.org/",
+            "keywords": [
+                "AsciiMath",
+                "JS",
+                "MathML",
+                "latex",
+                "math"
+            ],
+            "time": "2016-10-14T12:37:21+00:00"
+        }
+    ],
+    "packages-dev": [],
+    "aliases": [],
+    "minimum-stability": "stable",
+    "stability-flags": [],
+    "prefer-stable": false,
+    "prefer-lowest": false,
+    "platform": [],
+    "platform-dev": []
+}
