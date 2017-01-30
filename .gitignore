@@ -61,9 +61,9 @@ jspm_packages
 .yarn-integrity
 
 # Generated asset file
-web/assets_webpack/*
+web/public/assets_webpack/*
 
 # Config file
-web/conf/*
+web/public/conf/*
 
 web/vendor/*
