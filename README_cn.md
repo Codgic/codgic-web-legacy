@@ -1,5 +1,8 @@
-# CWOJ Laverne (1.0)
-CWOJ是一个免费、开源并且专为信息竞赛训练设计的在线评测系统解决方案。 自2015年11月20日以来，我们一直致力于寻求一个适合于个人、学校及其它教育机构的在线评测系统解决方案。
+# Codgic Laverne (1.0)
+
+![Codgic](https://raw.githubusercontent.com/Codgic/codgic-web/master/web/public/assets/res/codgic.png)
+
+Codgic（原名CWOJ）是一个免费、开源并且专为信息竞赛训练设计的在线评测系统解决方案。 自2015年11月20日以来，我们一直致力于寻求一个适合于个人、学校及其它教育机构的在线评测系统解决方案。
 
 Laverne，电影《疯狂动物城》中主人公Judy Hopps的中间名，代表着一种尝试一切不畏失败的精神。 它给予了我在困难甚至不可能中取得突破的动力。
 
@@ -11,12 +14,11 @@ Laverne，电影《疯狂动物城》中主人公Judy Hopps的中间名，代表
 
 ## 部署
 - 评测端在[这里](https://github.com/CDFLS/cwoj_daemon)。
-- 适用于CWOJ 0.x的部署指南可以在[Wiki](https://github.com/CDFLS/CWOJ/wiki)标签栏下找到。
 - 请参见 DEPLOY.md。
 
 ## 许可
-- CWOJ主要基于[Bashu OnlineJudge](https://github.com/593141477/bashu-onlinejudge).
-- CWOJ也引用了一下其它的开源项目, 其中大部分都基于MIT协议。
+- Codgic主要基于[Bashu OnlineJudge](https://github.com/593141477/bashu-onlinejudge).
+- Codgic也引用了一下其它的开源项目, 其中大部分都基于MIT协议。
 
 ## 特性
 相比原始的 Bashu Online Judge, 我们做了如下提升:
