@@ -24,8 +24,8 @@ static $temp_dir="/tmp/cwoj_postmessage.lock";
 * "daemon_ver" defines the version number of the judging service, which is shown in preference.php.
 */
 static $i18n = 'en_US';
-static $oj_name = 'CWOJ'; 
-static $oj_copy = 'CWOJ Team'; 
+static $oj_name = 'Codgic'; 
+static $oj_copy = 'Codgic Team'; 
 static $web_ver = '1.00.laverne-milestone-6';
 static $daemon_ver = '1.03.160801-2101';
 

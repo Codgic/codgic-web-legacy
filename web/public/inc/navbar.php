@@ -1,4 +1,6 @@
-<?php 
+<?php
+if(!isset($oj_name))
+    require __DIR__.'/../conf/ojsettings.php';
 if(!function_exists('check_priv')) 
     require __DIR__.'/../func/privilege.php';
 if(!function_exists('get_gravatar'))
@@ -13,7 +15,7 @@ if(!isset($_SESSION['user'])){
 <header class="navbar navbar-default navbar-fixed-top">
     <div class="container">
         <div class="navbar-header">
-            <a class="navbar-brand" href="/" style="font-size:18px"><i class="fa fa-angle-left"></i> <i class="fa fa-angle-right"></i> CWOJ</a>
+            <a class="navbar-brand" href="/" style="font-size:18px"><i class="fa fa-angle-left"></i> <i class="fa fa-angle-right"></i> <?php echo $oj_name?></a>
             <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#nav_menus">
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
