@@ -53,7 +53,7 @@ $('.btn-submit').click(function() {
                     editor.getDoc().setValue('');
                 };
                 changeMode = function () {
-                    var m = $("#slt_lang").val();
+                    var m = $('#slt_lang').val();
                     if(m == 1)
                         editor.setOption("mode", "text/x-csrc");
                     else if(m == 2)
@@ -63,6 +63,7 @@ $('.btn-submit').click(function() {
                     else
                         editor.setOption("mode", "text/x-c++src");
                 };
+				$('#slt_lang').change(() => changeMode());
                 focusEditor = () => { editor.refresh(); editor.focus(); };
                 setTimeout(() => { focusEditor(); changeMode(); }, 100);
             });
