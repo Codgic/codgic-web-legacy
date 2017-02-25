@@ -448,7 +448,7 @@ else if ($op == 'toggle_usr') {
 */
 
 else if ($op == 'sendemail') {
-    require __DIR__.'/../conf/mailsettings.php';
+    require __DIR__.'/../../src/mailsettings.php';
 
     if (isset($_POST['to_user']) && !empty($_POST['to_user'])) 
         $uid=mysqli_real_escape_string($con,trim($_POST['to_user']));
@@ -485,7 +485,7 @@ else if ($op == 'sendemail') {
 */
 
 else if ($op == 'sendemail_all') {
-    require __DIR__.'/../conf/mailsettings.php';
+    require __DIR__.'/../../src/mailsettings.php';
     ignore_user_abort(true); // This is actually quite dirty =.=
 
     if (isset($_POST['title']) && !empty($_POST['title'])) 

@@ -1,6 +1,6 @@
 <?php
 require __DIR__.'/../inc/init.php';
-require __DIR__.'/../conf/mailsettings.php';
+require __DIR__.'/../../src/mailsettings.php';
 require __DIR__.'/../../src/database.php';
 
 if(!isset($_POST['type'])){
