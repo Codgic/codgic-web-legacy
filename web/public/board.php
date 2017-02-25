@@ -1,5 +1,6 @@
 <?php
 require __DIR__.'/inc/init.php';
+require_once __DIR__.'../src/mathjax.php';
 require __DIR__.'/func/checklogin.php';
 
 if(isset($_GET['start_id']))
@@ -41,11 +42,11 @@ $Title=$inTitle .' - '. $oj_name;
     <?php require __DIR__.'/inc/head.php';?>
   
     <body>
+		<?php echo generate_mathjax_script(); ?>
         <script type="text/x-mathjax-config">
             MathJax.Hub.Config({skipStartupTypeset:true});
         </script>
         <?php
-            require __DIR__.'/conf/mathjax.php';
             require __DIR__.'/inc/navbar.php'; 
         ?>
         <div class="replypanel collapse panel panel-default well-replypanel" style="min-width:40%" id="replypanel">

@@ -9,6 +9,7 @@ if(!isset($con))
     require __DIR__.'/../src/database.php';
 require __DIR__.'/func/text.php';
 require_once __DIR__.'/../src/textparser.php';
+require_once __DIR__ . '/../src/mathjax.php';
 
 $is_contest=false;
 if(isset($_GET['contest_id'])){
@@ -195,7 +196,7 @@ $Title=$inTitle .' - '. $oj_name;
     ?>
     <body>
         <?php
-            require __DIR__.'/conf/mathjax.php';
+			echo generate_mathjax_script();
             require __DIR__.'/inc/navbar.php';
         ?>
         <div class="alert collapse text-center alert-popup alert-danger" id="alert_error"></div>
