@@ -1,6 +1,19 @@
 <?php
 define('OJ_NAME', 'Codgic');
 define('OJ_COPYRIGHT', '(C) 2015 - 2017 Codgic Team and Contributors');
+define('CONTACT_EMAIL', 'info@codgi.cf');
+
+define('POSTMESSAGE_LOCK', '/tmp/codgic_message.lock');
+
+define('DISPLAY_LANGUAGE', 'en_US');
+define('ACCESS_REQUIRES_LOGIN', false);
+define('REGISTER_REQUIRES_CONFIRMATION', false);
+
+define('TIME_ZONE', 'PRC');
+define('DAY_STARTS', 7);
+define('NIGHT_STARTS', 20);
+
+define('CWOJ_SCORE_MIN', 50);
 
 define('MATHJAX_INLINE_BEGIN',  '[inline]');
 define('MATHJAX_INLINE_END',  '[/inline]');
@@ -38,3 +51,5 @@ MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBAMa44v2O2oZIgXL2PtdoxjTJ4ASWfGTL
 d4VZ05MzsQAbNnQ+abT4otHnK7n6Ku4WKCbDAd3FKcsnNSv0eVhehxUCAwEAAQ==
 -----END PUBLIC KEY-----
 ");
+
+
