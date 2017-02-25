@@ -11,7 +11,7 @@ if($page_id<1){
     header("Location: news.php");
     exit();
 }else{
-    require __DIR__.'/conf/database.php';
+    require __DIR__.'/../src/database.php';
     if(!isset($_SESSION['user'])){
         $maxq="select count(news_id) from news where news_id>0 and privilege=0";
         $newsq="select news_id,title,time,importance from news where news_id>0 and privilege=0 order by importance desc, news_id desc limit ".(($page_id-1)*20).",20";

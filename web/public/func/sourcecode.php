@@ -6,7 +6,7 @@ function sc_check_priv($prob_id,$opened,$user){
     if(isset($_SESSION['user']))
         if(strcmp($user,$_SESSION['user'])==0 || check_priv(PRIV_SOURCE))
             return TRUE;
-    require __DIR__.'/../conf/database.php';
+    require __DIR__.'/../../src/database.php';
     if(!defined('PROB_HAS_TEX'))
         require __DIR__.'/../lib/problem_flags.php';
     if($opened){

@@ -10,7 +10,7 @@ if(!check_priv(PRIV_PROBLEM) && !check_priv(PRIV_SYSTEM)){
     header("Location: admin_auth.php");
     exit();
 }else{
-    require __DIR__.'/conf/database.php';
+    require __DIR__.'/../src/database.php';
     $res=mysqli_query($con,'select content from news where news_id=0 limit 1');
     $index_text=($res && ($row=mysqli_fetch_row($res))) ? str_replace('<br>', "\n", $row[0]) : '';
     $res=mysqli_query($con,"select content from user_notes where id=0 limit 1");

@@ -10,7 +10,7 @@ if(!isset($_GET['user_id'])){
     echo _('Invalid Argument...');
     exit();
 }
-require __DIR__.'/../conf/database.php';
+require __DIR__.'/../../src/database.php';
 require __DIR__.'/../func/userinfo.php';
 
 $user=mysqli_real_escape_string($con,$_GET['user_id']);

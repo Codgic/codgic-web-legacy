@@ -11,7 +11,7 @@ if(!isset($_SESSION['user'])){
         $addt_cond.=" and defunct=0";
 }
 
-require __DIR__.'/conf/database.php';
+require __DIR__.'/../src/database.php';
 if(!isset($_GET['page_id'])){
     $row=mysqli_fetch_row(mysqli_query($con,"select content from wiki where wiki_id=0 limit 1"));
     if(!$row[0])

@@ -3,7 +3,7 @@ require __DIR__.'/inc/init.php';
 require __DIR__.'/lib/result_type.php';
 require __DIR__.'/lib/lang.php';
 require __DIR__.'/func/checklogin.php';
-require __DIR__.'/conf/database.php';
+require __DIR__.'/../src/database.php';
 
 $cond="";
 $user_id="";
@@ -117,7 +117,7 @@ function get_next_link(){
 }
 
 function get_pre_link(){
-    require __DIR__.'/conf/database.php';
+    require __DIR__.'/../src/database.php';
     global $rank_mode,$max_solution;
     parse_str($_SERVER["QUERY_STRING"],$arr); 
     if($rank_mode){

@@ -12,7 +12,7 @@ if(!isset($_SESSION['user'])){
     exit();
 }
 
-require __DIR__.'/../conf/database.php';
+require __DIR__.'/../../src/database.php';
 $uid=($_SESSION['user']);
 
 if($op=='osc'){

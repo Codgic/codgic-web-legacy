@@ -1,7 +1,7 @@
 <?php
 function login($user, $is_cookie, $pwd=''){
     if(!isset($con))
-        require __DIR__.'/../conf/database.php';
+        require __DIR__.'/../../src/database.php';
     if(!defined('PRIV_USER'))
         require __DIR__.'/privilege.php';
     if(!function_exists('my_rsa'))

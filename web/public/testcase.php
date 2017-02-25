@@ -18,7 +18,7 @@ else{
             exit();
         }
 
-        require __DIR__.'/conf/database.php';
+        require __DIR__.'/../src/database.php';
         $result=mysqli_query($con,"select title from problem where problem_id=$prob_id");
         $row=mysqli_fetch_row($result);
         if(!$row)

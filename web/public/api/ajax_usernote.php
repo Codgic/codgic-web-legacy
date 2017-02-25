@@ -10,7 +10,7 @@ if(!isset($_POST['content'],$_POST['tags'],$_POST['problem_id'])){
     exit();
 }
 
-require __DIR__.'/../conf/database.php';
+require __DIR__.'/../../src/database.php';
 
 $content = mysqli_real_escape_string($con,$_POST['content']);
 $tags = mysqli_real_escape_string($con,$_POST['tags']);

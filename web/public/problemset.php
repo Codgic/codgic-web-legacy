@@ -2,7 +2,7 @@
 require __DIR__.'/inc/init.php';
 require __DIR__.'/func/privilege.php';
 require __DIR__.'/func/checklogin.php';
-require __DIR__.'/conf/database.php';
+require __DIR__.'/../src/database.php';
 require __DIR__.'/lib/problem_flags.php';
 
 if(isset($_GET['level'])){

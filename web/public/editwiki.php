@@ -7,7 +7,7 @@ if(!isset($_SESSION['user']))
     include __DIR__.'/inc/403.php';
 else{
     require __DIR__.'/lib/problem_flags.php';
-    require __DIR__.'/conf/database.php';
+    require __DIR__.'/../src/database.php';
     if(!isset($_GET['wiki_id'])){
         $p_type='add';
         $inTitle=_('New Wiki');

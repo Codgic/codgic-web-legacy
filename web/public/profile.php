@@ -6,7 +6,7 @@ if(!isset($_SESSION['user'])){
     $info=_('Please login first');
 }else{
     if(!isset($con))
-        require __DIR__.'/conf/database.php';
+        require __DIR__.'/../src/database.php';
     $user_id=$_SESSION['user'];
     $result=mysqli_query($con,'select email,nick,school,motto,user_id from users where user_id=\''.$user_id."'");
     $row=mysqli_fetch_row($result);

@@ -26,7 +26,7 @@ else
 if(!isset($_SESSION['user']))
     $info = _('Please login first');
 else{
-    require __DIR__.'/conf/database.php';
+    require __DIR__.'/../src/database.php';
     $user_id=$_SESSION['user'];
     if($mailbox==1){
         $row=mysqli_fetch_row(mysqli_query($con,"select count(1) from mail where to_user='$user_id' and defunct='N'"));

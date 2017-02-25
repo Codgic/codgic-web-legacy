@@ -72,7 +72,7 @@ $Title=_('Sign up ').$oj_name;
                         <h4 class="modal-title"><?php echo _('End User Licence Agreement')?></h4>
                     </div>
                     <div class="modal-body">
-                        <?php include 'conf/eula.php'?>
+                        <?php include '../config/eula.php'?>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal"><?php echo _('Close')?></button>

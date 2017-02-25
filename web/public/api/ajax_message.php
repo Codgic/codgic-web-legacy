@@ -1,10 +1,10 @@
 <?php
 require __DIR__.'/../inc/init.php';
 require __DIR__.'/../lib/mutex.php';
-require __DIR__.'/../conf/database.php';
+require __DIR__.'/../../src/database.php';
 
 function getNextMsgID(){
-    require __DIR__.'/../conf/database.php';
+    require __DIR__.'/../../src/database.php';
 
     $ID=1000;
     $res=mysqli_query($con,"select max(message_id) from message");

@@ -6,7 +6,7 @@ if(!isset($_POST['uid']) || !isset($_POST['pwd'])){
     exit();
 }
 
-require __DIR__.'/../conf/database.php';
+require __DIR__.'/../../src/database.php';
 require __DIR__.'/../func/userlogin.php';
 
 $user=trim($_POST['uid']);

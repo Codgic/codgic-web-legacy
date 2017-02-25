@@ -15,7 +15,7 @@ function my_rsa($value){
 }
 
 function password_right($usr, $pwd_in){
-    require __DIR__.'/../conf/database.php';
+    require __DIR__.'/../../src/database.php';
     $result=mysqli_query($con,"select password,user_id from users where user_id='$usr' or email='$usr' limit 1");
     if(!($row=mysqli_fetch_row($result)) || !$row[0])
         return false;

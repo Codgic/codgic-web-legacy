@@ -15,7 +15,7 @@ if(!isset($_POST['contest_id'])||empty($_POST['contest_id'])){
 }
 $cont_id=intval($_POST['contest_id']);
 
-require __DIR__.'/../conf/database.php';
+require __DIR__.'/../../src/database.php';
 
 if($op=='get_rank_table'){
     $cont_id=intval($_POST['contest_id']);

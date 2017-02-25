@@ -1,6 +1,6 @@
 <?php
 require __DIR__.'/inc/init.php';
-require __DIR__.'/conf/database.php';
+require __DIR__.'/../src/database.php';
 require __DIR__.'/func/cookie.php';
 
 if(isset($_SESSION['user'])||check_cookie()){

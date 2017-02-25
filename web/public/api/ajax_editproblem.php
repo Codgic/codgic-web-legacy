@@ -24,7 +24,7 @@ else if(!isset($_POST['op'])){
     exit();
 }
 
-require __DIR__.'/../conf/database.php';
+require __DIR__.'/../../src/database.php';
 
 if($_POST['op']=='del'){
     if(!isset($_POST['problem_id'])){

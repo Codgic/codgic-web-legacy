@@ -11,7 +11,7 @@ if(!isset($_SESSION['user'])){
     exit();
 }
 
-require __DIR__.'/../conf/database.php';
+require __DIR__.'/../../src/database.php';
 
 if($_POST['op']=='del'){
     if(!check_priv(PRIV_PROBLEM)){

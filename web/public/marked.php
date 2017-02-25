@@ -18,7 +18,7 @@ else{
     else
         $page_id=1;
         
-    require __DIR__.'/conf/database.php';
+    require __DIR__.'/../src/database.php';
     $user_id=$_SESSION['user'];
     if($type=='problem'){
         $type_num=1;

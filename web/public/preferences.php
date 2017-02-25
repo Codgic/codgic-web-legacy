@@ -5,7 +5,7 @@ require __DIR__.'/func/checklogin.php';
 if(!isset($_SESSION['user'])){
   $info=_('Please login first');
 }else{
-  require __DIR__.'/conf/database.php';
+  require __DIR__.'/../src/database.php';
   $user_id=$_SESSION['user'];
 }
 $inTitle=_('Preferences');

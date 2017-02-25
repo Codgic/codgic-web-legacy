@@ -6,7 +6,7 @@ require __DIR__.'/lib/problem_flags.php';
 require __DIR__.'/func/privilege.php';
 require __DIR__.'/func/checklogin.php';
 if(!isset($con))
-    require __DIR__.'/conf/database.php';
+    require __DIR__.'/../src/database.php';
 require __DIR__.'/func/text.php';
 require_once __DIR__.'/../src/textparser.php';
 

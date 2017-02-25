@@ -1,6 +1,6 @@
 <?php
 require __DIR__.'/../inc/init.php';
-require __DIR__.'/../conf/database.php';
+require __DIR__.'/../../src/database.php';
 
 if(!isset($_SESSION['user']))
     exit();
@@ -9,7 +9,7 @@ $pref=unserialize($_SESSION['pref']);
 
 function processOption($name)
 {
-    require __DIR__.'/../conf/database.php';
+    require __DIR__.'/../../src/database.php';
 
     global $pref,$user;
     if(isset($_POST[$name])){

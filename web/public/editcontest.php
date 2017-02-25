@@ -13,7 +13,7 @@ else if(!isset($_SESSION['admin_tfa']) || !$_SESSION['admin_tfa']){
 }else{
     require __DIR__.'/lib/problem_flags.php';
     if(!isset($con))
-        require __DIR__.'/conf/database.php';
+        require __DIR__.'/../src/database.php';
     $level_max=(PROB_LEVEL_MASK>>PROB_LEVEL_SHIFT);
     if(!isset($_GET['contest_id'])){
         $p_type='add';

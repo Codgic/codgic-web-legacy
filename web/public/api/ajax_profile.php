@@ -32,7 +32,7 @@ if($_POST['type']=='profile'){
         exit();
     }
     
-    require __DIR__.'/../conf/database.php';
+    require __DIR__.'/../../src/database.php';
 
     if(!function_exists('my_rsa'))
         require __DIR__.'/../conf/ojsettings.php';
@@ -71,7 +71,7 @@ else if($_POST['type']=='reg'){
         exit();
     }
     
-    require __DIR__.'/../conf/database.php';
+    require __DIR__.'/../../src/database.php';
 
     $user=mysqli_real_escape_string($con,trim($_POST['userid']));
     $len=strlen($user);

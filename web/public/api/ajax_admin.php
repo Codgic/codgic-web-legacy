@@ -17,7 +17,7 @@ if (!isset($_POST['op'])) {
 
 $op=$_POST['op'];
 
-require __DIR__.'/../conf/database.php';
+require __DIR__.'/..../src/database.php';
 require __DIR__.'/../lib/problem_flags.php';
 
 $level_max = (PROB_LEVEL_MASK>>PROB_LEVEL_SHIFT);

@@ -12,7 +12,7 @@ if(!isset($_GET['solution_id']))
 else{
     $sol_id=intval($_GET['solution_id']);
     require __DIR__.'/func/checklogin.php';
-    require __DIR__.'/conf/database.php';
+    require __DIR__.'/../src/database.php';
     $result=mysqli_query($con,"select user_id,time,memory,result,language,code_length,problem_id,public_code,malicious from solution where solution_id=$sol_id");
     $row=mysqli_fetch_row($result);
     

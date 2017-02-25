@@ -13,7 +13,7 @@ if(isset($_GET['problem_id'])){
 }else
     $query_prob=$cond_prob='';
 
-require __DIR__.'/conf/database.php';
+require __DIR__.'/../src/database.php';
     $subquery="select thread_id from message where thread_id<$query_id $cond_prob order by thread_id desc limit 20";
     $res=mysqli_query($con,"select min(thread_id) from ($subquery) as tmptab");
     if(!$res)

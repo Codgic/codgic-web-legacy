@@ -2,7 +2,7 @@
 function UserExist($uid){
     if(preg_match('/\W/',$uid))
         return false;
-    require __DIR__.'/../conf/database.php';
+    require __DIR__.'/../../src/database.php';
 
     $res=mysqli_query($con,"select user_id from users where user_id='$uid'");
     if($res && mysqli_num_rows($res))
@@ -21,7 +21,7 @@ if(!isset($_GET['op'])){
 }
 $op = $_GET['op'];
 
-require __DIR__.'/../conf/database.php';
+require __DIR__.'/../../src/database.php';
 
 require __DIR__.'/../lib/mail_flags.php';
 

@@ -1,7 +1,7 @@
 <?php
 //Fetch contest problems.
 function get_cont_probs($cont_id){
-    require __DIR__.'/../conf/database.php';
+    require __DIR__.'/../../src/database.php';
 
     $res=mysqli_query($con, "select problem_id from contest_problem where contest_id=$cont_id order by place");
     $i=0;
@@ -14,7 +14,7 @@ function get_cont_probs($cont_id){
 
 //Update contest rank.
 function update_cont_rank($cont_id){
-    require __DIR__.'/../conf/database.php';
+    require __DIR__.'/../../src/database.php';
 
     $res=mysqli_query($con,"select user_id,tot_score,tot_time from contest_status where contest_id=$cont_id order by tot_score desc,tot_time");
     $pre_score=-1;
@@ -39,7 +39,7 @@ function update_cont_rank($cont_id){
 
 //Update contest score.
 function update_cont_scr($cont_id){
-    require __DIR__.'/../conf/database.php';
+    require __DIR__.'/../../src/database.php';
     require __DIR__.'/../conf/ojsettings.php';
 
     $row=mysqli_fetch_row(mysqli_query($con, "select start_time,end_time,judge_way from contest where contest_id=$cont_id limit 1"));

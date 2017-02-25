@@ -17,7 +17,7 @@ if(isset($_GET['online'])){
     $online=0;
 
 if(!isset($con)) 
-    require __DIR__.'/conf/database.php';
+    require __DIR__.'/../src/database.php';
 $row=mysqli_fetch_row(mysqli_query($con,'select count(*) from users'));
 $maxpage=intval($row[0]/20)+1;
 if($page_id<1){

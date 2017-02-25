@@ -51,7 +51,7 @@ if(!isset($_POST['op'],$_POST['problem'])){
 }
 $prob=intval($_POST['problem']);
 
-require __DIR__.'/../conf/database.php';
+require __DIR__.'/../../src/database.php';
 
 $res=mysqli_query($con,"select case_time_limit,memory_limit,case_score,compare_way,defunct,has_tex from problem where problem_id=$prob");
 if(!($row=mysqli_fetch_row($res))){

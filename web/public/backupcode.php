@@ -12,7 +12,7 @@ if(!isset($_SESSION['user'])){
     show_alert($info);
     exit;
 }
-require __DIR__.'/conf/database.php';
+require __DIR__.'/../src/database.php';
 require __DIR__.'/lib/lang.php';
 require __DIR__.'/lib/tgz.lib.php';
 

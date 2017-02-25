@@ -2,7 +2,7 @@
 require __DIR__.'/inc/init.php';
 require __DIR__.'/func/checklogin.php';
 if(!isset($con))
-    require __DIR__.'/conf/database.php';
+    require __DIR__.'/../src/database.php';
 require_once __DIR__.'/../src/textparser.php';
 
 if(isset($_GET['wiki_id']))

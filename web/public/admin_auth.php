@@ -6,7 +6,7 @@ require __DIR__.'/func/checklogin.php';
 if(!check_priv(PRIV_PROBLEM) && !check_priv(PRIV_SYSTEM))
     include __DIR__.'/inc/403.php';
 else{
-    require __DIR__.'/conf/database.php';
+    require __DIR__.'/../src/database.php';
     if(isset($_POST['paswd'])){
         if(!function_exists('my_rsa'))
         require __DIR__.'/func/checkpwd.php';

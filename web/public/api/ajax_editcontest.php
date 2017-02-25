@@ -22,7 +22,7 @@ if(!check_priv(PRIV_PROBLEM)){
     exit();
 }
 
-require __DIR__.'/../conf/database.php';
+require __DIR__.'/../../src/database.php';
 $success=false;
 if($_POST['op']=='del'){
     if(!isset($_POST['contest_id'])){
