@@ -1,6 +1,6 @@
 <?php
 
-require_once __DIR__.'/config/config.php';
+require_once __DIR__.'/../config/config.php';
 
 //Obtain user's real IP Address.
 function get_ip(){
