@@ -45,7 +45,7 @@ function login($user, $is_cookie, $pwd=''){
     }
     $_SESSION['pref']=serialize($pref);
 
-    require __DIR__.'/userinfo.php';
+    require __DIR__ . '/../../src/userinfo.php';
         $ip=mysqli_escape_string($con,get_ip());
     mysqli_query($con,"update users set accesstime=NOW(),ip='$ip' where user_id='$user'");
 
