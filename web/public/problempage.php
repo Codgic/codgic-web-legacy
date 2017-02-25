@@ -246,7 +246,7 @@ $Title=$inTitle .' - '. $oj_name;
                             <div class="panel-heading">
                                 <h5 class="panel-title"><?php echo _('Description')?></h5>
                             </div>
-                            <div class="panel-body preserve-whitespace">
+                            <div class="panel-body">
                                 <?php echo HTMLPurifier::instance()->purify(parse_markdown($row_prob[1]));?>
                             </div>
                         </div>
@@ -254,12 +254,12 @@ $Title=$inTitle .' - '. $oj_name;
                             <div class="panel-heading">
                                 <h5 class="panel-title"><?php echo _('Input')?></h5>
                             </div>
-                            <div class="panel-body preserve-whitespace">
+                            <div class="panel-body">
                                 <?php echo HTMLPurifier::instance()->purify(parse_markdown($row_prob[2]));?>
                             </div>
                         </div>
                         <div class="panel panel-default">
-                            <div class="panel-heading preserve-whitespace">
+                            <div class="panel-heading">
                                 <h5 class="panel-title"><?php echo _('Output')?></h5>
                             </div>
                             <div class="panel-body">
@@ -289,7 +289,7 @@ $Title=$inTitle .' - '. $oj_name;
                                 <div class="panel-heading">
                                     <h5 class="panel-title"><?php echo _('Hints')?></h5>
                                 </div>
-                                <div class="panel-body preserve-whitespace">
+                                <div class="panel-body">
                                     <?php echo HTMLPurifier::instance()->purify(parse_markdown($row_prob[6]));?>
                                 </div>
                             </div>

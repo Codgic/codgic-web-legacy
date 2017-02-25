@@ -173,7 +173,7 @@ $Title=$inTitle .' - '. $oj_name;
                                 <div class="panel-heading">
                                     <h5 class="panel-title"><?php echo _('Description')?></h5>
                                 </div>
-                                <div class="panel-body preserve-whitespace">
+                                <div class="panel-body">
                                     <?php echo HTMLPurifier::instance()->purify(parse_markdown($row[3]));?>
                                 </div>
                             </div>
