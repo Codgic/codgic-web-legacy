@@ -1,6 +1,6 @@
 <?php
 
-require_once __DIR__.'/../conf/ojsettings.php';
+require_once __DIR__.'/config/config.php';
 
 //Obtain user's real IP Address.
 function get_ip(){
@@ -16,7 +16,7 @@ function get_ip(){
 //Obtain user's Gravatar.
 function get_gravatar($email, $s=80, $d='mm'){
     $email = md5($email); 
-    $avatar = constant('GRAVATAR_CDN')."/$email?s=$s&d=$d&r=g"; 
+    $avatar = constant('GRAVATAR_CDN') . "/$email?s=$s&d=$d&r=g"; 
     return $avatar; 
 }
 
