@@ -38,4 +38,5 @@ composer.phar install
 
 ## 部署
 复制 web 文件夹内的所有内容至 `/var/www/codgic`，然后将公共目录设为 `/var/www/codgic/public`。
+将 web/config/config_example.php 复制到 web/config/config.php，然后编辑配置文件内容。
 无需拷贝 web 文件夹以外的内容。
