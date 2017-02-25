@@ -1,6 +1,6 @@
 <?php
 require __DIR__.'/inc/init.php';
-require_once __DIR__.'../src/mathjax.php';
+require_once __DIR__.'/../src/mathjax.php';
 require __DIR__.'/func/checklogin.php';
 
 if(isset($_GET['start_id']))
@@ -23,7 +23,7 @@ require __DIR__.'/../src/database.php';
     $range=$row[0];
 
 function get_pre_link($top){
-    require ('conf/database.php');
+    require __DIR__ . '/../src/database.php');
     global $cond_prob;
     $res=mysqli_query($con,"select max(thread_id) from (select thread_id from message where thread_id>=$top $cond_prob order by thread_id limit 20) as tmptab");
     $row=mysqli_fetch_row($res);
