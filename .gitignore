@@ -65,5 +65,6 @@ jspm_packages
 
 # Config file
 /web/public/conf/*
+/web/config/config.php
 
 /web/vendor/*
