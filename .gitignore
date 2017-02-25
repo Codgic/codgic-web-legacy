@@ -64,7 +64,6 @@ jspm_packages
 /web/public/assets_webpack/*
 
 # Config file
-/web/public/conf/*
 /web/config/config.php
 
 /web/vendor/*
