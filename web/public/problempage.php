@@ -8,9 +8,7 @@ require __DIR__.'/func/checklogin.php';
 if(!isset($con))
     require __DIR__.'/conf/database.php';
 require __DIR__.'/func/text.php';
-require __DIR__.'/lib/Parsedown.php';
-require __DIR__.'/lib/ParsedownExtra.php';
-require_once __DIR__.'/lib/HTMLPurifier/HTMLPurifier.auto.php';
+require_once __DIR__.'/../src/textparser.php';
 
 $is_contest=false;
 if(isset($_GET['contest_id'])){
@@ -248,7 +246,7 @@ $Title=$inTitle .' - '. $oj_name;
                                 <h5 class="panel-title"><?php echo _('Description')?></h5>
                             </div>
                             <div class="panel-body">
-                                <?php echo HTMLPurifier::instance()->purify(Parsedown::instance()->text($row_prob[1]));?>
+                                <?php echo HTMLPurifier::instance()->purify(parse_markdown($row_prob[1]));?>
                             </div>
                         </div>
                         <div class="panel panel-default">
@@ -256,7 +254,7 @@ $Title=$inTitle .' - '. $oj_name;
                                 <h5 class="panel-title"><?php echo _('Input')?></h5>
                             </div>
                             <div class="panel-body">
-                                <?php echo HTMLPurifier::instance()->purify(Parsedown::instance()->text($row_prob[2]));?>
+                                <?php echo HTMLPurifier::instance()->purify(parse_markdown($row_prob[2]));?>
                             </div>
                         </div>
                         <div class="panel panel-default">
@@ -264,7 +262,7 @@ $Title=$inTitle .' - '. $oj_name;
                                 <h5 class="panel-title"><?php echo _('Output')?></h5>
                             </div>
                             <div class="panel-body">
-                                <?php echo HTMLPurifier::instance()->purify(Parsedown::instance()->text($row_prob[3]));?>
+                                <?php echo HTMLPurifier::instance()->purify(parse_markdown($row_prob[3]));?>
                             </div>
                         </div>
                         <div class="panel panel-default">
@@ -273,7 +271,7 @@ $Title=$inTitle .' - '. $oj_name;
                                 <a herf="#" class="pull-right" id="copy_in" style="cursor:pointer" data-toggle="tooltip" data-trigger="manual" data-clipboard-action="copy" data-clipboard-target="#sample_input"><?php echo _('[Copy]')?></a></h5>
                             </div>
                             <div class="panel-body problem-sample" id="sample_input">
-                                <?php echo encode_space(HTMLPurifier::instance()->purify($row_prob[4]));?>
+                                <?php echo HTMLPurifier::instance()->purify($row_prob[4]); ?>
                             </div>
                         </div>
                         <div class="panel panel-default">
@@ -282,7 +280,7 @@ $Title=$inTitle .' - '. $oj_name;
                                 <a herf="#" class="pull-right" id="copy_out" style="cursor:pointer" data-toggle="tooltip" data-trigger="manual" data-clipboard-action="copy" data-clipboard-target="#sample_output"><?php echo _('[Copy]')?></a></h5>
                             </div>
                             <div class="panel-body problem-sample" id="sample_output">
-                                <?php echo encode_space(HTMLPurifier::instance()->purify($row_prob[5]));?>
+                                <?php echo HTMLPurifier::instance()->purify($row_prob[5]);?>
                             </div>
                         </div>
                         <?php if(strlen(trim($row_prob[6]))){ ?>
@@ -291,7 +289,7 @@ $Title=$inTitle .' - '. $oj_name;
                                     <h5 class="panel-title"><?php echo _('Hints')?></h5>
                                 </div>
                                 <div class="panel-body">
-                                    <?php echo HTMLPurifier::instance()->purify(Parsedown::instance()->text($row_prob[6]));?>
+                                    <?php echo HTMLPurifier::instance()->purify(parse_markdown($row_prob[6]));?>
                                 </div>
                             </div>
                         <?php }?>
@@ -300,7 +298,7 @@ $Title=$inTitle .' - '. $oj_name;
                                 <h5 class="panel-title"><?php echo _('Tags')?></h5>
                             </div>
                             <div class="panel-body">
-                                <?php echo encode_space(HTMLPurifier::instance()->purify($row_prob[7]));?>
+                                <?php echo HTMLPurifier::instance()->purify($row_prob[7]);?>
                             </div>
                         </div>
                     </div>

@@ -9,9 +9,8 @@ if(!isset($con))
     require __DIR__.'/conf/database.php';
 require __DIR__.'/func/contest.php';
 require __DIR__.'/func/text.php';
-require __DIR__.'/lib/Parsedown.php';
-require __DIR__.'/lib/ParsedownExtra.php';
 require_once __DIR__.'/lib/HTMLPurifier/HTMLPurifier.auto.php';
+require_once __DIR__.'/../src/textparser.php';
 
 //Determine contest_id
 if(isset($_GET['contest_id']))
@@ -174,7 +173,7 @@ $Title=$inTitle .' - '. $oj_name;
                                     <h5 class="panel-title"><?php echo _('Description')?></h5>
                                 </div>
                                 <div class="panel-body">
-                                    <?php echo HTMLPurifier::instance()->purify(Parsedown::instance()->text($row[3]));?>
+                                    <?php echo HTMLPurifier::instance()->purify(parse_markdown($row[3]));?>
                                 </div>
                             </div>
                         <?php }?>

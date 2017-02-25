@@ -3,9 +3,7 @@ require __DIR__.'/inc/init.php';
 require __DIR__.'/func/checklogin.php';
 if(!isset($con))
     require __DIR__.'/conf/database.php';
-require __DIR__.'/lib/Parsedown.php';
-require __DIR__.'/lib/ParsedownExtra.php';
-require_once __DIR__.'/lib/HTMLPurifier/HTMLPurifier.auto.php';
+require_once __DIR__.'/../src/textparser.php';
 
 if(isset($_GET['wiki_id']))
     $wiki_id=intval($_GET['wiki_id']);
@@ -87,7 +85,7 @@ $Title=$inTitle .' - '. $oj_name;
                         <div class="page-header">
                             <h2><?php echo '#'.$wiki_id,' ',$row[0];if($row[7]==1)echo ' <span style="vertical-align:middle;font-size:12px" class="label label-danger">',_('Deleted'),'</span>';?></h2>
                         </div>
-                        <?php echo HTMLPurifier::instance()->purify(Parsedown::instance()->text($row[1]));?>
+                        <?php echo HTMLPurifier::instance()->purify(parse_markdown($row[1]));?>
                     </div>
                     <div class="col-xs-12 col-sm-3 collapse" id="rightside">
                         <div class="row">

@@ -10,7 +10,10 @@
         }
     ],
     "require": {
-        "mathjax/mathjax": "^2.7"
+        "mathjax/mathjax": "^2.7",
+        "ezyang/htmlpurifier": "^4.8",
+        "erusev/parsedown": "^1.6",
+        "erusev/parsedown-extra": "^0.7.1"
     },
     "config": {
         "vendor-dir": "web/vendor"
