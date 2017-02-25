@@ -5,7 +5,7 @@
 * Please configure your database connection info here.
 */
 
-require_once '../config/config.php';
+require_once __DIR__ . '/../config/config.php';
 
 $con = mysqli_connect(DB_HOST, DB_USER, DB_PASSWORD);
 if(!$con){

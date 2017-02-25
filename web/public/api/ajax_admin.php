@@ -17,7 +17,7 @@ if (!isset($_POST['op'])) {
 
 $op=$_POST['op'];
 
-require __DIR__.'/..../src/database.php';
+require __DIR__.'/../../src/database.php';
 require __DIR__.'/../lib/problem_flags.php';
 
 $level_max = (PROB_LEVEL_MASK>>PROB_LEVEL_SHIFT);
@@ -448,7 +448,7 @@ else if ($op == 'toggle_usr') {
 */
 
 else if ($op == 'sendemail') {
-    require __DIR__.'/../../src/mailsettings.php';
+    require __DIR__.'/../../src/mail.php';
 
     if (isset($_POST['to_user']) && !empty($_POST['to_user'])) 
         $uid=mysqli_real_escape_string($con,trim($_POST['to_user']));
@@ -485,7 +485,7 @@ else if ($op == 'sendemail') {
 */
 
 else if ($op == 'sendemail_all') {
-    require __DIR__.'/../../src/mailsettings.php';
+    require __DIR__.'/../../src/mail.php';
     ignore_user_abort(true); // This is actually quite dirty =.=
 
     if (isset($_POST['title']) && !empty($_POST['title'])) 
