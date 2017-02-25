@@ -1,14 +1,13 @@
 <?php
-if(!defined('cookie_key'))
-    require __DIR__.'/../conf/encsettings.php';
-if(!defined('bind_domain'))
-    define('bind_domain', $_SERVER['HTTP_HOST']);
+require_once __DIR__.'/../../config/config.php';
+if(!defined('BIND_DOMAIN'))
+    define('BIND_DOMAIN', $_SERVER['HTTP_HOST']);
 
 //Check whether user's login cookie is valid.
 function check_cookie(){
     if(!isset($_COOKIE['SID']))
         return false;
-    $cookie = decrypt(cookie_key, $_COOKIE['SID']);
+    $cookie = decrypt(COOKIE_KEY, $_COOKIE['SID']);
     if($cookie === false)
         return false;
     $arr = unserialize($cookie);
@@ -28,16 +27,16 @@ function write_cookie($remember){
     $arr = array('magic'=>'codgic');
     $arr['user']=$_SESSION['user'];
 
-    $data = encrypt(cookie_key, serialize($arr));
+    $data = encrypt(COOKIE_KEY, serialize($arr));
     if($remember==1)
-        setcookie('SID', $data, time()+cookie_expire, '/', bind_domain);
+        setcookie('SID', $data, time()+COOKIE_EXPIRE, '/', BIND_DOMAIN);
     else 
-        setcookie('SID', $data, 0, '/', bind_domain);
+        setcookie('SID', $data, 0, '/', BIND_DOMAIN);
 }
 
 //Clear certain cookie.
 function clear_cookie($name){
-    setcookie("$name",'',time()-3600, '/', bind_domain);
+    setcookie("$name",'',time()-3600, '/', BIND_DOMAIN);
 }
 
 //Encrypt cookie.

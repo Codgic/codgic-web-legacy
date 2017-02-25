@@ -20,3 +20,21 @@ define('SMTP_PASSWORD', '');
 define('SMTP_DISPLAY', 'Codgic');
 
 define("GRAVATAR_CDN",  '//cdn.v2ex.com/gravatar');
+
+define("COOKIE_KEY", "C0DG1C_HELLO_WORLD!");
+define("COOKIE_EXPIRE",31536000);
+// define("BIND_DOMAIN", '.example.com');
+
+/**
+* 2. Password Encryption
+* ----------------
+* Currently Codgic uses an RSA public key to encrypt user password.
+* Please destory the private key immediately after generating a new RSA key. 
+* Should use a hash here, What a fucking piece of shit
+*/
+define("PASSWORD_PUBLIC_KEY", "
+-----BEGIN PUBLIC KEY-----
+MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBAMa44v2O2oZIgXL2PtdoxjTJ4ASWfGTL
+d4VZ05MzsQAbNnQ+abT4otHnK7n6Ku4WKCbDAd3FKcsnNSv0eVhehxUCAwEAAQ==
+-----END PUBLIC KEY-----
+");

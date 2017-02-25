@@ -1,6 +1,5 @@
 <?php
-if(!defined("PUBLIC_KEY"))
-    require __DIR__.'/../conf/encsettings.php';
+require_once __DIR__.'/../../config/config.php';
     
 function my_rsa($value){
     $len=strlen($value);
@@ -10,7 +9,7 @@ function my_rsa($value){
         $value=str_pad($value,64,"\x00");
 
     $crypted="";
-    openssl_public_encrypt($value,$crypted,PUBLIC_KEY,OPENSSL_NO_PADDING);
+    openssl_public_encrypt($value,$crypted,PASSWORD_PUBLIC_KEY,OPENSSL_NO_PADDING);
     return "\x00".base64_encode($crypted);
 }
 
