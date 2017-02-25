@@ -245,7 +245,7 @@ $Title=$inTitle .' - '. $oj_name;
                             <div class="panel-heading">
                                 <h5 class="panel-title"><?php echo _('Description')?></h5>
                             </div>
-                            <div class="panel-body">
+                            <div class="panel-body preserve-whitespace">
                                 <?php echo HTMLPurifier::instance()->purify(parse_markdown($row_prob[1]));?>
                             </div>
                         </div>
@@ -253,12 +253,12 @@ $Title=$inTitle .' - '. $oj_name;
                             <div class="panel-heading">
                                 <h5 class="panel-title"><?php echo _('Input')?></h5>
                             </div>
-                            <div class="panel-body">
+                            <div class="panel-body preserve-whitespace">
                                 <?php echo HTMLPurifier::instance()->purify(parse_markdown($row_prob[2]));?>
                             </div>
                         </div>
                         <div class="panel panel-default">
-                            <div class="panel-heading">
+                            <div class="panel-heading preserve-whitespace">
                                 <h5 class="panel-title"><?php echo _('Output')?></h5>
                             </div>
                             <div class="panel-body">
@@ -270,7 +270,7 @@ $Title=$inTitle .' - '. $oj_name;
                                 <h5 class="panel-title"><?php echo _('Sample Input')?>
                                 <a herf="#" class="pull-right" id="copy_in" style="cursor:pointer" data-toggle="tooltip" data-trigger="manual" data-clipboard-action="copy" data-clipboard-target="#sample_input"><?php echo _('[Copy]')?></a></h5>
                             </div>
-                            <div class="panel-body problem-sample" id="sample_input">
+                            <div class="panel-body problem-sample preserve-whitespace" id="sample_input">
                                 <?php echo HTMLPurifier::instance()->purify($row_prob[4]); ?>
                             </div>
                         </div>
@@ -279,7 +279,7 @@ $Title=$inTitle .' - '. $oj_name;
                                 <h5 class="panel-title"><?php echo _('Sample Output')?>
                                 <a herf="#" class="pull-right" id="copy_out" style="cursor:pointer" data-toggle="tooltip" data-trigger="manual" data-clipboard-action="copy" data-clipboard-target="#sample_output"><?php echo _('[Copy]')?></a></h5>
                             </div>
-                            <div class="panel-body problem-sample" id="sample_output">
+                            <div class="panel-body problem-sample preserve-whitespace" id="sample_output">
                                 <?php echo HTMLPurifier::instance()->purify($row_prob[5]);?>
                             </div>
                         </div>
@@ -288,7 +288,7 @@ $Title=$inTitle .' - '. $oj_name;
                                 <div class="panel-heading">
                                     <h5 class="panel-title"><?php echo _('Hints')?></h5>
                                 </div>
-                                <div class="panel-body">
+                                <div class="panel-body preserve-whitespace">
                                     <?php echo HTMLPurifier::instance()->purify(parse_markdown($row_prob[6]));?>
                                 </div>
                             </div>
@@ -297,7 +297,7 @@ $Title=$inTitle .' - '. $oj_name;
                             <div class="panel-heading">
                                 <h5 class="panel-title"><?php echo _('Tags')?></h5>
                             </div>
-                            <div class="panel-body">
+                            <div class="panel-body preserve-whitespace">
                                 <?php echo HTMLPurifier::instance()->purify($row_prob[7]);?>
                             </div>
                         </div>

@@ -10,5 +10,6 @@ require.ensure(["font-awesome/css/font-awesome.css"], function() {
 });
 // require('bootstrap/less/bootstrap.less');
 
+require('./css/site.css');
 import loadNightMode from './js/nightMode';
 loadNightMode();
