@@ -4,7 +4,7 @@ if(!isset($oj_name))
 if(!function_exists('check_priv')) 
     require __DIR__.'/../func/privilege.php';
 if(!function_exists('get_gravatar'))
-    require __DIR__.'/../func/userinfo.php';
+    require __DIR__.'/../../src/userinfo.php';
 if(!isset($_SESSION['user'])){
     $_SESSION['login_redirect']=$_SERVER['PHP_SELF'];
     if(!empty($_SERVER['QUERY_STRING'])) $_SESSION['login_redirect']=$_SESSION['login_redirect'].'?'.$_SERVER['QUERY_STRING'];

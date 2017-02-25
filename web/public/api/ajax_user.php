@@ -11,7 +11,7 @@ if(!isset($_GET['user_id'])){
     exit();
 }
 require __DIR__.'/../../src/database.php';
-require __DIR__.'/../func/userinfo.php';
+require __DIR__.'/../../src/userinfo.php';
 
 $user=mysqli_real_escape_string($con,$_GET['user_id']);
 $query="SELECT user_id,email,ip,accesstime,school,reg_time,submit,solved,motto,nick,privilege,t1.experience,experience_titles.title FROM (SELECT user_id,email,ip,accesstime,school,reg_time,submit,solved,motto,nick,privilege,t.experience,MAX(experience_titles.experience) AS m FROM (SELECT user_id,email,ip,accesstime,school,reg_time,submit,solved,motto,nick,privilege,experience from users)t,experience_titles where t.experience>=experience_titles.experience GROUP BY user_id)t1 LEFT JOIN experience_titles ON t1.m=experience_titles.experience where user_id='$user'";

@@ -367,7 +367,7 @@ else if ($op == "list_usr") {
         </thead>
         <tbody>
             <?php
-                require __DIR__.'/../func/userinfo.php';
+                require __DIR__.'/../../src/userinfo.php';
                 while($row = mysqli_fetch_row($res)) {
                     echo '<tr><td><img class="img-circle" src="'.get_gravatar($row[5],30).'" width="30" height="30"></td>';
                     echo '<td style="text-align:left"><strong><a href="#linkU">'.$row[0].'</a></strong>';

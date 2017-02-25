@@ -98,7 +98,7 @@ $Title=$inTitle .' - '. $oj_name;
                         $top=$query_id;
                         if($range){
                             if(!function_exists("get_gravatar"))
-                                require __DIR__.'/func/userinfo.php';
+                                require __DIR__.'/../src/userinfo.php';
                             $res=mysqli_query($con,"select title,depth,user_id,message_id,in_date,thread_id,problem_id,ASCII(content),usremail from message LEFT JOIN (select user_id as uid,email as usremail from users) as fuckzk on (uid=user_id) where thread_id<$query_id and thread_id>=$range $cond_prob order by thread_id desc,orderNum");
                             $deep=-1;
                             $top=0;

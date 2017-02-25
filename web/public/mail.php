@@ -128,7 +128,7 @@ $Title=$inTitle .' - '. $oj_name;
                         <?php }else{
                             while($row=mysqli_fetch_row($result)){
                                 if(!function_exists("get_gravatar"))
-                                    require __DIR__.'/func/userinfo.php';
+                                    require __DIR__.'/../src/userinfo.php';
                                 echo '<li class="mail-item" ',(($row[3]&&$mailbox==1) ? 'style="background-color: #FCF8E3;"' : ''),' id="mail',$row[0],'">';
                                 ?>
                                 <div class="mail-container">
