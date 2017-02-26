@@ -113,7 +113,7 @@ $Title=_('Sign up ').$oj_name;
                             data:$('#form_reg').serialize(),
                             success:function(msg){
                                 if(/success/.test(msg)){
-                                    if(<?php echo $require_confirm?> == 1){
+                                    if(<?php echo $require_confirm ? "true" : "false"?>){
                                         $('#reg_res').removeClass("alert-danger alert-success").addClass("alert-info");
                                         $('#reg_res').html('<i class="fa fa-fw fa-info"></i> <?php echo _('Your sign-up will be reviewed')?>...').slideDown();
                                     }else{
