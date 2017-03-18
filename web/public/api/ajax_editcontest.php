@@ -7,7 +7,7 @@ header('Content-Type: application/json');
 function JUDGE_TYPE($way){
     if($way=='train')
       return 0;
-    else if($way=='cwoj')
+    else if($way=='codgic')
       return 1;
     else if($way=='acm-like')
       return 2;
