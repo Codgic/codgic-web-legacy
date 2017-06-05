@@ -14,10 +14,10 @@ Notes: 1.x is still in early development stage, meaning it contains loads of hal
 
 ## Deployment
 - The local daemon can be found [HERE](https://github.com/CDFLS/cwoj_daemon).
-- Please check out DEPLOY.md.
+- Please check out [DEPLOY.md](DEPLOY.md).
 
 ## Credits
-- Codgic is mainly based on [Bashu OnlineJudge](https://github.com/593141477/bashu-onlinejudge).
+- Codgic is primarily based on [Bashu OnlineJudge](https://github.com/593141477/bashu-onlinejudge).
 - Codgic profits from other projects, most of them are licensed under the MIT license.
 
 ## Features
