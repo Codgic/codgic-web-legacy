@@ -8,7 +8,7 @@ function check_id(&$str,&$t){
     else if($t==3) $type='wiki';
     else return;
     
-    require __DIR__.'../src/database.php';
+    require __DIR__.'/../src/database.php';
     if(preg_match('/\D/',$str))
         return;
     $num=intval($str);
@@ -45,7 +45,7 @@ else if(strlen($req)>600)
     $info=_('The keyword entered is too long');
 else{
     require __DIR__.'/func/checklogin.php';
-    require __DIR__.'../src/database.php';
+    require __DIR__.'/../src/database.php';
     require __DIR__.'/lib/problem_flags.php';
     
     $keyword=mysqli_real_escape_string($con,trim(urldecode($req)));

@@ -1,11 +1,13 @@
 # Codgic Laverne (1.0)
 
-![Codgic](https://raw.githubusercontent.com/Codgic/codgic-web/master/web/public/assets/res/codgic.png)
+![Codgic](https://raw.githubusercontent.com/Codgic/codgic-web-legacy/master/web/public/assets/res/codgic.png)
+
+**Notes: We are currently planning to rewrite Codgic so this repo is to be deprecated. We will continue to fix bugs but no new features will be added.**
 
 Codgic (previously CWOJ) is a free, open-source Online Judge Solution designed for OI trainings. Ever since 11/20/2015, we have kept seeking a better OJ solution for individuals, schools and other educational organizations.
 
 Laverne, the middle name of Judy Hopps from the movie "Zootopia", represents the spirit of trying everything and not fearing failures. That drives me through everything that seemed difficult or even impossible.
-     
+​     
 Notes: 1.x is still in early development stage, meaning it contains loads of half-done codes and is for evaluation purpose only.
 
 ## Branches
@@ -22,15 +24,15 @@ Notes: 1.x is still in early development stage, meaning it contains loads of hal
 
 ## Features
 Compared with the original Bashu OnlineJudge, we've made loads of improvements:
-- [X] <b>PHP7 Ready</b>
-- [X] Mullti-Languages Support + Improvements on UX.
-- [X] Optimized for mobile devices + Upgraded to Bootstrap 3.
-- [X] Day / Night Mode with auto switching.
-- [X] CodeMirror code editor & Prism syntax highlighter.
-- [X] Reset password.
-- [X] News Center.
-- [X] Gravatar.
-- [X] User online/offline status.
-- [X] Rewritten user privilege system.
-- [X] Contest (Beta).
+- [x] <b>PHP7 Ready</b>
+- [x] Mullti-Languages Support + Improvements on UX.
+- [x] Optimized for mobile devices + Upgraded to Bootstrap 3.
+- [x] Day / Night Mode with auto switching.
+- [x] CodeMirror code editor & Prism syntax highlighter.
+- [x] Reset password.
+- [x] News Center.
+- [x] Gravatar.
+- [x] User online/offline status.
+- [x] Rewritten user privilege system.
+- [x] Contest (Beta).
 - [ ] Wiki (Unfinished).
