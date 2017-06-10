@@ -40,7 +40,7 @@ function update_cont_rank($cont_id){
 //Update contest score.
 function update_cont_scr($cont_id){
     require __DIR__.'/../../src/database.php';
-    require __DIR__.'/../../config/config.php';
+    require_once __DIR__.'/../../config/config.php';
 
     $row=mysqli_fetch_row(mysqli_query($con, "select start_time,end_time,judge_way from contest where contest_id=$cont_id limit 1"));
     $cont_start=$row[0];
