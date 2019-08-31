@@ -19,7 +19,7 @@
   },
   "homepage": "https://github.com/CDFLS/CWOJ#readme",
   "dependencies": {
-    "bootstrap": "^3.3.7",
+    "bootstrap": "^3.4.1",
     "bootswatch": "^3.3.7",
     "codemirror": "^5.22.0",
     "font-awesome": "^4.7.0",
